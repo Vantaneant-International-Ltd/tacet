@@ -115,3 +115,280 @@ textarea:focus {
 ::placeholder {
   color: var(--dim);
 }
+
+/* ============================================================================
+   Components. Mobile-first; holds at 380px. Generous vertical rhythm.
+   ========================================================================= */
+
+.label.loading,
+.label.empty {
+  color: var(--dim);
+  padding: 2.5rem var(--pad-page);
+}
+
+.error-line {
+  color: var(--secondary);
+  letter-spacing: 0.08em;
+  margin: 0.75rem 0 0;
+}
+
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  margin: 0 0 0.9rem;
+  color: var(--dim);
+}
+.byline .sep { color: var(--dim); }
+
+/* --- Enter ---------------------------------------------------------------- */
+.enter {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 5rem var(--pad-page) 3rem;
+}
+.enter .mark { color: var(--secondary); letter-spacing: 0.28em; }
+.enter-line { font-size: 1.15rem; margin: 1.4rem 0 3rem; line-height: 1.5; }
+.enter-form { display: flex; flex-direction: column; gap: 0.4rem; }
+.enter-form .label { margin-top: 1rem; }
+.enter-form .label:first-child { margin-top: 0; }
+.action {
+  margin-top: 1.8rem;
+  align-self: flex-start;
+  color: var(--secondary);
+  border: 1px solid var(--hairline);
+  padding: 0.55rem 1.3rem;
+  border-radius: 2px;
+}
+.action:hover { color: var(--voice); border-color: var(--secondary); }
+.switch { display: block; margin-top: 2rem; color: var(--dim); }
+.switch:hover { color: var(--secondary); }
+
+/* --- Shell + nav ---------------------------------------------------------- */
+.shell { min-height: 100vh; }
+.column {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem var(--pad-page) 6rem;
+}
+.bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+}
+.nav-word {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  color: var(--dim);
+}
+.nav-word.here { color: var(--secondary); }
+
+.heading { color: var(--secondary); letter-spacing: 0.2em; font-size: 0.78rem; }
+
+/* --- Room list ------------------------------------------------------------ */
+.room-list { list-style: none; margin: 2rem 0 0; padding: 0; }
+.room-row {
+  display: block;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.room-name { display: block; font-size: 1.25rem; font-weight: 400; }
+.room-desc { display: block; color: var(--secondary); margin-top: 0.35rem; font-size: 0.95rem; }
+
+/* --- Room header + lens switcher ------------------------------------------ */
+.room-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.2rem;
+}
+.room-title .heading { font-size: 0.95rem; letter-spacing: 0.16em; }
+.room-head .room-desc { margin-top: 0.4rem; }
+.write { color: var(--secondary); }
+.write:hover { color: var(--voice); }
+
+.lens-switch {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.4rem 0 2rem;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 2.5rem;
+}
+.lens-opt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 2px;
+  text-align: left;
+}
+.lens-opt .lens-name { color: var(--dim); letter-spacing: 0.16em; }
+.lens-opt .lens-blurb { color: var(--dim); font-size: 0.6rem; letter-spacing: 0.1em; opacity: 0.85; }
+.lens-opt.current { background: var(--panel); }
+.lens-opt.current .lens-name { color: var(--secondary); }
+
+/* --- Timeline post -------------------------------------------------------- */
+.lens-body { display: block; }
+.timeline { display: flex; flex-direction: column; gap: var(--gap-post); }
+.post { display: block; }
+.post-body {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.post-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+}
+.actions {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  margin-top: 1.1rem;
+  padding-bottom: var(--gap-post);
+  border-bottom: 1px solid var(--hairline);
+}
+.timeline .post:last-child .actions { border-bottom: none; padding-bottom: 0; }
+.act { color: var(--dim); letter-spacing: 0.16em; }
+.act:hover { color: var(--secondary); }
+.act.active { color: var(--secondary); }
+.kept { color: var(--dim); letter-spacing: 0.16em; }
+
+/* --- Grid ----------------------------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+.tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--panel);
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+}
+.tile-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile-text {
+  padding: 0.9rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+@media (min-width: 34rem) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --- Composer overlay ----------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--canvas);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  overflow-y: auto;
+}
+.overlay-inner {
+  width: 100%;
+  max-width: 40rem;
+  padding: 1.5rem var(--pad-page) calc(2rem + env(safe-area-inset-bottom));
+  background: var(--panel);
+  min-height: 100%;
+}
+.overlay-head,
+.overlay-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.overlay-head .label,
+.overlay-head button { color: var(--secondary); }
+.composer-text {
+  margin: 1.5rem 0;
+  min-height: 40vh;
+  resize: vertical;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.composer-text:focus { border: none; }
+.overlay-foot { flex-wrap: wrap; }
+.attach { color: var(--dim); cursor: pointer; }
+.attach:hover { color: var(--secondary); }
+
+/* --- Post detail + replies ------------------------------------------------ */
+.back { display: inline-block; color: var(--dim); margin-bottom: 2rem; letter-spacing: 0.16em; }
+.back:hover { color: var(--secondary); }
+.detail .actions { border-bottom: 1px solid var(--hairline); }
+.replies { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
+.reply-body { font-size: 1rem; line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-word; }
+.reply-form { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.reply-form textarea { font-size: 1rem; line-height: 1.6; }
+
+/* --- You ------------------------------------------------------------------ */
+.you-handle { font-size: 1.5rem; margin: 1.5rem 0 0.5rem; }
+.you-role { color: var(--dim); }
+.you .action { margin-top: 2.5rem; }
+
+/* --- Admin ---------------------------------------------------------------- */
+.card {
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  background: var(--panel);
+  padding: 1.3rem var(--pad-page);
+  margin-top: 1.8rem;
+}
+.card-head { display: flex; align-items: center; justify-content: space-between; }
+.card-title { color: var(--secondary); letter-spacing: 0.16em; }
+.admin-form { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
+.admin-form .label { margin-top: 0.8rem; }
+.admin-form input { background: var(--canvas); }
+.note { color: var(--dim); margin-top: 0.8rem; }
+.invite-list { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+.invite-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.invite-row:last-child { border-bottom: none; }
+.invite-code { font-size: 0.95rem; letter-spacing: 0.05em; }
+.invite-meta { color: var(--dim); }
+
+/* --- Motion: the only animated moment is the lens cross-fade -------------- */
+@keyframes lens-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.lens-body { animation: lens-fade 300ms ease both; }
+@media (prefers-reduced-motion: reduce) {
+  .lens-body { animation: none; }
+}

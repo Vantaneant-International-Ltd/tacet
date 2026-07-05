@@ -70,3 +70,24 @@ roomRoutes.get("/:slug", async (c) => {
     lens: pref?.lens ?? "timeline",
   });
 });
+
+// Persist the current user's lens choice for this room (lockfile §6: per person per room).
+roomRoutes.put("/:slug/lens", async (c) => {
+  const user = requireUser(c);
+  const room = await c.env.DB.prepare("SELECT id FROM rooms WHERE slug = ?")
+    .bind(c.req.param("slug"))
+    .first<{ id: string }>();
+  if (!room) throw new HttpError(404, "no such room");
+
+  const body = await c.req.json().catch(() => ({}));
+  const lens = body.lens;
+  if (lens !== "timeline" && lens !== "grid") throw new HttpError(400, "lens must be timeline or grid");
+
+  await c.env.DB.prepare(
+    `INSERT INTO lens_prefs (user_id, room_id, lens) VALUES (?, ?, ?)
+     ON CONFLICT(user_id, room_id) DO UPDATE SET lens = excluded.lens`,
+  )
+    .bind(user.id, room.id, lens)
+    .run();
+  return c.json({ lens });
+});
