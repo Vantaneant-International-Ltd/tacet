@@ -1,0 +1,148 @@
+import { describe, it, expect } from "vitest";
+import { req, registerAdmin, registerInvited } from "./helpers";
+
+async function makeRoom(cookie: string, slug = "parlour", name = "The Parlour") {
+  return req("/api/rooms", { method: "POST", cookie, body: { slug, name, description: "a quiet room" } });
+}
+
+describe("rooms + posting", () => {
+  it("lets an admin create a room and lists it", async () => {
+    const cookie = await registerAdmin();
+    expect((await makeRoom(cookie)).status).toBe(201);
+    const list = await req("/api/rooms", { cookie });
+    const { rooms } = (await list.json()) as { rooms: { slug: string }[] };
+    expect(rooms.map((r) => r.slug)).toContain("parlour");
+  });
+
+  it("refuses room creation for non-admins", async () => {
+    const admin = await registerAdmin();
+    const ada = await registerInvited(admin, "ada");
+    const res = await makeRoom(ada, "secret", "Secret");
+    expect(res.status).toBe(403);
+  });
+
+  it("requires a signed-in user to list rooms", async () => {
+    const res = await req("/api/rooms");
+    expect(res.status).toBe(401);
+  });
+
+  it("posts text and returns it newest-first", async () => {
+    const cookie = await registerAdmin();
+    await makeRoom(cookie);
+    await req("/api/rooms/parlour/posts", { method: "POST", cookie, body: { body: "first" } });
+    await req("/api/rooms/parlour/posts", { method: "POST", cookie, body: { body: "second" } });
+    const res = await req("/api/rooms/parlour/posts", { cookie });
+    const { posts } = (await res.json()) as { posts: { body: string }[] };
+    expect(posts.map((p) => p.body)).toEqual(["second", "first"]);
+  });
+
+  it("rejects an empty post", async () => {
+    const cookie = await registerAdmin();
+    await makeRoom(cookie);
+    const res = await req("/api/rooms/parlour/posts", { method: "POST", cookie, body: { body: "   " } });
+    expect(res.status).toBe(400);
+  });
+
+  it("only lets the author delete their own post", async () => {
+    const admin = await registerAdmin();
+    await makeRoom(admin);
+    const ada = await registerInvited(admin, "ada");
+    const created = await req("/api/rooms/parlour/posts", { method: "POST", cookie: admin, body: { body: "mine" } });
+    const { post } = (await created.json()) as { post: { id: string } };
+
+    const forbidden = await req(`/api/posts/${post.id}`, { method: "DELETE", cookie: ada });
+    expect(forbidden.status).toBe(403);
+
+    const ok = await req(`/api/posts/${post.id}`, { method: "DELETE", cookie: admin });
+    expect(ok.status).toBe(200);
+  });
+});
+
+describe("replies + keeps", () => {
+  it("adds a flat reply and reads it back", async () => {
+    const cookie = await registerAdmin();
+    await makeRoom(cookie);
+    const created = await req("/api/rooms/parlour/posts", { method: "POST", cookie, body: { body: "talk" } });
+    const { post } = (await created.json()) as { post: { id: string } };
+    await req(`/api/posts/${post.id}/replies`, { method: "POST", cookie, body: { body: "a reply" } });
+    const res = await req(`/api/posts/${post.id}`, { cookie });
+    const { replies } = (await res.json()) as { replies: { body: string }[] };
+    expect(replies.map((r) => r.body)).toEqual(["a reply"]);
+  });
+
+  it("tells the author a post was kept, without who or a number", async () => {
+    const admin = await registerAdmin();
+    await makeRoom(admin);
+    const ada = await registerInvited(admin, "ada");
+    const created = await req("/api/rooms/parlour/posts", { method: "POST", cookie: admin, body: { body: "keep me" } });
+    const { post } = (await created.json()) as { post: { id: string } };
+
+    await req(`/api/posts/${post.id}/keep`, { method: "POST", cookie: ada });
+
+    // The author sees THAT it was kept.
+    const asAuthor = await req(`/api/posts/${post.id}`, { cookie: admin });
+    const authorView = (await asAuthor.json()) as { post: { kept: boolean; kept_by_me: boolean } };
+    expect(authorView.post.kept).toBe(true);
+    // No count and no keeper identity anywhere in the payload.
+    const raw = JSON.stringify(authorView);
+    expect(raw).not.toContain("ada");
+    expect(raw).not.toMatch(/"(keep_count|keeps|count)"/);
+
+    // A non-author never sees the author-only word.
+    const asOther = await req(`/api/posts/${post.id}`, { cookie: ada });
+    const otherView = (await asOther.json()) as { post: { kept: boolean; kept_by_me: boolean } };
+    expect(otherView.post.kept).toBe(false);
+    expect(otherView.post.kept_by_me).toBe(true);
+  });
+
+  it("keeps are idempotent and can be undone", async () => {
+    const admin = await registerAdmin();
+    await makeRoom(admin);
+    const ada = await registerInvited(admin, "ada");
+    const created = await req("/api/rooms/parlour/posts", { method: "POST", cookie: admin, body: { body: "x" } });
+    const { post } = (await created.json()) as { post: { id: string } };
+
+    await req(`/api/posts/${post.id}/keep`, { method: "POST", cookie: ada });
+    await req(`/api/posts/${post.id}/keep`, { method: "POST", cookie: ada }); // again, no error
+    await req(`/api/posts/${post.id}/keep`, { method: "DELETE", cookie: ada });
+
+    const res = await req(`/api/posts/${post.id}`, { cookie: ada });
+    const view = (await res.json()) as { post: { kept_by_me: boolean } };
+    expect(view.post.kept_by_me).toBe(false);
+  });
+});
+
+describe("lenses + invites", () => {
+  it("persists a lens choice per user per room", async () => {
+    const cookie = await registerAdmin();
+    await makeRoom(cookie);
+    await req("/api/rooms/parlour/lens", { method: "PUT", cookie, body: { lens: "grid" } });
+    const res = await req("/api/rooms/parlour", { cookie });
+    const { lens } = (await res.json()) as { lens: string };
+    expect(lens).toBe("grid");
+  });
+
+  it("rejects an invalid lens value", async () => {
+    const cookie = await registerAdmin();
+    await makeRoom(cookie);
+    const res = await req("/api/rooms/parlour/lens", { method: "PUT", cookie, body: { lens: "spiral" } });
+    expect(res.status).toBe(400);
+  });
+
+  it("mints an invite and shows it as used after registration", async () => {
+    const admin = await registerAdmin();
+    await registerInvited(admin, "ada");
+    const list = await req("/api/invites", { cookie: admin });
+    const { invites } = (await list.json()) as { invites: { used: boolean; used_by: string | null }[] };
+    expect(invites.length).toBe(1);
+    expect(invites[0].used).toBe(true);
+    expect(invites[0].used_by).toBe("ada");
+  });
+
+  it("forbids non-admins from listing invites", async () => {
+    const admin = await registerAdmin();
+    const ada = await registerInvited(admin, "ada");
+    const res = await req("/api/invites", { cookie: ada });
+    expect(res.status).toBe(403);
+  });
+});
