@@ -1,0 +1,34 @@
+{
+  "name": "tacet",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TACET — a quiet, invite-only social network. Phase 1: the clubhouse.",
+  "scripts": {
+    "build": "vite build",
+    "dev": "npm run build && wrangler dev",
+    "migrate": "wrangler d1 migrations apply tacet --local",
+    "migrate:remote": "wrangler d1 migrations apply tacet --remote",
+    "seed": "node scripts/seed.mjs",
+    "seed:wipe": "wrangler d1 execute tacet --local --file=./scripts/seed-wipe.sql",
+    "test": "vitest run",
+    "typecheck": "tsc -b --pretty"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.5.0",
+    "hono": "^4.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.9.14",
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vitest": "2.1.9",
+    "wrangler": "^4.107.0"
+  }
+}

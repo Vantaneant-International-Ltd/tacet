@@ -1,0 +1,35 @@
+{
+  // TACET — Cloudflare Worker + D1 + R2. Local dev only in Phase 1 (no domain, no deploy).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tacet",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // The Vite build emits the React SPA to dist/client. The Worker handles /api/*;
+  // everything else is served from the built assets, with unmatched routes falling
+  // back to index.html (client-side routing).
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tacet",
+      // Placeholder id — local dev (wrangler dev / --local) simulates D1 and ignores it.
+      // A real id is set at the Phase 2 deploy gate, not before.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "tacet-images"
+    }
+  ]
+}

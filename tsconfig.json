@@ -1,0 +1,8 @@
+{
+  // Solution file — type-checks the worker and the client as separate projects.
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.worker.json" },
+    { "path": "./tsconfig.client.json" }
+  ]
+}
