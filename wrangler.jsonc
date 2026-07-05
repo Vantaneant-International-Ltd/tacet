@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
-  // the deployer's Cloudflare account (Phase 2, Amendment 2).
+  // the-account Cloudflare account (VNTA work account) — Phase 2, Amendment 2.
   "account_id": "<cloudflare-account-id>",
 
   // The Vite build emits the React SPA to dist/client. The Worker handles /api/*;
@@ -21,7 +21,7 @@
     {
       "binding": "DB",
       "database_name": "tacet",
-      // Remote D1 (the deployer account). Local dev (--local) still simulates D1.
+      // Remote D1 (the-account account). Local dev (--local) still simulates D1.
       "database_id": "<d1-database-id>",
       "migrations_dir": "migrations"
     }

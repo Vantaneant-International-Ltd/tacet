@@ -14,13 +14,19 @@
 - **Turnstile-ready:** enforced only when `TURNSTILE_SECRET`/site key are configured (local
   dev + tests keyless). `/api/config` exposes the public site key; the register form renders
   the challenge; the server calls siteverify.
-- **Deploy progress (the deployer Cloudflare account):**
-  - ✅ Remote D1 `tacet` created (`<d1-database-id-old>-…`) and migrated (0001 + 0002).
-  - ✅ `wrangler.jsonc` has real `account_id` + `database_id`.
-  - ⛔ **R2 not enabled on the account** — blocks `tacet-images` bucket + `wrangler deploy`.
-    Ren must enable R2 in the dashboard (see `DEPLOY.md`), then one `deploy` finishes it.
-  - ⏳ `SESSION_SECRET` + Turnstile keys set after first deploy.
-- 29 tests green; still no counts/algorithm/ads/notifications/red.
+- **DEPLOYED — live on the the-account Cloudflare account** (Renato's own account had
+  R2 disabled; Ren directed us to his work account, where R2 was already on):
+  - 🌐 **https://example.workers.dev**
+  - ✅ D1 `tacet` (`dbad5dea-…`) created + migrated (0001, 0002); R2 bucket `tacet-images`
+    created; `SESSION_SECRET` set; `wrangler.jsonc` carries Kevin's `account_id` + db id.
+  - ✅ Live smoke test: health ok, SPA serves, auth guard 401s, `/api/config` returns null
+    Turnstile (so invite-holders can register now).
+  - ⏳ **Ren to register first** on the live URL → becomes the bootstrap admin, then hand out
+    `/join/<code>` invite links.
+  - ⏳ Turnstile keys (optional now; before Phase 2 "done") — see `DEPLOY.md`.
+  - 🧹 An empty orphan `tacet` D1 on the the deployer account (`<d1-database-id-old>`) to be deleted.
+- Redeploy later: `npm run build && npx wrangler deploy` (+ `d1 migrations apply tacet
+  --remote` if migrations changed). 29 tests green; still no counts/algorithm/ads/notifs/red.
 
 ### Earlier
 
