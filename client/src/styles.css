@@ -392,3 +392,57 @@ textarea:focus {
 @media (prefers-reduced-motion: reduce) {
   .lens-body { animation: none; }
 }
+
+/* --- About (static page in the YOU section) ------------------------------- */
+.about-link {
+  display: inline-block;
+  margin-top: 2.5rem;
+  color: var(--dim);
+  letter-spacing: 0.18em;
+}
+.about-link:hover { color: var(--secondary); }
+
+.about { padding-bottom: 2rem; }
+.about-title {
+  font-family: var(--font-human);
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--secondary);
+  margin: 0.5rem 0 1.5rem;
+}
+.about-intro {
+  color: var(--secondary);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin: 0 0 3rem;
+}
+.about-section {
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  margin: 2.75rem 0 1.4rem;
+}
+.promises { list-style: none; margin: 0; padding: 0; }
+.promise { margin-bottom: 1.9rem; }
+.promise-name {
+  font-family: var(--font-human);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--secondary);
+  margin: 0 0 0.35rem;
+}
+.promise-line { color: var(--secondary); font-size: 0.95rem; line-height: 1.55; margin: 0; }
+.about-body { color: var(--secondary); font-size: 1rem; line-height: 1.65; margin: 0; }
+
+.about-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hairline);
+  color: var(--dim);
+  letter-spacing: 0.16em;
+}
+.about-foot-mark { letter-spacing: 0.35em; }

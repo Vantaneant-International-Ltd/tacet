@@ -1,6 +1,6 @@
 import { api } from "../api";
 import { useUser, setUser } from "../session";
-import { navigate } from "../router";
+import { navigate, Link } from "../router";
 
 export function You() {
   const user = useUser();
@@ -20,6 +20,10 @@ export function You() {
       <button className="label action" onClick={signOut}>
         Sign out
       </button>
+
+      <Link to="/about" className="label about-link">
+        About this house
+      </Link>
     </section>
   );
 }

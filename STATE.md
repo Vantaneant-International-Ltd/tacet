@@ -5,6 +5,12 @@
 
 ## Done since last entry
 
+- **About page** (Phase-1-scope addition): a static `/about` route reached from the YOU tab
+  via the mono link `About this house`. Hardcoded, verbatim copy styled per DESIGN.md
+  (system text in `--secondary`/`--dim`, mono section labels, no panels, no icons), with a
+  foot showing the app version (injected from `package.json`) and `TACET` letterspaced.
+  No CMS, no service worker, no analytics. Route serves; build + 21 tests green.
+
 Phase 1 is built and verified end to end. All eight build steps complete:
 
 1. Scaffold — Worker (Hono) owning `/api/*` with SPA fallback; Vite + React + TS SPA

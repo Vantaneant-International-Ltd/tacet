@@ -8,6 +8,7 @@ import { RoomList } from "./views/RoomList";
 import { Room } from "./views/Room";
 import { PostDetail } from "./views/PostDetail";
 import { You } from "./views/You";
+import { About } from "./views/About";
 import { Admin } from "./views/Admin";
 
 export function App() {
@@ -39,6 +40,7 @@ function route(path: string, isAdmin: boolean) {
 
   if (path === "/rooms" || path === "/") return <RoomList />;
   if (path === "/you") return <You />;
+  if (path === "/about") return <About />;
   if (path === "/admin") return isAdmin ? <Admin /> : <NotHere />;
 
   return <NotHere />;
