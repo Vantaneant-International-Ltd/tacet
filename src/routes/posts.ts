@@ -113,6 +113,87 @@ postRoutes.post("/rooms/:slug/posts", async (c) => {
   return c.json({ post: shapePost(row!) }, 201);
 });
 
+// --- a single post with its (flat) replies ---------------------------------
+const ONE_POST_SQL = `
+  SELECT p.id, p.kind, p.body, p.image_key, p.created_at, u.handle AS author_handle,
+    (p.author_id = ?1) AS is_mine,
+    EXISTS(SELECT 1 FROM keeps k WHERE k.post_id = p.id AND k.user_id = ?1) AS kept_by_me,
+    CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept
+  FROM posts p JOIN users u ON u.id = p.author_id
+  WHERE p.id = ?2`;
+
+postRoutes.get("/posts/:id", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  const row = await c.env.DB.prepare(ONE_POST_SQL).bind(user.id, id).first<PostRow>();
+  if (!row) throw new HttpError(404, "no such post");
+
+  // Flat replies, oldest first (chronology, reading order).
+  const replies = await c.env.DB.prepare(
+    `SELECT r.id, r.body, r.created_at, u.handle AS author_handle, (r.author_id = ?1) AS is_mine
+     FROM replies r JOIN users u ON u.id = r.author_id
+     WHERE r.post_id = ?2 ORDER BY r.created_at ASC, r.id ASC`,
+  )
+    .bind(user.id, id)
+    .all<{ id: string; body: string; created_at: string; author_handle: string; is_mine: number }>();
+
+  return c.json({
+    post: shapePost(row),
+    replies: replies.results.map((r) => ({
+      id: r.id,
+      body: r.body,
+      created_at: r.created_at,
+      author_handle: r.author_handle,
+      is_mine: r.is_mine === 1,
+    })),
+  });
+});
+
+// --- flat reply ------------------------------------------------------------
+postRoutes.post("/posts/:id/replies", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  const exists = await c.env.DB.prepare("SELECT id FROM posts WHERE id = ?").bind(id).first();
+  if (!exists) throw new HttpError(404, "no such post");
+
+  const json = (await c.req.json().catch(() => ({}))) as { body?: unknown };
+  const text = typeof json.body === "string" ? json.body.trim() : "";
+  if (!text) throw new HttpError(400, "a reply needs some words");
+  if (text.length > MAX_BODY) throw new HttpError(400, "that reply is too long");
+
+  const now = new Date().toISOString();
+  const replyId = ulid();
+  await c.env.DB.prepare(
+    "INSERT INTO replies (id, post_id, author_id, body, created_at) VALUES (?, ?, ?, ?, ?)",
+  )
+    .bind(replyId, id, user.id, text, now)
+    .run();
+
+  return c.json(
+    { reply: { id: replyId, body: text, created_at: now, author_handle: user.handle, is_mine: true } },
+    201,
+  );
+});
+
+// --- keep / unkeep (private to the keeper) ---------------------------------
+postRoutes.post("/posts/:id/keep", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  const exists = await c.env.DB.prepare("SELECT id FROM posts WHERE id = ?").bind(id).first();
+  if (!exists) throw new HttpError(404, "no such post");
+  await c.env.DB.prepare("INSERT OR IGNORE INTO keeps (user_id, post_id, created_at) VALUES (?, ?, ?)")
+    .bind(user.id, id, new Date().toISOString())
+    .run();
+  return c.json({ kept_by_me: true });
+});
+
+postRoutes.delete("/posts/:id/keep", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  await c.env.DB.prepare("DELETE FROM keeps WHERE user_id = ? AND post_id = ?").bind(user.id, id).run();
+  return c.json({ kept_by_me: false });
+});
+
 // --- hard-delete own post --------------------------------------------------
 postRoutes.delete("/posts/:id", async (c) => {
   const user = requireUser(c);
