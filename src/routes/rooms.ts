@@ -24,6 +24,7 @@ roomRoutes.post("/", async (c) => {
   const slug = typeof body.slug === "string" ? body.slug.trim().toLowerCase() : "";
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const description = typeof body.description === "string" ? body.description.trim() : "";
+  const defaultLens = body.default_lens === "grid" ? "grid" : "timeline";
   if (!SLUG_RE.test(slug)) throw new HttpError(400, "slug must be 2–50 characters: lowercase letters, numbers or -");
   if (name.length < 1 || name.length > 80) throw new HttpError(400, "name must be 1–80 characters");
   if (description.length > 280) throw new HttpError(400, "description must be 280 characters or fewer");
@@ -37,8 +38,8 @@ roomRoutes.post("/", async (c) => {
 
   const stmts = [
     c.env.DB.prepare(
-      "INSERT INTO rooms (id, slug, name, description, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-    ).bind(roomId, slug, name, description || null, admin.id, now),
+      "INSERT INTO rooms (id, slug, name, description, default_lens, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    ).bind(roomId, slug, name, description || null, defaultLens, admin.id, now),
     ...users.results.map((u) =>
       c.env.DB.prepare("INSERT INTO memberships (user_id, room_id, joined_at) VALUES (?, ?, ?)").bind(
         u.id,
@@ -56,9 +57,9 @@ roomRoutes.post("/", async (c) => {
 roomRoutes.get("/:slug", async (c) => {
   const user = requireUser(c);
   const slug = c.req.param("slug");
-  const room = await c.env.DB.prepare("SELECT id, slug, name, description FROM rooms WHERE slug = ?")
+  const room = await c.env.DB.prepare("SELECT id, slug, name, description, default_lens FROM rooms WHERE slug = ?")
     .bind(slug)
-    .first<{ id: string; slug: string; name: string; description: string | null }>();
+    .first<{ id: string; slug: string; name: string; description: string | null; default_lens: string }>();
   if (!room) throw new HttpError(404, "no such room");
 
   const pref = await c.env.DB.prepare("SELECT lens FROM lens_prefs WHERE user_id = ? AND room_id = ?")
@@ -67,7 +68,8 @@ roomRoutes.get("/:slug", async (c) => {
 
   return c.json({
     room: { slug: room.slug, name: room.name, description: room.description },
-    lens: pref?.lens ?? "timeline",
+    // The saved choice wins; otherwise the room's suggested default (lockfile §1).
+    lens: pref?.lens ?? room.default_lens,
   });
 });
 
