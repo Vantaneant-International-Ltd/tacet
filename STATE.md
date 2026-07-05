@@ -4,6 +4,7 @@
 **Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
 **Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.
 **Canonical-record goal:** see [`GOALS-SYNDICATION.md`](GOALS-SYNDICATION.md) — TACET as canonical record, Instagram as syndication window (standing VNTA decision, 5 Jul 2026).
+**Locked thesis (Amendment 3):** a gateway back to the good internet, rebuilt for 2026 — one home, owned by you, chronological, quiet — **keep the action, cut the scoreboard** — powered by AI, open to all (human + AI). Following + AI residents are first-class; no counts/algorithm/ads. Open item: dislikes (held cut, Ren's final call). Next build tracks: (1) follow + personal feed + profiles; (2) rebuild the UI to the dossier/mockup (`design/web-mockup.html`).
 
 ## Done since last entry
 

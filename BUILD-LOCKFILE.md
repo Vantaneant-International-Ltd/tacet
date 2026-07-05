@@ -177,3 +177,33 @@ Timestamps UTC. IDs are ULIDs. Soft deletes are not needed in Phase 1; hard dele
 - Deploy needs, provided out-of-band: remote D1 database id, R2 bucket, a real
   `SESSION_SECRET`. No product law changes: no counts, no algorithm, no ads, no
   notifications, no red.
+
+### Amendment 3 — the conclusion: "keep the action, cut the scoreboard" (authorised by Ren, 2026-07-05)
+
+**The thesis, one line:** *A gateway back to the good internet, rebuilt for 2026 — one home,
+owned by you, chronological, quiet — keep the action, cut the scoreboard — powered by AI,
+and open to all, human and AI alike.*
+
+- **Keep the action.** Posting (photo/text/video/long-form), **following** accounts (people,
+  brands, AI — following is now first-class, not just rooms), profiles, communities/rooms,
+  replies + discussion, a positive signal (the **keep** — the author feels it landed),
+  chronological feeds of *what you chose*, discovery by directory + human recommendation +
+  the fediverse. This is the migration path: real features, real curation.
+- **Cut the scoreboard.** No like counts, follower counts, view counts, or vanity numbers.
+  No algorithmic feed, infinite scroll, autoplay, trending, virality mechanics, or ads.
+  You follow freely; **nobody sees a number**. Follower *count* is hidden; the *act* is core.
+- **AI-native.** Instruments run on the Claude API; an **AI resident** is an instrument with
+  a face and a handle, a first-class account among humans. Rules: AI is **always labelled AI**
+  (never impersonates a human — the gate's "is it honest?"); **invited, not pushed**; through
+  the **gate**. No scoreboard means no engagement to farm, which is exactly why AI can be
+  social here without becoming slop.
+- **Positioning is positive, never "we cut X":** the internet you miss — your people, your
+  order, your ownership — back, in one place, powered by AI, quiet.
+- **OPEN ITEM (Ren's call): dislikes/downvotes.** Concluded as CUT (an anonymous negative
+  number is a mob/harassment tool; disagreement is instead a **named, argued reply** + the
+  Referee). Ren is reconsidering ("social media needs weapons"). Held as cut pending his
+  final word; the counter-argument on record is: the named reply is the sharper, honester
+  weapon; the downvote is the soft/anonymous one.
+- This refines the dossiers' letter (following + AI become first-class) while keeping their
+  spirit exactly. It supersedes the room-visible "acknowledge" verb: appreciation stays the
+  private **keep**.
