@@ -13,6 +13,13 @@ core, many lenses (views). No public metrics, no ads, no algorithmic feed, no no
 A VNTA Group venture. The long-term architecture is in Dossier 01; the visual system is in
 Dossier 02. This file defines what gets built, in what order, and what is forbidden.
 
+A room is defined by its people and purpose, never by a content format. Format is the lens:
+the same room can be read as a Timeline (the reading feeling), seen as a Grid (the photo-wall
+feeling), and — later — discussed as an Assembly (the threaded feeling). You choose a room by
+who is in it, and a lens by how you want to look. A room may carry a default lens, always
+user-overridable. This is the answer to "what is the alternative": one set of people, many
+ways to look, and no room is ever a format lock.
+
 ## 2. Product law (applies to every phase, non-negotiable)
 
 - NO like counts, follower counts, view counts, karma, or any public number attached to people or posts.
@@ -20,7 +27,7 @@ Dossier 02. This file defines what gets built, in what order, and what is forbid
 - NO algorithmic ordering. Chronology only, newest first.
 - NO push notifications of any kind in any phase. The app never asks to be opened.
 - NO red anywhere in the interface. No badges, no dots, no counters.
-- The only verbs on a post are REPLY and KEEP. Keeps are private to the keeper; authors see that a post was kept, never by whom, never how many times (no number is ever shown).
+- The verbs on a post are REPLY, KEEP, and ACKNOWLEDGE (added by Amendment 1, §10). Keeps are private to the keeper; authors see that a post was kept, never by whom, never how many times (no number is ever shown). An acknowledgment is a single word from a small fixed set, attributed to its author and visible to the room; it is never counted, never ranked, has no negative or downward form, and no anonymous mode. The interface shows who acknowledged and with which word — never a number.
 - Confidentiality: no real personal data in seed files, fixtures, or committed content. Placeholder data must be obviously placeholder and stripped before any deploy (BUILDT lesson).
 - Accuracy: no fabricated capability claims in any copy. The README describes only what runs.
 
@@ -104,11 +111,12 @@ Native iOS, spatial. Apple developer account purchased here and not before.
 
 - `users` — id, handle (unique), passphrase_hash, created_at, is_admin
 - `invites` — code, created_by, used_by (nullable), created_at, used_at
-- `rooms` — id, slug, name, description, created_by, created_at
+- `rooms` — id, slug, name, description, default_lens (timeline|grid), created_by, created_at
 - `memberships` — user_id, room_id, joined_at (all rooms invite-wide in Phase 1; membership rows still recorded for later privacy rules)
 - `posts` — id, room_id, author_id, kind (text|image), body, image_key (nullable, R2), created_at
 - `replies` — id, post_id, author_id, body, created_at
-- `keeps` — user_id, post_id, created_at (unique pair)
+- `keeps` — user_id, post_id, created_at (unique pair) — private to the keeper
+- `acknowledgments` — user_id, post_id, word, created_at (unique pair; word from the fixed set; attributed and room-visible; never counted)
 - `lens_prefs` — user_id, room_id, lens (timeline|grid)
 
 Timestamps UTC. IDs are ULIDs. Soft deletes are not needed in Phase 1; hard delete own posts only.
@@ -132,3 +140,21 @@ Timestamps UTC. IDs are ULIDs. Soft deletes are not needed in Phase 1; hard dele
 - Domain purchase (Phase 2 gate).
 - Confirmation or overrule of the editorial Timeline ruling in §5 (assumed confirmed).
 - Trademark search for TACET (before Phase 5, ideally earlier).
+
+## 10. Amendment log
+
+### Amendment 1 — acknowledgment, rooms-as-people, the why-surface (authorised by Ren, 2026-07-05)
+
+- **ACKNOWLEDGE** becomes a third post verb (§2). A reader may place a single word from a
+  small fixed set on a post. It is **attributed** (shows who) and **visible to the room**,
+  **never counted**, **never ranked**, has **no negative/downward form**, and **no anonymous
+  mode**. It never reorders anything (chronology stands). Keep remains private; the two lanes
+  are deliberate — Keep is for yourself, Acknowledge is for the room.
+- The fixed vocabulary for Phase 1: `SEEN`, `WITH YOU`, `MORE`. No opposite word exists.
+- **Rooms are defined by people/purpose, not format** (§1). Format is the lens. A room may
+  carry a **default lens**, always user-overridable.
+- **Keep** gains a private **"your keeps"** view (personal, no metrics, cross-room).
+- The house **explains its difference to members** in two places: a first-run **onboarding**
+  and a permanent statement in the **YOU / settings** surface.
+- Everything else stands. Still no counts, no algorithm, no ads, no notifications, no red.
+  Acknowledgments show names and words, never a number — the "no public number" law holds.
