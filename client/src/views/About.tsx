@@ -33,8 +33,10 @@ export function About() {
 
       <p className="label about-section">The verbs</p>
       <p className="about-body">
-        The only things you can do to a post are reply and keep. A keep is yours alone: the
-        author learns a post was kept, never by whom, and never how many times.
+        You can reply, keep, or acknowledge. A keep is yours alone: the author learns a post
+        was kept, never by whom, and never how many times. An acknowledgment is a single word
+        — seen, with you, more — placed with your name for the room to see. It is never
+        counted, and there is no opposite.
       </p>
 
       <p className="label about-section">The house</p>

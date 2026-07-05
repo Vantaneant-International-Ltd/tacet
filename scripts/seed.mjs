@@ -55,15 +55,15 @@ const admin = users[0];
 
 // --- rooms -----------------------------------------------------------------
 const rooms = [
-  { slug: "placeholder-parlour", name: "The Parlour", description: "[PLACEHOLDER] a quiet front room." },
-  { slug: "placeholder-darkroom", name: "The Darkroom", description: "[PLACEHOLDER] pictures, developing slowly." },
+  { slug: "placeholder-parlour", name: "The Parlour", description: "[PLACEHOLDER] a quiet front room.", default_lens: "timeline" },
+  { slug: "placeholder-darkroom", name: "The Darkroom", description: "[PLACEHOLDER] pictures, developing slowly.", default_lens: "grid" },
 ].map((r) => {
   const s = stamp();
   return { ...r, id: s.id, created_at: s.iso };
 });
 for (const r of rooms) {
   sql.push(
-    `INSERT INTO rooms (id, slug, name, description, created_by, created_at) VALUES (${q(r.id)}, ${q(r.slug)}, ${q(r.name)}, ${q(r.description)}, ${q(admin.id)}, ${q(r.created_at)});`,
+    `INSERT INTO rooms (id, slug, name, description, default_lens, created_by, created_at) VALUES (${q(r.id)}, ${q(r.slug)}, ${q(r.name)}, ${q(r.description)}, ${q(r.default_lens)}, ${q(admin.id)}, ${q(r.created_at)});`,
   );
 }
 
@@ -121,6 +121,17 @@ for (const text of [
   const s = stamp();
   sql.push(
     `INSERT INTO keeps (user_id, post_id, created_at) VALUES (${q(users[1].id)}, ${q(posts[0].id)}, ${q(s.iso)});`,
+  );
+}
+// a couple of acknowledgments (attributed, room-visible, never counted)
+for (const [userIdx, postIdx, word] of [
+  [1, 0, "with_you"],
+  [2, 0, "seen"],
+  [1, 1, "more"],
+]) {
+  const s = stamp();
+  sql.push(
+    `INSERT INTO acknowledgments (user_id, post_id, word, created_at) VALUES (${q(users[userIdx].id)}, ${q(posts[postIdx].id)}, ${q(word)}, ${q(s.iso)});`,
   );
 }
 

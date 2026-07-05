@@ -3,6 +3,19 @@
 
 export type Lens = "timeline" | "grid";
 
+// The fixed acknowledgment vocabulary (lockfile §10). No opposite word exists.
+export type AckWord = "seen" | "with_you" | "more";
+export const ACK_ORDER: AckWord[] = ["seen", "with_you", "more"];
+export const ACK_LABEL: Record<AckWord, string> = {
+  seen: "Seen",
+  with_you: "With you",
+  more: "More",
+};
+export interface Ack {
+  handle: string;
+  word: AckWord;
+}
+
 export interface User {
   id: string;
   handle: string;
@@ -25,6 +38,12 @@ export interface Post {
   is_mine: boolean;
   kept_by_me: boolean;
   kept: boolean; // author-only: THAT it was kept. Never a count, never who.
+  my_ack: AckWord | null; // the viewer's own acknowledgment word, if any
+  acks: Ack[]; // who acknowledged, and with which word. Never a count.
+}
+
+export interface KeptPost extends Post {
+  room: { slug: string; name: string };
 }
 
 export interface Reply {
@@ -73,8 +92,11 @@ export const api = {
 
   rooms: () => request<{ rooms: Room[] }>("/rooms"),
   room: (slug: string) => request<{ room: Room; lens: Lens }>(`/rooms/${slug}`),
-  createRoom: (slug: string, name: string, description: string) =>
-    request<{ room: Room }>("/rooms", { method: "POST", body: JSON.stringify({ slug, name, description }) }),
+  createRoom: (slug: string, name: string, description: string, default_lens: Lens) =>
+    request<{ room: Room }>("/rooms", {
+      method: "POST",
+      body: JSON.stringify({ slug, name, description, default_lens }),
+    }),
   setLens: (slug: string, lens: Lens) =>
     request<{ lens: Lens }>(`/rooms/${slug}/lens`, { method: "PUT", body: JSON.stringify({ lens }) }),
 
@@ -90,6 +112,11 @@ export const api = {
     request<{ reply: Reply }>(`/posts/${id}/replies`, { method: "POST", body: JSON.stringify({ body }) }),
   keep: (id: string) => request<{ kept_by_me: boolean }>(`/posts/${id}/keep`, { method: "POST" }),
   unkeep: (id: string) => request<{ kept_by_me: boolean }>(`/posts/${id}/keep`, { method: "DELETE" }),
+  keeps: () => request<{ posts: KeptPost[] }>("/keeps"),
+
+  ack: (id: string, word: AckWord) =>
+    request<{ my_ack: AckWord }>(`/posts/${id}/ack`, { method: "PUT", body: JSON.stringify({ word }) }),
+  unack: (id: string) => request<{ my_ack: null }>(`/posts/${id}/ack`, { method: "DELETE" }),
 
   invites: () => request<{ invites: Invite[] }>("/invites"),
   mintInvite: () => request<{ invite: Invite }>("/invites", { method: "POST" }),

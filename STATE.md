@@ -1,9 +1,30 @@
 # STATE
 
-**Phase:** 1 — the clubhouse. **Status: complete.**
+**Phase:** 1 — the clubhouse. **Status: complete, plus Amendment 1.**
 **Main runnable:** yes, from a fresh clone: `npm install` → `npm run migrate` → `npm run dev`.
 
 ## Done since last entry
+
+### Amendment 1 — acknowledgment, rooms-as-people, the why-surface (authorised by Ren)
+
+Lockfile amended (§10). Built and verified (28 tests green):
+
+- **ACKNOWLEDGE** verb: a reader places one word from a fixed set (`SEEN` / `WITH YOU` /
+  `MORE`) on a post. Attributed and room-visible, shown as names grouped by word, **never a
+  count, never an opposite**. Appears in Timeline and post detail; Grid stays silent.
+  Migration `0002` adds the `acknowledgments` table; API is `PUT`/`DELETE /posts/:id/ack`;
+  posts carry `acks[]` + the viewer's `my_ack`.
+- **Rooms are people, not formats; the lens is the format.** Rooms gain a `default_lens`
+  (set by admin at creation, user-overridable); room detail resolves lens = saved pref ??
+  room default. Onboarding + About teach this.
+- **Keep** gains a private **Your keeps** view (`GET /api/keeps`, `/keeps` route), across
+  rooms, with unkeep-to-curate.
+- **The why-surface:** a first-run **onboarding** overlay (once per device) and a rebuilt
+  **YOU/settings** surface that states the house's promises plainly and links to Your keeps
+  and About. About's "verbs" copy updated for accuracy (now reply / keep / acknowledge).
+- Seed + wipe updated to cover `default_lens` and `acknowledgments`.
+
+### Earlier this session
 
 - **About page** (Phase-1-scope addition): a static `/about` route reached from the YOU tab
   via the mono link `About this house`. Hardcoded, verbatim copy styled per DESIGN.md

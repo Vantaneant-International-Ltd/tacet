@@ -2,6 +2,10 @@
 -- 'placeholder-%' and placeholder rooms have slugs like 'placeholder-%'. Deletes run in
 -- FK-dependency order so this works whether or not foreign keys are enforced.
 
+DELETE FROM acknowledgments
+  WHERE user_id IN (SELECT id FROM users WHERE handle LIKE 'placeholder-%')
+     OR post_id IN (SELECT id FROM posts WHERE room_id IN (SELECT id FROM rooms WHERE slug LIKE 'placeholder-%'));
+
 DELETE FROM keeps
   WHERE user_id IN (SELECT id FROM users WHERE handle LIKE 'placeholder-%')
      OR post_id IN (SELECT id FROM posts WHERE room_id IN (SELECT id FROM rooms WHERE slug LIKE 'placeholder-%'));

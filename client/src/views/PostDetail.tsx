@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api, ApiError, type Post, type Reply } from "../api";
 import { Link, navigate } from "../router";
 import { Byline, Loading, Empty, ErrorLine } from "../bits";
+import { Acks } from "./Acks";
 
 // The reading column: one post opened with its flat replies (DESIGN §5).
 export function PostDetail({ slug, id }: { slug: string; id: string }) {
@@ -83,6 +84,7 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
             </button>
           )}
         </div>
+        <Acks post={post} onChange={setPost} />
       </article>
 
       <div className="replies">

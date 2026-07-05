@@ -1,6 +1,7 @@
 import { api, type Post } from "../api";
 import { navigate } from "../router";
 import { Byline, Empty } from "../bits";
+import { Acks } from "./Acks";
 
 // Editorial reading surface (DESIGN §5): no avatars, mono byline, --voice body, a large
 // gap between posts. REPLY and KEEP are small mono labels; the author sees KEPT (a word,
@@ -58,6 +59,7 @@ export function Timeline({
               </button>
             )}
           </div>
+          <Acks post={post} onChange={onChange} />
         </article>
       ))}
     </div>

@@ -80,7 +80,22 @@ No other colours exist. No red under any circumstance. No gradients, no shadows,
 **Replies.** Flat list under the post, same editorial anatomy at slightly smaller scale.
 
 **Keep.** Private. The author of a kept post sees the single word `KEPT` in `--dim` on their
-own post. Never a number, never who.
+own post. Never a number, never who. A private **Your keeps** view (reached from YOU) lists
+what you've kept, across rooms; it is yours alone and carries no metrics.
+
+**Acknowledge** (lockfile §10, Amendment 1). Beneath a post's actions: the three words
+`SEEN` · `WITH YOU` · `MORE` as small mono labels (`--dim`, active in `--secondary`).
+Placing one is a gesture, not a composition; tapping your active word withdraws it. Below,
+who acknowledged is shown grouped by word — the word in `--secondary` mono, the names after
+it in `--dim`. Attributed and room-visible, **never a number, never an opposite word.**
+Acknowledgments appear only in Timeline and post detail; the Grid stays silent.
+
+**Onboarding.** Shown once per device on first arrival: a quiet full overlay on `--panel`
+that teaches the one thing newcomers need — rooms not a feed, the lens is the format, the
+verbs, and what isn't here. One `ENTER` action. No carousel, no dots, no skipping theatre.
+
+**Default lens.** A room may open in a suggested lens (set by its admin at creation). It is
+only a default — the person's own lens choice always wins and persists (per §5).
 
 ## 6. Motion
 

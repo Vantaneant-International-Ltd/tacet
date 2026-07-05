@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, ApiError, type Invite } from "../api";
+import { api, ApiError, type Invite, type Lens } from "../api";
 import { bylineDate } from "../util";
 import { Loading, ErrorLine } from "../bits";
 
@@ -7,6 +7,7 @@ export function Admin() {
   const [slug, setSlug] = useState("");
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [defaultLens, setDefaultLens] = useState<Lens>("timeline");
   const [roomError, setRoomError] = useState<string | null>(null);
   const [roomNote, setRoomNote] = useState<string | null>(null);
 
@@ -22,11 +23,12 @@ export function Admin() {
     setRoomError(null);
     setRoomNote(null);
     try {
-      const { room } = await api.createRoom(slug.trim().toLowerCase(), name.trim(), desc.trim());
+      const { room } = await api.createRoom(slug.trim().toLowerCase(), name.trim(), desc.trim(), defaultLens);
       setRoomNote(`Created ${room.name}.`);
       setSlug("");
       setName("");
       setDesc("");
+      setDefaultLens("timeline");
     } catch (err) {
       setRoomError(err instanceof ApiError ? err.message : "That did not create.");
     }
@@ -55,6 +57,19 @@ export function Admin() {
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="The Parlour" />
           <label className="label">Description</label>
           <input value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="optional" />
+          <label className="label">Opens as</label>
+          <div className="lens-pick">
+            {(["timeline", "grid"] as Lens[]).map((l) => (
+              <button
+                key={l}
+                type="button"
+                className={"label lens-pick-opt" + (defaultLens === l ? " current" : "")}
+                onClick={() => setDefaultLens(l)}
+              >
+                {l === "timeline" ? "Timeline" : "Grid"}
+              </button>
+            ))}
+          </div>
           <ErrorLine>{roomError}</ErrorLine>
           {roomNote && <p className="label note">{roomNote}</p>}
           <button className="label action" type="submit">

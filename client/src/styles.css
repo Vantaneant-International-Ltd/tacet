@@ -261,14 +261,23 @@ textarea:focus {
   gap: 1.6rem;
   align-items: center;
   margin-top: 1.1rem;
-  padding-bottom: var(--gap-post);
-  border-bottom: 1px solid var(--hairline);
 }
-.timeline .post:last-child .actions { border-bottom: none; padding-bottom: 0; }
+.timeline .post { padding-bottom: var(--gap-post); border-bottom: 1px solid var(--hairline); }
+.timeline .post:last-child { padding-bottom: 0; border-bottom: none; }
 .act { color: var(--dim); letter-spacing: 0.16em; }
 .act:hover { color: var(--secondary); }
 .act.active { color: var(--secondary); }
 .kept { color: var(--dim); letter-spacing: 0.16em; }
+
+/* Acknowledgments — the three words, then who placed them (names, never a number). */
+.acks { margin-top: 1.1rem; }
+.ack-set { display: flex; gap: 1.4rem; align-items: center; }
+.ack { color: var(--dim); letter-spacing: 0.16em; }
+.ack:hover { color: var(--secondary); }
+.ack.active { color: var(--secondary); }
+.ack-who { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.85rem; }
+.ack-line { color: var(--dim); letter-spacing: 0.12em; text-transform: none; }
+.ack-word { color: var(--secondary); text-transform: uppercase; letter-spacing: 0.16em; }
 
 /* --- Grid ----------------------------------------------------------------- */
 .grid {
@@ -345,7 +354,7 @@ textarea:focus {
 /* --- Post detail + replies ------------------------------------------------ */
 .back { display: inline-block; color: var(--dim); margin-bottom: 2rem; letter-spacing: 0.16em; }
 .back:hover { color: var(--secondary); }
-.detail .actions { border-bottom: 1px solid var(--hairline); }
+.detail .post { padding-bottom: 2rem; border-bottom: 1px solid var(--hairline); }
 .replies { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
 .reply-body { font-size: 1rem; line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-word; }
 .reply-form { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -446,3 +455,53 @@ textarea:focus {
   letter-spacing: 0.16em;
 }
 .about-foot-mark { letter-spacing: 0.35em; }
+
+/* --- Admin: room default-lens picker -------------------------------------- */
+.lens-pick { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
+.lens-pick-opt {
+  color: var(--dim);
+  letter-spacing: 0.16em;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+}
+.lens-pick-opt:hover { color: var(--secondary); }
+.lens-pick-opt.current { color: var(--secondary); background: var(--panel); border-color: var(--secondary); }
+
+/* --- Your keeps ----------------------------------------------------------- */
+.kept-list { display: flex; flex-direction: column; gap: var(--gap-post); margin-top: 2rem; }
+.keeps .post { padding-bottom: var(--gap-post); border-bottom: 1px solid var(--hairline); }
+.keeps .post:last-child { padding-bottom: 0; border-bottom: none; }
+.kept-room { color: var(--dim); letter-spacing: 0.16em; margin: 0 0 0.6rem; }
+.kept-open { display: block; text-align: left; width: 100%; }
+
+/* --- You / settings ------------------------------------------------------- */
+.you-links { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 2.25rem; }
+.you-link { color: var(--secondary); letter-spacing: 0.16em; }
+.you-link:hover { color: var(--voice); }
+.you-house { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--hairline); }
+.you-house .heading { font-size: 0.72rem; }
+.you-promises { list-style: none; margin: 1.4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.you-promise { color: var(--secondary); font-size: 0.98rem; line-height: 1.5; }
+.you-house-line { color: var(--dim); font-size: 0.92rem; line-height: 1.6; margin: 1.6rem 0 0; }
+.you .action { margin-top: 3rem; }
+
+/* --- Onboarding ----------------------------------------------------------- */
+.onboarding-inner {
+  max-width: 32rem;
+  background: var(--panel);
+  padding: 4rem var(--pad-page) calc(3rem + env(safe-area-inset-bottom));
+}
+.onboarding .mark { color: var(--secondary); letter-spacing: 0.28em; }
+.onboard-title {
+  font-family: var(--font-human);
+  font-weight: 300;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  color: var(--secondary);
+  margin: 1.2rem 0 2.5rem;
+}
+.onboard-block { margin-bottom: 1.9rem; }
+.onboard-block .label { color: var(--dim); letter-spacing: 0.18em; }
+.onboard-line { color: var(--secondary); font-size: 1rem; line-height: 1.6; margin: 0.55rem 0 0; }
+.onboarding .action { margin-top: 1.5rem; }
