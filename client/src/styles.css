@@ -505,3 +505,9 @@ textarea:focus {
 .onboard-block .label { color: var(--dim); letter-spacing: 0.18em; }
 .onboard-line { color: var(--secondary); font-size: 1rem; line-height: 1.6; margin: 0.55rem 0 0; }
 .onboarding .action { margin-top: 1.5rem; }
+
+/* --- Invite panel + Turnstile --------------------------------------------- */
+.invite-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.invite-code { font-size: 0.95rem; letter-spacing: 0.05em; }
+.invite-code:hover { color: var(--voice); }
+.turnstile { margin-top: 1rem; }

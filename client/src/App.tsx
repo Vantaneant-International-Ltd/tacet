@@ -25,8 +25,17 @@ export function App() {
   // Loading the session.
   if (user === undefined) return <Loading />;
 
+  // An invite link (/join/<code>) prefills registration.
+  const joining = path.match(/^\/join\/([^/]+)$/);
+
   // Signed out: the only surface is Enter.
-  if (user === null) return <Enter />;
+  if (user === null) return <Enter invite={joining ? decodeURIComponent(joining[1]) : undefined} />;
+
+  // A signed-in person following an invite link doesn't need it.
+  if (joining) {
+    navigate("/rooms");
+    return <Loading />;
+  }
 
   // First run on this device: teach the house once, before anything else.
   if (!onboarded) return <Onboarding onDone={() => setOnboarded(true)} />;

@@ -17,6 +17,11 @@ const api = new Hono<{ Bindings: Env; Variables: Variables }>();
 api.use("*", sessionMiddleware);
 
 api.get("/health", (c) => c.json({ ok: true }));
+
+// Public runtime config for the SPA. The Turnstile site key is public by design; when null,
+// the client shows no challenge and registration is not gated.
+api.get("/config", (c) => c.json({ turnstile_site_key: c.env.TURNSTILE_SITE_KEY ?? null }));
+
 api.route("/auth", authRoutes);
 api.route("/rooms", roomRoutes);
 api.route("/invites", inviteRoutes);

@@ -83,9 +83,13 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  config: () => request<{ turnstile_site_key: string | null }>("/config"),
   me: () => request<{ user: User | null }>("/auth/me"),
-  register: (handle: string, passphrase: string, invite?: string) =>
-    request<{ user: User }>("/auth/register", { method: "POST", body: JSON.stringify({ handle, passphrase, invite }) }),
+  register: (handle: string, passphrase: string, invite?: string, turnstile_token?: string) =>
+    request<{ user: User }>("/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ handle, passphrase, invite, turnstile_token }),
+    }),
   login: (handle: string, passphrase: string) =>
     request<{ user: User }>("/auth/login", { method: "POST", body: JSON.stringify({ handle, passphrase }) }),
   logout: () => request<{ ok: true }>("/auth/logout", { method: "POST" }),

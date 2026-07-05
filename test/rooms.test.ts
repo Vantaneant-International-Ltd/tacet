@@ -139,10 +139,27 @@ describe("lenses + invites", () => {
     expect(invites[0].used_by).toBe("ada");
   });
 
-  it("forbids non-admins from listing invites", async () => {
+  it("lets any member mint an invite and bring someone in", async () => {
     const admin = await registerAdmin();
     const ada = await registerInvited(admin, "ada");
-    const res = await req("/api/invites", { cookie: ada });
-    expect(res.status).toBe(403);
+    // ada (a non-admin member) invites boris.
+    const boris = await registerInvited(ada, "boris");
+    const me = await req("/api/auth/me", { cookie: boris });
+    expect(((await me.json()) as { user: { handle: string } }).user.handle).toBe("boris");
+  });
+
+  it("shows a member only their own invites, but the admin sees all", async () => {
+    const admin = await registerAdmin();
+    const ada = await registerInvited(admin, "ada");
+    await req("/api/invites", { method: "POST", cookie: ada }); // ada mints one, still open
+
+    const adaList = await req("/api/invites", { cookie: ada });
+    const adaInvites = ((await adaList.json()) as { invites: unknown[] }).invites;
+    expect(adaInvites).toHaveLength(1); // only ada's own
+
+    const adminList = await req("/api/invites", { cookie: admin });
+    const adminInvites = ((await adminList.json()) as { invites: unknown[] }).invites;
+    // admin sees the invite it minted for ada plus the one ada minted.
+    expect(adminInvites.length).toBeGreaterThanOrEqual(2);
   });
 });

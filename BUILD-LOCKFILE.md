@@ -89,9 +89,13 @@ federation/ActivityPub, instruments, Assembly/Journal/Theatre lenses, video, Por
 notifications (never), search, editing posts, DMs, mobile apps, deployment config beyond
 what wrangler needs.
 
-### Phase 2 — The address
-Deploy to Cloudflare on a purchased domain. Real invites. Turnstile on registration.
-No new features.
+### Phase 2 — The address (current)
+Deploy to Cloudflare so real, invited people can reach it. A free `*.workers.dev` URL is an
+acceptable interim address (Amendment 2); a purchased domain is pointed at it later. Real
+invites. Turnstile on registration (enforced once keys are configured). One deliberate new
+feature, authorised by Ren: **member invites** — any member (not only the admin) can mint an
+invite code / one-use invite link, so the house fills through its people. Still fully
+invite-gated: no public/open registration. Otherwise no new features.
 
 ### Phase 3 — The quiet machinery
 Assembly lens (nested threads, ordered by activity, no votes). Journal lens (long-form).
@@ -158,3 +162,18 @@ Timestamps UTC. IDs are ULIDs. Soft deletes are not needed in Phase 1; hard dele
   and a permanent statement in the **YOU / settings** surface.
 - Everything else stands. Still no counts, no algorithm, no ads, no notifications, no red.
   Acknowledgments show names and words, never a number — the "no public number" law holds.
+
+### Amendment 2 — Phase 2 begins: the address + member invites (authorised by Ren, 2026-07-05)
+
+- **Phase 2 starts.** TACET is deployed so real invited people can reach it. A free
+  `*.workers.dev` URL is an acceptable interim address; a purchased domain is pointed at it
+  later (revises §6 Phase 2's "purchased domain" wording).
+- **Member invites** (one deliberate new feature): any member may mint an invite code and
+  share it as a one-use `/join/<code>` link. Not admin-only anymore. **Invite-only still
+  holds** — there is no public/open registration. Going public would be a separate amendment
+  and is explicitly not authorised here.
+- **Turnstile** on registration is enforced whenever `TURNSTILE_SECRET`/site key are
+  configured; local dev and tests run without keys. Turnstile keys before Phase 2 is "done".
+- Deploy needs, provided out-of-band: remote D1 database id, R2 bucket, a real
+  `SESSION_SECRET`. No product law changes: no counts, no algorithm, no ads, no
+  notifications, no red.

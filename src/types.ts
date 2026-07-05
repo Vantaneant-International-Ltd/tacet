@@ -6,6 +6,10 @@ export interface Env {
   ASSETS: Fetcher;
   // Set at the Phase 2 deploy gate. Absent locally → a dev-only fallback is used.
   SESSION_SECRET?: string;
+  // Turnstile (Amendment 2). When both are set, registration is challenge-gated. Absent
+  // locally and in tests, so registration works without keys. The site key is public.
+  TURNSTILE_SECRET?: string;
+  TURNSTILE_SITE_KEY?: string;
 }
 
 // Shape carried through Hono's context after the session middleware runs.

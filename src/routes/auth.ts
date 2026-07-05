@@ -3,6 +3,7 @@ import type { Env, Variables } from "../types";
 import { ulid } from "../lib/ulid";
 import { hashPassphrase, verifyPassphrase } from "../lib/passphrase";
 import { issueSession, clearSession, requireUser, HttpError } from "../lib/session";
+import { verifyTurnstile } from "../lib/turnstile";
 
 const HANDLE_RE = /^[a-z0-9][a-z0-9_-]{1,29}$/;
 
@@ -35,6 +36,12 @@ authRoutes.post("/register", async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const handle = validateHandle(body.handle);
   const passphrase = validatePassphrase(body.passphrase);
+
+  // Turnstile (enforced only when configured). Rejects bots at the door in production.
+  const ip = c.req.header("cf-connecting-ip") ?? null;
+  if (!(await verifyTurnstile(c.env, body.turnstile_token, ip))) {
+    throw new HttpError(400, "the challenge did not pass; please try again");
+  }
 
   const existing = await c.env.DB.prepare("SELECT id FROM users WHERE handle = ?").bind(handle).first();
   if (existing) throw new HttpError(409, "that handle is taken");

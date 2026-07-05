@@ -1,6 +1,7 @@
 import { api } from "../api";
 import { useUser, setUser } from "../session";
 import { navigate, Link } from "../router";
+import { InvitePanel } from "./InvitePanel";
 
 // The YOU surface is where the house explains itself, not just a sign-out button
 // (Amendment 1). Real settings sit alongside a plain statement of the promises.
@@ -51,6 +52,8 @@ export function You() {
           look. The only things you do to a post are reply, keep, and acknowledge.
         </p>
       </div>
+
+      <InvitePanel />
 
       <button className="label action" onClick={signOut}>
         Sign out
