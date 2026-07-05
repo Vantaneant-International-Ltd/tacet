@@ -3,6 +3,7 @@
 **Phase:** 2 — the address (in progress). Phase 1 complete + Amendments 1 & 2.
 **Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
 **Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.
+**Canonical-record goal:** see [`GOALS-SYNDICATION.md`](GOALS-SYNDICATION.md) — TACET as canonical record, Instagram as syndication window (standing VNTA decision, 5 Jul 2026).
 
 ## Done since last entry
 
