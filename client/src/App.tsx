@@ -12,6 +12,8 @@ import { You } from "./views/You";
 import { About } from "./views/About";
 import { Keeps } from "./views/Keeps";
 import { Admin } from "./views/Admin";
+import { PublicArchive } from "./views/PublicArchive";
+import { PublicPost } from "./views/PublicPost";
 
 export function App() {
   const user = useUser();
@@ -21,6 +23,12 @@ export function App() {
   useEffect(() => {
     refreshUser().catch(() => {});
   }, []);
+
+  // Public brand archives render for everyone, signed in or not — no session needed.
+  const pubPost = path.match(/^\/@([^/]+)\/([^/]+)$/);
+  if (pubPost) return <PublicPost slug={pubPost[1]} id={pubPost[2]} />;
+  const pubArchive = path.match(/^\/@([^/]+)$/);
+  if (pubArchive) return <PublicArchive slug={pubArchive[1]} />;
 
   // Loading the session.
   if (user === undefined) return <Loading />;

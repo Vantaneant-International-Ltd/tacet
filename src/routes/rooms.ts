@@ -25,6 +25,7 @@ roomRoutes.post("/", async (c) => {
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const description = typeof body.description === "string" ? body.description.trim() : "";
   const defaultLens = body.default_lens === "grid" ? "grid" : "timeline";
+  const isPublic = body.is_public === true ? 1 : 0;
   if (!SLUG_RE.test(slug)) throw new HttpError(400, "slug must be 2–50 characters: lowercase letters, numbers or -");
   if (name.length < 1 || name.length > 80) throw new HttpError(400, "name must be 1–80 characters");
   if (description.length > 280) throw new HttpError(400, "description must be 280 characters or fewer");
@@ -38,8 +39,8 @@ roomRoutes.post("/", async (c) => {
 
   const stmts = [
     c.env.DB.prepare(
-      "INSERT INTO rooms (id, slug, name, description, default_lens, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    ).bind(roomId, slug, name, description || null, defaultLens, admin.id, now),
+      "INSERT INTO rooms (id, slug, name, description, default_lens, is_public, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    ).bind(roomId, slug, name, description || null, defaultLens, isPublic, admin.id, now),
     ...users.results.map((u) =>
       c.env.DB.prepare("INSERT INTO memberships (user_id, room_id, joined_at) VALUES (?, ?, ?)").bind(
         u.id,

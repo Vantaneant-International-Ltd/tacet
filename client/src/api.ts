@@ -54,6 +54,20 @@ export interface Reply {
   is_mine: boolean;
 }
 
+export interface PublicEntry {
+  id: string;
+  kind: "text" | "image";
+  body: string;
+  image: string | null;
+  created_at: string;
+}
+
+export interface PublicBrand {
+  slug: string;
+  name: string;
+  description: string | null;
+}
+
 export interface Invite {
   code: string;
   created_at: string;
@@ -124,4 +138,10 @@ export const api = {
 
   invites: () => request<{ invites: Invite[] }>("/invites"),
   mintInvite: () => request<{ invite: Invite }>("/invites", { method: "POST" }),
+
+  // Public (no account needed): brand archives and single entries.
+  publicBrand: (slug: string) =>
+    request<{ brand: PublicBrand; posts: PublicEntry[] }>(`/public/brands/${slug}`),
+  publicEntry: (id: string) =>
+    request<{ post: PublicEntry & { brand: { slug: string; name: string } } }>(`/public/posts/${id}`),
 };

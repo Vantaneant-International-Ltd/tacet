@@ -5,6 +5,7 @@ import { authRoutes } from "./routes/auth";
 import { roomRoutes } from "./routes/rooms";
 import { postRoutes } from "./routes/posts";
 import { inviteRoutes } from "./routes/invites";
+import { publicRoutes } from "./routes/public";
 
 // The Worker owns /api/*. Static files (JS, CSS, fonts) are served directly by the
 // assets binding before the Worker runs. Any remaining path is a client-side route,
@@ -25,6 +26,7 @@ api.get("/config", (c) => c.json({ turnstile_site_key: c.env.TURNSTILE_SITE_KEY 
 api.route("/auth", authRoutes);
 api.route("/rooms", roomRoutes);
 api.route("/invites", inviteRoutes);
+api.route("/public", publicRoutes);
 api.route("/", postRoutes);
 
 app.route("/api", api);
