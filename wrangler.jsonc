@@ -5,6 +5,8 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
+  // the deployer's Cloudflare account (Phase 2, Amendment 2).
+  "account_id": "<cloudflare-account-id>",
 
   // The Vite build emits the React SPA to dist/client. The Worker handles /api/*;
   // everything else is served from the built assets, with unmatched routes falling
@@ -19,9 +21,8 @@
     {
       "binding": "DB",
       "database_name": "tacet",
-      // Placeholder id — local dev (wrangler dev / --local) simulates D1 and ignores it.
-      // A real id is set at the Phase 2 deploy gate, not before.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Remote D1 (the deployer account). Local dev (--local) still simulates D1.
+      "database_id": "<d1-database-id>",
       "migrations_dir": "migrations"
     }
   ],

@@ -1,9 +1,28 @@
 # STATE
 
-**Phase:** 1 — the clubhouse. **Status: complete, plus Amendment 1.**
-**Main runnable:** yes, from a fresh clone: `npm install` → `npm run migrate` → `npm run dev`.
+**Phase:** 2 — the address (in progress). Phase 1 complete + Amendments 1 & 2.
+**Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
+**Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.
 
 ## Done since last entry
+
+### Amendment 2 — Phase 2 begins: the address + member invites (authorised by Ren)
+
+- **Member invites:** any member can mint an invite and share a one-use `/join/<code>` link;
+  a member sees only their own invites, admin sees all. Invite panel added to YOU. Still
+  fully invite-gated — no public registration.
+- **Turnstile-ready:** enforced only when `TURNSTILE_SECRET`/site key are configured (local
+  dev + tests keyless). `/api/config` exposes the public site key; the register form renders
+  the challenge; the server calls siteverify.
+- **Deploy progress (the deployer Cloudflare account):**
+  - ✅ Remote D1 `tacet` created (`<d1-database-id-old>-…`) and migrated (0001 + 0002).
+  - ✅ `wrangler.jsonc` has real `account_id` + `database_id`.
+  - ⛔ **R2 not enabled on the account** — blocks `tacet-images` bucket + `wrangler deploy`.
+    Ren must enable R2 in the dashboard (see `DEPLOY.md`), then one `deploy` finishes it.
+  - ⏳ `SESSION_SECRET` + Turnstile keys set after first deploy.
+- 29 tests green; still no counts/algorithm/ads/notifications/red.
+
+### Earlier
 
 ### Amendment 1 — acknowledgment, rooms-as-people, the why-surface (authorised by Ren)
 
