@@ -5,7 +5,8 @@ notifications. A VNTA Group venture.
 
 This repository is **Phase 1 — the clubhouse**: a single house that runs entirely on
 localhost via `wrangler dev`. The build authority is [`BUILD-LOCKFILE.md`](BUILD-LOCKFILE.md);
-current status is in [`STATE.md`](STATE.md).
+the visual and interaction reference is [`DESIGN.md`](DESIGN.md); current status is in
+[`STATE.md`](STATE.md).
 
 ## Stack
 
