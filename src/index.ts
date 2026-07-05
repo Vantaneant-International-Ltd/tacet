@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import type { Env, Variables } from "./types";
 import { sessionMiddleware, HttpError } from "./lib/session";
 import { authRoutes } from "./routes/auth";
+import { roomRoutes } from "./routes/rooms";
+import { postRoutes } from "./routes/posts";
 
 // The Worker owns /api/*. Static files (JS, CSS, fonts) are served directly by the
 // assets binding before the Worker runs. Any remaining path is a client-side route,
@@ -15,6 +17,8 @@ api.use("*", sessionMiddleware);
 
 api.get("/health", (c) => c.json({ ok: true }));
 api.route("/auth", authRoutes);
+api.route("/rooms", roomRoutes);
+api.route("/", postRoutes);
 
 app.route("/api", api);
 
