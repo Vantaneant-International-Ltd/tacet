@@ -4,6 +4,8 @@ export interface Env {
   DB: D1Database;
   BUCKET: R2Bucket;
   ASSETS: Fetcher;
+  // Set at the Phase 2 deploy gate. Absent locally → a dev-only fallback is used.
+  SESSION_SECRET?: string;
 }
 
 // Shape carried through Hono's context after the session middleware runs.

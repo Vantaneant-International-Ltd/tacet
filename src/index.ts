@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import type { Env, Variables } from "./types";
+import { sessionMiddleware, HttpError } from "./lib/session";
+import { authRoutes } from "./routes/auth";
 
 // The Worker owns /api/*. Static files (JS, CSS, fonts) are served directly by the
 // assets binding before the Worker runs. Any remaining path is a client-side route,
@@ -8,9 +10,20 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 const api = new Hono<{ Bindings: Env; Variables: Variables }>();
 
+// Every API request carries the current user (or null) in c.var.user.
+api.use("*", sessionMiddleware);
+
 api.get("/health", (c) => c.json({ ok: true }));
+api.route("/auth", authRoutes);
 
 app.route("/api", api);
+
+// Map thrown HttpErrors to JSON; anything else is an opaque 500.
+app.onError((err, c) => {
+  if (err instanceof HttpError) return c.json({ error: err.message }, err.status as 400);
+  console.error(err);
+  return c.json({ error: "something went wrong" }, 500);
+});
 
 // Unknown API paths stay JSON; they must never fall through to the SPA shell.
 app.all("/api/*", (c) => c.json({ error: "not found" }, 404));
