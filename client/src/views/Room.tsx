@@ -90,14 +90,16 @@ export function Room({ slug }: { slug: string }) {
       ) : (
         <div key={fadeKey} className="lens-body">
           {lens === "timeline" ? (
+            // Timeline shows thoughts (text). Photos live in the Grid, not here.
             <Timeline
               slug={slug}
-              posts={posts}
+              posts={posts.filter((p) => p.kind === "text")}
               onChange={(p) => setPosts((prev) => prev!.map((x) => (x.id === p.id ? p : x)))}
               onDeleted={(id) => setPosts((prev) => prev!.filter((x) => x.id !== id))}
             />
           ) : (
-            <Grid slug={slug} posts={posts} />
+            // Grid shows photos only — the Instagram lens.
+            <Grid slug={slug} posts={posts.filter((p) => p.kind === "image")} />
           )}
         </div>
       )}
