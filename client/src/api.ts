@@ -26,6 +26,7 @@ export interface Room {
   slug: string;
   name: string;
   description: string | null;
+  following?: boolean;
 }
 
 export interface Post {
@@ -113,10 +114,10 @@ export const api = {
   follow: (slug: string) => request<{ following: boolean }>(`/rooms/${slug}/follow`, { method: "POST" }),
   unfollow: (slug: string) => request<{ following: boolean }>(`/rooms/${slug}/follow`, { method: "DELETE" }),
   feed: () => request<{ posts: KeptPost[] }>("/feed"),
-  createRoom: (slug: string, name: string, description: string, default_lens: Lens) =>
+  createRoom: (slug: string, name: string, description: string, default_lens: Lens, is_public = false) =>
     request<{ room: Room }>("/rooms", {
       method: "POST",
-      body: JSON.stringify({ slug, name, description, default_lens }),
+      body: JSON.stringify({ slug, name, description, default_lens, is_public }),
     }),
   setLens: (slug: string, lens: Lens) =>
     request<{ lens: Lens }>(`/rooms/${slug}/lens`, { method: "PUT", body: JSON.stringify({ lens }) }),

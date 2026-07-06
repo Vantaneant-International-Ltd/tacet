@@ -9,11 +9,22 @@ export const roomRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 // Room directory. Alphabetical (a stable directory, not an attention-ranked feed).
 roomRoutes.get("/", async (c) => {
-  requireUser(c);
+  const user = requireUser(c);
   const rooms = await c.env.DB.prepare(
-    "SELECT slug, name, description FROM rooms ORDER BY name COLLATE NOCASE ASC",
-  ).all<{ slug: string; name: string; description: string | null }>();
-  return c.json({ rooms: rooms.results });
+    `SELECT r.slug, r.name, r.description,
+       EXISTS(SELECT 1 FROM follows f WHERE f.room_id = r.id AND f.user_id = ?) AS following
+     FROM rooms r ORDER BY r.name COLLATE NOCASE ASC`,
+  )
+    .bind(user.id)
+    .all<{ slug: string; name: string; description: string | null; following: number }>();
+  return c.json({
+    rooms: rooms.results.map((r) => ({
+      slug: r.slug,
+      name: r.name,
+      description: r.description,
+      following: r.following === 1,
+    })),
+  });
 });
 
 // Create a room / community. Anyone can (like making a subreddit or a Discord server);
