@@ -2,6 +2,7 @@ import { api, type Post } from "../api";
 import { navigate } from "../router";
 import { bylineTime, bylineDate } from "../util";
 import { Avatar } from "../bits";
+import { Reactions } from "./Reactions";
 
 // The warm post card (approved mockup): avatar + who + time, voice body, image, and
 // quiet mono actions. Appreciation is the private keep (Amendment 3) — no counts.
@@ -46,6 +47,7 @@ export function PostCard({
       {post.image && <img className="ucard-img" src={post.image} alt="" loading="lazy" onClick={open} />}
 
       <div className="ucard-acts">
+        <Reactions post={post} onChange={onChange} />
         <button className="uact" onClick={open}>
           Reply
         </button>

@@ -42,6 +42,15 @@ export interface Post {
   kept: boolean; // author-only: THAT it was kept. Never a count, never who.
   my_ack: AckWord | null; // the viewer's own acknowledgment word, if any
   acks: Ack[]; // who acknowledged, and with which word. Never a count.
+  like_count: number; // public reaction counts (Amendment 4)
+  dislike_count: number;
+  my_reaction: "like" | "dislike" | null;
+}
+
+export interface ReactionState {
+  like_count: number;
+  dislike_count: number;
+  my_reaction: "like" | "dislike" | null;
 }
 
 export interface KeptPost extends Post {
@@ -137,6 +146,9 @@ export const api = {
     request<{ reply: Reply }>(`/posts/${id}/replies`, { method: "POST", body: JSON.stringify({ body }) }),
   keep: (id: string) => request<{ kept_by_me: boolean }>(`/posts/${id}/keep`, { method: "POST" }),
   unkeep: (id: string) => request<{ kept_by_me: boolean }>(`/posts/${id}/keep`, { method: "DELETE" }),
+  react: (id: string, kind: "like" | "dislike") =>
+    request<ReactionState>(`/posts/${id}/react`, { method: "PUT", body: JSON.stringify({ kind }) }),
+  unreact: (id: string) => request<ReactionState>(`/posts/${id}/react`, { method: "DELETE" }),
   keeps: () => request<{ posts: KeptPost[] }>("/keeps"),
 
   ack: (id: string, word: AckWord) =>

@@ -28,6 +28,9 @@ type PostRow = {
   kept_by_me: number;
   was_kept: number;
   my_ack: string | null;
+  like_count: number;
+  dislike_count: number;
+  my_reaction: string | null;
 };
 type KeepRow = PostRow & { room_slug: string; room_name: string };
 
@@ -43,10 +46,35 @@ function shapePost(r: PostRow, acks: Ack[]) {
     kept_by_me: r.kept_by_me === 1,
     // Author-only signal: THAT the post was kept, never who or how many (lockfile §2).
     kept: r.is_mine === 1 && r.was_kept === 1,
-    // Acknowledgments are attributed and room-visible; my_ack is the viewer's own word.
-    // There is never a count anywhere.
     my_ack: r.my_ack,
     acks,
+    // Public reactions (Amendment 4): like/dislike with counts, Mastodon-style.
+    like_count: r.like_count ?? 0,
+    dislike_count: r.dislike_count ?? 0,
+    my_reaction: r.my_reaction ?? null,
+  };
+}
+
+// Reaction subqueries shared by every post query; `?1` is the viewer.
+const REACTION_COLS = `
+    (SELECT COUNT(*) FROM reactions rl WHERE rl.post_id = p.id AND rl.kind = 'like') AS like_count,
+    (SELECT COUNT(*) FROM reactions rd WHERE rd.post_id = p.id AND rd.kind = 'dislike') AS dislike_count,
+    (SELECT kind FROM reactions rx WHERE rx.post_id = p.id AND rx.user_id = ?1) AS my_reaction`;
+
+// Current like/dislike counts + the viewer's own reaction for one post.
+async function reactionState(env: Env, postId: string, userId: string) {
+  const row = await env.DB.prepare(
+    `SELECT
+       (SELECT COUNT(*) FROM reactions WHERE post_id = ?1 AND kind = 'like') AS like_count,
+       (SELECT COUNT(*) FROM reactions WHERE post_id = ?1 AND kind = 'dislike') AS dislike_count,
+       (SELECT kind FROM reactions WHERE post_id = ?1 AND user_id = ?2) AS my_reaction`,
+  )
+    .bind(postId, userId)
+    .first<{ like_count: number; dislike_count: number; my_reaction: string | null }>();
+  return {
+    like_count: row?.like_count ?? 0,
+    dislike_count: row?.dislike_count ?? 0,
+    my_reaction: row?.my_reaction ?? null,
   };
 }
 
@@ -77,7 +105,7 @@ const POSTS_SQL = `
     (p.author_id = ?1) AS is_mine,
     EXISTS(SELECT 1 FROM keeps k WHERE k.post_id = p.id AND k.user_id = ?1) AS kept_by_me,
     CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept,
-    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack
+    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack,${REACTION_COLS}
   FROM posts p JOIN users u ON u.id = p.author_id
   WHERE p.room_id = ?2
   ORDER BY p.created_at DESC, p.id DESC
@@ -88,7 +116,7 @@ const ONE_POST_SQL = `
     (p.author_id = ?1) AS is_mine,
     EXISTS(SELECT 1 FROM keeps k WHERE k.post_id = p.id AND k.user_id = ?1) AS kept_by_me,
     CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept,
-    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack
+    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack,${REACTION_COLS}
   FROM posts p JOIN users u ON u.id = p.author_id
   WHERE p.id = ?2`;
 
@@ -99,7 +127,7 @@ const KEEPS_SQL = `
     (p.author_id = ?1) AS is_mine,
     1 AS kept_by_me,
     CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept,
-    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack
+    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack,${REACTION_COLS}
   FROM keeps k
   JOIN posts p ON p.id = k.post_id
   JOIN users u ON u.id = p.author_id
@@ -116,7 +144,7 @@ const FEED_SQL = `
     (p.author_id = ?1) AS is_mine,
     EXISTS(SELECT 1 FROM keeps k WHERE k.post_id = p.id AND k.user_id = ?1) AS kept_by_me,
     CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept,
-    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack
+    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack,${REACTION_COLS}
   FROM posts p
   JOIN follows f ON f.room_id = p.room_id AND f.user_id = ?1
   JOIN rooms r ON r.id = p.room_id
@@ -203,7 +231,8 @@ postRoutes.post("/rooms/:slug/posts", async (c) => {
 
   const row = await c.env.DB.prepare(
     `SELECT p.id, p.kind, p.body, p.image_key, p.created_at, u.handle AS author_handle,
-       1 AS is_mine, 0 AS kept_by_me, 0 AS was_kept, NULL AS my_ack
+       1 AS is_mine, 0 AS kept_by_me, 0 AS was_kept, NULL AS my_ack,
+       0 AS like_count, 0 AS dislike_count, NULL AS my_reaction
      FROM posts p JOIN users u ON u.id = p.author_id WHERE p.id = ?`,
   )
     .bind(postId)
@@ -284,6 +313,32 @@ postRoutes.delete("/posts/:id/keep", async (c) => {
   return c.json({ kept_by_me: false });
 });
 
+// --- react: like / dislike, with public counts (Amendment 4) ----------------
+postRoutes.put("/posts/:id/react", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  const body = (await c.req.json().catch(() => ({}))) as { kind?: unknown };
+  if (body.kind !== "like" && body.kind !== "dislike") {
+    throw new HttpError(400, "reaction must be like or dislike");
+  }
+  const exists = await c.env.DB.prepare("SELECT id FROM posts WHERE id = ?").bind(id).first();
+  if (!exists) throw new HttpError(404, "no such post");
+  await c.env.DB.prepare(
+    `INSERT INTO reactions (user_id, post_id, kind, created_at) VALUES (?, ?, ?, ?)
+     ON CONFLICT(user_id, post_id) DO UPDATE SET kind = excluded.kind, created_at = excluded.created_at`,
+  )
+    .bind(user.id, id, body.kind, new Date().toISOString())
+    .run();
+  return c.json(await reactionState(c.env, id, user.id));
+});
+
+postRoutes.delete("/posts/:id/react", async (c) => {
+  const user = requireUser(c);
+  const id = c.req.param("id");
+  await c.env.DB.prepare("DELETE FROM reactions WHERE user_id = ? AND post_id = ?").bind(user.id, id).run();
+  return c.json(await reactionState(c.env, id, user.id));
+});
+
 // --- acknowledge / unacknowledge (attributed, room-visible, uncounted) -----
 postRoutes.put("/posts/:id/ack", async (c) => {
   const user = requireUser(c);
@@ -326,6 +381,7 @@ postRoutes.delete("/posts/:id", async (c) => {
     c.env.DB.prepare("DELETE FROM replies WHERE post_id = ?").bind(id),
     c.env.DB.prepare("DELETE FROM keeps WHERE post_id = ?").bind(id),
     c.env.DB.prepare("DELETE FROM acknowledgments WHERE post_id = ?").bind(id),
+    c.env.DB.prepare("DELETE FROM reactions WHERE post_id = ?").bind(id),
     c.env.DB.prepare("DELETE FROM posts WHERE id = ?").bind(id),
   ]);
   if (post.image_key) await deleteImagePair(c.env, post.image_key);

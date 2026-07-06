@@ -3,6 +3,7 @@ import { api, ApiError, type Post, type Reply } from "../api";
 import { Link, navigate } from "../router";
 import { Loading, Empty, ErrorLine, Avatar } from "../bits";
 import { bylineTime, bylineDate } from "../util";
+import { Reactions } from "./Reactions";
 
 // The reading column: one post opened with its flat replies (DESIGN §5).
 export function PostDetail({ slug, id }: { slug: string; id: string }) {
@@ -79,6 +80,7 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
         {post.body && <p className="ucard-body voice">{post.body}</p>}
         {post.image && <img className="ucard-img" src={post.image} alt="" loading="lazy" />}
         <div className="ucard-acts">
+          <Reactions post={post} onChange={setPost} />
           <button
             className={"ubookmark" + (post.kept_by_me ? " on" : "")}
             aria-label={post.kept_by_me ? "Saved" : "Save"}

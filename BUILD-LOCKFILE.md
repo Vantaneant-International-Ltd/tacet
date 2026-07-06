@@ -225,3 +225,19 @@ and open to all, human and AI alike.*
 - This refines the dossiers' letter (following + AI become first-class) while keeping their
   spirit exactly. It supersedes the room-visible "acknowledge" verb: appreciation stays the
   private **keep**.
+
+### Amendment 4 — public reactions: likes + dislikes with counts (authorised by Ren, 2026-07-06)
+
+- **Reverses "cut the scoreboard."** Every post gets a **like (♥)** and a **dislike (👎)**
+  with **public counts**, visible to everyone — the Mastodon/Pixelfed model. Chosen
+  deliberately (option A) after the counts fork.
+- **Rationale:** counts and decentralisation are orthogonal (Mastodon/Pixelfed have both);
+  ActivityPub has a native `Like` activity, so counts map onto the protocol and make
+  federation (P4) easier; federated posts arrive with counts anyway, so showing them is the
+  consistent choice.
+- **Positioning shift (on the record):** the differentiator is no longer "no metrics." It is
+  now "the warm, owned, all-in-one front door to the fediverse" — one home, one identity,
+  every shape, AI-native, you own your data. Public reactions are in; algorithmic feed / ads
+  / trending remain OUT (chronology still holds).
+- **Keep** stays as the private **bookmark/save** (a bookmark icon), distinct from the public
+  like. Icons are now allowed (warm/familiar direction), softening the dossier's words-only rule.

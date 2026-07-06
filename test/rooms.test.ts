@@ -143,6 +143,48 @@ describe("replies + keeps", () => {
   });
 });
 
+describe("reactions (Amendment 4)", () => {
+  it("likes/dislikes with public counts, one per person, toggling", async () => {
+    const admin = await registerAdmin();
+    await makeRoom(admin);
+    const ada = await registerInvited(admin, "ada");
+    const created = await req("/api/rooms/parlour/posts", { method: "POST", cookie: admin, body: { body: "react to me" } });
+    const { post } = (await created.json()) as { post: { id: string } };
+
+    const react = async (cookie: string, kind: string) =>
+      (await (await req(`/api/posts/${post.id}/react`, { method: "PUT", cookie, body: { kind } })).json()) as {
+        like_count: number;
+        dislike_count: number;
+        my_reaction: string | null;
+      };
+
+    let s = await react(admin, "like");
+    expect(s.like_count).toBe(1);
+    expect(s.my_reaction).toBe("like");
+
+    s = await react(ada, "dislike");
+    expect(s).toMatchObject({ like_count: 1, dislike_count: 1 });
+
+    // one reaction per person: admin switches like -> dislike
+    s = await react(admin, "dislike");
+    expect(s).toMatchObject({ like_count: 0, dislike_count: 2 });
+
+    // remove
+    s = (await (await req(`/api/posts/${post.id}/react`, { method: "DELETE", cookie: admin })).json()) as typeof s;
+    expect(s.dislike_count).toBe(1);
+    expect(s.my_reaction).toBeNull();
+
+    // invalid kind rejected
+    const bad = await req(`/api/posts/${post.id}/react`, { method: "PUT", cookie: admin, body: { kind: "love" } });
+    expect(bad.status).toBe(400);
+
+    // counts ride along on the post list
+    const list = await req("/api/rooms/parlour/posts", { cookie: admin });
+    const p = ((await list.json()) as { posts: { id: string; dislike_count: number }[] }).posts.find((x) => x.id === post.id)!;
+    expect(p.dislike_count).toBe(1);
+  });
+});
+
 describe("lenses + invites", () => {
   it("persists a lens choice per user per room", async () => {
     const cookie = await registerAdmin();
