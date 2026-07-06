@@ -750,3 +750,15 @@ textarea:focus {
 /* profile lens tabs — centred */
 .profile-lens-wrap { display: flex; justify-content: center; margin: 0.6rem 0 2rem; }
 .profile-lens-wrap .lens-switch { margin: 0; }
+
+/* onboarding — Bring your world */
+.onboard-sub { color: var(--secondary); font-size: 1rem; line-height: 1.55; margin: 0 0 1.8rem; }
+.services { display: flex; flex-direction: column; gap: 12px; }
+.service { display: flex; align-items: center; gap: 14px; background: var(--raise); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 15px 16px; }
+.service .ic { width: 40px; height: 40px; border-radius: 11px; background: var(--raise2); border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.72rem; color: var(--voice); flex: none; }
+.service .tt { flex: 1; }
+.service .tt .n { color: var(--voice); font-size: 1.02rem; }
+.service .tt .d { color: var(--dim); font-size: 0.8rem; margin-top: 2px; }
+.service .soon { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--hairline); border-radius: 999px; padding: 3px 8px; }
+.enter-fresh { display: block; width: 100%; text-align: center; margin: 1.8rem 0 0; }
+.onboard-foot { color: var(--dim); font-size: 0.85rem; line-height: 1.5; text-align: center; margin-top: 1.4rem; }
