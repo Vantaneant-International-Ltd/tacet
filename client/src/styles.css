@@ -773,3 +773,13 @@ textarea:focus {
 .avatar-edit { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 0.4rem 0 1.6rem; }
 .avatar-pick { color: var(--secondary); border: 1px solid var(--hairline); border-radius: 999px; padding: 0.42rem 1.1rem; cursor: pointer; letter-spacing: 0.14em; }
 .avatar-pick:hover { color: var(--voice); border-color: var(--secondary); }
+
+/* highlights / collections on profiles */
+.highlights { display: flex; gap: 14px; overflow-x: auto; margin: 0.4rem 0 1.6rem; padding-bottom: 4px; }
+.hl { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; }
+.hl-cov { width: 62px; height: 62px; border-radius: 15px; border: 1px solid var(--hairline); object-fit: cover; background: var(--raise2); }
+.hl-empty { display: block; }
+.hl-lbl { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.collection-kicker { text-align: center; color: var(--dim); letter-spacing: 0.2em; }
+.collection-name { text-align: center; font-weight: 300; font-size: 1.6rem; color: var(--voice); margin: 0.6rem 0 0; }
+.collection-grid { margin-top: 1.6rem; }

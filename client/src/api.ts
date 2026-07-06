@@ -79,6 +79,12 @@ export interface PublicBrand {
   description: string | null;
 }
 
+export interface Collection {
+  id: string;
+  name: string;
+  cover: string | null;
+}
+
 export interface Invite {
   code: string;
   created_at: string;
@@ -168,11 +174,21 @@ export const api = {
     }),
   uploadAvatar: (form: FormData) => request<{ avatar: string }>("/auth/avatar", { method: "POST", body: form }),
 
+  // Collections / Highlights (yours).
+  myCollections: () => request<{ collections: Collection[] }>("/collections"),
+  createCollection: (name: string) =>
+    request<{ collection: Collection }>("/collections", { method: "POST", body: JSON.stringify({ name }) }),
+  addToCollection: (id: string, post_id: string) =>
+    request<{ ok: true }>(`/collections/${id}/items`, { method: "POST", body: JSON.stringify({ post_id }) }),
+  deleteCollection: (id: string) => request<{ ok: true }>(`/collections/${id}`, { method: "DELETE" }),
+  publicCollection: (id: string) => request<{ name: string; posts: PublicEntry[] }>(`/public/collections/${id}`),
+
   // Public (no account needed): a profile at @name (person or brand) + brand archives + entries.
   publicProfile: (name: string) =>
     request<{
       kind: "person" | "brand";
       profile: { handle: string; name: string; bio: string | null; avatar: string | null };
+      collections?: Collection[];
       posts: PublicEntry[];
     }>(`/public/profile/${name}`),
   publicBrand: (slug: string) =>

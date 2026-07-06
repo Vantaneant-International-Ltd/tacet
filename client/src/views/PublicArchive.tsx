@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, type PublicEntry } from "../api";
+import { api, type PublicEntry, type Collection } from "../api";
 import { Link, navigate } from "../router";
 import { Loading, Empty, Avatar } from "../bits";
 import { bylineTime, bylineDate } from "../util";
@@ -12,6 +12,7 @@ export function PublicArchive({ slug }: { slug: string }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [kind, setKind] = useState<"person" | "brand">("person");
   const [posts, setPosts] = useState<PublicEntry[] | null>(null);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [lens, setLens] = useState<"grid" | "timeline">("grid");
   const [gone, setGone] = useState(false);
 
@@ -26,6 +27,7 @@ export function PublicArchive({ slug }: { slug: string }) {
         if (!live) return;
         setProfile(r.profile);
         setKind(r.kind);
+        setCollections(r.collections ?? []);
         setPosts(r.posts);
       })
       .catch(() => live && setGone(true));
@@ -50,6 +52,21 @@ export function PublicArchive({ slug }: { slug: string }) {
         </p>
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
       </header>
+
+      {collections.length > 0 && (
+        <div className="highlights">
+          {collections.map((col) => (
+            <button key={col.id} className="hl" onClick={() => navigate(`/collection/${col.id}`)}>
+              {col.cover ? (
+                <img className="hl-cov" src={col.cover} alt="" loading="lazy" />
+              ) : (
+                <span className="hl-cov hl-empty" />
+              )}
+              <span className="hl-lbl">{col.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="profile-lens-wrap">
         <div className="lens-switch" role="tablist">

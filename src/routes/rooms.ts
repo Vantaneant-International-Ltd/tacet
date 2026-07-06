@@ -6,7 +6,7 @@ import { requireUser, HttpError } from "../lib/session";
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,49}$/;
 // Communities live at bare tacet.house/<slug>, so a slug can't be an app page.
 const RESERVED_SLUGS = new Set([
-  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings",
+  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection",
 ]);
 
 export const roomRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();

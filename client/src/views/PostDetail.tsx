@@ -13,6 +13,7 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [collecting, setCollecting] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -91,9 +92,14 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
             </svg>
           </button>
           {post.is_mine && (
-            <button className="uact" onClick={remove}>
-              Delete
-            </button>
+            <>
+              <button className="uact" onClick={() => setCollecting(true)}>
+                Highlight
+              </button>
+              <button className="uact" onClick={remove}>
+                Delete
+              </button>
+            </>
           )}
         </div>
       </article>
@@ -132,6 +138,58 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
           {busy ? "…" : "Reply"}
         </button>
       </form>
+
+      {collecting && post && <AddToCollection postId={post.id} onClose={() => setCollecting(false)} />}
     </section>
+  );
+}
+
+function AddToCollection({ postId, onClose }: { postId: string; onClose: () => void }) {
+  const [cols, setCols] = useState<{ id: string; name: string }[]>([]);
+  const [name, setName] = useState("");
+  const [note, setNote] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.myCollections().then((r) => setCols(r.collections)).catch(() => setCols([]));
+  }, []);
+
+  async function add(id: string, label: string) {
+    await api.addToCollection(id, postId).catch(() => {});
+    setNote(`Added to ${label}.`);
+  }
+  async function createAndAdd() {
+    if (!name.trim()) return;
+    const { collection } = await api.createCollection(name.trim());
+    await add(collection.id, collection.name);
+    setCols((prev) => [{ id: collection.id, name: collection.name }, ...prev]);
+    setName("");
+  }
+
+  return (
+    <div className="overlay" role="dialog" aria-label="Add to a highlight">
+      <div className="overlay-inner">
+        <div className="overlay-head">
+          <p className="label">Add to a highlight</p>
+          <button className="label" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        {note && <p className="label note">{note}</p>}
+        <div className="settings-group" style={{ marginTop: "1rem" }}>
+          {cols.length === 0 && <p className="srow srow-t" style={{ color: "var(--dim)" }}>No highlights yet — make one.</p>}
+          {cols.map((c) => (
+            <button key={c.id} className="srow" onClick={() => add(c.id, c.name)}>
+              <span className="srow-t">{c.name}</span>
+              <span className="chev">+</span>
+            </button>
+          ))}
+        </div>
+        <label className="label field-label">New highlight</label>
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Placements" maxLength={60} />
+        <button className="label action" onClick={createAndAdd}>
+          Create &amp; add
+        </button>
+      </div>
+    </div>
   );
 }

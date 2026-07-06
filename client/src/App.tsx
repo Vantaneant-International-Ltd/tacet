@@ -17,10 +17,11 @@ import { Discover } from "./views/Discover";
 import { Admin } from "./views/Admin";
 import { PublicArchive } from "./views/PublicArchive";
 import { PublicPost } from "./views/PublicPost";
+import { Collection } from "./views/Collection";
 
 // Words reserved for the app itself — a community can't take one (they'd collide with a page).
 const RESERVED = new Set([
-  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings",
+  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection",
 ]);
 
 export function App() {
@@ -39,6 +40,8 @@ export function App() {
   if (pubPost) return <PublicPost slug={pubPost[1]} id={pubPost[2]} />;
   const pubArchive = path.match(/^\/@([^/]+)$/);
   if (pubArchive) return <PublicArchive slug={pubArchive[1]} />;
+  const coll = path.match(/^\/collection\/([^/]+)$/);
+  if (coll) return <Collection id={coll[1]} />;
   const community = path.match(/^\/([a-z0-9][a-z0-9-]{1,49})$/);
   if (community && !RESERVED.has(community[1])) return <PublicArchive slug={community[1]} />;
 

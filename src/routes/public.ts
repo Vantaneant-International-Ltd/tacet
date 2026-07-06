@@ -78,6 +78,16 @@ publicRoutes.get("/profile/:name", async (c) => {
   )
     .bind(person.id)
     .all<PubPost>();
+  const cols = await c.env.DB.prepare(
+    `SELECT c.id, c.name,
+       (SELECT p.image_key FROM collection_items ci
+          JOIN posts p ON p.id = ci.post_id JOIN rooms r ON r.id = p.room_id
+         WHERE ci.collection_id = c.id AND p.image_key IS NOT NULL AND r.is_public = 1
+         ORDER BY ci.added_at DESC LIMIT 1) AS cover_key
+     FROM collections c WHERE c.user_id = ? ORDER BY c.created_at DESC`,
+  )
+    .bind(person.id)
+    .all<{ id: string; name: string; cover_key: string | null }>();
   return c.json({
     kind: "person",
     profile: {
@@ -86,8 +96,31 @@ publicRoutes.get("/profile/:name", async (c) => {
       bio: person.bio,
       avatar: person.avatar_key ? `/api/avatars/${person.avatar_key}` : null,
     },
+    collections: cols.results.map((r) => ({
+      id: r.id,
+      name: r.name,
+      cover: r.cover_key ? `/api/images/${r.cover_key}` : null,
+    })),
     posts: rows.results.map(shape),
   });
+});
+
+// A public collection: its name + the public posts in it.
+publicRoutes.get("/collections/:id", async (c) => {
+  const id = c.req.param("id");
+  const col = await c.env.DB.prepare("SELECT id, name FROM collections WHERE id = ?")
+    .bind(id)
+    .first<{ id: string; name: string }>();
+  if (!col) throw new HttpError(404, "no such collection");
+  const rows = await c.env.DB.prepare(
+    `SELECT p.id, p.kind, p.body, p.image_key, p.created_at
+     FROM collection_items ci JOIN posts p ON p.id = ci.post_id JOIN rooms r ON r.id = p.room_id
+     WHERE ci.collection_id = ? AND r.is_public = 1
+     ORDER BY ci.added_at DESC LIMIT 200`,
+  )
+    .bind(id)
+    .all<PubPost>();
+  return c.json({ name: col.name, posts: rows.results.map(shape) });
 });
 
 // A single canonical entry at its permanent id, only if its brand is public.
