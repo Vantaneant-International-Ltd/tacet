@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, type Room } from "../api";
 import { Link } from "../router";
-import { Loading, Empty } from "../bits";
+import { Loading, Empty, Avatar } from "../bits";
 
 export function RoomList() {
   const [rooms, setRooms] = useState<Room[] | null>(null);
@@ -18,12 +18,15 @@ export function RoomList() {
       {rooms.length === 0 ? (
         <Empty>No rooms yet.</Empty>
       ) : (
-        <ul className="room-list">
+        <ul className="room-cards">
           {rooms.map((room) => (
             <li key={room.slug}>
-              <Link to={`/rooms/${room.slug}`} className="room-row">
-                <span className="voice room-name">{room.name}</span>
-                {room.description && <span className="room-desc">{room.description}</span>}
+              <Link to={`/rooms/${room.slug}`} className="room-card">
+                <Avatar handle={room.name} />
+                <div className="room-card-body">
+                  <span className="voice room-card-name">{room.name}</span>
+                  {room.description && <span className="room-card-desc">{room.description}</span>}
+                </div>
               </Link>
             </li>
           ))}

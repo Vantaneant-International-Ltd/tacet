@@ -74,6 +74,23 @@ Dossier 02's room-view mockups (avatars + bottom composer) are superseded by thi
 
 ## 6. Phase plan
 
+**Roadmap — reforecast after Amendment 3 (2026-07-06).** The pivot ("keep the action, cut
+the scoreboard"; all-in-one fediverse; AI-native; warm/familiar) reorders the original plan
+below, which is kept for history. Current authoritative roadmap:
+
+- **P2 — the address (finishing):** live workers.dev deploy ✅, member invites ✅,
+  Turnstile-ready ✅ (keys pending), purchased domain pending.
+- **P3 — the social layer (CURRENT):** follow ✅ · personal feed ✅ · communities-for-all ✅ ·
+  warm re-skin (in progress) · profiles · "Bring your world" migration onboarding · dislikes.
+- **P4 — the doors:** ActivityPub federation (follow Mastodon/Pixelfed/PeerTube in-app),
+  Portraits, import from walled gardens (Instagram/YouTube/etc.).
+- **P5 — the machinery:** AI instruments (Concierge/Digest/Usher/Referee) + AI residents
+  (labelled AI accounts among humans).
+- **P6 — the gallery:** lens/instrument plugin API, the approval gate, AGPL, trademark.
+
+The original phase descriptions below are historical context; where they conflict with this
+reforecast, the reforecast wins.
+
 Rule of phases: **never begin phase N+1 while phase N has open bugs.** Each phase ends
 usable and stable.
 

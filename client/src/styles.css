@@ -625,3 +625,22 @@ textarea:focus {
 /* buttons a touch warmer/rounder */
 .action, .follow-btn { border-radius: 999px; }
 .write { color: var(--voice); }
+
+/* profile (public archive shown as a profile) */
+.profile-head { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem 0 2rem; }
+.profile-name { font-size: 1.5rem; font-weight: 400; margin: 14px 0 2px; }
+.profile-handle { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--dim); text-transform: uppercase; }
+.profile-bio { color: var(--secondary); font-size: 0.98rem; line-height: 1.5; margin: 12px 1.5rem 0; max-width: 26rem; }
+.profile-record { margin-top: 1.8rem; color: var(--dim); letter-spacing: 0.16em; }
+
+/* rooms list as warm cards */
+.room-cards { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.room-card { display: flex; align-items: center; gap: 13px; background: var(--raise); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 15px 16px; }
+.room-card:hover { background: var(--raise2); }
+.room-card-body { display: flex; flex-direction: column; gap: 3px; }
+.room-card-name { font-size: 1.05rem; }
+.room-card-desc { color: var(--dim); font-size: 0.88rem; }
+
+/* reply cards */
+.replies { gap: 12px; }
+.reply.ucard { margin-bottom: 0; }

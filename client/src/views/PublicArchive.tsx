@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, type PublicBrand, type PublicEntry } from "../api";
 import { Link, navigate } from "../router";
-import { Loading, Empty } from "../bits";
+import { Loading, Empty, Avatar } from "../bits";
 
 // The public brand archive — the canonical record, readable with no account.
 // NOTE: functional layout only; the visual pass comes from Ren's dossiers.
@@ -33,10 +33,12 @@ export function PublicArchive({ slug }: { slug: string }) {
 
   return (
     <PublicShell>
-      <header className="archive-head">
-        <p className="label">TACET · Record</p>
-        <h1 className="voice archive-title">{brand.name}</h1>
-        {brand.description && <p className="archive-desc">{brand.description}</p>}
+      <header className="profile-head">
+        <Avatar handle={brand.name} large />
+        <h1 className="voice profile-name">{brand.name}</h1>
+        <p className="profile-handle">@{brand.slug} · tacet.house</p>
+        {brand.description && <p className="profile-bio">{brand.description}</p>}
+        <p className="label profile-record">The record · newest first</p>
       </header>
 
       {posts.length === 0 ? (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { api, ApiError, type Post, type Reply } from "../api";
 import { Link, navigate } from "../router";
-import { Byline, Loading, Empty, ErrorLine } from "../bits";
-import { Acks } from "./Acks";
+import { Loading, Empty, ErrorLine, Avatar } from "../bits";
+import { bylineTime, bylineDate } from "../util";
 
 // The reading column: one post opened with its flat replies (DESIGN §5).
 export function PostDetail({ slug, id }: { slug: string; id: string }) {
@@ -66,25 +66,32 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
         Back
       </Link>
 
-      <article className="post">
-        <Byline handle={post.author_handle} at={post.created_at} />
-        {post.body && <p className="voice post-body">{post.body}</p>}
-        {post.image && <img className="post-image" src={post.image} alt="" loading="lazy" />}
-        <div className="actions">
+      <article className="ucard">
+        <div className="ucard-head">
+          <Avatar handle={post.author_handle} />
+          <div className="who">
+            <div className="n voice">{post.author_handle}</div>
+            <div className="h">
+              {bylineTime(post.created_at)} · {bylineDate(post.created_at)}
+            </div>
+          </div>
+        </div>
+        {post.body && <p className="ucard-body voice">{post.body}</p>}
+        {post.image && <img className="ucard-img" src={post.image} alt="" loading="lazy" />}
+        <div className="ucard-acts">
           {post.is_mine ? (
             <>
-              {post.kept && <span className="label kept">Kept</span>}
-              <button className="label act" onClick={remove}>
+              {post.kept && <span className="uact kept">Kept</span>}
+              <button className="uact" onClick={remove}>
                 Delete
               </button>
             </>
           ) : (
-            <button className={"label act" + (post.kept_by_me ? " active" : "")} onClick={toggleKeep}>
+            <button className={"uact" + (post.kept_by_me ? " on" : "")} onClick={toggleKeep}>
               Keep
             </button>
           )}
         </div>
-        <Acks post={post} onChange={setPost} />
       </article>
 
       <div className="replies">
@@ -92,9 +99,17 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
           <Empty>No replies yet.</Empty>
         ) : (
           replies.map((r) => (
-            <div key={r.id} className="reply">
-              <Byline handle={r.author_handle} at={r.created_at} />
-              <p className="voice reply-body">{r.body}</p>
+            <div key={r.id} className="reply ucard">
+              <div className="ucard-head">
+                <Avatar handle={r.author_handle} />
+                <div className="who">
+                  <div className="n voice">{r.author_handle}</div>
+                  <div className="h">
+                    {bylineTime(r.created_at)} · {bylineDate(r.created_at)}
+                  </div>
+                </div>
+              </div>
+              <p className="ucard-body voice">{r.body}</p>
             </div>
           ))
         )}
