@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { api } from "../api";
+import { useEffect, useState } from "react";
+import { api, ApiError } from "../api";
 import { useUser, setUser } from "../session";
 import { navigate, Link } from "../router";
-import { Avatar } from "../bits";
+import { Avatar, ErrorLine } from "../bits";
 import { InvitePanel } from "./InvitePanel";
 
 // The You tab, rebuilt as a real settings panel — grouped rows, a working private-account
@@ -11,6 +11,7 @@ export function You() {
   const user = useUser();
   const [priv, setPriv] = useState(user?.is_private ?? false);
   const [busy, setBusy] = useState(false);
+  const [editing, setEditing] = useState(false);
   if (!user) return null;
 
   async function togglePrivate() {
@@ -44,6 +45,14 @@ export function You() {
 
       <p className="settings-group-label">Account</p>
       <div className="settings-group">
+        <button className="srow" onClick={() => setEditing(true)}>
+          <span className="srow-t">Edit profile</span>
+          <span className="chev">›</span>
+        </button>
+        <Link className="srow" to={`/@${user.handle}`}>
+          <span className="srow-t">View my profile</span>
+          <span className="chev">›</span>
+        </Link>
         <div className="srow toggle-row">
           <div className="srow-main">
             <div className="srow-t voice">Private account</div>
@@ -94,6 +103,56 @@ export function You() {
       <p className="settings-foot label">
         TACET · v{__APP_VERSION__} · @{user.handle}@tacet.house
       </p>
+
+      {editing && <EditProfile onClose={() => setEditing(false)} />}
     </section>
+  );
+}
+
+function EditProfile({ onClose }: { onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    api.myProfile().then((p) => {
+      setName(p.display_name ?? "");
+      setBio(p.bio ?? "");
+    });
+  }, []);
+
+  async function save() {
+    setError(null);
+    setBusy(true);
+    try {
+      await api.updateProfile(name.trim(), bio.trim());
+      onClose();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "That did not save.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="overlay" role="dialog" aria-label="Edit profile">
+      <div className="overlay-inner">
+        <div className="overlay-head">
+          <p className="label">Edit profile</p>
+          <button className="label" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <label className="label field-label">Display name</label>
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" maxLength={60} />
+        <label className="label field-label">Bio</label>
+        <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="A line about you" rows={3} maxLength={280} />
+        <ErrorLine>{error}</ErrorLine>
+        <button className="label action" onClick={save} disabled={busy}>
+          {busy ? "…" : "Save"}
+        </button>
+      </div>
+    </div>
   );
 }

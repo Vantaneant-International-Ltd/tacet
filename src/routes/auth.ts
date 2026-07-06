@@ -132,3 +132,23 @@ authRoutes.post("/logout", (c) => {
   clearSession(c);
   return c.json({ ok: true });
 });
+
+// Read / edit your own profile (display name + bio).
+authRoutes.get("/profile", async (c) => {
+  const user = requireUser(c);
+  const row = await c.env.DB.prepare("SELECT display_name, bio FROM users WHERE id = ?")
+    .bind(user.id)
+    .first<{ display_name: string | null; bio: string | null }>();
+  return c.json({ handle: user.handle, display_name: row?.display_name ?? null, bio: row?.bio ?? null });
+});
+
+authRoutes.put("/profile", async (c) => {
+  const user = requireUser(c);
+  const body = await c.req.json().catch(() => ({}));
+  const display_name = typeof body.display_name === "string" ? body.display_name.trim().slice(0, 60) : "";
+  const bio = typeof body.bio === "string" ? body.bio.trim().slice(0, 280) : "";
+  await c.env.DB.prepare("UPDATE users SET display_name = ?, bio = ? WHERE id = ?")
+    .bind(display_name || null, bio || null, user.id)
+    .run();
+  return c.json({ handle: user.handle, display_name: display_name || null, bio: bio || null });
+});

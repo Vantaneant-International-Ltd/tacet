@@ -43,6 +43,48 @@ publicRoutes.get("/brands/:slug", async (c) => {
   });
 });
 
+// A public profile at @name — resolves to a brand/community archive or a person. A person's
+// posts are those in public rooms only.
+publicRoutes.get("/profile/:name", async (c) => {
+  const name = c.req.param("name");
+
+  const brand = await c.env.DB.prepare(
+    "SELECT id, slug, name, description FROM rooms WHERE slug = ? AND is_public = 1",
+  )
+    .bind(name)
+    .first<{ id: string; slug: string; name: string; description: string | null }>();
+  if (brand) {
+    const rows = await c.env.DB.prepare(
+      "SELECT id, kind, body, image_key, created_at FROM posts WHERE room_id = ? ORDER BY created_at DESC, id DESC LIMIT 200",
+    )
+      .bind(brand.id)
+      .all<PubPost>();
+    return c.json({
+      kind: "brand",
+      profile: { handle: brand.slug, name: brand.name, bio: brand.description },
+      posts: rows.results.map(shape),
+    });
+  }
+
+  const person = await c.env.DB.prepare("SELECT id, handle, display_name, bio FROM users WHERE handle = ?")
+    .bind(name)
+    .first<{ id: string; handle: string; display_name: string | null; bio: string | null }>();
+  if (!person) throw new HttpError(404, "no such account");
+  const rows = await c.env.DB.prepare(
+    `SELECT p.id, p.kind, p.body, p.image_key, p.created_at
+     FROM posts p JOIN rooms r ON r.id = p.room_id
+     WHERE p.author_id = ? AND r.is_public = 1
+     ORDER BY p.created_at DESC, p.id DESC LIMIT 200`,
+  )
+    .bind(person.id)
+    .all<PubPost>();
+  return c.json({
+    kind: "person",
+    profile: { handle: person.handle, name: person.display_name ?? person.handle, bio: person.bio },
+    posts: rows.results.map(shape),
+  });
+});
+
 // A single canonical entry at its permanent id, only if its brand is public.
 publicRoutes.get("/posts/:id", async (c) => {
   const row = await c.env.DB.prepare(

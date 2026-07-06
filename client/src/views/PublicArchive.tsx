@@ -1,25 +1,29 @@
 import { useEffect, useState } from "react";
-import { api, type PublicBrand, type PublicEntry } from "../api";
+import { api, type PublicEntry } from "../api";
 import { Link, navigate } from "../router";
 import { Loading, Empty, Avatar } from "../bits";
 
-// The public brand archive — the canonical record, readable with no account.
-// NOTE: functional layout only; the visual pass comes from Ren's dossiers.
+type Profile = { handle: string; name: string; bio: string | null };
+
+// A public profile at @name — a person or a brand/community — with their posts. No account
+// needed to read it (public rooms only).
 export function PublicArchive({ slug }: { slug: string }) {
-  const [brand, setBrand] = useState<PublicBrand | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [kind, setKind] = useState<"person" | "brand">("person");
   const [posts, setPosts] = useState<PublicEntry[] | null>(null);
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
     let live = true;
-    setBrand(null);
+    setProfile(null);
     setPosts(null);
     setGone(false);
     api
-      .publicBrand(slug)
+      .publicProfile(slug)
       .then((r) => {
         if (!live) return;
-        setBrand(r.brand);
+        setProfile(r.profile);
+        setKind(r.kind);
         setPosts(r.posts);
       })
       .catch(() => live && setGone(true));
@@ -28,24 +32,27 @@ export function PublicArchive({ slug }: { slug: string }) {
     };
   }, [slug]);
 
-  if (gone) return <PublicShell><Empty>No such archive.</Empty></PublicShell>;
-  if (!brand || !posts) return <PublicShell><Loading /></PublicShell>;
+  if (gone) return <PublicShell><Empty>No such account.</Empty></PublicShell>;
+  if (!profile || !posts) return <PublicShell><Loading /></PublicShell>;
+
+  const photos = posts.filter((p) => p.kind === "image");
+  const grid = photos.length > 0 ? photos : posts; // brands render everything as tiles
 
   return (
     <PublicShell>
       <header className="profile-head">
-        <Avatar handle={brand.name} large />
-        <h1 className="voice profile-name">{brand.name}</h1>
-        <p className="profile-handle">@{brand.slug} · tacet.house</p>
-        {brand.description && <p className="profile-bio">{brand.description}</p>}
-        <p className="label profile-record">The record · newest first</p>
+        <Avatar handle={profile.name} large />
+        <h1 className="voice profile-name">{profile.name}</h1>
+        <p className="profile-handle">@{profile.handle}@tacet.house</p>
+        {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+        <p className="label profile-record">{kind === "brand" ? "The record · newest first" : "Posts · newest first"}</p>
       </header>
 
-      {posts.length === 0 ? (
-        <Empty>Nothing on the record yet.</Empty>
+      {grid.length === 0 ? (
+        <Empty>Nothing here yet.</Empty>
       ) : (
         <div className="grid">
-          {posts.map((p) => (
+          {grid.map((p) => (
             <button key={p.id} className="tile" onClick={() => navigate(`/@${slug}/${p.id}`)}>
               {p.kind === "image" && p.image ? (
                 <img className="tile-image" src={p.image} alt="" loading="lazy" />

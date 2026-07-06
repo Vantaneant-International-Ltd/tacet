@@ -158,7 +158,20 @@ export const api = {
   invites: () => request<{ invites: Invite[] }>("/invites"),
   mintInvite: () => request<{ invite: Invite }>("/invites", { method: "POST" }),
 
-  // Public (no account needed): brand archives and single entries.
+  // Own profile (display name + bio).
+  myProfile: () =>
+    request<{ handle: string; display_name: string | null; bio: string | null }>("/auth/profile"),
+  updateProfile: (display_name: string, bio: string) =>
+    request<{ handle: string; display_name: string | null; bio: string | null }>("/auth/profile", {
+      method: "PUT",
+      body: JSON.stringify({ display_name, bio }),
+    }),
+
+  // Public (no account needed): a profile at @name (person or brand) + brand archives + entries.
+  publicProfile: (name: string) =>
+    request<{ kind: "person" | "brand"; profile: { handle: string; name: string; bio: string | null }; posts: PublicEntry[] }>(
+      `/public/profile/${name}`,
+    ),
   publicBrand: (slug: string) =>
     request<{ brand: PublicBrand; posts: PublicEntry[] }>(`/public/brands/${slug}`),
   publicEntry: (id: string) =>
