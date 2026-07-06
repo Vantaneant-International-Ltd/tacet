@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TACET — web mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --canvas: #0d0d0d;
+        --panel: #161614;
+        --hairline: #2a2a27;
+        --secondary: #8a8a86;
+        --dim: #55554f;
+        --voice: #f5f5f2;
+        --sans: "Jost", system-ui, sans-serif;
+        --mono: "Space Mono", ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; }
+      body {
+        background: var(--canvas);
+        color: var(--secondary);
+        font-family: var(--sans);
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+      }
+      .label {
+        font-family: var(--mono);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.66rem;
+        color: var(--dim);
+      }
+      .voice { color: var(--voice); }
+      button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+
+      /* ---- shell: rail + column, one column of quiet ---- */
+      .app { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
+
+      .rail {
+        border-right: 1px solid var(--hairline);
+        padding: 2rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+      }
+      .mark { font-family: var(--mono); letter-spacing: 0.42em; color: var(--secondary); font-size: 0.8rem; }
+      .rail .group + .group { margin-top: 0.4rem; }
+      .rail .label { display: block; margin-bottom: 1rem; }
+      .rail ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+      .rail .room { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+      .rail .room .name { color: var(--secondary); font-size: 1rem; }
+      .rail .room.current .name { color: var(--voice); }
+      .rail .room .state { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em; color: var(--dim); text-transform: uppercase; }
+      .rail .item { color: var(--dim); font-size: 0.95rem; }
+      .rail .item:hover, .rail .room:hover .name { color: var(--secondary); }
+      .rail .foot { margin-top: auto; }
+      .rail .you { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--dim); }
+
+      /* ---- centre column ---- */
+      .column { max-width: 720px; width: 100%; margin: 0 auto; padding: 2rem 2.5rem 0; display: flex; flex-direction: column; min-height: 100vh; }
+      .head { padding-bottom: 1.4rem; }
+      .titleline { display: flex; align-items: baseline; gap: 1rem; }
+      .room-title { font-weight: 300; font-size: 1.7rem; color: var(--voice); letter-spacing: 0.01em; }
+      .room-state { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--dim); text-transform: uppercase; }
+
+      /* the lens switcher — the one piece of chrome that matters */
+      .lensbar { display: flex; align-items: center; gap: 0.4rem; margin-top: 1.6rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--hairline); }
+      .lens { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.66rem; color: var(--dim); padding: 0.5rem 0.85rem; border-radius: 2px; }
+      .lens:hover { color: var(--secondary); }
+      .lens.on { color: var(--secondary); background: var(--panel); }
+      .lens small { display: block; font-size: 0.5rem; letter-spacing: 0.1em; color: var(--dim); margin-top: 0.28rem; }
+
+      /* ---- lens stage (cross-fade is the only animation) ---- */
+      .stage { position: relative; flex: 1; padding: 2.6rem 0 1rem; }
+      .lensview { display: none; animation: fade 300ms ease both; }
+      .lensview.on { display: block; }
+      @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) { .lensview { animation: none; } }
+
+      /* timeline */
+      .post + .post { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid var(--hairline); }
+      .byline { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.62rem; color: var(--dim); margin-bottom: 0.9rem; }
+      .post p.body { color: var(--voice); font-size: 1.12rem; line-height: 1.65; margin: 0; }
+      .acts { margin-top: 1.1rem; display: flex; gap: 1.6rem; }
+      .act { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.6rem; color: var(--dim); }
+      .act:hover { color: var(--secondary); }
+
+      /* grid — silent contact sheet */
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); }
+      .tile { aspect-ratio: 1/1; background: var(--panel); display: flex; align-items: flex-start; padding: 1rem; overflow: hidden; }
+      .tile.t2 { background: #1b1b18; }
+      .tile.t3 { background: #121210; }
+      .tile span { color: var(--voice); font-size: 0.98rem; line-height: 1.4; }
+
+      /* assembly — threads, ordered by activity, no scoreboard */
+      .thread { border-top: 1px solid var(--hairline); padding: 1.6rem 0; }
+      .thread:first-child { border-top: none; }
+      .thread .op { color: var(--voice); font-size: 1.05rem; line-height: 1.55; }
+      .thread .reply { margin: 0.9rem 0 0 1.4rem; padding-left: 1rem; border-left: 1px solid var(--hairline); color: var(--secondary); font-size: 0.98rem; line-height: 1.5; }
+
+      /* theatre — 2008 youtube, no autoplay, up-next empty */
+      .player { aspect-ratio: 16/9; background: var(--panel); border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; }
+      .play { width: 0; height: 0; border-left: 18px solid var(--dim); border-top: 12px solid transparent; border-bottom: 12px solid transparent; }
+      .chapters { margin-top: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem; }
+      .chapters .row { display: flex; gap: 1rem; color: var(--secondary); font-size: 0.95rem; }
+      .chapters .row .t { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--dim); padding-top: 0.15rem; }
+      .upnext { margin-top: 1.6rem; }
+      .upnext .label { display: block; margin-bottom: 0.4rem; }
+      .upnext p { color: var(--dim); font-size: 0.95rem; margin: 0; }
+
+      /* composer — speak into the room */
+      .composer { margin-top: auto; padding: 1.4rem 0 2rem; border-top: 1px solid var(--hairline); }
+      .composer .field { background: var(--panel); border: 1px solid var(--hairline); border-radius: 2px; padding: 0.85rem 1rem; color: var(--dim); font-size: 1rem; }
+
+      .note { position: fixed; bottom: 14px; right: 16px; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; color: var(--dim); text-transform: uppercase; }
+
+      @media (max-width: 720px) { .app { grid-template-columns: 1fr; } .rail { display: none; } .column { padding: 1.5rem 1.25rem 0; } }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- rooms + instruments retreat to the edge -->
+      <aside class="rail">
+        <div class="mark">TACET</div>
+        <div class="group">
+          <span class="label">Rooms</span>
+          <ul>
+            <li class="room"><span class="name">The Studio</span><span class="state">3 moved</span></li>
+            <li class="room current"><span class="name">Observed</span><span class="state">quiet</span></li>
+            <li class="room"><span class="name">The Bench</span><span class="state">1 waiting</span></li>
+            <li class="room"><span class="name">Placement</span><span class="state">quiet</span></li>
+          </ul>
+        </div>
+        <div class="group">
+          <span class="label">Instruments</span>
+          <ul>
+            <li class="item">Concierge</li>
+            <li class="item">Digest</li>
+            <li class="item">Archive</li>
+          </ul>
+        </div>
+        <div class="group">
+          <span class="label">Federated</span>
+          <ul>
+            <li class="item">@type@pixelfed.social</li>
+            <li class="item">@studio@mastodon.art</li>
+          </ul>
+        </div>
+        <div class="foot"><span class="you">@ren · tacet.house</span></div>
+      </aside>
+
+      <!-- the room, in the centre; nothing on the right -->
+      <main class="column">
+        <div class="head">
+          <div class="titleline">
+            <span class="room-title">Observed</span>
+            <span class="room-state">quiet</span>
+          </div>
+          <!-- one content core, four shapes -->
+          <div class="lensbar" id="lensbar">
+            <button class="lens on" data-lens="timeline">Timeline<small>text</small></button>
+            <button class="lens" data-lens="grid">Grid<small>images</small></button>
+            <button class="lens" data-lens="assembly">Assembly<small>threads</small></button>
+            <button class="lens" data-lens="theatre">Theatre<small>video</small></button>
+          </div>
+        </div>
+
+        <div class="stage">
+          <!-- TIMELINE -->
+          <section class="lensview on" data-lens="timeline">
+            <article class="post">
+              <p class="byline">STUDIO · 12:04 · 05 JUL</p>
+              <p class="body">Second host site confirmed for the placement run. The record holds; the window can wait.</p>
+              <div class="acts"><button class="act">Reply</button><button class="act">Keep</button></div>
+            </article>
+            <article class="post">
+              <p class="byline">REN · 11:20 · 05 JUL</p>
+              <p class="body">Nobody is counting anything here, and that is the entire point. Read it like a page, not a feed.</p>
+              <div class="acts"><button class="act">Reply</button><button class="act">Keep</button></div>
+            </article>
+            <article class="post">
+              <p class="byline">TYPE · 09:38 · 05 JUL</p>
+              <p class="body">A thought I did not want to shout: the room is calmer than the timeline it replaced.</p>
+              <div class="acts"><button class="act">Reply</button><button class="act">Keep</button></div>
+            </article>
+          </section>
+
+          <!-- GRID -->
+          <section class="lensview" data-lens="grid">
+            <div class="grid">
+              <div class="tile"><span>Placement run — sunday</span></div>
+              <div class="tile t2"></div>
+              <div class="tile t3"><span>Darkroom, developing</span></div>
+              <div class="tile t2"></div>
+              <div class="tile"><span>Bench notes</span></div>
+              <div class="tile t3"></div>
+              <div class="tile t2"><span>Observed, 05 Jul</span></div>
+              <div class="tile"></div>
+              <div class="tile t3"><span>Quiet frame</span></div>
+            </div>
+          </section>
+
+          <!-- ASSEMBLY -->
+          <section class="lensview" data-lens="assembly">
+            <div class="thread">
+              <p class="op">Where should the second machine sit — footfall or power access?</p>
+              <p class="reply">Footfall wins if the run to power is under twenty metres.</p>
+              <p class="reply">Agreed. The record for site 3 already has both measured.</p>
+            </div>
+            <div class="thread">
+              <p class="op">Proposal: every placement gets a document before a tile.</p>
+              <p class="reply">Yes. Data first, render second. Kept this one.</p>
+            </div>
+          </section>
+
+          <!-- THEATRE -->
+          <section class="lensview" data-lens="theatre">
+            <div class="player"><span class="play"></span></div>
+            <div class="chapters">
+              <div class="row"><span class="t">00:00</span><span>What the placement run covers</span></div>
+              <div class="row"><span class="t">02:14</span><span>Site three, measured</span></div>
+              <div class="row"><span class="t">05:40</span><span>The record, on camera</span></div>
+            </div>
+            <div class="upnext"><span class="label">Up next</span><p>Nothing. You chose this one.</p></div>
+          </section>
+        </div>
+
+        <div class="composer"><div class="field">Speak into the room</div></div>
+      </main>
+    </div>
+
+    <div class="note">TACET · web mockup · one core, four lenses</div>
+
+    <script>
+      const bar = document.getElementById("lensbar");
+      const views = document.querySelectorAll(".lensview");
+      bar.addEventListener("click", (e) => {
+        const btn = e.target.closest(".lens");
+        if (!btn) return;
+        const lens = btn.dataset.lens;
+        bar.querySelectorAll(".lens").forEach((b) => b.classList.toggle("on", b === btn));
+        views.forEach((v) => {
+          const on = v.dataset.lens === lens;
+          if (on) { v.classList.add("on"); v.style.animation = "none"; v.offsetHeight; v.style.animation = ""; }
+          else v.classList.remove("on");
+        });
+      });
+    </script>
+  </body>
+</html>
