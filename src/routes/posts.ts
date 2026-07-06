@@ -3,7 +3,7 @@ import type { Env, Variables } from "../types";
 import { ulid } from "../lib/ulid";
 import { requireUser, HttpError } from "../lib/session";
 import { isAckWord } from "../lib/acks";
-import { storeImagePair, deleteImagePair, originalKey, variantKey } from "../lib/images";
+import { storeImagePair, deleteImagePair, originalKey, variantKey, avatarVariantKey } from "../lib/images";
 
 const MAX_BODY = 5000;
 
@@ -387,6 +387,16 @@ postRoutes.delete("/posts/:id", async (c) => {
   if (post.image_key) await deleteImagePair(c.env, post.image_key);
 
   return c.json({ ok: true });
+});
+
+// --- serve a profile avatar (public) ---------------------------------------
+postRoutes.get("/avatars/:key", async (c) => {
+  const obj = await c.env.BUCKET.get(avatarVariantKey(c.req.param("key")));
+  if (!obj) throw new HttpError(404, "no such avatar");
+  const headers = new Headers();
+  obj.writeHttpMetadata(headers);
+  headers.set("cache-control", "public, max-age=86400");
+  return new Response(obj.body, { headers });
 });
 
 // --- serve an image variant (default) or the original ----------------------

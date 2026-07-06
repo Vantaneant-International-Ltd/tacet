@@ -6,8 +6,9 @@ export function Loading() {
   return <p className="label loading">Loading</p>;
 }
 
-// A quiet identity avatar — initial in a circle. Recognition, not decoration.
-export function Avatar({ handle, large }: { handle: string; large?: boolean }) {
+// A quiet identity avatar — an uploaded image if there is one, else the initial in a circle.
+export function Avatar({ handle, large, src }: { handle: string; large?: boolean; src?: string | null }) {
+  if (src) return <img className={"av av-img" + (large ? " lg" : "")} src={src} alt="" />;
   return <span className={"av" + (large ? " lg" : "")}>{(handle[0] ?? "?").toUpperCase()}</span>;
 }
 

@@ -42,3 +42,23 @@ export async function storeImagePair(
 export async function deleteImagePair(env: Env, key: string): Promise<void> {
   await env.BUCKET.delete([originalKey(key), variantKey(key)]);
 }
+
+// Avatars: one per user, stored under avatars/<userId>/{original,variant}.
+export function avatarVariantKey(userId: string): string {
+  return `avatars/${userId}/variant`;
+}
+
+export async function storeAvatar(env: Env, userId: string, original: File, variant: File): Promise<void> {
+  if (!isAllowedImage(original.type, original.size, MAX_ORIGINAL)) {
+    throw new Error("avatar is not an allowed type or is too large");
+  }
+  if (!isAllowedImage(variant.type, variant.size, MAX_VARIANT)) {
+    throw new Error("avatar variant is not an allowed type or is too large");
+  }
+  await env.BUCKET.put(`avatars/${userId}/original`, await original.arrayBuffer(), {
+    httpMetadata: { contentType: original.type },
+  });
+  await env.BUCKET.put(`avatars/${userId}/variant`, await variant.arrayBuffer(), {
+    httpMetadata: { contentType: variant.type },
+  });
+}

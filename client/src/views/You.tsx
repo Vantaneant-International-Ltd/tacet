@@ -3,6 +3,7 @@ import { api, ApiError } from "../api";
 import { useUser, setUser } from "../session";
 import { navigate, Link } from "../router";
 import { Avatar, ErrorLine } from "../bits";
+import { resizeImage } from "../util";
 import { InvitePanel } from "./InvitePanel";
 
 // The You tab, rebuilt as a real settings panel — grouped rows, a working private-account
@@ -12,6 +13,12 @@ export function You() {
   const [priv, setPriv] = useState(user?.is_private ?? false);
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.myProfile().then((p) => setAvatar(p.avatar)).catch(() => {});
+  }, []);
+
   if (!user) return null;
 
   async function togglePrivate() {
@@ -37,7 +44,7 @@ export function You() {
   return (
     <section className="settings">
       <div className="settings-profile">
-        <Avatar handle={user.handle} large />
+        <Avatar handle={user.handle} large src={avatar} />
         <div className="sp-name voice">{user.handle}</div>
         <div className="sp-addr">@{user.handle}@tacet.house</div>
         {user.is_admin && <span className="sp-role label">Admin</span>}
@@ -104,23 +111,45 @@ export function You() {
         TACET · v{__APP_VERSION__} · @{user.handle}@tacet.house
       </p>
 
-      {editing && <EditProfile onClose={() => setEditing(false)} />}
+      {editing && <EditProfile onClose={() => setEditing(false)} onAvatar={setAvatar} />}
     </section>
   );
 }
 
-function EditProfile({ onClose }: { onClose: () => void }) {
+function EditProfile({ onClose, onAvatar }: { onClose: () => void; onAvatar: (src: string) => void }) {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [avatar, setAvatarLocal] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     api.myProfile().then((p) => {
       setName(p.display_name ?? "");
       setBio(p.bio ?? "");
+      setAvatarLocal(p.avatar);
     });
   }, []);
+
+  async function pickAvatar(file: File) {
+    setError(null);
+    setUploading(true);
+    try {
+      const variant = await resizeImage(file, 512);
+      const form = new FormData();
+      form.set("original", file);
+      form.set("variant", new File([variant], "avatar.jpg", { type: "image/jpeg" }));
+      const { avatar: url } = await api.uploadAvatar(form);
+      const busted = `${url}?t=${Date.now().toString().slice(-6)}`;
+      setAvatarLocal(busted);
+      onAvatar(busted);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "That avatar did not upload.");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function save() {
     setError(null);
@@ -144,6 +173,15 @@ function EditProfile({ onClose }: { onClose: () => void }) {
             Close
           </button>
         </div>
+
+        <div className="avatar-edit">
+          <Avatar handle={name || "?"} large src={avatar} />
+          <label className="label avatar-pick">
+            {uploading ? "Uploading…" : "Change photo"}
+            <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && pickAvatar(e.target.files[0])} />
+          </label>
+        </div>
+
         <label className="label field-label">Display name</label>
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" maxLength={60} />
         <label className="label field-label">Bio</label>

@@ -767,3 +767,9 @@ textarea:focus {
 .room-slug { font-size: 1.4rem; font-weight: 400; }
 .slug-preview { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--dim); margin: 0.4rem 0 0.2rem; }
 .slug-preview .voice { color: var(--secondary); }
+
+/* avatar images + edit */
+.av-img { object-fit: cover; }
+.avatar-edit { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 0.4rem 0 1.6rem; }
+.avatar-pick { color: var(--secondary); border: 1px solid var(--hairline); border-radius: 999px; padding: 0.42rem 1.1rem; cursor: pointer; letter-spacing: 0.14em; }
+.avatar-pick:hover { color: var(--voice); border-color: var(--secondary); }

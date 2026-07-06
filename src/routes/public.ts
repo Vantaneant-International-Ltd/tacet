@@ -61,14 +61,14 @@ publicRoutes.get("/profile/:name", async (c) => {
       .all<PubPost>();
     return c.json({
       kind: "brand",
-      profile: { handle: brand.slug, name: brand.name, bio: brand.description },
+      profile: { handle: brand.slug, name: brand.name, bio: brand.description, avatar: null },
       posts: rows.results.map(shape),
     });
   }
 
-  const person = await c.env.DB.prepare("SELECT id, handle, display_name, bio FROM users WHERE handle = ?")
+  const person = await c.env.DB.prepare("SELECT id, handle, display_name, bio, avatar_key FROM users WHERE handle = ?")
     .bind(name)
-    .first<{ id: string; handle: string; display_name: string | null; bio: string | null }>();
+    .first<{ id: string; handle: string; display_name: string | null; bio: string | null; avatar_key: string | null }>();
   if (!person) throw new HttpError(404, "no such account");
   const rows = await c.env.DB.prepare(
     `SELECT p.id, p.kind, p.body, p.image_key, p.created_at
@@ -80,7 +80,12 @@ publicRoutes.get("/profile/:name", async (c) => {
     .all<PubPost>();
   return c.json({
     kind: "person",
-    profile: { handle: person.handle, name: person.display_name ?? person.handle, bio: person.bio },
+    profile: {
+      handle: person.handle,
+      name: person.display_name ?? person.handle,
+      bio: person.bio,
+      avatar: person.avatar_key ? `/api/avatars/${person.avatar_key}` : null,
+    },
     posts: rows.results.map(shape),
   });
 });

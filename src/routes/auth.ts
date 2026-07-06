@@ -4,6 +4,7 @@ import { ulid } from "../lib/ulid";
 import { hashPassphrase, verifyPassphrase } from "../lib/passphrase";
 import { issueSession, clearSession, requireUser, HttpError } from "../lib/session";
 import { verifyTurnstile } from "../lib/turnstile";
+import { storeAvatar } from "../lib/images";
 
 const HANDLE_RE = /^[a-z0-9][a-z0-9_-]{1,29}$/;
 
@@ -136,10 +137,33 @@ authRoutes.post("/logout", (c) => {
 // Read / edit your own profile (display name + bio).
 authRoutes.get("/profile", async (c) => {
   const user = requireUser(c);
-  const row = await c.env.DB.prepare("SELECT display_name, bio FROM users WHERE id = ?")
+  const row = await c.env.DB.prepare("SELECT display_name, bio, avatar_key FROM users WHERE id = ?")
     .bind(user.id)
-    .first<{ display_name: string | null; bio: string | null }>();
-  return c.json({ handle: user.handle, display_name: row?.display_name ?? null, bio: row?.bio ?? null });
+    .first<{ display_name: string | null; bio: string | null; avatar_key: string | null }>();
+  return c.json({
+    handle: user.handle,
+    display_name: row?.display_name ?? null,
+    bio: row?.bio ?? null,
+    avatar: row?.avatar_key ? `/api/avatars/${row.avatar_key}` : null,
+  });
+});
+
+// Upload a profile avatar (multipart: original + client-resized variant).
+authRoutes.post("/avatar", async (c) => {
+  const user = requireUser(c);
+  const form = await c.req.formData();
+  const original = form.get("original");
+  const variant = form.get("variant");
+  if (original === null || typeof original === "string" || variant === null || typeof variant === "string") {
+    throw new HttpError(400, "an image is required");
+  }
+  try {
+    await storeAvatar(c.env, user.id, original, variant);
+  } catch (e) {
+    throw new HttpError(400, (e as Error).message);
+  }
+  await c.env.DB.prepare("UPDATE users SET avatar_key = ? WHERE id = ?").bind(user.id, user.id).run();
+  return c.json({ avatar: `/api/avatars/${user.id}` });
 });
 
 authRoutes.put("/profile", async (c) => {

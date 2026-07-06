@@ -4,7 +4,7 @@ import { Link, navigate } from "../router";
 import { Loading, Empty, Avatar } from "../bits";
 import { bylineTime, bylineDate } from "../util";
 
-type Profile = { handle: string; name: string; bio: string | null };
+type Profile = { handle: string; name: string; bio: string | null; avatar: string | null };
 
 // A public profile at @name — a person or a brand/community — viewable as Grid (photos) or
 // Timeline (thoughts). No account needed to read it (public rooms only).
@@ -43,7 +43,7 @@ export function PublicArchive({ slug }: { slug: string }) {
   return (
     <PublicShell>
       <header className="profile-head">
-        <Avatar handle={profile.name} large />
+        <Avatar handle={profile.name} large src={profile.avatar} />
         <h1 className="voice profile-name">{profile.name}</h1>
         <p className="profile-handle">
           {kind === "brand" ? `tacet.house/${profile.handle}` : `@${profile.handle}@tacet.house`}
