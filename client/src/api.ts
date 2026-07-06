@@ -109,7 +109,10 @@ export const api = {
   logout: () => request<{ ok: true }>("/auth/logout", { method: "POST" }),
 
   rooms: () => request<{ rooms: Room[] }>("/rooms"),
-  room: (slug: string) => request<{ room: Room; lens: Lens }>(`/rooms/${slug}`),
+  room: (slug: string) => request<{ room: Room; lens: Lens; following: boolean }>(`/rooms/${slug}`),
+  follow: (slug: string) => request<{ following: boolean }>(`/rooms/${slug}/follow`, { method: "POST" }),
+  unfollow: (slug: string) => request<{ following: boolean }>(`/rooms/${slug}/follow`, { method: "DELETE" }),
+  feed: () => request<{ posts: KeptPost[] }>("/feed"),
   createRoom: (slug: string, name: string, description: string, default_lens: Lens) =>
     request<{ room: Room }>("/rooms", {
       method: "POST",

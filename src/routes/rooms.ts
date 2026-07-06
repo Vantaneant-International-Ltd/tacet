@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { Env, Variables } from "../types";
 import { ulid } from "../lib/ulid";
-import { requireUser, requireAdmin, HttpError } from "../lib/session";
+import { requireUser, HttpError } from "../lib/session";
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,49}$/;
 
@@ -16,10 +16,10 @@ roomRoutes.get("/", async (c) => {
   return c.json({ rooms: rooms.results });
 });
 
-// Create a room (admin only). Every existing user is made a member — rooms are
-// invite-wide in Phase 1, but membership rows are still recorded (lockfile §7).
+// Create a room / community. Anyone can (like making a subreddit or a Discord server);
+// the creator owns it and auto-follows it. Others join by following.
 roomRoutes.post("/", async (c) => {
-  const admin = requireAdmin(c);
+  const user = requireUser(c);
   const body = await c.req.json().catch(() => ({}));
   const slug = typeof body.slug === "string" ? body.slug.trim().toLowerCase() : "";
   const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -35,21 +35,14 @@ roomRoutes.post("/", async (c) => {
 
   const now = new Date().toISOString();
   const roomId = ulid();
-  const users = await c.env.DB.prepare("SELECT id FROM users").all<{ id: string }>();
 
-  const stmts = [
+  await c.env.DB.batch([
     c.env.DB.prepare(
       "INSERT INTO rooms (id, slug, name, description, default_lens, is_public, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    ).bind(roomId, slug, name, description || null, defaultLens, isPublic, admin.id, now),
-    ...users.results.map((u) =>
-      c.env.DB.prepare("INSERT INTO memberships (user_id, room_id, joined_at) VALUES (?, ?, ?)").bind(
-        u.id,
-        roomId,
-        now,
-      ),
-    ),
-  ];
-  await c.env.DB.batch(stmts);
+    ).bind(roomId, slug, name, description || null, defaultLens, isPublic, user.id, now),
+    c.env.DB.prepare("INSERT INTO memberships (user_id, room_id, joined_at) VALUES (?, ?, ?)").bind(user.id, roomId, now),
+    c.env.DB.prepare("INSERT INTO follows (user_id, room_id, created_at) VALUES (?, ?, ?)").bind(user.id, roomId, now),
+  ]);
 
   return c.json({ room: { slug, name, description } }, 201);
 });
@@ -66,12 +59,41 @@ roomRoutes.get("/:slug", async (c) => {
   const pref = await c.env.DB.prepare("SELECT lens FROM lens_prefs WHERE user_id = ? AND room_id = ?")
     .bind(user.id, room.id)
     .first<{ lens: string }>();
+  const fol = await c.env.DB.prepare("SELECT 1 FROM follows WHERE user_id = ? AND room_id = ?")
+    .bind(user.id, room.id)
+    .first();
 
   return c.json({
     room: { slug: room.slug, name: room.name, description: room.description },
     // The saved choice wins; otherwise the room's suggested default (lockfile §1).
     lens: pref?.lens ?? room.default_lens,
+    following: Boolean(fol),
   });
+});
+
+// Follow / unfollow a room (curation, no count). Idempotent.
+roomRoutes.post("/:slug/follow", async (c) => {
+  const user = requireUser(c);
+  const room = await c.env.DB.prepare("SELECT id FROM rooms WHERE slug = ?")
+    .bind(c.req.param("slug"))
+    .first<{ id: string }>();
+  if (!room) throw new HttpError(404, "no such room");
+  await c.env.DB.prepare("INSERT OR IGNORE INTO follows (user_id, room_id, created_at) VALUES (?, ?, ?)")
+    .bind(user.id, room.id, new Date().toISOString())
+    .run();
+  return c.json({ following: true });
+});
+
+roomRoutes.delete("/:slug/follow", async (c) => {
+  const user = requireUser(c);
+  const room = await c.env.DB.prepare("SELECT id FROM rooms WHERE slug = ?")
+    .bind(c.req.param("slug"))
+    .first<{ id: string }>();
+  if (!room) throw new HttpError(404, "no such room");
+  await c.env.DB.prepare("DELETE FROM follows WHERE user_id = ? AND room_id = ?")
+    .bind(user.id, room.id)
+    .run();
+  return c.json({ following: false });
 });
 
 // Persist the current user's lens choice for this room (lockfile §6: per person per room).

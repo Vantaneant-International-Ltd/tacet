@@ -16,6 +16,7 @@ export function Room({ slug }: { slug: string }) {
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [writing, setWriting] = useState(false);
   const [fadeKey, setFadeKey] = useState(0);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -25,6 +26,7 @@ export function Room({ slug }: { slug: string }) {
       if (!live) return;
       setRoom(r.room);
       setLens(r.lens);
+      setFollowing(r.following);
     });
     api.posts(slug).then((r) => live && setPosts(r.posts));
     return () => {
@@ -44,6 +46,11 @@ export function Room({ slug }: { slug: string }) {
     setWriting(false);
   }
 
+  async function toggleFollow() {
+    const next = following ? await api.unfollow(slug) : await api.follow(slug);
+    setFollowing(next.following);
+  }
+
   if (!room) return <Loading />;
 
   return (
@@ -53,9 +60,14 @@ export function Room({ slug }: { slug: string }) {
           <p className="label heading">{room.name}</p>
           {room.description && <p className="room-desc">{room.description}</p>}
         </div>
-        <button className="label write" onClick={() => setWriting(true)}>
-          Write
-        </button>
+        <div className="room-head-actions">
+          <button className={"label follow-btn" + (following ? " on" : "")} onClick={toggleFollow}>
+            {following ? "Following" : "Follow"}
+          </button>
+          <button className="label write" onClick={() => setWriting(true)}>
+            Write
+          </button>
+        </div>
       </header>
 
       <div className="lens-switch" role="tablist" aria-label="Lens">

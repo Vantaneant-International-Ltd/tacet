@@ -26,6 +26,16 @@ export function Shell({ children }: { children: ReactNode }) {
 
         <nav className="rail-nav">
           <div className="rail-group">
+            <span className="label">Feed</span>
+            <ul>
+              <li>
+                <Link to="/feed" className={"rail-item" + (here("/feed") ? " here" : "")}>
+                  Following
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="rail-group">
             <span className="label">Rooms</span>
             <ul>
               {rooms.map((r) => (
@@ -71,6 +81,9 @@ export function Shell({ children }: { children: ReactNode }) {
 
       {/* phone only (CSS) */}
       <nav className="bottom">
+        <Link to="/feed" className={"nav-word" + (here("/feed") ? " here" : "")}>
+          Feed
+        </Link>
         <Link to="/rooms" className={"nav-word" + (here("/rooms") ? " here" : "")}>
           Rooms
         </Link>

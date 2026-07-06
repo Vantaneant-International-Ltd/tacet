@@ -14,16 +14,47 @@ describe("rooms + posting", () => {
     expect(rooms.map((r) => r.slug)).toContain("parlour");
   });
 
-  it("refuses room creation for non-admins", async () => {
+  it("lets any member create a room/community (creator owns + auto-follows)", async () => {
     const admin = await registerAdmin();
     const ada = await registerInvited(admin, "ada");
-    const res = await makeRoom(ada, "secret", "Secret");
-    expect(res.status).toBe(403);
+    const res = await makeRoom(ada, "ada-room", "Ada's Room");
+    expect(res.status).toBe(201);
+    const detail = await req("/api/rooms/ada-room", { cookie: ada });
+    expect(((await detail.json()) as { following: boolean }).following).toBe(true);
   });
 
   it("requires a signed-in user to list rooms", async () => {
     const res = await req("/api/rooms");
     expect(res.status).toBe(401);
+  });
+
+  it("follow builds a personal feed; unfollow empties it; no follower count exists", async () => {
+    const admin = await registerAdmin();
+    await makeRoom(admin); // parlour — creator auto-follows
+    await req("/api/rooms/parlour/posts", { method: "POST", cookie: admin, body: { body: "hello" } });
+
+    // creator sees their own room's post in the feed (auto-followed)
+    const mine = await req("/api/feed", { cookie: admin });
+    expect(((await mine.json()) as { posts: { body: string }[] }).posts.map((p) => p.body)).toContain("hello");
+
+    // a fresh member's feed is empty until they follow
+    const ada = await registerInvited(admin, "ada");
+    let feed = ((await (await req("/api/feed", { cookie: ada })).json()) as { posts: unknown[] }).posts;
+    expect(feed).toHaveLength(0);
+
+    await req("/api/rooms/parlour/follow", { method: "POST", cookie: ada });
+    feed = ((await (await req("/api/feed", { cookie: ada })).json()) as { posts: { body: string }[] }).posts;
+    expect((feed as { body: string }[]).map((p) => p.body)).toContain("hello");
+
+    await req("/api/rooms/parlour/follow", { method: "DELETE", cookie: ada });
+    feed = ((await (await req("/api/feed", { cookie: ada })).json()) as { posts: unknown[] }).posts;
+    expect(feed).toHaveLength(0);
+
+    // room detail reports following state and never a follower count
+    const detail = await req("/api/rooms/parlour", { cookie: admin });
+    const raw = await detail.text();
+    expect((JSON.parse(raw) as { following: boolean }).following).toBe(true);
+    expect(raw).not.toMatch(/count|followers/i);
   });
 
   it("posts text and returns it newest-first", async () => {

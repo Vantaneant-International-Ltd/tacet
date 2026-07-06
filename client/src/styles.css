@@ -558,3 +558,22 @@ textarea:focus {
   border-top: 1px solid var(--hairline); color: var(--dim); letter-spacing: 0.16em;
 }
 .public-foot a:hover { color: var(--secondary); }
+
+/* --- Feed + follow (curation, no counts) ---------------------------------- */
+.feed-list { display: flex; flex-direction: column; gap: var(--gap-post); margin-top: 2rem; }
+.feed .post { padding-bottom: var(--gap-post); border-bottom: 1px solid var(--hairline); }
+.feed .post:last-child { padding-bottom: 0; border-bottom: none; }
+.empty-nudge { color: var(--secondary); font-size: 1rem; line-height: 1.6; padding: 2.5rem var(--pad-page); max-width: 30rem; }
+.under { color: var(--voice); border-bottom: 1px solid var(--hairline); }
+.under:hover { border-color: var(--secondary); }
+
+.room-head-actions { display: flex; align-items: baseline; gap: 1.4rem; }
+.follow-btn {
+  color: var(--secondary);
+  letter-spacing: 0.16em;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.4rem 1.1rem;
+}
+.follow-btn:hover { color: var(--voice); border-color: var(--secondary); }
+.follow-btn.on { color: var(--dim); border-color: var(--hairline); }

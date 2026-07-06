@@ -11,6 +11,7 @@ import { PostDetail } from "./views/PostDetail";
 import { You } from "./views/You";
 import { About } from "./views/About";
 import { Keeps } from "./views/Keeps";
+import { Feed } from "./views/Feed";
 import { Admin } from "./views/Admin";
 import { PublicArchive } from "./views/PublicArchive";
 import { PublicPost } from "./views/PublicPost";
@@ -63,6 +64,7 @@ function route(path: string, isAdmin: boolean) {
 
   if (path === "/rooms" || path === "/") return <RoomList />;
   if (path === "/you") return <You />;
+  if (path === "/feed") return <Feed />;
   if (path === "/keeps") return <Keeps />;
   if (path === "/about") return <About />;
   if (path === "/admin") return isAdmin ? <Admin /> : <NotHere />;

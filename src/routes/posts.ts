@@ -108,6 +108,22 @@ const KEEPS_SQL = `
   ORDER BY k.created_at DESC, p.id DESC
   LIMIT 200`;
 
+// The personal feed: posts from the rooms/communities the viewer follows, newest first.
+// Pure curation — you assembled it, time ordered it. No algorithm, no counts.
+const FEED_SQL = `
+  SELECT p.id, p.kind, p.body, p.image_key, p.created_at, u.handle AS author_handle,
+    r.slug AS room_slug, r.name AS room_name,
+    (p.author_id = ?1) AS is_mine,
+    EXISTS(SELECT 1 FROM keeps k WHERE k.post_id = p.id AND k.user_id = ?1) AS kept_by_me,
+    CASE WHEN p.author_id = ?1 THEN EXISTS(SELECT 1 FROM keeps k2 WHERE k2.post_id = p.id) ELSE 0 END AS was_kept,
+    (SELECT word FROM acknowledgments a WHERE a.post_id = p.id AND a.user_id = ?1) AS my_ack
+  FROM posts p
+  JOIN follows f ON f.room_id = p.room_id AND f.user_id = ?1
+  JOIN rooms r ON r.id = p.room_id
+  JOIN users u ON u.id = p.author_id
+  ORDER BY p.created_at DESC, p.id DESC
+  LIMIT 200`;
+
 export const postRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 // --- list posts in a room --------------------------------------------------
@@ -123,6 +139,19 @@ postRoutes.get("/rooms/:slug/posts", async (c) => {
 postRoutes.get("/keeps", async (c) => {
   const user = requireUser(c);
   const rows = await c.env.DB.prepare(KEEPS_SQL).bind(user.id).all<KeepRow>();
+  const acks = await acksFor(c.env, rows.results.map((r) => r.id));
+  return c.json({
+    posts: rows.results.map((r) => ({
+      ...shapePost(r, acks.get(r.id) ?? []),
+      room: { slug: r.room_slug, name: r.room_name },
+    })),
+  });
+});
+
+// --- personal feed: posts from what you follow, newest first ----------------
+postRoutes.get("/feed", async (c) => {
+  const user = requireUser(c);
+  const rows = await c.env.DB.prepare(FEED_SQL).bind(user.id).all<KeepRow>();
   const acks = await acksFor(c.env, rows.results.map((r) => r.id));
   return c.json({
     posts: rows.results.map((r) => ({
