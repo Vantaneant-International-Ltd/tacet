@@ -6,6 +6,11 @@ export function Loading() {
   return <p className="label loading">Loading</p>;
 }
 
+// A quiet identity avatar — initial in a circle. Recognition, not decoration.
+export function Avatar({ handle, large }: { handle: string; large?: boolean }) {
+  return <span className={"av" + (large ? " lg" : "")}>{(handle[0] ?? "?").toUpperCase()}</span>;
+}
+
 // Quiet, factual empty state — states a fact and stops (DESIGN §7).
 export function Empty({ children }: { children: ReactNode }) {
   return <p className="empty label">{children}</p>;

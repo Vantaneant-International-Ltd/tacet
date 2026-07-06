@@ -18,12 +18,16 @@
 }
 
 :root {
-  --canvas: #0d0d0d;
-  --panel: #161614;
-  --hairline: #2a2a27;
-  --secondary: #8a8a86;
-  --dim: #55554f;
+  /* Warm skin (approved mockup) — familiar, not austere. */
+  --canvas: #101010;
+  --panel: #1a1a18;
+  --raise: #1a1a18;
+  --raise2: #201f1c;
+  --hairline: #2f2f2b;
+  --secondary: #9a9a95;
+  --dim: #61615a;
   --voice: #f5f5f2;
+  --radius: 14px;
 
   --font-human: "Jost", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
@@ -577,3 +581,47 @@ textarea:focus {
 }
 .follow-btn:hover { color: var(--voice); border-color: var(--secondary); }
 .follow-btn.on { color: var(--dim); border-color: var(--hairline); }
+
+/* ============================================================================
+   WARM SKIN — cards, avatars, pills (approved mockup). Familiar, not austere.
+   ========================================================================= */
+
+/* avatar */
+.av {
+  width: 38px; height: 38px; border-radius: 50%; flex: none;
+  background: var(--raise2); border: 1px solid var(--hairline);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--secondary);
+}
+.av.lg { width: 84px; height: 84px; font-size: 1.1rem; }
+
+/* post card */
+.ucard { background: var(--raise); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+.ucard-head { display: flex; align-items: center; gap: 11px; }
+.ucard-head .who .n { color: var(--voice); font-size: 1rem; text-transform: lowercase; }
+.ucard-head .who .h { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; color: var(--dim); margin-top: 2px; text-transform: uppercase; }
+.ucard-body { color: var(--voice); font-size: 1.05rem; line-height: 1.58; margin: 13px 2px; white-space: pre-wrap; word-break: break-word; }
+.ucard-img { display: block; width: 100%; height: auto; border-radius: 10px; margin: 12px 0 4px; cursor: pointer; }
+.ucard-acts { display: flex; gap: 20px; align-items: center; margin-top: 8px; padding: 0 2px; }
+.uact { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.uact:hover, .uact.on { color: var(--secondary); }
+.uact.kept { color: var(--dim); }
+
+/* feed / timeline become card stacks (no more hairline editorial rows) */
+.feed-list, .timeline, .kept-list { display: flex; flex-direction: column; gap: 0; margin-top: 1.6rem; }
+.feed .post, .timeline .post, .keeps .post { padding-bottom: 0; border-bottom: none; }
+
+/* lens switcher → a rounded pill (the hero chrome) */
+.lens-switch {
+  display: inline-flex; gap: 2px; padding: 3px; margin: 0.2rem 0 2.2rem;
+  background: var(--raise); border: 1px solid var(--hairline); border-radius: 999px;
+}
+.lens-opt { flex-direction: row; gap: 0.4rem; padding: 0.5rem 0.95rem; border-radius: 999px; align-items: center; }
+.lens-opt .lens-blurb { display: none; }
+.lens-opt .lens-name { letter-spacing: 0.14em; font-size: 0.62rem; }
+.lens-opt.current { background: var(--raise2); }
+.lens-opt.current .lens-name { color: var(--voice); }
+
+/* buttons a touch warmer/rounder */
+.action, .follow-btn { border-radius: 999px; }
+.write { color: var(--voice); }

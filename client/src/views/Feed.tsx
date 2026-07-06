@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { api, type KeptPost } from "../api";
-import { Link, navigate } from "../router";
-import { Byline, Loading } from "../bits";
+import { Link } from "../router";
+import { Loading } from "../bits";
+import { PostCard } from "./PostCard";
 
 // Your personal feed: posts from the rooms/communities you follow, newest first.
 // You assembled it; time ordered it. No algorithm, no counts.
@@ -26,14 +27,14 @@ export function Feed() {
       ) : (
         <div className="feed-list">
           {posts.map((p) => (
-            <article key={p.id} className="post">
-              <p className="label kept-room">{p.room.name}</p>
-              <Byline handle={p.author_handle} at={p.created_at} />
-              <button className="kept-open" onClick={() => navigate(`/rooms/${p.room.slug}/p/${p.id}`)}>
-                {p.body && <p className="voice post-body">{p.body}</p>}
-                {p.image && <img className="post-image" src={p.image} alt="" loading="lazy" />}
-              </button>
-            </article>
+            <PostCard
+              key={p.id}
+              post={p}
+              roomSlug={p.room.slug}
+              roomName={p.room.name}
+              onChange={(np) => setPosts((prev) => prev!.map((x) => (x.id === np.id ? { ...x, ...np } : x)))}
+              onDeleted={(id) => setPosts((prev) => prev!.filter((x) => x.id !== id))}
+            />
           ))}
         </div>
       )}
