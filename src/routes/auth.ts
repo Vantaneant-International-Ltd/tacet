@@ -92,7 +92,16 @@ authRoutes.post("/register", async (c) => {
   await c.env.DB.batch(stmts);
 
   await issueSession(c, userId);
-  return c.json({ user: { id: userId, handle, is_admin: isBootstrap } }, 201);
+  return c.json({ user: { id: userId, handle, is_admin: isBootstrap, is_private: false } }, 201);
+});
+
+// Update account settings (currently: private account toggle).
+authRoutes.put("/settings", async (c) => {
+  const user = requireUser(c);
+  const body = await c.req.json().catch(() => ({}));
+  const isPrivate = body.is_private === true ? 1 : 0;
+  await c.env.DB.prepare("UPDATE users SET is_private = ? WHERE id = ?").bind(isPrivate, user.id).run();
+  return c.json({ user: { ...user, is_private: isPrivate === 1 } });
 });
 
 authRoutes.post("/login", async (c) => {
@@ -101,9 +110,11 @@ authRoutes.post("/login", async (c) => {
   const passphrase = typeof body.passphrase === "string" ? body.passphrase : "";
   if (!handle || !passphrase) throw new HttpError(400, "handle and passphrase are required");
 
-  const row = await c.env.DB.prepare("SELECT id, handle, passphrase_hash, is_admin FROM users WHERE handle = ?")
+  const row = await c.env.DB.prepare(
+    "SELECT id, handle, passphrase_hash, is_admin, is_private FROM users WHERE handle = ?",
+  )
     .bind(handle)
-    .first<{ id: string; handle: string; passphrase_hash: string; is_admin: number }>();
+    .first<{ id: string; handle: string; passphrase_hash: string; is_admin: number; is_private: number }>();
 
   // Same response whether the handle is unknown or the passphrase is wrong.
   if (!row || !verifyPassphrase(passphrase, row.passphrase_hash)) {
@@ -111,7 +122,9 @@ authRoutes.post("/login", async (c) => {
   }
 
   await issueSession(c, row.id);
-  return c.json({ user: { id: row.id, handle: row.handle, is_admin: row.is_admin === 1 } });
+  return c.json({
+    user: { id: row.id, handle: row.handle, is_admin: row.is_admin === 1, is_private: row.is_private === 1 },
+  });
 });
 
 authRoutes.post("/logout", (c) => {

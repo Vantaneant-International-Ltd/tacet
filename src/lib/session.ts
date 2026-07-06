@@ -69,11 +69,16 @@ export const sessionMiddleware: MiddlewareHandler<{ Bindings: Env; Variables: Va
   c.set("user", null);
   const userId = await readUserId(c);
   if (userId) {
-    const row = await c.env.DB.prepare("SELECT id, handle, is_admin FROM users WHERE id = ?")
+    const row = await c.env.DB.prepare("SELECT id, handle, is_admin, is_private FROM users WHERE id = ?")
       .bind(userId)
-      .first<{ id: string; handle: string; is_admin: number }>();
+      .first<{ id: string; handle: string; is_admin: number; is_private: number }>();
     if (row) {
-      const user: SessionUser = { id: row.id, handle: row.handle, is_admin: row.is_admin === 1 };
+      const user: SessionUser = {
+        id: row.id,
+        handle: row.handle,
+        is_admin: row.is_admin === 1,
+        is_private: row.is_private === 1,
+      };
       c.set("user", user);
     }
   }

@@ -17,6 +17,7 @@ export interface SessionUser {
   id: string;
   handle: string;
   is_admin: boolean;
+  is_private: boolean;
 }
 
 export type Variables = {

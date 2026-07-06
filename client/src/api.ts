@@ -20,6 +20,7 @@ export interface User {
   id: string;
   handle: string;
   is_admin: boolean;
+  is_private: boolean;
 }
 
 export interface Room {
@@ -108,6 +109,8 @@ export const api = {
   login: (handle: string, passphrase: string) =>
     request<{ user: User }>("/auth/login", { method: "POST", body: JSON.stringify({ handle, passphrase }) }),
   logout: () => request<{ ok: true }>("/auth/logout", { method: "POST" }),
+  updateSettings: (is_private: boolean) =>
+    request<{ user: User }>("/auth/settings", { method: "PUT", body: JSON.stringify({ is_private }) }),
 
   rooms: () => request<{ rooms: Room[] }>("/rooms"),
   room: (slug: string) => request<{ room: Room; lens: Lens; following: boolean }>(`/rooms/${slug}`),

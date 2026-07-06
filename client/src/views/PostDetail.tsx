@@ -79,16 +79,18 @@ export function PostDetail({ slug, id }: { slug: string; id: string }) {
         {post.body && <p className="ucard-body voice">{post.body}</p>}
         {post.image && <img className="ucard-img" src={post.image} alt="" loading="lazy" />}
         <div className="ucard-acts">
-          {post.is_mine ? (
-            <>
-              {post.kept && <span className="uact kept">Kept</span>}
-              <button className="uact" onClick={remove}>
-                Delete
-              </button>
-            </>
-          ) : (
-            <button className={"uact" + (post.kept_by_me ? " on" : "")} onClick={toggleKeep}>
-              Keep
+          <button
+            className={"ubookmark" + (post.kept_by_me ? " on" : "")}
+            aria-label={post.kept_by_me ? "Saved" : "Save"}
+            onClick={toggleKeep}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill={post.kept_by_me ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.7}>
+              <path d="M6 3h12v18l-6-4-6 4V3z" />
+            </svg>
+          </button>
+          {post.is_mine && (
+            <button className="uact" onClick={remove}>
+              Delete
             </button>
           )}
         </div>

@@ -1,21 +1,31 @@
+import { useState } from "react";
 import { api } from "../api";
 import { useUser, setUser } from "../session";
 import { navigate, Link } from "../router";
+import { Avatar } from "../bits";
 import { InvitePanel } from "./InvitePanel";
 
-// The YOU surface is where the house explains itself, not just a sign-out button
-// (Amendment 1). Real settings sit alongside a plain statement of the promises.
-const PROMISES = [
-  "No counts. Nothing here is measured in public.",
-  "No algorithm. Time is the only order.",
-  "No advertising. You are not the product.",
-  "This app never asks to be opened.",
-  "Reading is private. Only what you choose to do is seen.",
-];
-
+// The You tab, rebuilt as a real settings panel — grouped rows, a working private-account
+// switch, the house's pages, and the fediverse address. Quiet, but a proper settings screen.
 export function You() {
   const user = useUser();
+  const [priv, setPriv] = useState(user?.is_private ?? false);
+  const [busy, setBusy] = useState(false);
   if (!user) return null;
+
+  async function togglePrivate() {
+    const next = !priv;
+    setPriv(next);
+    setBusy(true);
+    try {
+      const { user: updated } = await api.updateSettings(next);
+      setUser(updated);
+    } catch {
+      setPriv(!next); // revert on failure
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function signOut() {
     await api.logout().catch(() => {});
@@ -24,40 +34,66 @@ export function You() {
   }
 
   return (
-    <section className="you">
-      <p className="label heading">You</p>
-      <p className="voice you-handle">{user.handle}</p>
-      {user.is_admin && <p className="label you-role">Admin</p>}
-
-      <div className="you-links">
-        <Link to="/keeps" className="label you-link">
-          Your keeps
-        </Link>
-        <Link to="/about" className="label you-link">
-          About this house
-        </Link>
+    <section className="settings">
+      <div className="settings-profile">
+        <Avatar handle={user.handle} large />
+        <div className="sp-name voice">{user.handle}</div>
+        <div className="sp-addr">@{user.handle}@tacet.house</div>
+        {user.is_admin && <span className="sp-role label">Admin</span>}
       </div>
 
-      <div className="you-house">
-        <p className="label heading">The house, in short</p>
-        <ul className="you-promises">
-          {PROMISES.map((p) => (
-            <li key={p} className="you-promise">
-              {p}
-            </li>
-          ))}
-        </ul>
-        <p className="you-house-line">
-          Rooms, not a feed. You choose a room by who is in it, and a lens by how you want to
-          look. The only things you do to a post are reply, keep, and acknowledge.
-        </p>
+      <p className="settings-group-label">Account</p>
+      <div className="settings-group">
+        <div className="srow toggle-row">
+          <div className="srow-main">
+            <div className="srow-t voice">Private account</div>
+            <div className="srow-d">Only approved followers see your posts. Fully enforced as profiles roll out.</div>
+          </div>
+          <button
+            className={"sw" + (priv ? " on" : "")}
+            role="switch"
+            aria-checked={priv}
+            disabled={busy}
+            onClick={togglePrivate}
+          >
+            <span className="sw-dot" />
+          </button>
+        </div>
+        <Link className="srow" to="/keeps">
+          <span className="srow-t">Your keeps</span>
+          <span className="chev">›</span>
+        </Link>
       </div>
 
       <InvitePanel />
 
-      <button className="label action" onClick={signOut}>
+      <p className="settings-group-label">Privacy &amp; safety</p>
+      <div className="settings-group">
+        <Link className="srow" to="/privacy">
+          <span className="srow-t">Your privacy</span>
+          <span className="chev">›</span>
+        </Link>
+      </div>
+
+      <p className="settings-group-label">The house</p>
+      <div className="settings-group">
+        <Link className="srow" to="/about">
+          <span className="srow-t">About TACET</span>
+          <span className="chev">›</span>
+        </Link>
+        <Link className="srow" to="/contact">
+          <span className="srow-t">Contact us</span>
+          <span className="chev">›</span>
+        </Link>
+      </div>
+
+      <button className="signout" onClick={signOut}>
         Sign out
       </button>
+
+      <p className="settings-foot label">
+        TACET · v{__APP_VERSION__} · @{user.handle}@tacet.house
+      </p>
     </section>
   );
 }

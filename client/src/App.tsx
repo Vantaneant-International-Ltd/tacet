@@ -10,6 +10,7 @@ import { Room } from "./views/Room";
 import { PostDetail } from "./views/PostDetail";
 import { You } from "./views/You";
 import { About } from "./views/About";
+import { Contact, Privacy } from "./views/Info";
 import { Keeps } from "./views/Keeps";
 import { Feed } from "./views/Feed";
 import { Discover } from "./views/Discover";
@@ -69,6 +70,8 @@ function route(path: string, isAdmin: boolean) {
   if (path === "/you") return <You />;
   if (path === "/keeps") return <Keeps />;
   if (path === "/about") return <About />;
+  if (path === "/contact") return <Contact />;
+  if (path === "/privacy") return <Privacy />;
   if (path === "/admin") return isAdmin ? <Admin /> : <NotHere />;
 
   return <NotHere />;
