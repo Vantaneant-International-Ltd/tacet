@@ -100,13 +100,56 @@
       .nav button { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
       .nav button.on { color: var(--voice); }
       .fab { position: absolute; right: 20px; bottom: 76px; width: 52px; height: 52px; border-radius: 50%; background: var(--voice); color: var(--canvas); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 300; }
+      /* switcher scrolls with more screens */
+      .switch { max-width: 94vw; overflow-x: auto; }
+
+      /* room lens views */
+      .roomview { display: none; }
+      .roomview.on { display: block; }
+      .rgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+      .rgrid div { aspect-ratio: 1/1; border-radius: 6px; }
+
+      /* discover / federated */
+      .search { background: var(--raise); border: 1px solid var(--hair); border-radius: 12px; padding: 13px 15px; color: var(--dim); font-size: 0.95rem; margin: 4px 0 24px; }
+      .dcard { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid var(--hair); }
+      .dcard .who { flex: 1; }
+      .dcard .who .n { color: var(--voice); font-size: 1rem; }
+      .dcard .who .h { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.06em; color: var(--dim); margin-top: 2px; }
+      .srctag { font-family: var(--mono); font-size: 0.48rem; letter-spacing: 0.12em; color: var(--sec); border: 1px solid var(--hair); border-radius: 4px; padding: 2px 5px; }
+      .followbtn { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--voice); border: 1px solid var(--sec); border-radius: 999px; padding: 0.42rem 1rem; }
+      .followbtn.on { color: var(--sec); border-color: var(--hair); }
+
+      /* story viewer */
+      #s6 { padding: 0; }
+      .storyview { position: relative; height: 780px; background: #191916; display: flex; flex-direction: column; }
+      .sbar { display: flex; gap: 5px; padding: 16px 14px 0; }
+      .sbar span { flex: 1; height: 2px; border-radius: 2px; background: var(--hair); }
+      .sbar span.fill { background: var(--sec); }
+      .shead { display: flex; align-items: center; gap: 11px; padding: 16px; }
+      .shead .who { flex: 1; color: var(--voice); font-size: 0.95rem; }
+      .shead .who small { display: block; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--dim); }
+      .shead .sx { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.14em; color: var(--sec); text-transform: uppercase; }
+      .simg { flex: 1; margin: 0 0 0; }
+      .scap { padding: 20px; font-size: 1.15rem; line-height: 1.5; }
+
+      /* importing */
+      .imp { background: var(--raise); border: 1px solid var(--hair); border-radius: var(--r); padding: 20px; margin-top: 8px; }
+      .imp-row { display: flex; align-items: center; gap: 12px; color: var(--voice); font-size: 1rem; }
+      .imp-row .done { margin-left: auto; color: var(--sec); font-family: var(--mono); font-size: 0.7rem; }
+      .imp-bar { height: 4px; border-radius: 4px; background: var(--raise2); margin: 16px 0 4px; overflow: hidden; }
+      .imp-bar i { display: block; height: 100%; background: var(--sec); border-radius: 4px; }
+      .imp-note { color: var(--dim); font-size: 0.85rem; margin-top: 14px; line-height: 1.5; }
     </style>
   </head>
   <body>
     <div class="switch">
-      <button class="on" data-s="s1">1 · Bring your world</button>
-      <button data-s="s2">2 · Home</button>
-      <button data-s="s3">3 · Profile</button>
+      <button class="on" data-s="s1">Migrate</button>
+      <button data-s="s7">Importing</button>
+      <button data-s="s2">Home</button>
+      <button data-s="s6">Story</button>
+      <button data-s="s3">Profile</button>
+      <button data-s="s4">Room</button>
+      <button data-s="s5">Discover</button>
     </div>
 
     <div class="phone">
@@ -146,19 +189,19 @@
           <div class="row"><div class="av">V</div><div class="who"><div class="n">Vendr</div><div class="h">@vendr · 2h</div></div></div>
           <p class="body">Second host site confirmed for the placement run. The record holds.</p>
           <div class="pic g1"></div>
-          <div class="acts"><button>Reply</button><button>Keep</button></div>
+          <div class="acts"><button>Reply</button><button>Keep</button><button>Dislike</button></div>
         </div>
 
         <div class="card">
           <div class="row"><div class="av">C</div><div class="who"><div class="n">Concierge<span class="aitag">AI</span></div><div class="h">@concierge · 8am</div></div></div>
           <p class="body">While you were away: three threads moved in The Studio, one decision waits on you.</p>
-          <div class="acts"><button>Reply</button><button>Keep</button></div>
+          <div class="acts"><button>Reply</button><button>Keep</button><button>Dislike</button></div>
         </div>
 
         <div class="card">
           <div class="row"><div class="av">R</div><div class="who"><div class="n">Ren</div><div class="h">@ren · yesterday</div></div></div>
           <p class="body">Nobody is counting anything here, and that's the whole point. It reads like a page, not a feed.</p>
-          <div class="acts"><button class="on">Reply</button><button>Keep</button></div>
+          <div class="acts"><button class="on">Reply</button><button>Keep</button><button>Dislike</button></div>
         </div>
 
         <div class="fab">+</div>
@@ -190,6 +233,62 @@
         </div>
         <div class="nav"><button>Home</button><button>Rooms</button><button>Discover</button><button class="on">You</button></div>
       </section>
+
+      <!-- 4 · ROOM (live lens switch) -->
+      <section class="screen" id="s4">
+        <div class="top">
+          <span class="mk">The Studio</span>
+          <div class="lenspill" id="roomLens"><button class="on" data-v="tl">Timeline</button><button data-v="gr">Grid</button><button data-v="as">Assembly</button></div>
+        </div>
+        <div class="roomview on" data-v="tl">
+          <div class="card"><div class="row"><div class="av">A</div><div class="who"><div class="n">Ada</div><div class="h">@ada · 1h</div></div></div><p class="body">Footfall wins if the run to power is under twenty metres.</p><div class="acts"><button>Reply</button><button>Keep</button><button>Dislike</button></div></div>
+          <div class="card"><div class="row"><div class="av">K</div><div class="who"><div class="n">Kev</div><div class="h">@kev · 3h</div></div></div><p class="body">Second host site confirmed — the record for site 3 has both measured.</p><div class="pic g2"></div><div class="acts"><button>Reply</button><button>Keep</button><button>Dislike</button></div></div>
+        </div>
+        <div class="roomview" data-v="gr">
+          <div class="rgrid"><div class="g1"></div><div class="g2"></div><div class="g3"></div><div class="g2"></div><div class="g3"></div><div class="g1"></div><div class="g3"></div><div class="g1"></div><div class="g2"></div></div>
+        </div>
+        <div class="roomview" data-v="as">
+          <div class="card"><p class="body">Where should the second machine sit — footfall or power?</p><p class="body" style="font-size:0.95rem;color:var(--sec);margin:10px 0 0 16px;border-left:1px solid var(--hair);padding-left:12px;">Footfall, if power's under 20m. — Ada</p><div class="acts"><button>Reply</button><button>Keep</button><button>Dislike</button></div></div>
+        </div>
+        <div class="fab">+</div>
+        <div class="nav"><button>Home</button><button class="on">Rooms</button><button>Discover</button><button>You</button></div>
+      </section>
+
+      <!-- 5 · DISCOVER (follow across the fediverse) -->
+      <section class="screen" id="s5">
+        <p class="mark">TACET</p>
+        <div class="search">Search people, rooms, the fediverse…</div>
+        <p class="label" style="margin-bottom:12px">Follow across the network</p>
+        <div class="dcard"><div class="av">P</div><div class="who"><div class="n">Pixelfed Photo</div><div class="h">@photo@pixelfed.social</div></div><span class="srctag">Pixelfed</span><button class="followbtn">Follow</button></div>
+        <div class="dcard"><div class="av">M</div><div class="who"><div class="n">Mastodon Art</div><div class="h">@art@mastodon.art</div></div><span class="srctag">Mastodon</span><button class="followbtn">Follow</button></div>
+        <div class="dcard"><div class="av">T</div><div class="who"><div class="n">PeerTube Films</div><div class="h">@films@tube.tv</div></div><span class="srctag">PeerTube</span><button class="followbtn">Follow</button></div>
+        <div class="dcard"><div class="av">V</div><div class="who"><div class="n">Vendr</div><div class="h">@vendr · tacet.house</div></div><span class="srctag">TACET</span><button class="followbtn">Follow</button></div>
+        <p class="imp-note">Their posts land in your feed in the matching lens — Mastodon in Timeline, Pixelfed in Grid, PeerTube in Theatre. One network.</p>
+        <div class="nav"><button>Home</button><button>Rooms</button><button class="on">Discover</button><button>You</button></div>
+      </section>
+
+      <!-- 6 · STORY VIEWER (quiet — no view count) -->
+      <section class="screen" id="s6">
+        <div class="storyview">
+          <div class="sbar"><span class="fill"></span><span></span><span></span></div>
+          <div class="shead"><div class="av">V</div><div class="who">Vendr<small>@vendr · 2h · fades at midnight</small></div><button class="sx">Close</button></div>
+          <div class="simg g1"></div>
+          <div class="scap voice">Sunday's placement run. No caption needed.</div>
+        </div>
+      </section>
+
+      <!-- 7 · IMPORTING (migration in motion) -->
+      <section class="screen" id="s7">
+        <p class="mark">TACET</p>
+        <h1 class="hero-t">Bringing your world…</h1>
+        <p class="hero-s">Copying your Instagram over. It stays yours — no algorithm follows it here.</p>
+        <div class="imp">
+          <div class="imp-row"><span class="ic">IG</span>Instagram<span class="done">342 posts</span></div>
+          <div class="imp-bar"><i style="width:78%"></i></div>
+          <p class="imp-note">Your grid, your captions, your bio — imported. 78%.</p>
+        </div>
+        <button class="follow" style="display:block;margin:24px auto 0;">See your profile →</button>
+      </section>
     </div>
 
     <script>
@@ -204,6 +303,13 @@
       f.addEventListener("click", () => { f.classList.toggle("on"); f.textContent = f.classList.contains("on") ? "Following" : "Follow"; });
       // lens + acts demo
       document.querySelectorAll(".lenspill").forEach((p) => p.addEventListener("click", (e) => { const b = e.target.closest("button"); if(!b) return; p.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); }));
+      // room lens actually swaps the view
+      const rl = document.getElementById("roomLens");
+      if (rl) rl.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; document.querySelectorAll("#s4 .roomview").forEach((v) => v.classList.toggle("on", v.dataset.v === b.dataset.v)); });
+      // follow buttons (discover)
+      document.querySelectorAll(".followbtn").forEach((b) => b.addEventListener("click", () => { b.classList.toggle("on"); b.textContent = b.classList.contains("on") ? "Following" : "Follow"; }));
+      // post actions (reply / keep / dislike)
+      document.querySelectorAll(".acts").forEach((a) => a.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) b.classList.toggle("on"); }));
     </script>
   </body>
 </html>

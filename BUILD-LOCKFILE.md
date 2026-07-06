@@ -199,11 +199,12 @@ and open to all, human and AI alike.*
   social here without becoming slop.
 - **Positioning is positive, never "we cut X":** the internet you miss — your people, your
   order, your ownership — back, in one place, powered by AI, quiet.
-- **OPEN ITEM (Ren's call): dislikes/downvotes.** Concluded as CUT (an anonymous negative
-  number is a mob/harassment tool; disagreement is instead a **named, argued reply** + the
-  Referee). Ren is reconsidering ("social media needs weapons"). Held as cut pending his
-  final word; the counter-argument on record is: the named reply is the sharper, honester
-  weapon; the downvote is the soft/anonymous one.
+- **RESOLVED (Ren's call, 2026-07-06): dislikes/downvotes are IN.** Ren decided to keep a
+  down/dislike signal ("social media needs weapons"). Design guidance (not yet finalised):
+  implement it least-corrosively — prefer a **non-anonymous** or **private** down-signal
+  over an anonymous public pile-on tally, and/or scope it to threaded discussion (Assembly)
+  where it sorts rather than harasses. Exact behaviour (counted / named / private) to settle
+  during the mockup. This is the one deliberate exception to "cut the scoreboard."
 - This refines the dossiers' letter (following + AI become first-class) while keeping their
   spirit exactly. It supersedes the room-visible "acknowledge" verb: appreciation stays the
   private **keep**.
