@@ -746,3 +746,7 @@ textarea:focus {
 .rc { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--dim); }
 .react.on .rc { color: var(--secondary); }
 .ucard-acts { gap: 16px; }
+
+/* profile lens tabs — centred */
+.profile-lens-wrap { display: flex; justify-content: center; margin: 0.6rem 0 2rem; }
+.profile-lens-wrap .lens-switch { margin: 0; }
