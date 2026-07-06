@@ -29,8 +29,8 @@ export function Discover() {
           <div key={r.slug} className="dcard">
             <Avatar handle={r.name} />
             <Link to={`/rooms/${r.slug}`} className="dcard-who">
-              <span className="n voice">{r.name}</span>
-              <span className="h">@{r.slug} · tacet.house</span>
+              <span className="n voice">/{r.slug}</span>
+              <span className="h">{r.name}</span>
             </Link>
             <button
               className={"followbtn" + (r.following ? " on" : "")}

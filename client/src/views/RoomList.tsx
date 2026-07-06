@@ -40,8 +40,8 @@ export function RoomList() {
               <Link to={`/rooms/${room.slug}`} className="room-card">
                 <Avatar handle={room.name} />
                 <div className="room-card-body">
-                  <span className="voice room-card-name">{room.name}</span>
-                  {room.description && <span className="room-card-desc">{room.description}</span>}
+                  <span className="voice room-card-name">/{room.slug}</span>
+                  <span className="room-card-desc">{room.description || room.name}</span>
                 </div>
               </Link>
             </li>
@@ -87,7 +87,8 @@ function CreateCommunity({ onClose }: { onClose: () => void }) {
         </div>
 
         <label className="label field-label">Name</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="The Darkroom" autoFocus />
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Photography" autoFocus />
+        <p className="slug-preview">tacet.house<span className="voice">/{name.trim() ? toSlug(name) : "your-community"}</span></p>
         <label className="label field-label">What it's for</label>
         <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="optional" />
         <label className="label toggle-line">

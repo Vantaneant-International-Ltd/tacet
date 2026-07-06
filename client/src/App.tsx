@@ -18,6 +18,11 @@ import { Admin } from "./views/Admin";
 import { PublicArchive } from "./views/PublicArchive";
 import { PublicPost } from "./views/PublicPost";
 
+// Words reserved for the app itself — a community can't take one (they'd collide with a page).
+const RESERVED = new Set([
+  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings",
+]);
+
 export function App() {
   const user = useUser();
   const path = usePath();
@@ -27,11 +32,15 @@ export function App() {
     refreshUser().catch(() => {});
   }, []);
 
-  // Public brand archives render for everyone, signed in or not — no session needed.
+  // Public pages render for everyone, signed in or not — no session needed.
+  // People/brands: /@name · communities: bare /name (subreddit-style), guarded from the
+  // reserved app words. Post permalinks: /@name/id.
   const pubPost = path.match(/^\/@([^/]+)\/([^/]+)$/);
   if (pubPost) return <PublicPost slug={pubPost[1]} id={pubPost[2]} />;
   const pubArchive = path.match(/^\/@([^/]+)$/);
   if (pubArchive) return <PublicArchive slug={pubArchive[1]} />;
+  const community = path.match(/^\/([a-z0-9][a-z0-9-]{1,49})$/);
+  if (community && !RESERVED.has(community[1])) return <PublicArchive slug={community[1]} />;
 
   // Loading the session.
   if (user === undefined) return <Loading />;

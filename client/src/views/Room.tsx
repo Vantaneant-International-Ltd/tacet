@@ -57,7 +57,7 @@ export function Room({ slug }: { slug: string }) {
     <section className="room">
       <header className="room-head">
         <div className="room-title">
-          <p className="label heading">{room.name}</p>
+          <p className="voice room-slug">/{slug}</p>
           {room.description && <p className="room-desc">{room.description}</p>}
         </div>
         <div className="room-head-actions">

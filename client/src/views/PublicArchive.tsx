@@ -10,6 +10,7 @@ type Profile = { handle: string; name: string; bio: string | null };
 // Timeline (thoughts). No account needed to read it (public rooms only).
 export function PublicArchive({ slug }: { slug: string }) {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [kind, setKind] = useState<"person" | "brand">("person");
   const [posts, setPosts] = useState<PublicEntry[] | null>(null);
   const [lens, setLens] = useState<"grid" | "timeline">("grid");
   const [gone, setGone] = useState(false);
@@ -24,6 +25,7 @@ export function PublicArchive({ slug }: { slug: string }) {
       .then((r) => {
         if (!live) return;
         setProfile(r.profile);
+        setKind(r.kind);
         setPosts(r.posts);
       })
       .catch(() => live && setGone(true));
@@ -43,7 +45,9 @@ export function PublicArchive({ slug }: { slug: string }) {
       <header className="profile-head">
         <Avatar handle={profile.name} large />
         <h1 className="voice profile-name">{profile.name}</h1>
-        <p className="profile-handle">@{profile.handle}@tacet.house</p>
+        <p className="profile-handle">
+          {kind === "brand" ? `tacet.house/${profile.handle}` : `@${profile.handle}@tacet.house`}
+        </p>
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
       </header>
 

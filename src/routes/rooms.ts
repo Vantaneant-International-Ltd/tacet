@@ -4,6 +4,10 @@ import { ulid } from "../lib/ulid";
 import { requireUser, HttpError } from "../lib/session";
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,49}$/;
+// Communities live at bare tacet.house/<slug>, so a slug can't be an app page.
+const RESERVED_SLUGS = new Set([
+  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings",
+]);
 
 export const roomRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -38,6 +42,7 @@ roomRoutes.post("/", async (c) => {
   const defaultLens = body.default_lens === "grid" ? "grid" : "timeline";
   const isPublic = body.is_public === true ? 1 : 0;
   if (!SLUG_RE.test(slug)) throw new HttpError(400, "slug must be 2–50 characters: lowercase letters, numbers or -");
+  if (RESERVED_SLUGS.has(slug)) throw new HttpError(400, "that name is reserved");
   if (name.length < 1 || name.length > 80) throw new HttpError(400, "name must be 1–80 characters");
   if (description.length > 280) throw new HttpError(400, "description must be 280 characters or fewer");
 
