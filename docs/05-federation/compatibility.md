@@ -36,6 +36,17 @@ No accounts, follows, likes, boosts, replies, publishing, or notifications.
 | **Ghost (ActivityPub)** | ✅ | ✅ (Article) | ✅ | ✅ title | ✅ | Expected | Newsletter/article objects. |
 | **Owncast** | ◑ actor | ◑ (Note) | ○ | ○ | ○ | Best-effort | Live-stream service; its actor posts "went live" Notes. Stream itself isn't AP content. |
 
+## Conversations (read-only)
+
+Opening a post reads its **conversation** through the same generic core: `inReplyTo`
+builds the ancestor chain, `replies` collections build the nested reply tree, and each
+reply's author is resolved to a person. This works across implementations that expose
+standard `inReplyTo`/`replies` (Mastodon, Pixelfed, Misskey, Friendica, GoToSocial,
+Akkoma, Lemmy, …). Live-verified reading a Mastodon thread (6 replies, 6 participants).
+Limits: reply trees are bounded (depth/size) and reveal progressively; boost/quote and
+reference-only replies (bare-URL objects that don't resolve) are skipped read-only; homes
+in secure mode need authorized fetch to expose replies.
+
 ## What the generic parser handles
 
 - **Actors:** `Person`, `Service`, `Application`, `Group`, `Organization` → one `Person`.

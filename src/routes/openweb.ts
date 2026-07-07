@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import type { Env, Variables } from "../types";
-import { buildSources, getToday, getPeople, getProfile } from "../openweb";
+import { buildSources, getToday, getPeople, getProfile, getConversation } from "../openweb";
 import { makeSignerFromEnv } from "../openweb/activitypub/signing";
 
 // Read-only open social web endpoints. Public (no session needed). They fan out to the
@@ -29,6 +29,14 @@ openwebRoutes.get("/profile", async (c) => {
   const ref = c.req.query("actor") || c.req.query("handle");
   if (!ref) return c.json({ profile: null, posts: [], source: null, error: { code: "unavailable", message: "no person specified" } }, 400);
   return c.json(await getProfile(ref, makeSignerFromEnv(c.env)));
+});
+
+// A read conversation around a post — parents, replies (nested), and participants.
+// `post` is the post's URL/id. Always 200; a failure returns a null conversation.
+openwebRoutes.get("/conversation", async (c) => {
+  const ref = c.req.query("post");
+  if (!ref) return c.json({ conversation: null, error: { code: "unavailable", message: "no post specified" } }, 400);
+  return c.json(await getConversation(ref, makeSignerFromEnv(c.env)));
 });
 
 // The SERVER actor document — a service actor whose public key stricter homes fetch to

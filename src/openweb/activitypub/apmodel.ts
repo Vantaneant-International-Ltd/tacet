@@ -42,7 +42,8 @@ export interface APObject {
   url?: string;
   attributedTo?: string | APActor; // actor URL or embedded actor
   attachments: APAttachment[];
-  inReplyTo?: string;
+  inReplyTo?: string; // the parent object's URL, for the ancestor chain
+  repliesUrl?: string; // the replies Collection's URL, for the reply tree
   sensitive?: boolean;
 }
 

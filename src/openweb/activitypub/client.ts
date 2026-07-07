@@ -28,4 +28,10 @@ export class ApClient {
   async getObject(url: string): Promise<APObject> {
     return parseObject(await fetchAp(url, { signer: this.signer }));
   }
+
+  // Raw items of any Collection (e.g. a post's `replies`). Items may be URLs or embedded
+  // objects — the caller decides how to interpret them.
+  async getCollectionItems(url: string, limit: number): Promise<unknown[]> {
+    return fetchCollectionItems(url, limit, 2, this.signer);
+  }
 }

@@ -41,12 +41,21 @@ export interface Moment {
   sharedBy?: Person; // when this reached us because someone shared it (a "boost")
 }
 
-// A thread of posts. Read-only shape for a future Conversations surface; the domain
-// vocabulary owns it so protocol reply-collections never leak upward.
+// A read conversation, as a first-class domain object. The UI receives this threaded
+// shape and never touches ActivityPub reply collections. A node is one post plus its
+// nested replies; the conversation carries the context above the focus (ancestors), the
+// focus itself, the reply tree below it, and the people taking part.
+export interface ConversationNode {
+  post: Moment;
+  replies: ConversationNode[];
+}
 export interface Conversation {
-  id: string;
-  root: Moment;
-  replies: Moment[];
+  focusId: string; // the post the reader opened
+  ancestors: Moment[]; // root → … → parent (what started this), oldest first
+  focus: Moment; // the opened post
+  replies: ConversationNode[]; // nested replies below the focus (what happened next)
+  participants: Person[]; // everyone whose post appears, deduped
+  truncated: boolean; // true when depth/size caps stopped us going further
 }
 
 // A one-directional relationship to a person (read-only view; no writes this milestone).

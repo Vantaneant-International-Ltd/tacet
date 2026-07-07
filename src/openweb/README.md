@@ -60,6 +60,22 @@ discovery is pluggable:
 `registry.ts` wires the sources; `index.ts` merges their domain objects, dedupes, sorts,
 and returns an `AdapterResult` that degrades **live → cached → mock**.
 
+### `conversation.ts` — the read conversation assembler
+
+Given a post, `buildConversation` uses the generic core to walk `inReplyTo` **up** (the
+context that started it) and `replies` collections **down** (the reply tree), resolving
+each author, and returns a first-class **`Conversation`** domain object (ancestors, focus,
+nested replies, participants). The UI never sees a reply collection — just a thread.
+Read-only, bounded (depth/size caps), and graceful (missing parents and reference-only or
+unreachable replies are skipped). One assembler serves every implementation. Facade:
+`getConversation(postRef)`.
+
+### Product endpoints (all read-only, `/api/openweb/*`)
+
+`GET /today` · `GET /people` · `GET /profile?actor=` (a person + recent posts) ·
+`GET /conversation?post=` (a threaded conversation) · `GET /actor` (the authorized-fetch
+server actor, when configured).
+
 ## Read-only & safety
 
 100% read-only, unauthenticated: no posting, follows, likes, messaging, notifications,

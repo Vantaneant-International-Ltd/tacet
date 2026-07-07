@@ -57,6 +57,35 @@ export function profilePath(actorId: string): string {
   return "/p/" + encodeURIComponent(actorId);
 }
 
+// ── Conversations ──────────────────────────────────────────────────────────────
+export interface ConversationNode { post: Moment; replies: ConversationNode[] }
+export interface Conversation {
+  focusId: string; ancestors: Moment[]; focus: Moment; replies: ConversationNode[]; participants: Person[]; truncated: boolean;
+}
+export interface ConversationData { conversation: Conversation | null; error?: AdapterError }
+export type ConversationState =
+  | { status: "loading" }
+  | { status: "ready"; data: ConversationData }
+  | { status: "error"; message: string };
+
+export function conversationPath(postId: string): string {
+  return "/c/" + encodeURIComponent(postId);
+}
+
+export function useConversation(postRef: string): ConversationState {
+  const [state, setState] = useState<ConversationState>({ status: "loading" });
+  useEffect(() => {
+    let alive = true;
+    setState({ status: "loading" });
+    fetch(`/api/openweb/conversation?post=${encodeURIComponent(postRef)}`, { credentials: "same-origin", headers: { accept: "application/json" } })
+      .then((r) => r.json() as Promise<ConversationData>)
+      .then((data) => { if (alive) setState({ status: "ready", data }); })
+      .catch((e) => { if (alive) setState({ status: "error", message: e instanceof Error ? e.message : "unavailable" }); });
+    return () => { alive = false; };
+  }, [postRef]);
+  return state;
+}
+
 export function useProfile(actorRef: string): ProfileState {
   const [state, setState] = useState<ProfileState>({ status: "loading" });
   useEffect(() => {

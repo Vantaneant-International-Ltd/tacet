@@ -12,6 +12,18 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Conversations (read-only reader).** Opening a post now reads its *conversation* inside
+  Tacet at `/c/<post>`: the context that started it (ancestors via `inReplyTo`), the post
+  itself (prominent), and a nested reply tree (via `replies` collections), plus a
+  participants row — editorial and calm, with progressive reveal and a clear "that's the
+  whole conversation" end. `Conversation` is a first-class domain object (`src/openweb/
+  conversation.ts`); the UI never touches ActivityPub reply collections. New endpoint
+  `GET /api/openweb/conversation?post=`. One assembler for every implementation; bounded +
+  graceful (missing parents, reference-only replies skipped). Posts everywhere open the
+  reader (and record to Recently viewed); the Conversations pillar now lists threads you've
+  read (no more mock DMs). Strictly read-only — no replies/comments/likes/writes.
+  64 tests pass (6 new, no network). Live-verified reading a Mastodon thread.
+
 - **Remote profiles.** Every person — from Mastodon, Pixelfed, PeerTube, Misskey,
   Friendica, or any supported implementation — now has a beautiful profile page **inside
   Tacet** at `/p/<actor>`. Avatar, display name, handle, bio, source badge, recent public

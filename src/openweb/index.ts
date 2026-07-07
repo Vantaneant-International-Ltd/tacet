@@ -4,6 +4,8 @@ import { softwareOf } from "./activitypub/nodeinfo";
 import { ApClient } from "./activitypub/client";
 import { normalizePerson, normalizeActivity } from "./normalize";
 import type { RequestSigner } from "./activitypub/signing";
+import { buildConversation } from "./conversation";
+import type { Conversation, ConversationNode } from "./types";
 
 // The read-only open-web adapter facade. It fans out to the configured discovery
 // sources, merges their DOMAIN objects (they never leak protocol shapes), and ALWAYS
@@ -150,6 +152,37 @@ export async function getProfile(actorRef: string, signer?: RequestSigner): Prom
     return { profile, posts, source: profile.source };
   } catch (e) {
     return { profile: null, posts: [], source: null, error: toAdapterError(e) };
+  }
+}
+
+// A read conversation around a post. Reuses the generic ActivityPub core to assemble a
+// threaded domain object, then attributes each home's software. Read-only; never throws
+// (a failure yields a null conversation the UI shows calmly).
+export interface ConversationResult {
+  conversation: Conversation | null;
+  error?: AdapterError;
+}
+
+export async function getConversation(postRef: string, signer?: RequestSigner): Promise<ConversationResult> {
+  try {
+    const conversation = await buildConversation(new ApClient(signer), postRef);
+    if (!conversation) return { conversation: null, error: { code: "unavailable", message: "this conversation couldn't be read" } };
+    // Attribute software for every home that appears (best-effort).
+    const groups: Source[][] = [];
+    const push = (m: Moment) => groups.push([m.source, m.author.source]);
+    conversation.ancestors.forEach(push);
+    push(conversation.focus);
+    const walk = (nodes: ConversationNode[]) => nodes.forEach((n) => { push(n.post); walk(n.replies); });
+    walk(conversation.replies);
+    groups.push(conversation.participants.map((p) => p.source));
+    try {
+      await enrichSoftware(groups);
+    } catch {
+      /* attribution best-effort */
+    }
+    return { conversation };
+  } catch (e) {
+    return { conversation: null, error: toAdapterError(e) };
   }
 }
 

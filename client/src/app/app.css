@@ -196,6 +196,43 @@
 .t-phead__bio { font-size: var(--text-body); color: var(--color-text-secondary); line-height: 1.55; margin: var(--space-3) 0 0; }
 .t-profileposts { margin: var(--space-2) 0 var(--space-4); }
 
+/* Conversation reader */
+.t-post__open { cursor: pointer; border-radius: var(--radius-md); }
+.t-post__open:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 4px; }
+.t-post--focus { border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-hairline)); box-shadow: var(--elevation-2); }
+
+.t-participants { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); }
+.t-participants__stack { display: flex; }
+.t-participants__av { margin-left: -8px; border-radius: var(--radius-full); box-shadow: 0 0 0 2px var(--color-canvas); }
+.t-participants__av:first-child { margin-left: 0; }
+.t-participants__av:hover { transform: translateY(-2px); transition: transform var(--dur-1) var(--ease-out); z-index: 1; }
+.t-participants__count { font-size: var(--text-body-sm); color: var(--color-text-secondary); }
+
+.t-convo-context { margin-bottom: var(--space-5); }
+.t-convo-context__label { font-size: var(--text-label); font-weight: 500; color: var(--color-text-tertiary); margin: 0 0 var(--space-3); padding-left: var(--space-1); }
+.t-convo-context__label--then { margin-top: var(--space-5); }
+.t-convo-context__posts { display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
+.t-convo-context__posts .t-post { opacity: 0.9; }
+
+.t-convo-replies { margin-top: var(--space-6); }
+.t-convo-more { font-size: var(--text-body-sm); color: var(--color-text-tertiary); text-align: center; margin: var(--space-5) 0 0; }
+
+.t-thread { display: flex; flex-direction: column; gap: var(--space-4); }
+.t-thread--nested {
+  margin-top: var(--space-4);
+  margin-left: var(--space-4);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-hairline);
+}
+.t-thread__node { display: flex; flex-direction: column; }
+.t-thread__more, .t-thread__continue {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+  font-size: var(--text-label); font-weight: 500; color: var(--color-accent);
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); cursor: pointer;
+}
+.t-thread__more:hover, .t-thread__continue:hover { background: var(--color-accent-subtle); }
+
 /* Source attribution — where a person or post lives. Calm, minimal, never dominant. */
 .t-srcbadge {
   display: inline-flex;

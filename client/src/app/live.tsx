@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Moment, DataMode, Source } from "./openweb";
-import { relativeTime, profilePath } from "./openweb";
-import { Link } from "../router";
+import { relativeTime, profilePath, conversationPath } from "./openweb";
+import { Link, navigate } from "../router";
 import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 
 // Presentational components for live open-web domain objects. They reuse the design
@@ -35,14 +35,29 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
   );
 }
 
-export function LiveMoment({ moment }: { moment: Moment }) {
+export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
   const [sparked, setSparked] = useState(false);
   const image = moment.media.find((m) => m.kind === "image");
   const saved = isSaved(moment.id);
 
+  // Opening a post is reading its conversation — the calm in-Tacet reader, not a jump out.
+  function openConversation() {
+    if (focus) return;
+    api.recordView(momentToInput(moment));
+    navigate(conversationPath(moment.id));
+  }
+  const bodyProps = focus
+    ? {}
+    : {
+        role: "button" as const,
+        tabIndex: 0,
+        onClick: openConversation,
+        onKeyDown: (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } },
+      };
+
   return (
-    <article className="t-post t-card">
+    <article className={"t-post t-card" + (focus ? " t-post--focus" : "")}>
       <div className="t-post__head">
         <Link to={profilePath(moment.author.id)} className="t-post__author">
           <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
@@ -55,17 +70,16 @@ export function LiveMoment({ moment }: { moment: Moment }) {
           rel="noreferrer noopener"
           aria-label="Open at source"
           title="Open at source"
-          onClick={() => api.recordView(momentToInput(moment))}
+          onClick={(e) => e.stopPropagation()}
         >
           <Icon name="share" size={18} />
         </a>
       </div>
 
-      {moment.text && <p className="t-post__body">{moment.text}</p>}
-
-      {image && (
-        <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />
-      )}
+      <div className={focus ? undefined : "t-post__open"} {...bodyProps}>
+        {moment.text && <p className="t-post__body">{moment.text}</p>}
+        {image && <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />}
+      </div>
 
       <div className="t-post__actions">
         <button

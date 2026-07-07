@@ -87,6 +87,7 @@ export function parseObject(raw: unknown): APObject {
     attributedTo,
     attachments: parseAttachments(raw),
     inReplyTo: firstString(raw["inReplyTo"]),
+    repliesUrl: typeof raw["replies"] === "string" ? (raw["replies"] as string) : isRecord(raw["replies"]) ? firstString((raw["replies"] as Record<string, unknown>)["id"]) : undefined,
     sensitive: raw["sensitive"] === true,
   };
 }
