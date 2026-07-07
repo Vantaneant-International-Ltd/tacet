@@ -12,6 +12,15 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Me — local-first home.** The "Me" pillar is now real: a local profile plus persistent
+  Saved, Collections, Private notes, Reading later, Pinned, and Recently viewed — all in
+  Tacet's own D1 (`migrations/0011_me.sql`), owned by the user, never federated. Strict
+  layering (UI → `/api/me/*` routes → `src/me/repo.ts` persistence → D1); the UI never sees
+  SQL. Local identity is a signed `tacet_me` device cookie (not remote auth). Saving stores
+  a full snapshot so a saved post survives remote deletion. Save works from Today; posts you
+  open are recorded to Recently viewed. Read-only toward the open web (no follows/posts/
+  writes). 58 tests pass (6 new Me tests). See [`src/me/README.md`](src/me/README.md).
+
 - **Public-release preparation.** Repository made safe for open-source release: full
   canonical AGPL-3.0 `LICENSE`; governance files (`CONTRIBUTING.md`,
   `CODE_OF_CONDUCT.md`, `SECURITY.md`); public-facing `README`; `.dev.vars.example`.

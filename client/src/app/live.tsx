@@ -3,6 +3,7 @@ import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Moment, DataMode, Source } from "./openweb";
 import { relativeTime } from "./openweb";
+import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 
 // Presentational components for live open-web domain objects. They reuse the design
 // system's classes (.t-post, .t-personrow, .t-identity) so live and sample content
@@ -34,9 +35,10 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
 }
 
 export function LiveMoment({ moment }: { moment: Moment }) {
-  const [saved, setSaved] = useState(false);
+  useMeVersion(); // re-render when saved-state changes
   const [sparked, setSparked] = useState(false);
   const image = moment.media.find((m) => m.kind === "image");
+  const saved = isSaved(moment.id);
 
   return (
     <article className="t-post t-card">
@@ -50,6 +52,7 @@ export function LiveMoment({ moment }: { moment: Moment }) {
           rel="noreferrer noopener"
           aria-label="Open at source"
           title="Open at source"
+          onClick={() => api.recordView(momentToInput(moment))}
         >
           <Icon name="share" size={18} />
         </a>
@@ -74,7 +77,7 @@ export function LiveMoment({ moment }: { moment: Moment }) {
           className={"t-action" + (saved ? " is-on" : "")}
           type="button"
           aria-pressed={saved}
-          onClick={() => setSaved((s) => !s)}
+          onClick={() => toggleSave(momentToInput(moment))}
         >
           <Icon name={saved ? "saved" : "save"} size={19} /> <span>{saved ? "Saved" : "Save"}</span>
         </button>

@@ -10,7 +10,7 @@ export interface Person {
 export interface MomentMedia { url: string; kind: "image" | "video" | "other"; alt: string }
 export interface Moment {
   id: string; author: Person; text: string; createdAt: string;
-  url: string; media: MomentMedia[]; source: Source;
+  url: string; media: MomentMedia[]; source: Source; title?: string;
 }
 export type DataMode = "live" | "cached" | "mock";
 export interface AdapterError { code: string; message: string }
