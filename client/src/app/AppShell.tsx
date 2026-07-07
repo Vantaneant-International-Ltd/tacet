@@ -55,6 +55,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               key={item.to}
               to={item.to}
               className={"t-navitem" + (isActive(path, item.to) ? " is-active" : "")}
+              aria-current={isActive(path, item.to) ? "page" : undefined}
             >
               <Icon name={item.icon} size={22} />
               <span>{item.label}</span>

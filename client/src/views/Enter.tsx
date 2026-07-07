@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { api, ApiError } from "../api";
 import { setUser } from "../session";
-import { navigate } from "../router";
-import { ErrorLine } from "../bits";
+import { navigate, Link } from "../router";
+import { Button } from "../design/primitives";
 
 // Loads the Turnstile script once (only when a site key exists).
 let turnstileLoading: Promise<void> | null = null;
@@ -75,7 +75,7 @@ export function Enter({ invite: prefill }: { invite?: string }) {
           ? await api.login(handle, passphrase)
           : await api.register(handle, passphrase, invite || undefined, token ?? undefined);
       setUser(user);
-      navigate("/rooms");
+      navigate("/today");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "something went wrong");
     } finally {
@@ -84,35 +84,65 @@ export function Enter({ invite: prefill }: { invite?: string }) {
   }
 
   return (
-    <main className="enter">
-      <p className="label mark">TACET</p>
-      <p className="voice enter-line">A quiet room. Nothing here asks to be opened.</p>
+    <main className="t-auth">
+      <div className="t-auth__card">
+        <Link to="/" className="t-auth__brand">Tacet</Link>
+        <p className="t-auth__line">
+          {mode === "in" ? "Welcome back to your home on the open social web." : "Claim your home on the open social web."}
+        </p>
 
-      <form onSubmit={submit} className="enter-form">
-        <label className="label">Handle</label>
-        <input value={handle} onChange={(e) => setHandle(e.target.value)} autoCapitalize="none" autoCorrect="off" spellCheck={false} />
+        <form onSubmit={submit} className="t-auth__form">
+          <label className="t-field">
+            <span className="t-field__label">Handle</span>
+            <input
+              className="t-input t-input--block"
+              value={handle}
+              onChange={(e) => setHandle(e.target.value)}
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              placeholder="you"
+            />
+          </label>
 
-        <label className="label">Passphrase</label>
-        <input type="password" value={passphrase} onChange={(e) => setPassphrase(e.target.value)} />
+          <label className="t-field">
+            <span className="t-field__label">Passphrase</span>
+            <input
+              className="t-input t-input--block"
+              type="password"
+              value={passphrase}
+              onChange={(e) => setPassphrase(e.target.value)}
+            />
+          </label>
 
-        {mode === "up" && (
-          <>
-            <label className="label">Invite code</label>
-            <input value={invite} onChange={(e) => setInvite(e.target.value)} autoCapitalize="characters" spellCheck={false} />
-            {siteKey && <div ref={widgetRef} className="turnstile" />}
-          </>
-        )}
+          {mode === "up" && (
+            <label className="t-field">
+              <span className="t-field__label">Invite code</span>
+              <input
+                className="t-input t-input--block"
+                value={invite}
+                onChange={(e) => setInvite(e.target.value)}
+                autoCapitalize="characters"
+                spellCheck={false}
+              />
+              {siteKey && <div ref={widgetRef} className="turnstile" />}
+            </label>
+          )}
 
-        <ErrorLine>{error}</ErrorLine>
+          {error && <p className="t-auth__error" role="alert">{error}</p>}
 
-        <button className="label action" type="submit" disabled={busy}>
-          {busy ? "…" : mode === "in" ? "Enter" : "Register"}
+          <Button variant="primary" size="lg" full type="submit" disabled={busy}>
+            {busy ? "…" : mode === "in" ? "Enter" : "Create your identity"}
+          </Button>
+        </form>
+
+        <button
+          className="t-auth__switch"
+          onClick={() => { setMode(mode === "in" ? "up" : "in"); setError(null); }}
+        >
+          {mode === "in" ? "Have an invite? Create an account" : "Already have a handle? Sign in"}
         </button>
-      </form>
-
-      <button className="label switch" onClick={() => { setMode(mode === "in" ? "up" : "in"); setError(null); }}>
-        {mode === "in" ? "Have an invite? Register" : "Already have a handle? Enter"}
-      </button>
+      </div>
     </main>
   );
 }
