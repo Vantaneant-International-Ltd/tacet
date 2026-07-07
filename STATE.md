@@ -12,6 +12,16 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Public-release preparation.** Repository made safe for open-source release: full
+  canonical AGPL-3.0 `LICENSE`; governance files (`CONTRIBUTING.md`,
+  `CODE_OF_CONDUCT.md`, `SECURITY.md`); public-facing `README`; `.dev.vars.example`.
+  All Cloudflare infrastructure identifiers (account id, D1 database id, the interim
+  `*.workers.dev` subdomain, account-owner references) were replaced with
+  placeholders **and scrubbed from the entire git history** (filter-branch across all
+  44 commits, backups pruned, gc run — verified zero occurrences remain). Local
+  development is untouched: real ids live in a git-ignored `wrangler.local.jsonc`,
+  secrets in a git-ignored `.dev.vars`. Typecheck, build, and 31 tests green.
+
 - **Consolidation pass.** Froze the five pillars (Today/People/Discover/
   Conversations/Me) in `FOUNDING_PRINCIPLES.md` with the pillar rule + the
   "complete product / replaceable ActivityPub adapter" law. Quarantined the old
