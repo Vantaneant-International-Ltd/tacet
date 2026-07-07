@@ -80,6 +80,19 @@ unless someone deliberately goes looking for it. It is never "a Mastodon post" �
 is *a post*. Never "a remote account" — *a person*. Never "the federated timeline" —
 *Today*. One coherent experience, always.
 
+**Open and cohesive are not a contradiction.** Email is decentralized, yet Gmail is a
+product; both are true at once. Tacet is the same: open protocols underneath, one
+beautiful product on top.
+
+> Open protocols. Closed silos. Beautiful products.
+> Users deserve all three. Tacet exists to prove they can coexist.
+
+Tacet stays open-source, decentralization-compatible, federation-ready,
+ActivityPub-compatible, with portable identities and exportable data, and
+self-hostable if you choose. None of that is in tension with being one cohesive
+product — it is what makes the product trustworthy. The moat was never the code
+(which is open); it is the taste, the UX, and the community.
+
 ## The five commitments
 
 1. **People before posts.**

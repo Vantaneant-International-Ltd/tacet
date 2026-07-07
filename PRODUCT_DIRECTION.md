@@ -55,7 +55,7 @@ still make sense as a product.
 ## Legacy assumptions — superseded
 
 The current codebase and its documents (`BUILD-LOCKFILE.md`, `DESIGN.md`,
-`STATE.md`, `GOALS-SYNDICATION.md`, `src/`, `client/`, `migrations/`) were built
+`STATE.md`, `src/`, `client/`, `migrations/`) were built
 under earlier theses. Where those assumptions conflict with the direction above,
 **this document supersedes them.** `docs/` is now the product's source of truth;
 `BUILD-LOCKFILE.md` and `DESIGN.md` are stamped historical and no longer carry
@@ -64,7 +64,7 @@ authority (their banners point here).
 These are **decisions taken**, not open questions — each item states the call and
 why. Code is not deleted (the app still runs), but the *assumption* is overwritten:
 nothing below stands as active product law anymore. Two genuinely strategic forks
-(items 4 and 10) carry an opinionated recommendation and remain Ren's to veto; the
+(items 4 and 10) carry an opinionated recommendation and remain the founder's to veto; the
 rest are settled by the five principles. Every item cites where the old assumption
 lives so the code can be brought into line.
 
@@ -102,7 +102,7 @@ lives so the code can be brought into line.
   several places.
 - **Decision:** Superseded. Canonical domain is **tacet.social**. Replace every
   `tacet.house` literal, and make the handle domain a single config value rather
-  than a string scattered across views. (Ren confirms the registered domain; the
+  than a string scattered across views. (the founder confirms the registered domain; the
   product assumes `tacet.social`.)
 
 ### 4. "No likes / no notifications" ideology → internally contradicted already
@@ -117,14 +117,14 @@ lives so the code can be brought into line.
   settled position. The new principle is **Calm before addiction** and
   **Relationships before engagement** — which points away from public vanity
   counts, but not necessarily away from a private "this landed" signal.
-- **Decision (recommended, Ren's veto):** Superseded toward **calm**. The austere
+- **Decision (recommended, founder's veto):** Superseded toward **calm**. The austere
   "no reactions at all" ideology is retired *and* Amendment 4's public like/dislike
   scoreboard is rolled back. The direction: a **private positive signal** the
   author feels ("this landed"), never a public vanity count, and **no dislike**
   (see item 10). Reactions that arrive from federated posts are *shown as received*
   (we don't hide what the network sends) but Tacet does not originate a public
   count of its own. This is the reading of **Calm before addiction** +
-  **Relationships before engagement**. It reverses Amendment 4; flagged for Ren
+  **Relationships before engagement**. It reverses Amendment 4; flagged for the founder
   because he authored that amendment twice. This is the single most consequential
   open call — everything else here follows the principles cleanly.
 
@@ -178,8 +178,8 @@ lives so the code can be brought into line.
 
 ### 9. Canonical-record / syndication goal → orthogonal, revisit scope
 
-- **Where:** `GOALS-SYNDICATION.md`, and this VNTA-wide "TACET = canonical record,
-  Instagram = syndication window" framing.
+- **Where:** a VNTA-wide "TACET = canonical record, Instagram = syndication window"
+  framing (kept in a private VNTA workstream, not in this public repo).
 - **Conflict:** That goal frames Tacet as a brand-archive/publishing backend for
   VNTA houses. The consumer product ("your home on the open social web") is a
   different thing that happens to share a name. Both can be true, but they should
@@ -196,10 +196,10 @@ lives so the code can be brought into line.
   addiction** and **Relationships before engagement** — it is, structurally, a
   pile-on mechanic. Amendment 3 itself asked for the "least-corrosive"
   implementation.
-- **Decision (recommended, Ren's veto):** Superseded toward **calm**. Public
+- **Decision (recommended, founder's veto):** Superseded toward **calm**. Public
   dislike/downvote is retired — it is structurally a pile-on and cannot be
   reconciled with the five principles. Disagreement lives in **replies**
-  (conversation), not in a downward tally. Flagged for Ren because he twice ruled
+  (conversation), not in a downward tally. Flagged for the founder, who twice ruled
   dislikes IN; this is the deliberate reversal, tied to item 4.
 
 ### 11. Monolithic Worker + SPA → proposed monorepo shape
@@ -223,7 +223,7 @@ lives so the code can be brought into line.
   product direction. The code is brought into line during the app reshape; the
   *assumptions* are already overwritten.
 - Items **4** (reactions) and **10** (dislike) carry an opinionated recommendation
-  toward calm and are the only two open forks — Ren's to veto, because he authored
+  toward calm and are the only two open forks — the founder's to veto, having authored
   the amendments they reverse. Everything else is decided.
 - The `docs/` tree is the product's source of truth. `BUILD-LOCKFILE.md` and
   `DESIGN.md` are stamped **historical** and no longer carry authority; they are

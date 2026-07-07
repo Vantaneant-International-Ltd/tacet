@@ -1,0 +1,16 @@
+# Tacet — local secrets template.
+#
+# Copy this file to `.dev.vars` (which is git-ignored) to run locally with real
+# secrets, or skip it entirely: `npm run dev` works with safe local fallbacks and
+# needs NONE of these. These matter only when you deploy to your own Cloudflare
+# account. Never commit real values.
+
+# Signs the session cookie. Generate a strong random value for any real deployment:
+#   openssl rand -hex 32
+# Local dev uses a built-in throwaway fallback if this is unset.
+SESSION_SECRET="replace-with-a-long-random-string"
+
+# Cloudflare Turnstile (bot protection on registration). Optional — the challenge
+# is only enforced when both are set. Get them from the Cloudflare dashboard.
+TURNSTILE_SECRET=""
+TURNSTILE_SITE_KEY=""

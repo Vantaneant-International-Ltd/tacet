@@ -1,12 +1,14 @@
 {
-  // TACET — Cloudflare Worker + D1 + R2. Local dev only in Phase 1 (no domain, no deploy).
+  // Tacet — Cloudflare Worker + D1 + R2. Local development needs no account or secrets;
+  // `npm run dev` runs entirely against a simulated stack. The values below are only
+  // used when you deploy to your own Cloudflare account — fill in your own.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tacet",
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
-  // the-account Cloudflare account (VNTA work account) — Phase 2, Amendment 2.
-  "account_id": "<cloudflare-account-id>",
+  // Your Cloudflare account id (deploy only). Not required for local dev.
+  "account_id": "<your-cloudflare-account-id>",
 
   // The Vite build emits the React SPA to dist/client. The Worker handles /api/*;
   // everything else is served from the built assets, with unmatched routes falling
@@ -21,8 +23,10 @@
     {
       "binding": "DB",
       "database_name": "tacet",
-      // Remote D1 (the-account account). Local dev (--local) still simulates D1.
-      "database_id": "<d1-database-id>",
+      // Your own D1 database id (deploy only). Create one with:
+      //   npx wrangler d1 create tacet
+      // Local dev (`--local`) simulates D1 and ignores this.
+      "database_id": "<your-d1-database-id>",
       "migrations_dir": "migrations"
     }
   ],

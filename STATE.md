@@ -57,7 +57,7 @@
 **Phase:** 2 — the address (in progress). Phase 1 complete + Amendments 1 & 2.
 **Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
 **Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.
-**Canonical-record goal:** see [`GOALS-SYNDICATION.md`](GOALS-SYNDICATION.md) — TACET as canonical record, Instagram as syndication window (standing VNTA decision, 5 Jul 2026).
+**Canonical-record goal:** the VNTA-internal "canonical record / syndication" strategy is a **separate, private workstream** — deliberately out of scope for this open-source product (see [PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md) §9).
 **Locked thesis (Amendment 3):** a gateway back to the good internet, rebuilt for 2026 — one home, owned by you, chronological, quiet — **keep the action, cut the scoreboard** — powered by AI, open to all (human + AI). Following + AI residents are first-class; no counts/algorithm/ads. Open item: dislikes (held cut, Ren's final call). Next build tracks: (1) follow + personal feed + profiles; (2) rebuild the UI to the dossier/mockup (`design/web-mockup.html`).
 
 ## Done since last entry
@@ -70,18 +70,15 @@
 - **Turnstile-ready:** enforced only when `TURNSTILE_SECRET`/site key are configured (local
   dev + tests keyless). `/api/config` exposes the public site key; the register form renders
   the challenge; the server calls siteverify.
-- **DEPLOYED — live on the the-account Cloudflare account** (Renato's own account had
-  R2 disabled; Ren directed us to his work account, where R2 was already on):
-  - 🌐 **https://example.workers.dev**
-  - ✅ D1 `tacet` (`dbad5dea-…`) created + migrated (0001, 0002); R2 bucket `tacet-images`
-    created; `SESSION_SECRET` set; `wrangler.jsonc` carries Kevin's `account_id` + db id.
-  - ✅ Live smoke test: health ok, SPA serves, auth guard 401s, `/api/config` returns null
-    Turnstile (so invite-holders can register now).
-  - ⏳ **Ren to register first** on the live URL → becomes the bootstrap admin, then hand out
-    `/join/<code>` invite links.
-  - ⏳ Turnstile keys (optional now; before Phase 2 "done") — see `DEPLOY.md`.
-  - 🧹 An empty orphan `tacet` D1 on the the deployer account (`<d1-database-id-old>`) to be deleted.
-- Redeploy later: `npm run build && npx wrangler deploy` (+ `d1 migrations apply tacet
+- **Deployed to an interim Cloudflare `*.workers.dev` address** (private, invite-gated)
+  for early testing. Deploy details (account id, database id, secrets) live in the
+  deployer's own Cloudflare account and `.dev.vars`, never in the repo — see
+  [`DEPLOY.md`](DEPLOY.md).
+  - ✅ D1 created + migrated; R2 bucket created; session secret set out-of-band.
+  - ✅ Live smoke test: health ok, SPA serves, auth guard 401s, `/api/config` returns
+    null Turnstile.
+  - Note: this deployment predates the re-founding and runs the legacy rooms app.
+- Redeploy: `npm run build && npx wrangler deploy` (+ `d1 migrations apply tacet
   --remote` if migrations changed). 29 tests green; still no counts/algorithm/ads/notifs/red.
 
 ### Earlier

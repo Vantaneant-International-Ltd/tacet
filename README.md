@@ -2,160 +2,170 @@
 
 **Your home on the open social web.**
 
-People before posts.
-Relationships before engagement.
-Identity before platforms.
-Calm before addiction.
-Open before closed.
+An open-source social platform built around people, not platforms.
+Powered by open protocols. Designed as one coherent product.
+
+> People before posts.
+> Relationships before engagement.
+> Identity before platforms.
+> Calm before addiction.
+> Open before closed.
+
+> ⚠️ **Early development — not ready for production use.** Tacet is a work in
+> progress. Much of the app currently runs on mock data. Expect rough edges, moving
+> parts, and breaking changes. See [Current status](#current-status).
 
 ---
 
 ## What is Tacet?
 
-Tacet is one place for your social life on the open web.
+Tacet is one calm place for your social life on the open web.
 
-Today you keep seven apps to stay in touch with the same people. Each one owns a
+Today you keep several apps to stay in touch with the same people. Each owns a
 different sliver of your identity, holds a different inbox, runs a different
 algorithm, and answers to a different company. You do the work of stitching them
-together. Nobody set out to build that; it's just what happened when every network
-decided to become a walled garden.
+together. Nobody set out to build that — it's just what happens when every network
+becomes a walled garden.
 
-Tacet is the calm, single window back into all of it. One identity you own. One
-place your people live. One inbox instead of five. And a door — through the open
-social web, the Fediverse — to everyone who has already left the walls behind.
+Tacet is the single, calm window back into all of it: one identity you own, one
+place your people live, one door to the wider open social web.
 
-Tacet is **not** another social network competing for your attention. It is the
-home you plug the open web into.
+**Tacet is a complete product, not a Fediverse client.** Think of it the way Gmail
+is a product built on email: the protocol underneath is open and decentralized, but
+what you experience is one beautiful, coherent thing. ActivityPub is how Tacet reaches
+the open social web — an implementation detail at the edge, never the product itself.
+
+> Open protocols. Closed silos. Beautiful products.
+> Users deserve all three. Tacet exists to prove they can coexist.
 
 ## Product philosophy
 
-Tacet is built on five commitments. They are not slogans; they decide what we
-build and what we refuse to build.
+Tacet is built on five commitments and organized around five permanent pillars.
 
-- **People before posts.** The unit of the product is a person and your
-  relationship to them, not an endless stream of content. You come back for who is
-  here, not for what's trending.
-- **Relationships before engagement.** We measure whether people feel closer, not
-  how long they scrolled. No metric on this product exists to keep you here longer.
-- **Identity before platforms.** You have one identity that you own and can take
-  with you. Platforms are plumbing. Your name, your people, and your history are
-  yours.
-- **Calm before addiction.** Nothing here is engineered to be compulsive. No
-  infinite feed tuned to your weaknesses, no manufactured urgency, no dark
-  patterns. The app never begs to be opened.
-- **Open before closed.** We build on open protocols so you are never locked in.
-  If you want to leave, you can — and take your identity and your people with you.
-  Openness is the whole point, not a feature.
+**The five commitments** (see [`FOUNDING_PRINCIPLES.md`](FOUNDING_PRINCIPLES.md)):
+people before posts · relationships before engagement · identity before platforms ·
+calm before addiction · open before closed.
 
-The rule that governs everything: **the code follows the philosophy. The
-philosophy is not invented by the code.** When they disagree, the philosophy wins
-and the code changes.
+**The five pillars** — the frozen product model. Every feature must strengthen one:
+
+| Pillar | What it is |
+|---|---|
+| **Today** | The calm entry point. A finite, curated-feeling stream — not an endless feed. |
+| **People** | Your relationships, wherever on the open web they live. |
+| **Discover** | The gateway to the wider open social web. |
+| **Conversations** | Correspondence, not anxiety-based notifications. |
+| **Me** | Your identity and your own place. Owned, portable. |
+
+What Tacet is **not**: not a Twitter/X clone, not an Instagram clone, not a Mastodon
+frontend, not a thin ActivityPub wrapper. It **begins with the open social web** —
+the ActivityPub-compatible platforms (Mastodon, Pixelfed, PeerTube, WriteFreely,
+Friendica). It does **not** claim to connect to closed networks (Instagram, X,
+TikTok, LinkedIn, YouTube); those stay walled until they open a door, and we say so
+plainly.
 
 ## Repository structure
 
 ```txt
-docs/            The product. Read this first.
-  00-manifesto/                Why Tacet exists and what it refuses to be.
-  01-product/                  What Tacet is, surface by surface.
-  02-human-interface-guidelines/  How Tacet should feel and behave.
-  03-design-system/            The tokens and components that build the feel.
-  04-user-journeys/            The product told as human stories.
-  05-federation/               The open social web, explained honestly.
-  06-engineering/              How the code should be shaped to fit the product.
-  07-brand/                    Name, voice, and positioning.
-  08-roadmap/                  MVP → v1 → future.
+docs/                Product, design, and engineering documentation (start here).
+  00-manifesto/        Why Tacet exists.
+  01-product/          The five-pillar information architecture.
+  02-human-interface-guidelines/
+  03-design-system/    Tokens, type, spacing, components (the visual source of truth).
+  04-user-journeys/
+  05-federation/       ActivityPub as a replaceable adapter — an implementation detail.
+  06-engineering/      Architecture direction, domain model, adapter design.
+  07-brand/  08-roadmap/
 
-FOUNDING_PRINCIPLES.md   The non-negotiables, in one page.
-PRODUCT_DIRECTION.md     Where Tacet is going, and the legacy to review.
+client/              React + TypeScript single-page app (the product UI).
+  src/design/          Design system: theme tokens (light + dark), primitives, icons.
+  src/app/             The five pillars + app shell (currently on mock data).
+  src/views/           Landing page and sign-in.
+  src/legacy/          The old "rooms" product — quarantined and dormant (not shipped).
 
-src/             The Cloudflare Worker (Hono API).
-client/          The React SPA served by the Worker.
-migrations/      D1 (SQLite) schema, append-only.
-design/          HTML mockups (historical reference; predate this direction).
+src/                 Cloudflare Worker (Hono API, TypeScript).
+migrations/          Cloudflare D1 (SQLite) schema, append-only.
+
+FOUNDING_PRINCIPLES.md   The pillars, the commitments, the adapter law.
+PRODUCT_DIRECTION.md     Where Tacet is going; legacy assumptions being retired.
+DEPLOY.md                Self-hosting guide (optional; deploy to your own account).
 ```
+
+> Note: [`docs/06-engineering/`](docs/06-engineering/) describes a *target*
+> `apps/` + `packages/` layout to grow into. The structure above is what exists today.
 
 ## Documentation map
 
-Start with the manifesto, then read the product docs. Everything else supports
-those two.
-
-1. **[docs/00-manifesto/](docs/00-manifesto/)** — start here. Why Tacet exists.
-2. **[docs/01-product/](docs/01-product/)** — the product model: Today, People,
-   Discover, Conversations, Me.
-3. **[docs/02-human-interface-guidelines/](docs/02-human-interface-guidelines/)** —
-   how it should feel: calm, rich, original, alive.
-4. **[docs/03-design-system/](docs/03-design-system/)** — the tokens and
-   components that make the feel concrete.
-5. **[docs/04-user-journeys/](docs/04-user-journeys/)** — the product as lived
-   experience, from first visit to leaving.
-6. **[docs/05-federation/](docs/05-federation/)** — ActivityPub as infrastructure,
-   not product. Federation that feels like email.
-7. **[docs/06-engineering/](docs/06-engineering/)** — architecture direction,
-   domain model, and the ActivityPub adapter.
-8. **[docs/07-brand/](docs/07-brand/)** — name, voice, positioning.
-9. **[docs/08-roadmap/](docs/08-roadmap/)** — what ships when.
-
-The one-page versions: **[FOUNDING_PRINCIPLES.md](FOUNDING_PRINCIPLES.md)** and
-**[PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md)**.
+- **[docs/00-manifesto/](docs/00-manifesto/)** — why Tacet exists. Start here.
+- **[docs/01-product/](docs/01-product/)** — the five-pillar product model.
+- **[docs/03-design-system/](docs/03-design-system/)** — the visual source of truth.
+- **[docs/05-federation/](docs/05-federation/)** — federation as an implementation
+  detail (the product would still make sense if the protocol were replaced).
+- **[FOUNDING_PRINCIPLES.md](FOUNDING_PRINCIPLES.md)** / **[PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md)** — the one-page canon.
 
 ## Development setup
 
-Requires Node 20+. No Cloudflare account is needed for local development — D1 and
-R2 are simulated by `wrangler dev`.
+Requires Node 20+. **No Cloudflare account or secrets are needed for local
+development** — D1 and R2 are simulated by `wrangler dev`.
 
 ```sh
 npm install
-npm run migrate      # apply D1 migrations to the local database
-npm run dev          # build the SPA, then start wrangler dev on http://localhost:8787
+npm run migrate      # apply D1 migrations to a simulated local database
+npm run dev          # build the SPA + run the Worker at http://localhost:8787
 ```
 
-`npm run dev` builds the client and hands off to `wrangler dev`. After the first
-build you can also run `wrangler dev` directly; re-run `npm run build` when client
-code changes.
+The five-pillar app runs on mock data and is walkable without signing in — open
+**http://localhost:8787/today**. Toggle light/dark from the app.
 
-Optional placeholder data:
+Checks:
 
 ```sh
-npm run seed         # insert obviously-fake placeholder content
-npm run seed:wipe    # remove all placeholder data
+npm run typecheck    # tsc project-references
+npm run build        # Vite production build
+npm test             # Vitest (API + auth)
 ```
 
-Placeholder passphrases and content are marked as fake and must never reach a
-deploy.
-
-Tests and types:
-
-```sh
-npm test             # API-route and auth tests (Vitest, Workers runtime)
-npm run typecheck    # tsc project-references check
-```
+Local secrets (only if you deploy) go in a git-ignored `.dev.vars` — copy
+[`.dev.vars.example`](.dev.vars.example). Self-hosting to your own Cloudflare account
+is documented in [`DEPLOY.md`](DEPLOY.md).
 
 ## Current status
 
-Tacet is early. There is a working invite-gated app — accounts, profiles,
-following, communities, posting, replies, reactions — running locally on
-Cloudflare Workers + D1 + R2, deployed to an interim `*.workers.dev` URL.
+Tacet is **early and pre-production.**
 
-That app was built under an earlier "quiet invite-only clubhouse, rooms not
-followings" thesis. This repository is now being **re-founded around the direction
-in `docs/`**: Tacet as your home on the open social web. The code has not yet been
-reshaped to match. See **[PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md)** for the
-legacy assumptions under review and what changes next.
+- ✅ The five-pillar UI (Today / People / Discover / Conversations / Me), a landing
+  page, sign-in, and a light/dark design system — built and running.
+- 🧪 The app currently renders **mock data**. Reading live data from the open social
+  web through the adapter layer is the next milestone.
+- 🚧 No federation, messaging, notifications, or realtime yet — these are documented
+  as direction, not shipped.
+- 🗄️ A legacy "rooms" product from an earlier phase is quarantined in
+  `client/src/legacy/` (dormant, not shipped).
 
-Working state and build history live in [STATE.md](STATE.md). Federation
-(ActivityPub) is not built yet.
+See [`PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md) and [`STATE.md`](STATE.md) for the
+detailed picture.
 
 ## Roadmap
 
-- **MVP** — one owned identity, your people, Today, and the first honest window
-  into the Fediverse. Read, follow, and reply across the open social web.
-- **v1** — full compose, communities, conversations, discovery, and a polished
-  home that a person prefers to the seven apps they replaced.
-- **Future** — deeper federation, portability you can feel, and the calm defaults
-  that make Tacet the best home for the open social web.
+- **Now → next:** read-only open social web — Today and People reading live public
+  data through the adapter, so Tacet feels alive on day one.
+- **Then:** compose/publish, conversations, richer discovery.
+- **Later:** deeper (write) federation, portability you can feel, native surfaces.
 
-Details in **[docs/08-roadmap/](docs/08-roadmap/)**.
+Details in [docs/08-roadmap/](docs/08-roadmap/).
+
+## Contributing
+
+Contributions are welcome once the project opens up — start with
+[`CONTRIBUTING.md`](CONTRIBUTING.md) and the [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+The one rule: every change should strengthen one of the five pillars.
+
+Security issues: please report privately — see [`SECURITY.md`](SECURITY.md).
+
+## License
+
+Tacet is intended to be released under the **GNU AGPL-3.0** (recommended default,
+pending final founder sign-off). See [`LICENSE`](LICENSE).
 
 ---
 
-*Tacet is a VNTA Group venture.*
+*Tacet is a VNTA Group venture — [tacet.social](https://tacet.social).*
