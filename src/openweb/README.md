@@ -1,57 +1,91 @@
 # Open Social Web adapter (read-only)
 
-This is the **adapter layer** — the replaceable seam between Tacet's product/domain and
-the open social web. Nothing above it (the API routes, the client, the UI) knows which
-protocol or vendor is underneath. That is the whole point:
+The **adapter layer** — the replaceable seam between Tacet's product/domain and the open
+social web. Nothing above it knows which protocol or implementation is underneath.
 
 ```
 Product UI → Tacet domain objects → this adapter → the open social web
 ```
 
-> If ActivityPub were replaced by another open protocol tomorrow, only this folder
-> would change. `Person`, `Moment`, and `Source` — and everything that renders them —
-> would not.
+> If ActivityPub were replaced by another open protocol tomorrow, only `activitypub/`
+> would change. The domain, the normalizer's output, `sources/`, and the UI would not.
 
-## Files
+## Three layers, cleanly separated
 
-| File | Responsibility |
-|---|---|
-| `types.ts` | Tacet domain types (`Person`, `Moment`, `Source`, `AdapterResult`, `AdapterError`, …) and the `OpenWebSource` interface. Protocol-agnostic. |
-| `mastodon.ts` | The **one** place that speaks a concrete protocol/API. Reads public, unauthenticated endpoints of a Mastodon-compatible home and normalizes them into domain types. Pure mappers (`toPlainText`, `mapProfile`, `mapContent`) are exported and unit-tested. |
-| `mock.ts` | Sample fallback data (domain-shaped), shown **only** when the open web can't be reached, always labelled `mock` in the UI. |
-| `index.ts` | The facade: pick a source, fetch, cache briefly, and always return an `AdapterResult`, degrading **live → cached → mock**. Never throws to callers. |
+| Layer | Folder | Speaks | Produces |
+|---|---|---|---|
+| **Parser** | `activitypub/` | ActivityPub / JSON-LD | **canonical AP objects** (`APActor`, `APObject`, `APActivity`) — still protocol vocabulary |
+| **Normalizer** | `normalize/` | — | **Tacet domain** (`Person`, `Moment`, `Media`) — product vocabulary |
+| **Discovery** | `sources/` | — | domain objects, discovered from somewhere |
 
-## Data sources
+The parser never mentions the product; the normalizer is the *only* place AP vocabulary
+(Note, Article, Create, Announce, attributedTo…) turns into product vocabulary (Person,
+Post). This boundary is what makes a second protocol — or future write support — a
+localized change instead of a rewrite.
 
-- **Default source:** the public timeline and profile directory of a Mastodon-compatible
-  home (`mastodon.social` by default). These are public, read-only, unauthenticated
-  REST endpoints. No login, no keys, no writes.
-  - Today → `GET https://<home>/api/v1/timelines/public`
-  - People → `GET https://<home>/api/v1/directory`
-- **Configure the home** with the `OPENWEB_INSTANCE` binding (e.g. `mastodon.social`).
-- This is **read-only**. The adapter never posts, follows, likes, or authenticates.
-- **Only the open social web.** No Instagram / X / TikTok / LinkedIn / YouTube. Tacet
-  begins with the open social web.
+### `activitypub/` — the generic protocol core
+
+- `apmodel.ts` — canonical AP object types.
+- `jsonld.ts` — defensive accessors for the many shapes AP takes (arrays vs scalars,
+  Link objects, language maps).
+- `fetch.ts` — the one network primitive: unauthenticated `GET` with the AP content
+  type, timeout, size guard. **Read-only by construction** (no way to POST/sign).
+- `webfinger.ts` — resolve `@user@home` → actor document URL.
+- `parse.ts` — raw JSON-LD → `APActor` / `APObject` / `APActivity`.
+- `collection.ts` — page through an `OrderedCollection` (outbox) → raw items.
+- `client.ts` — `ApClient`: `getActor()`, `getOutbox()`, `getObject()`.
+
+Because it speaks only the protocol, it reads **Mastodon, Pixelfed, PeerTube, Lemmy,
+Misskey, Friendica** and other ActivityPub software with the same code.
+
+### `normalize/` — AP objects → domain
+
+- `person.ts` — `APActor` → `Person`.
+- `moment.ts` — `APObject` → `Moment`, and `APActivity` → `Moment` (unwraps `Create`,
+  marks `Announce` as shared; handles `Note` / `Article` / `Image` / `Video` / `Page`,
+  attachments, titles).
+
+### `sources/` — discovery (ActivityPub has none of its own)
+
+AP is object-addressed; there is no protocol-standard "trending" or "search." So
+discovery is pluggable:
+
+- `seed.ts` — **universal.** A small, tunable set of handles spanning *different*
+  implementations, read entirely through the generic AP core. This proves the adapter
+  is genuinely cross-implementation. Tune with `OPENWEB_SEED` (comma-separated handles).
+- `mastodon.ts` — **optional vendor shim, quarantined.** Uses Mastodon's REST API
+  (trending posts, profile directory) so discovery stays lively. Its Mastodon-specific
+  field knowledge never leaves this file. Remove it and the seed source still works.
+
+`registry.ts` wires the sources; `index.ts` merges their domain objects, dedupes, sorts,
+and returns an `AdapterResult` that degrades **live → cached → mock**.
+
+## Read-only & safety
+
+100% read-only, unauthenticated: no posting, follows, likes, messaging, notifications,
+or federation writes. Only the **open** social web — no Instagram / X / TikTok / LinkedIn
+/ YouTube. Tacet begins with the open social web.
+
+**Known limitation — authorized fetch.** Some homes (e.g. Mastodon in "secure mode")
+require an HTTP-signed `GET` even for public objects and will refuse an unsigned read.
+Because Tacet holds no user identity here, those objects are simply skipped and the
+result degrades gracefully. A future server-actor signing key could widen coverage
+without changing this architecture.
 
 ## Data modes (honest provenance)
 
-Every result carries a `mode` the UI labels plainly:
-
-- `live` — freshly fetched from the open web.
-- `cached` — served from a brief in-memory cache (or stale-on-error).
-- `mock` — sample content, shown only because the open web couldn't be reached.
+Every result carries a `mode` the UI labels plainly: `live`, `cached`, or `mock`
+(sample content shown only when the open web can't be reached).
 
 ## Testing
 
-- **Pure mapping + degradation logic** is covered by `test/openweb.test.ts` and runs
-  with no network (`npm test`).
-- **Live data** needs outbound network, which some build/CI environments block. To see
-  real content, run locally on a networked machine:
+- **Pure parse + normalize + degradation** logic is covered by `test/openweb.test.ts`
+  and runs with **no network** (`npm test`): actor/object/activity parsing across
+  implementations, Create/Announce unwrapping, and the live→cached→mock facade.
+- **Live data** needs outbound network. On a networked machine:
   ```sh
   npm run dev
-  # then:
   curl -s http://localhost:8787/api/openweb/today  | head
   curl -s http://localhost:8787/api/openweb/people | head
   ```
-  When offline, both endpoints still return `200` with `"mode":"mock"` and an `error`
-  describing why — the product degrades gracefully instead of failing.
+  Offline, both endpoints still return `200` with `"mode":"mock"` and an `error`.

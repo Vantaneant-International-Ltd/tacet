@@ -23,7 +23,8 @@ export interface Person {
   verified: boolean;
 }
 
-// A post/moment from the open web. Not an "ActivityPub object" — a post.
+// A post/moment from the open web. Not an "ActivityPub object" — a post. (The product
+// vocabulary calls this a Post; the type name stays `Moment` for UI compatibility.)
 export interface Moment {
   id: string;
   author: Person;
@@ -32,6 +33,30 @@ export interface Moment {
   url: string; // permalink
   media: MomentMedia[];
   source: Source;
+  title?: string; // long-form / video title (Article, Video, Page), optional
+  sharedBy?: Person; // when this reached us because someone shared it (a "boost")
+}
+
+// A thread of posts. Read-only shape for a future Conversations surface; the domain
+// vocabulary owns it so protocol reply-collections never leak upward.
+export interface Conversation {
+  id: string;
+  root: Moment;
+  replies: Moment[];
+}
+
+// A one-directional relationship to a person (read-only view; no writes this milestone).
+export interface Relationship {
+  person: Person;
+  following: boolean;
+}
+
+// A named set of domain items (e.g. a person's posts, a saved collection).
+export interface Collection<T> {
+  id: string;
+  name: string;
+  items: T[];
+  nextCursor?: string;
 }
 
 export interface MomentMedia {
@@ -81,11 +106,14 @@ export interface OpenWebContent {
   attachments: { url: string; type: string; description: string | null }[];
 }
 
-// The replaceable seam. A source knows one protocol/API; nothing else does.
-export interface OpenWebSource {
-  readonly source: Source;
-  /** A finite, calm set of current public moments from this home. */
-  fetchToday(limit: number): Promise<Moment[]>;
-  /** Discoverable public people from this home. */
-  discoverPeople(limit: number): Promise<Person[]>;
+// The replaceable seam. ActivityPub has no discovery of its own, so discovery is a
+// pluggable layer: a provider yields DOMAIN objects (never protocol shapes). A provider
+// may reach the open web through the generic ActivityPub core (SeedProvider) or through
+// a vendor's REST API (MastodonProvider) — the difference never escapes this folder.
+export interface DiscoverySource {
+  readonly id: string;
+  /** A finite, calm set of current public posts. */
+  today(limit: number): Promise<Moment[]>;
+  /** Discoverable public people. */
+  people(limit: number): Promise<Person[]>;
 }

@@ -10,9 +10,11 @@ export interface Env {
   // locally and in tests, so registration works without keys. The site key is public.
   TURNSTILE_SECRET?: string;
   TURNSTILE_SITE_KEY?: string;
-  // Read-only open social web source (a Mastodon-compatible public home). Optional;
-  // defaults to a public home. Only the adapter ever uses this — the product doesn't.
+  // Read-only open social web discovery config. Optional; only the adapter uses these.
+  // OPENWEB_INSTANCE: a Mastodon-compatible home for the REST discovery shim.
+  // OPENWEB_SEED: comma-separated @user@home handles for the generic ActivityPub seed.
   OPENWEB_INSTANCE?: string;
+  OPENWEB_SEED?: string;
 }
 
 // Shape carried through Hono's context after the session middleware runs.

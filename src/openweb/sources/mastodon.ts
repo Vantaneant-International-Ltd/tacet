@@ -1,38 +1,15 @@
-import type {
-  OpenWebSource,
-  Source,
-  Person,
-  Moment,
-  OpenWebProfile,
-  OpenWebContent,
-} from "./types";
+import type { DiscoverySource, Source, Person, Moment, OpenWebProfile, OpenWebContent } from "../types";
+import { toPlainText } from "../text";
 
-// The one place that knows an actual open-web protocol/API. It speaks the public,
-// unauthenticated read endpoints of a Mastodon-compatible home and normalizes them
-// into Tacet domain types. Swapping this class for another `OpenWebSource` (a
-// different protocol) would change nothing above it — that is the point.
+// A vendor discovery SHIM, quarantined here. ActivityPub has no discovery, and Mastodon
+// exposes lively public discovery via its own REST API (trending posts, a profile
+// directory). This source uses that REST API and maps its responses to Tacet domain
+// objects — its Mastodon-specific field knowledge never escapes this file. It is
+// optional: remove it and the generic SeedSource still works everywhere.
+export { toPlainText };
 
 const TIMEOUT_MS = 8000;
 
-// Strip markup to calm plain text. We never render source HTML; we show words.
-export function toPlainText(html: string): string {
-  return html
-    .replace(/<\/(p|br|div)>/gi, "\n")
-    .replace(/<br\s*\/?>(?=)/gi, "\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&nbsp;/g, " ")
-    .replace(/[ \t]+\n/g, "\n")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
-// Build a full @user@home handle from what the source reports (which may be a bare
-// username for a local person, or user@home for someone whose home is elsewhere).
 export function normalizeHandle(acct: string, host: string): string {
   const a = acct.replace(/^@/, "");
   return a.includes("@") ? `@${a}` : `@${a}@${host}`;
@@ -47,7 +24,7 @@ export function mapProfile(raw: OpenWebProfile, source: Source, host: string): P
     bio: toPlainText(raw.note || ""),
     url: raw.url,
     source,
-    verified: false, // we do not assert identity verification for external people
+    verified: false,
   };
 }
 
@@ -77,7 +54,20 @@ async function getJson(url: string): Promise<unknown> {
   return res.json();
 }
 
-export class MastodonSource implements OpenWebSource {
+function toProfile(a: any): OpenWebProfile {
+  return {
+    id: String(a.id),
+    displayName: a.display_name ?? "",
+    acct: a.acct ?? a.username ?? "",
+    avatar: a.avatar ?? a.avatar_static ?? null,
+    note: a.note ?? "",
+    url: a.url ?? "",
+    bot: !!a.bot,
+  };
+}
+
+export class MastodonSource implements DiscoverySource {
+  readonly id = "mastodon";
   readonly source: Source;
   private readonly host: string;
 
@@ -86,9 +76,8 @@ export class MastodonSource implements OpenWebSource {
     this.source = { id: this.host, name: this.host, url: `https://${this.host}` };
   }
 
-  async fetchToday(limit: number): Promise<Moment[]> {
-    // Prefer trending posts — a curated, calm, finite set that feels human, and a
-    // public endpoint. Fall back to the public timeline where a home exposes it.
+  async today(limit: number): Promise<Moment[]> {
+    // Trending posts — a curated, calm, public set. Fall back to the public timeline.
     let raw: any[] = [];
     try {
       raw = (await getJson(`${this.source.url}/api/v1/trends/statuses?limit=${limit}`)) as any[];
@@ -102,7 +91,7 @@ export class MastodonSource implements OpenWebSource {
     return raw
       .filter((s) => s && s.account && !s.account.bot && (s.content || s.reblog))
       .map((s) => {
-        const status = s.reblog ?? s; // surface the underlying post for boosts
+        const status = s.reblog ?? s;
         const content: OpenWebContent = {
           id: String(status.id),
           contentHtml: status.content ?? "",
@@ -120,22 +109,10 @@ export class MastodonSource implements OpenWebSource {
       .filter((m) => m.text.length > 0 || m.media.length > 0);
   }
 
-  async discoverPeople(limit: number): Promise<Person[]> {
+  async people(limit: number): Promise<Person[]> {
     const url = `${this.source.url}/api/v1/directory?limit=${limit}&order=active&local=false`;
     const raw = (await getJson(url)) as any[];
     if (!Array.isArray(raw)) throw new Error("unexpected shape from source");
     return raw.filter((a) => a && !a.bot).map((a) => mapProfile(toProfile(a), this.source, this.host));
   }
-}
-
-function toProfile(a: any): OpenWebProfile {
-  return {
-    id: String(a.id),
-    displayName: a.display_name ?? "",
-    acct: a.acct ?? a.username ?? "",
-    avatar: a.avatar ?? a.avatar_static ?? null,
-    note: a.note ?? "",
-    url: a.url ?? "",
-    bot: !!a.bot,
-  };
 }
