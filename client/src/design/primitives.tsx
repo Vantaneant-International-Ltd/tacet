@@ -173,6 +173,16 @@ export function SectionHeading({
   );
 }
 
+// A quiet loading state — a soft pulsing mark, never a spinner. Respects reduced motion.
+export function Loading({ label = "Loading" }: { label?: string }) {
+  return (
+    <div className="t-loading" role="status" aria-live="polite">
+      <span className="t-loading__dot" aria-hidden="true" />
+      <span className="t-visually-hidden">{label}</span>
+    </div>
+  );
+}
+
 export function EmptyState({
   icon,
   title,

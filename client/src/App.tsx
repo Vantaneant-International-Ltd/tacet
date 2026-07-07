@@ -1,110 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePath, navigate } from "./router";
 import { useUser, refreshUser } from "./session";
-import { Loading } from "./bits";
+import { Loading } from "./design/primitives";
 import { Enter } from "./views/Enter";
-import { Onboarding, hasOnboarded } from "./views/Onboarding";
-import { Shell } from "./views/Shell";
-import { RoomList } from "./views/RoomList";
-import { Room } from "./views/Room";
-import { PostDetail } from "./views/PostDetail";
-import { You } from "./views/You";
-import { About } from "./views/About";
-import { Contact, Privacy } from "./views/Info";
-import { Keeps } from "./views/Keeps";
-import { Feed } from "./views/Feed";
-import { Discover } from "./views/Discover";
-import { Admin } from "./views/Admin";
-import { PublicArchive } from "./views/PublicArchive";
-import { PublicPost } from "./views/PublicPost";
-import { Collection } from "./views/Collection";
 import { LandingPage } from "./views/landing/LandingPage";
 import { TacetApp, APP_ROUTES } from "./app/TacetApp";
 
-// Words reserved for the app itself — a community can't take one (they'd collide with a page).
-const RESERVED = new Set([
-  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection", "enter",
-  "today", "people", "conversations", "me",
-]);
-
+// One navigation model. There is exactly one product flow:
+//
+//   Landing (/)  →  Auth (/enter)  →  App Shell  →  Today · People · Discover · Conversations · Me
+//
+// The old "rooms" product is quarantined and dormant (client/src/legacy/), not
+// routed here. Legacy/public deep-links fall through to a gentle redirect.
 export function App() {
   const user = useUser();
   const path = usePath();
-  const [onboarded, setOnboarded] = useState(hasOnboarded);
 
   useEffect(() => {
     refreshUser().catch(() => {});
   }, []);
 
-  // Public pages render for everyone, signed in or not — no session needed.
-  // People/brands: /@name · communities: bare /name (subreddit-style), guarded from the
-  // reserved app words. Post permalinks: /@name/id.
-  const pubPost = path.match(/^\/@([^/]+)\/([^/]+)$/);
-  if (pubPost) return <PublicPost slug={pubPost[1]} id={pubPost[2]} />;
-  const pubArchive = path.match(/^\/@([^/]+)$/);
-  if (pubArchive) return <PublicArchive slug={pubArchive[1]} />;
-  const coll = path.match(/^\/collection\/([^/]+)$/);
-  if (coll) return <Collection id={coll[1]} />;
-  const community = path.match(/^\/([a-z0-9][a-z0-9-]{1,49})$/);
-  if (community && !RESERVED.has(community[1])) return <PublicArchive slug={community[1]} />;
-
-  // Frontend Alpha: the new Tacet experience (Today/People/Discover/Conversations/Me)
-  // runs on mock data and is walkable without a session. No backend is called here.
+  // The five pillars. Mock-data alpha — walkable with or without a session.
   if (APP_ROUTES.some((r) => path === r || path.startsWith(r + "/"))) return <TacetApp />;
 
-  // Loading the session.
+  // Auth: sign in / create, and invite links that prefill it.
+  const joining = path.match(/^\/join\/([^/]+)$/);
+  if (joining) return <Enter invite={decodeURIComponent(joining[1])} />;
+  if (path === "/enter") return <Enter />;
+
+  // Resolve the session before deciding the front door.
   if (user === undefined) return <Loading />;
 
-  // An invite link (/join/<code>) prefills registration.
-  const joining = path.match(/^\/join\/([^/]+)$/);
-
-  // Signed out: the public landing page is the front door at `/`. The Enter view
-  // (sign in / register) lives at /enter, and an invite link jumps straight to it.
+  // Signed out: the landing page is the only front door.
   if (user === null) {
-    if (joining) return <Enter invite={decodeURIComponent(joining[1])} />;
-    if (path === "/enter") return <Enter />;
-    return <LandingPage />;
+    if (path === "/") return <LandingPage />;
+    return <Redirect to="/" />;
   }
 
-  // A signed-in person following an invite link doesn't need it.
-  if (joining) {
-    navigate("/rooms");
-    return <Loading />;
-  }
-
-  // First run on this device: teach the house once, before anything else.
-  if (!onboarded) return <Onboarding onDone={() => setOnboarded(true)} />;
-
-  // Signed in: route within the shell.
-  return <Shell>{route(path, user.is_admin)}</Shell>;
+  // Signed in: home is Today. Anything unrecognised (incl. dormant legacy URLs
+  // like /rooms, /@name) resolves into the one product model.
+  return <Redirect to="/today" />;
 }
 
-function route(path: string, isAdmin: boolean) {
-  // /rooms/:slug/p/:id
-  const detail = path.match(/^\/rooms\/([^/]+)\/p\/([^/]+)$/);
-  if (detail) return <PostDetail slug={detail[1]} id={detail[2]} />;
-
-  // /rooms/:slug
-  const room = path.match(/^\/rooms\/([^/]+)$/);
-  if (room) return <Room slug={room[1]} />;
-
-  if (path === "/" || path === "/feed") return <Feed />;
-  if (path === "/rooms") return <RoomList />;
-  if (path === "/discover") return <Discover />;
-  if (path === "/you") return <You />;
-  if (path === "/keeps") return <Keeps />;
-  if (path === "/about") return <About />;
-  if (path === "/contact") return <Contact />;
-  if (path === "/privacy") return <Privacy />;
-  if (path === "/admin") return isAdmin ? <Admin /> : <NotHere />;
-
-  return <NotHere />;
-}
-
-function NotHere() {
+// A one-shot client redirect that avoids setState-during-render.
+function Redirect({ to }: { to: string }) {
   useEffect(() => {
-    const t = setTimeout(() => navigate("/rooms"), 0);
+    const t = setTimeout(() => navigate(to), 0);
     return () => clearTimeout(t);
-  }, []);
-  return null;
+  }, [to]);
+  return <Loading />;
 }

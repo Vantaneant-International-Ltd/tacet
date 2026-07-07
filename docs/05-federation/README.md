@@ -1,5 +1,16 @@
 # Federation
 
+> **Read this first — what this section is *not*.** Tacet is **not** a Fediverse
+> client, a Mastodon frontend, or a wrapper around ActivityPub. Tacet is a complete
+> social product, the way iMessage and Mail are complete products rather than "SMTP
+> clients." ActivityPub is a **replaceable adapter** at the edge of the architecture
+> (`User → Tacet Product → Domain Model → ActivityPub Adapter → the open social
+> web`), not the core. Federation *extends* the product; it never *defines* it. The
+> test for everything in this section: *if ActivityPub were replaced by another open
+> protocol tomorrow, would Tacet still make sense as a product?* The answer must
+> always be yes — because the product lives above the adapter. See the
+> [pillar + adapter law in FOUNDING_PRINCIPLES](../../FOUNDING_PRINCIPLES.md).
+
 **Tacet is your home on the open social web.** Federation is how one identity you own reaches people who live on many different servers — the same way email lets one account reach the whole world. This is the load-bearing idea of the whole section: **ActivityPub is infrastructure, not the product.** A person should never need to understand ActivityPub, "instances," or "the Fediverse" to use Tacet, any more than they need to understand SMTP to send an email. You just email `anna@gmail.com` from `you@fastmail.com` and it works; you just follow `@anna@pixelfed.social` from `@you@tacet.social` and it works. We are honest about the edges of this: Tacet is the best home for the *open* social web — the ActivityPub-compatible platforms like Mastodon, Pixelfed, PeerTube, WriteFreely and Friendica. We do not pretend to reach inside closed platforms that keep their doors locked. Federation, done right, disappears. What's left is people.
 
 ## In this section

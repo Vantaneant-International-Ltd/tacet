@@ -36,6 +36,13 @@ Supporting surfaces (not top-level nav, but first-class): **Compose**,
 Note deliberately: **"Home Feed" is not the core concept.** Tacet has a feed the
 way a home has a window — useful, present, but not the reason the house exists.
 
+**These five are now frozen** as the permanent product model (see the pillar freeze
+in [FOUNDING_PRINCIPLES.md](FOUNDING_PRINCIPLES.md)). Every future feature must
+strengthen one of them or it does not belong in Tacet. And Tacet is a **complete
+product**, not a Fediverse client: ActivityPub is a replaceable adapter at the edge,
+never the core — if it were swapped for another open protocol tomorrow, Tacet would
+still make sense as a product.
+
 ## What Tacet is not
 
 - Not a Twitter/X clone. Not an Instagram clone. Not a Mastodon clone. Not

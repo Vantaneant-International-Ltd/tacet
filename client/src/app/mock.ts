@@ -123,7 +123,7 @@ export const posts: Post[] = [
     authorId: "anna",
     time: "8h",
     kind: "text",
-    body: "A friend on Mastodon, a friend on Pixelfed, a friend down the street. Same feed, no translating between apps. This is what it was supposed to be.",
+    body: "A friend who writes, a friend who shoots film, a friend down the street — all in one place now. One app for everyone, instead of one app for each person. This is what it was supposed to be.",
     sparkedByMe: true,
   },
 ];
@@ -181,7 +181,7 @@ export const suggested: Person[] = people.filter((p) => !p.following).concat([
 export type Community = { id: string; name: string; blurb: string; server: Server; members: string };
 export const communities: Community[] = [
   { id: "smallweb", name: "The Small Web", blurb: "For people rebuilding the internet at human scale.", server: "tacet.social", members: "a few hundred" },
-  { id: "filmphoto", name: "Film Photography", blurb: "Grain, light, and no hurry. Federated with Pixelfed.", server: "pixelfed.social", members: "thousands" },
+  { id: "filmphoto", name: "Film Photography", blurb: "Grain, light, and no hurry — with people from all over.", server: "pixelfed.social", members: "thousands" },
   { id: "slowmakers", name: "Slow Makers", blurb: "Bread, ceramics, gardens, and the people who tend them.", server: "tacet.social", members: "a warm handful" },
 ];
 

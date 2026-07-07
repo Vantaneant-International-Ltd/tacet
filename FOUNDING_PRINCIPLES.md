@@ -17,6 +17,69 @@ Not another social network. A home — one identity you own, one place your peop
 live, one calm window into the wider open web. You bring the internet you already
 have into one place instead of maintaining seven copies of yourself.
 
+## The five permanent pillars
+
+Tacet is, and will remain, five places:
+
+1. **Today** — the calm entry point.
+2. **People** — your relationships.
+3. **Discover** — the gateway to the open social web.
+4. **Conversations** — correspondence, not notifications.
+5. **Me** — your identity and your own place.
+
+**This is the frozen product model.** It is the stable mental model the whole
+product hangs on — the reason Tacet can feel coherent the way Apple, Linear, and
+Notion feel coherent. It does not grow a sixth pillar on a whim, and it does not
+rename these five to chase a trend.
+
+**The pillar rule — the test every future feature must pass:**
+
+> Every future feature must strengthen one of these five pillars. If it does not, it
+> probably does not belong in Tacet.
+
+A feature is not justified by being good in the abstract, or by what a competitor
+ships. It is justified by making Today calmer, People closer, Discover more open,
+Conversations more present, or Me more truly yours. Anything that maps to none of
+the five is either the wrong feature or a sign the model is being stretched — and
+the model does not stretch. When in doubt, the answer is fewer, better, inside the
+five.
+
+Everything the codebase still carries from earlier eras (rooms, feeds, lenses,
+keeps, grids, archives) either **maps into one of these five** or is **legacy to be
+retired** — see [PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md) and
+[docs/01-product/information-architecture.md](docs/01-product/information-architecture.md).
+
+## Tacet is a complete product; the protocol is a replaceable adapter
+
+Tacet is **not** a Fediverse client, a Mastodon frontend, or a thin wrapper around
+ActivityPub. Tacet is a complete social product in its own right — the way iMessage
+and Mail are complete products, not "SMTP clients." The user experiences one
+beautiful thing; the protocols underneath disappear.
+
+The architecture reflects this ordering:
+
+```
+User → Tacet Product → Tacet Domain Model → ActivityPub Adapter → the open social web
+```
+
+**The adapter is replaceable. The product is not.** ActivityPub is how Tacet reaches
+the open social web today; it is an implementation detail at the edge, never the
+core. Federation *extends* the product; it does not *define* it. We build the best
+social product first, and let it reach outward.
+
+**The adapter test — apply it to every architectural and product decision:**
+
+> If ActivityPub disappeared tomorrow and another open protocol replaced it, would
+> Tacet still make sense as a complete product?
+
+The answer must always be **yes**. If a feature only makes sense as "a Mastodon
+thing," it is in the wrong layer.
+
+**In the interface, the protocol is invisible.** Never expose protocol terminology
+unless someone deliberately goes looking for it. It is never "a Mastodon post" — it
+is *a post*. Never "a remote account" — *a person*. Never "the federated timeline" —
+*Today*. One coherent experience, always.
+
 ## The five commitments
 
 1. **People before posts.**

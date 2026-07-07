@@ -12,6 +12,18 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Consolidation pass.** Froze the five pillars (Today/People/Discover/
+  Conversations/Me) in `FOUNDING_PRINCIPLES.md` with the pillar rule + the
+  "complete product / replaceable ActivityPub adapter" law. Quarantined the old
+  "rooms" product into `client/src/legacy/` (dormant, tree-shaken out — bundle
+  dropped ~25 modules, JS 69→59 KB gz, CSS 10.5→6.3 KB gz), with a concept-migration
+  map in `client/src/legacy/README.md`. Collapsed routing to a single model in
+  `App.tsx` (Landing → Auth → the five pillars; legacy/public URLs redirect in). New
+  flow decoupled from the old `styles.css` (now legacy-only). Audited the UI for
+  protocol jargon — none surfaced; removed a redundant per-post "server" badge so
+  everyone is simply "a person." Repositioned `docs/05-federation` as an
+  implementation detail.
+
 - **Docs-first restructure.** Added `/docs/` (00-manifesto → 08-roadmap),
   `FOUNDING_PRINCIPLES.md`, `PRODUCT_DIRECTION.md`; rewrote the root `README.md` as a
   product introduction. Stamped `BUILD-LOCKFILE.md` and `DESIGN.md` historical.

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Avatar, IconButton, Button, Chip } from "../design/primitives";
+import { Avatar, IconButton, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Post } from "./mock";
 import { personById, handle } from "./mock";
 
-// A person's name + handle line, with a verified mark and an open-web source chip
-// when they live on another server. Reused across every surface.
+// A person's name and address. Everyone is simply "a person" — where their home
+// happens to be lives quietly in the address, the way an email address does. No
+// "remote" badge, no protocol; one coherent people model.
 export function PersonIdentity({ person, time }: { person: Person; time?: string }) {
-  const remote = person.server !== "tacet.social";
   return (
     <div className="t-identity">
       <span className="t-identity__name">
@@ -22,11 +22,6 @@ export function PersonIdentity({ person, time }: { person: Person; time?: string
         {handle(person)}
         {time && <span aria-hidden="true"> · {time}</span>}
       </span>
-      {remote && (
-        <span className="t-identity__source">
-          <Chip icon="globe" tone="open">{person.server}</Chip>
-        </span>
-      )}
     </div>
   );
 }
