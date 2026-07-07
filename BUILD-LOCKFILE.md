@@ -1,8 +1,22 @@
 # TACET · BUILD-LOCKFILE
 
-**Status: LOCKED.** This file is the top authority for all build work on TACET.
-Authority order: BUILD-LOCKFILE.md → STATE.md → TACET-Concept-Dossier (01) → TACET-Interface-Dossier (02).
-Where a dossier and this file conflict, this file wins. Changes to this file are made only by Ren.
+> **⚠️ HISTORICAL — SUPERSEDED (2026-07-07).** This file is no longer the authority
+> for Tacet. The product is re-founded around **[`/docs/`](docs/)**,
+> **[`/FOUNDING_PRINCIPLES.md`](FOUNDING_PRINCIPLES.md)**, and
+> **[`/PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md)** — *Tacet is your home on the
+> open social web.* Where this file conflicts with `docs/`, `docs/` wins. In
+> particular the following are **retired**: "rooms, not followings" (People come
+> first now), the "quiet invite-only clubhouse" framing (open by design), the §2
+> no-metrics product law *and* Amendment 4's public like/dislike scoreboard (see
+> `PRODUCT_DIRECTION.md` items 4 & 10), and the austere words-only/dark-only design
+> language (now warm, rich, calm, alive). This file is kept for history only. Do
+> not treat anything below as current product law.
+
+---
+
+**Status: HISTORICAL.** Formerly the top authority for build work on TACET.
+Authority order (historical): BUILD-LOCKFILE.md → STATE.md → TACET-Concept-Dossier (01) → TACET-Interface-Dossier (02).
+Superseded by `/docs/`. Retained for provenance; changes are no longer made here.
 
 ---
 

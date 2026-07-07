@@ -1,5 +1,24 @@
 # STATE
 
+> **Re-founded 2026-07-07 around `/docs/`.** Product authority is now
+> [`/docs/`](docs/), [`/FOUNDING_PRINCIPLES.md`](FOUNDING_PRINCIPLES.md), and
+> [`/PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md). Tacet is **your home on the open
+> social web** (People before posts · Relationships before engagement · Identity
+> before platforms · Calm before addiction · Open before closed). `BUILD-LOCKFILE.md`
+> and `DESIGN.md` are stamped historical. This file now tracks **build state only**,
+> not product direction — see `PRODUCT_DIRECTION.md` for the superseded assumptions
+> and the app-reshape plan. The running app below predates the re-founding and has
+> not yet been reshaped to match.
+
+## Done since re-founding (2026-07-07)
+
+- **Docs-first restructure.** Added `/docs/` (00-manifesto → 08-roadmap),
+  `FOUNDING_PRINCIPLES.md`, `PRODUCT_DIRECTION.md`; rewrote the root `README.md` as a
+  product introduction. Stamped `BUILD-LOCKFILE.md` and `DESIGN.md` historical.
+  No app code changed; the app still runs exactly as below.
+
+---
+
 **Phase:** 2 — the address (in progress). Phase 1 complete + Amendments 1 & 2.
 **Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
 **Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.

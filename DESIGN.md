@@ -1,8 +1,17 @@
 # TACET · DESIGN.md
 
-The visual and interaction reference for TACET. Public-safe: this file contains design
-guidance only, no strategy. Authority order: BUILD-LOCKFILE.md outranks this file; where
-they conflict, the lockfile wins. STATE.md tracks current work.
+> **⚠️ HISTORICAL — SUPERSEDED (2026-07-07).** The authoritative design system is
+> now **[`/docs/03-design-system/`](docs/03-design-system/)** and the interface
+> guidelines **[`/docs/02-human-interface-guidelines/`](docs/02-human-interface-guidelines/)**.
+> Tacet's design language is now **warm, rich, calm, and alive**, with icons
+> permitted and a light mode expected — not the austere, words-only, near-black
+> system described below. The dark tokens here survive only as a starting point for
+> a dark theme. Kept for history; do not use as current guidance.
+
+---
+
+The visual and interaction reference for TACET (historical). This file contains design
+guidance only, no strategy. Superseded by `/docs/`; retained for provenance.
 
 ---
 
