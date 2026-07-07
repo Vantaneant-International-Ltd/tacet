@@ -12,6 +12,18 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Remote profiles.** Every person — from Mastodon, Pixelfed, PeerTube, Misskey,
+  Friendica, or any supported implementation — now has a beautiful profile page **inside
+  Tacet** at `/p/<actor>`. Avatar, display name, handle, bio, source badge, recent public
+  posts (with media), and a "View original" link. Authors in Today and people in
+  People/Discover are clickable through to it. Reuses the generic ActivityPub core
+  (`getProfile` in the facade: actor + outbox → normalize → Person + Moment[]) and the same
+  `LiveMoment` used everywhere, so each post keeps local **Save**. Read-only: no follow,
+  reply, or write. Graceful: a null profile renders a calm error; empty outbox renders a
+  calm empty state. New endpoint `GET /api/openweb/profile?actor=`. Live-verified against
+  Mastodon + Pixelfed. Known limitation: some homes' outboxes surface fewer normalizable
+  posts (boost/reference-only items are skipped read-only).
+
 - **The first five minutes.** A calm, Apple-setup-style first-run (`client/src/app/
   onboarding/`) that runs once per device: Welcome → personalise your local profile
   (name + optional handle) → hand off into Today. Not a tutorial or feature tour. The

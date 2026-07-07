@@ -45,6 +45,32 @@ function useResource<T>(path: string): LoadState<T> {
 export const useToday = () => useResource<Moment[]>("/api/openweb/today");
 export const usePeople = () => useResource<Person[]>("/api/openweb/people");
 
+// ── Remote profiles ────────────────────────────────────────────────────────────
+export interface ProfileData { profile: Person | null; posts: Moment[]; source: Source | null; error?: AdapterError }
+export type ProfileState =
+  | { status: "loading" }
+  | { status: "ready"; data: ProfileData }
+  | { status: "error"; message: string };
+
+// The in-Tacet path for a person's profile. `actorId` is their canonical actor URL.
+export function profilePath(actorId: string): string {
+  return "/p/" + encodeURIComponent(actorId);
+}
+
+export function useProfile(actorRef: string): ProfileState {
+  const [state, setState] = useState<ProfileState>({ status: "loading" });
+  useEffect(() => {
+    let alive = true;
+    setState({ status: "loading" });
+    fetch(`/api/openweb/profile?actor=${encodeURIComponent(actorRef)}`, { credentials: "same-origin", headers: { accept: "application/json" } })
+      .then((r) => r.json() as Promise<ProfileData>)
+      .then((data) => { if (alive) setState({ status: "ready", data }); })
+      .catch((e) => { if (alive) setState({ status: "error", message: e instanceof Error ? e.message : "unavailable" }); });
+    return () => { alive = false; };
+  }, [actorRef]);
+  return state;
+}
+
 // Calm relative time from an ISO string. Small, dependency-free.
 export function relativeTime(iso: string): string {
   const then = Date.parse(iso);

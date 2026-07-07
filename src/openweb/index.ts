@@ -1,6 +1,9 @@
 import type { AdapterResult, Moment, Person, Source, DiscoverySource, AdapterError } from "./types";
 import { mockMoments, mockPeople } from "./mock";
 import { softwareOf } from "./activitypub/nodeinfo";
+import { ApClient } from "./activitypub/client";
+import { normalizePerson, normalizeActivity } from "./normalize";
+import type { RequestSigner } from "./activitypub/signing";
 
 // The read-only open-web adapter facade. It fans out to the configured discovery
 // sources, merges their DOMAIN objects (they never leak protocol shapes), and ALWAYS
@@ -107,6 +110,47 @@ export function getToday(sources: DiscoverySource[], limit: number, now: number)
     mockMoments,
     now,
   );
+}
+
+// A single person's profile: their canonical actor plus recent public posts, all read
+// through the generic ActivityPub core and normalized to domain objects. Read-only. The
+// caller passes an actor URL or an @user@home handle. Never throws — a failure yields a
+// null profile the UI shows as a calm error state (no mock person makes sense here).
+export interface ProfileResult {
+  profile: Person | null;
+  posts: Moment[];
+  source: Source | null;
+  error?: AdapterError;
+}
+
+export async function getProfile(actorRef: string, signer?: RequestSigner): Promise<ProfileResult> {
+  try {
+    const client = new ApClient(signer);
+    const actor = await client.getActor(actorRef);
+    const profile = normalizePerson(actor);
+    let posts: Moment[] = [];
+    try {
+      const activities = await client.getOutbox(actor, 24);
+      posts = activities.map((a) => normalizeActivity(a, actor)).filter((m): m is Moment => !!m).slice(0, 24);
+    } catch {
+      /* posts are optional — a profile with no readable outbox still shows */
+    }
+    try {
+      const sw = await softwareOf(profile.source.id);
+      if (sw) {
+        profile.source.software = sw;
+        for (const p of posts) {
+          if (p.source.id === profile.source.id) p.source.software = sw;
+          if (p.author.source.id === profile.source.id) p.author.source.software = sw;
+        }
+      }
+    } catch {
+      /* attribution is best-effort */
+    }
+    return { profile, posts, source: profile.source };
+  } catch (e) {
+    return { profile: null, posts: [], source: null, error: toAdapterError(e) };
+  }
 }
 
 export function getPeople(sources: DiscoverySource[], limit: number, now: number): Promise<AdapterResult<Person[]>> {

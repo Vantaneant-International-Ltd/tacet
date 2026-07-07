@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Moment, DataMode, Source } from "./openweb";
-import { relativeTime } from "./openweb";
+import { relativeTime, profilePath } from "./openweb";
+import { Link } from "../router";
 import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 
 // Presentational components for live open-web domain objects. They reuse the design
@@ -43,8 +44,10 @@ export function LiveMoment({ moment }: { moment: Moment }) {
   return (
     <article className="t-post t-card">
       <div className="t-post__head">
-        <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
-        <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
+        <Link to={profilePath(moment.author.id)} className="t-post__author">
+          <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
+          <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
+        </Link>
         <a
           className="t-iconbtn t-post__more"
           href={moment.url}
@@ -90,11 +93,13 @@ export function LivePerson({ person }: { person: Person }) {
   const [following, setFollowing] = useState(false);
   return (
     <div className="t-personrow t-card">
-      <Avatar name={person.name} src={person.avatarUrl} size={52} />
-      <div className="t-personrow__body">
-        <Identity person={person} source={person.source} />
-        {person.bio && <p className="t-personrow__bio">{person.bio}</p>}
-      </div>
+      <Link to={profilePath(person.id)} className="t-personrow__open">
+        <Avatar name={person.name} src={person.avatarUrl} size={52} />
+        <div className="t-personrow__body">
+          <Identity person={person} source={person.source} />
+          {person.bio && <p className="t-personrow__bio">{person.bio}</p>}
+        </div>
+      </Link>
       {/* UI-only follow affordance — read-only milestone performs no remote write. */}
       <Button variant={following ? "secondary" : "primary"} size="sm" onClick={() => setFollowing((f) => !f)}>
         {following ? "Following" : "Follow"}
