@@ -15,7 +15,30 @@
 - **Docs-first restructure.** Added `/docs/` (00-manifesto → 08-roadmap),
   `FOUNDING_PRINCIPLES.md`, `PRODUCT_DIRECTION.md`; rewrote the root `README.md` as a
   product introduction. Stamped `BUILD-LOCKFILE.md` and `DESIGN.md` historical.
-  No app code changed; the app still runs exactly as below.
+
+- **Landing page** at `/` for signed-out visitors (`client/src/views/landing/`):
+  keynote-style single-scroll — breathing-network hero, platform selector,
+  fragmentation → convergence, federation-as-email, manifesto, CTA. Scoped `.lp-*`
+  CSS; reduced-motion aware.
+
+- **Frontend Alpha** — the new product experience, replacing the hardcoded dark-only
+  shell. Runs entirely on **mock data** (`client/src/app/mock.ts`); no backend calls.
+  - **Design system** (`client/src/design/`) implementing `docs/03-design-system`
+    verbatim: `theme.css` semantic tokens with warm **light + dark** as peers
+    (system pref + manual `data-theme`, no-flash `initTheme`); `icons.tsx` (Tacet's
+    own stroke set); `primitives.tsx` (typed Button/IconButton/Card/Avatar/Chip/…).
+  - **App** (`client/src/app/`): responsive `AppShell` (desktop rail + mobile
+    tabbar/FAB), screens **Today / People / Discover / Conversations / Me**, and a
+    `ComposeSheet`. PostCard carries private Save + Spark (no public counts).
+  - **Routing:** `/today`../`me` are walkable without a session (demo alpha); the
+    old rooms views (`RoomList`, `Feed`, `Timeline`, …) remain in the tree but are
+    routed around. Sign-in (`Enter`) rebuilt on the design system and routes to
+    `/today`.
+  - **Design source of truth caveat:** the Figma/Claude Design workspace could not be
+    opened (design access unauthenticated this session), so the alpha was built to the
+    repo's `docs/03-design-system` spec by Ren's direction — to be reconciled against
+    the approved design later.
+  - Typecheck + `vite build` green. Local dev: `npm run dev` (→ 8787).
 
 ---
 
