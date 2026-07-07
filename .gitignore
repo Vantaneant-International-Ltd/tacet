@@ -2,11 +2,14 @@ node_modules/
 dist/
 .wrangler/
 
-# Local secrets — never commit. Use .dev.vars.example as the template.
+# Local secrets & private deploy config — never commit.
 .dev.vars
 .env
 .env.*
 !.dev.vars.example
+# Private deploy config with real Cloudflare account/D1 ids (see DEPLOY.md).
+wrangler.local.jsonc
+wrangler.local.toml
 
 *.log
 *.tsbuildinfo
