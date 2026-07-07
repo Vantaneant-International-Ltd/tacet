@@ -1,68 +1,63 @@
 import { useMemo, useState } from "react";
-import { people, handle } from "../mock";
-import { PersonRow } from "../components";
-import { SectionHeading, EmptyState } from "../../design/primitives";
+import { usePeople } from "../openweb";
+import { LivePerson, SourceNote } from "../live";
+import { SectionHeading, EmptyState, Loading } from "../../design/primitives";
 import { Icon } from "../../design/icons";
 
-// Your relationships, first-class. The people you follow, wherever on the open web
-// they live — searchable, calm, no follower counts.
+// People, now reading real discoverable people from the open social web through the
+// adapter. Everyone is simply "a person"; their home lives quietly in the address.
+// Searchable, calm, no follower counts. Degrades to sample content if the open web
+// can't be reached.
 export function People() {
+  const state = usePeople();
   const [q, setQ] = useState("");
-  const following = people.filter((p) => p.following);
 
+  const people = state.status === "ready" ? state.result.data : [];
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
-    if (!s) return following;
-    return following.filter(
-      (p) => p.name.toLowerCase().includes(s) || handle(p).toLowerCase().includes(s),
-    );
-  }, [q, following]);
-
-  const local = filtered.filter((p) => p.server === "tacet.social");
-  const openweb = filtered.filter((p) => p.server !== "tacet.social");
+    if (!s) return people;
+    return people.filter((p) => p.name.toLowerCase().includes(s) || p.handle.toLowerCase().includes(s));
+  }, [q, people]);
 
   return (
     <div className="t-screen">
-      <SectionHeading title="People" subtitle="The people you keep close — here and across the open web." />
+      <SectionHeading title="People" subtitle="People from across the open web — discover them, keep them close." />
 
       <div className="t-search">
         <Icon name="search" size={19} />
         <input
           className="t-search__input"
           type="search"
-          placeholder="Search your people"
+          placeholder="Search people by name or @handle"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          aria-label="Search your people"
+          aria-label="Search people"
         />
       </div>
 
-      {filtered.length === 0 && (
-        <EmptyState icon="people" title="No one by that name">
-          Try a different search, or find new people in Discover.
+      {state.status === "loading" && <Loading label="Finding people" />}
+
+      {state.status === "error" && (
+        <EmptyState icon="people" title="We couldn’t load People">
+          Something interrupted the connection. Give it a moment and try again.
         </EmptyState>
       )}
 
-      {local.length > 0 && (
-        <section className="t-group">
-          <h3 className="t-group__label">On Tacet</h3>
-          <div className="t-list">
-            {local.map((p) => (
-              <PersonRow key={p.id} person={p} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {openweb.length > 0 && (
-        <section className="t-group">
-          <h3 className="t-group__label">Across the open web</h3>
-          <div className="t-list">
-            {openweb.map((p) => (
-              <PersonRow key={p.id} person={p} />
-            ))}
-          </div>
-        </section>
+      {state.status === "ready" && (
+        <>
+          <SourceNote mode={state.result.mode} sourceName={state.result.source?.name} />
+          {filtered.length === 0 ? (
+            <EmptyState icon="people" title={q ? "No one by that name" : "No one to show yet"}>
+              {q ? "Try a different search." : "The open web is quiet right now — check back soon."}
+            </EmptyState>
+          ) : (
+            <div className="t-list">
+              {filtered.map((p) => (
+                <LivePerson key={p.id} person={p} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -1,10 +1,16 @@
-import { posts, today } from "../mock";
-import { PostCard } from "../components";
+import { useToday } from "../openweb";
+import { LiveMoment, SourceNote } from "../live";
+import { Loading, EmptyState } from "../../design/primitives";
 import { Icon } from "../../design/icons";
+import { today } from "../mock";
 
-// The calm entry point. A bounded handful from your people, then a clear end — no
-// infinite scroll, no algorithmic pull. When you reach the bottom, you're done.
+// The calm entry point, now reading real public content from the open social web
+// through the adapter. Finite, curated-feeling, and honest about its source. If the
+// open web can't be reached, it degrades to sample content (clearly labelled) rather
+// than showing an error.
 export function Today() {
+  const state = useToday();
+
   return (
     <div className="t-screen t-screen--reading">
       <header className="t-today__head">
@@ -12,17 +18,38 @@ export function Today() {
         <p className="t-today__line">{today.line}</p>
       </header>
 
-      <div className="t-feed">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
+      {state.status === "loading" && <Loading label="Gathering today" />}
 
-      <div className="t-caughtup">
-        <Icon name="check" size={22} />
-        <p className="t-caughtup__title">You&rsquo;re all caught up</p>
-        <p className="t-caughtup__body">That&rsquo;s everything from today. The rest of the day is yours.</p>
-      </div>
+      {state.status === "error" && (
+        <EmptyState icon="today" title="We couldn’t load Today">
+          Something interrupted the connection. Give it a moment and try again.
+        </EmptyState>
+      )}
+
+      {state.status === "ready" && (
+        <>
+          <SourceNote mode={state.result.mode} sourceName={state.result.source?.name} />
+
+          {state.result.data.length === 0 ? (
+            <EmptyState icon="today" title="A quiet morning">
+              Nothing new right now. That’s allowed — the rest of the day is yours.
+            </EmptyState>
+          ) : (
+            <>
+              <div className="t-feed">
+                {state.result.data.map((m) => (
+                  <LiveMoment key={m.id} moment={m} />
+                ))}
+              </div>
+              <div className="t-caughtup">
+                <Icon name="check" size={22} />
+                <p className="t-caughtup__title">You’re all caught up</p>
+                <p className="t-caughtup__body">That’s everything for now. The rest of the day is yours.</p>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

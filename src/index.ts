@@ -7,6 +7,7 @@ import { postRoutes } from "./routes/posts";
 import { inviteRoutes } from "./routes/invites";
 import { publicRoutes } from "./routes/public";
 import { collectionRoutes } from "./routes/collections";
+import { openwebRoutes } from "./routes/openweb";
 
 // The Worker owns /api/*. Static files (JS, CSS, fonts) are served directly by the
 // assets binding before the Worker runs. Any remaining path is a client-side route,
@@ -28,6 +29,7 @@ api.route("/auth", authRoutes);
 api.route("/rooms", roomRoutes);
 api.route("/invites", inviteRoutes);
 api.route("/collections", collectionRoutes);
+api.route("/openweb", openwebRoutes);
 api.route("/public", publicRoutes);
 api.route("/", postRoutes);
 

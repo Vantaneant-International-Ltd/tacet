@@ -213,6 +213,32 @@
 .t-action.is-on { color: var(--color-accent); }
 .t-action--end { margin-left: auto; }
 
+.t-post__img {
+  display: block;
+  width: 100%;
+  max-height: 30rem;
+  object-fit: cover;
+  margin-top: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+}
+
+/* Honest provenance note above a live surface. Calm, tertiary, quiet. */
+.t-sourcenote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-meta);
+  color: var(--color-text-tertiary);
+}
+.t-sourcenote--muted { color: var(--color-text-tertiary); font-style: italic; }
+.t-sourcenote__dot {
+  width: 7px; height: 7px; border-radius: var(--radius-full);
+  background: var(--color-positive); flex: none;
+}
+.t-sourcenote__dot--cached { background: var(--color-warning); }
+
 .t-post__reply {
   display: flex;
   gap: var(--space-3);
