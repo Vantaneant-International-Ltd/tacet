@@ -18,10 +18,11 @@ import { Admin } from "./views/Admin";
 import { PublicArchive } from "./views/PublicArchive";
 import { PublicPost } from "./views/PublicPost";
 import { Collection } from "./views/Collection";
+import { LandingPage } from "./views/landing/LandingPage";
 
 // Words reserved for the app itself — a community can't take one (they'd collide with a page).
 const RESERVED = new Set([
-  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection",
+  "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection", "enter",
 ]);
 
 export function App() {
@@ -51,8 +52,13 @@ export function App() {
   // An invite link (/join/<code>) prefills registration.
   const joining = path.match(/^\/join\/([^/]+)$/);
 
-  // Signed out: the only surface is Enter.
-  if (user === null) return <Enter invite={joining ? decodeURIComponent(joining[1]) : undefined} />;
+  // Signed out: the public landing page is the front door at `/`. The Enter view
+  // (sign in / register) lives at /enter, and an invite link jumps straight to it.
+  if (user === null) {
+    if (joining) return <Enter invite={decodeURIComponent(joining[1])} />;
+    if (path === "/enter") return <Enter />;
+    return <LandingPage />;
+  }
 
   // A signed-in person following an invite link doesn't need it.
   if (joining) {

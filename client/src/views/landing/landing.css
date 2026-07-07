@@ -1,0 +1,332 @@
+/* Tacet landing page — a self-contained keynote surface.
+   Scoped under .lp-* so it never touches the app's own visual system.
+   Direction: dark, calm, elegant; strong whitespace; subtle lavender accent;
+   a network that breathes rather than shouts. */
+
+.lp {
+  --lp-bg: #0a0a0d;
+  --lp-bg-2: #0e0d14;
+  --lp-ink: #f5f5f2;
+  --lp-ink-dim: #9d9da6;
+  --lp-ink-faint: #63636e;
+  --lp-accent: #a996ec;
+  --lp-accent-deep: #7a5cd0;
+  --lp-line: rgba(169, 150, 236, 0.14);
+  --lp-card: rgba(255, 255, 255, 0.035);
+  --lp-card-brd: rgba(255, 255, 255, 0.08);
+
+  position: relative;
+  background: var(--lp-bg);
+  color: var(--lp-ink);
+  font-family: "Jost", system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp { scroll-behavior: auto; }
+}
+
+/* A quiet global wash that gives the dark a faint lavender depth. */
+.lp::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(122, 92, 208, 0.18), transparent 60%),
+    radial-gradient(90% 60% at 50% 115%, rgba(122, 92, 208, 0.1), transparent 60%);
+  z-index: 0;
+}
+
+.lp > * { position: relative; z-index: 1; }
+
+/* ---- Section scaffold ---- */
+.lp-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.lp-inner { width: 100%; max-width: 62rem; margin: 0 auto; }
+
+/* ---- Type ---- */
+.lp-h1 {
+  font-weight: 300;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.lp-h2 {
+  font-weight: 300;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem;
+}
+.lp-lead {
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  color: var(--lp-ink);
+  font-weight: 300;
+}
+.lp-lead-lines { margin: 0; }
+.lp-lead-lines span { display: block; }
+.lp-sub {
+  color: var(--lp-ink-dim);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  max-width: 34rem;
+  margin: 1rem auto 0;
+}
+.lp-fine {
+  color: var(--lp-ink-faint);
+  font-size: 0.8rem;
+  max-width: 34rem;
+  margin: 2rem auto 0;
+  line-height: 1.5;
+}
+.lp-accent-word { color: var(--lp-accent); }
+
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 900ms ease, transform 900ms ease;
+}
+.lp-reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .lp-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---- Buttons ---- */
+.lp-btn {
+  display: inline-block;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 2.1rem;
+  border-radius: 999px;
+  color: #14101f;
+  background: linear-gradient(180deg, #c6b6f6, var(--lp-accent));
+  border: none;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+  box-shadow: 0 8px 30px rgba(122, 92, 208, 0.35);
+}
+.lp-btn:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 12px 40px rgba(122, 92, 208, 0.45); }
+.lp-btn:active { transform: translateY(0); }
+.lp-btn-ghost {
+  background: transparent;
+  color: var(--lp-ink);
+  box-shadow: none;
+  border: 1px solid var(--lp-card-brd);
+}
+.lp-btn-ghost:hover { border-color: var(--lp-accent); box-shadow: none; filter: none; }
+.lp-linkbtn {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; color: var(--lp-ink-dim); font-size: 0.95rem;
+  transition: color 200ms ease;
+}
+.lp-linkbtn:hover { color: var(--lp-accent); }
+@media (prefers-reduced-motion: reduce) {
+  .lp-btn, .lp-btn:hover { transform: none; transition: none; }
+}
+
+.lp-cta-row {
+  margin-top: 2.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+/* ---- Hero ---- */
+.lp-hero { position: relative; }
+.lp-hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.lp-hero .lp-inner { position: relative; z-index: 1; }
+.lp-hero-mark {
+  font-size: 0.78rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--lp-ink-dim);
+  margin: 0 0 2.4rem;
+}
+.lp-hero-lead { margin-top: 2rem; }
+.lp-scroll-cue {
+  position: absolute;
+  bottom: 2rem; left: 50%; transform: translateX(-50%);
+  color: var(--lp-ink-faint);
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  animation: lp-float 2.6s ease-in-out infinite;
+}
+@keyframes lp-float { 0%,100% { transform: translateX(-50%) translateY(0);} 50% { transform: translateX(-50%) translateY(6px);} }
+@media (prefers-reduced-motion: reduce) { .lp-scroll-cue { animation: none; } }
+
+/* ---- Platform selector ---- */
+.lp-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 0.9rem;
+  max-width: 46rem;
+  margin: 2.5rem auto 0;
+}
+.lp-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 16px;
+  background: var(--lp-card);
+  border: 1px solid var(--lp-card-brd);
+  color: var(--lp-ink);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.lp-tile:hover { transform: translateY(-3px); border-color: rgba(169,150,236,0.4); }
+.lp-tile:active { transform: translateY(-1px) scale(0.99); }
+.lp-tile.is-sel {
+  border-color: var(--lp-accent);
+  background: rgba(169, 150, 236, 0.12);
+  box-shadow: 0 10px 30px rgba(122, 92, 208, 0.25);
+}
+.lp-tile-glyph { font-size: 1.35rem; color: var(--lp-accent); line-height: 1; }
+.lp-tile-name { font-weight: 400; font-size: 1.02rem; }
+.lp-tile-check {
+  position: absolute; top: 0.7rem; right: 0.8rem;
+  width: 1.15rem; height: 1.15rem; border-radius: 999px;
+  display: grid; place-items: center;
+  background: var(--lp-accent); color: #14101f; font-size: 0.7rem;
+  opacity: 0; transform: scale(0.6); transition: opacity 160ms ease, transform 160ms ease;
+}
+.lp-tile.is-sel .lp-tile-check { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .lp-tile, .lp-tile:hover, .lp-tile:active { transform: none; transition: border-color 180ms ease, background 180ms ease; }
+  .lp-tile-check { transition: none; }
+}
+.lp-tag {
+  display: inline-block; margin-top: 0.2rem;
+  font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--lp-ink-faint);
+}
+.lp-tile.is-sel .lp-tag { color: var(--lp-accent); }
+
+/* ---- Fragmentation: scattered islands ---- */
+.lp-scatter {
+  position: relative;
+  width: 100%;
+  max-width: 46rem;
+  height: 22rem;
+  margin: 2rem auto 0;
+}
+.lp-island {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: var(--lp-card);
+  border: 1px solid var(--lp-card-brd);
+  color: var(--lp-ink);
+  transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease;
+}
+.lp-island .lp-tile-glyph { color: var(--lp-ink-dim); }
+.lp-island-name { font-size: 0.85rem; color: var(--lp-ink-dim); }
+
+/* ---- Convergence ---- */
+.lp-converge {
+  position: relative;
+  width: 100%;
+  max-width: 46rem;
+  height: 24rem;
+  margin: 2.5rem auto 0;
+}
+.lp-core {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7.5rem; height: 7.5rem; border-radius: 999px;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 40%, rgba(198,182,246,0.9), var(--lp-accent-deep));
+  color: #14101f; font-weight: 400; letter-spacing: 0.05em;
+  box-shadow: 0 0 60px rgba(122,92,208,0.55);
+  z-index: 2;
+}
+.lp-core-word { font-size: 1.05rem; }
+.lp-orbit {
+  position: absolute; top: 50%; left: 50%;
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  padding: 0.7rem 0.85rem; border-radius: 12px;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease;
+  opacity: 0.55;
+}
+.lp-converge.is-in .lp-orbit { transform: translate(-50%, -50%) !important; opacity: 0.95; }
+.lp-orbit .lp-tile-glyph { color: var(--lp-accent); font-size: 1.1rem; }
+.lp-orbit-name { font-size: 0.75rem; color: var(--lp-ink-dim); }
+@media (prefers-reduced-motion: reduce) {
+  .lp-orbit { transition: opacity 400ms ease; }
+}
+
+/* ---- Federation diagram ---- */
+.lp-fed-diagram {
+  margin: 2.5rem auto 0;
+  max-width: 34rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  font-family: "Space Mono", ui-monospace, monospace;
+}
+.lp-fed-you {
+  font-size: 1rem; color: var(--lp-ink);
+  padding: 0.6rem 1rem; border-radius: 10px;
+  background: rgba(169,150,236,0.12); border: 1px solid var(--lp-accent);
+}
+.lp-fed-verb { color: var(--lp-ink-faint); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.lp-fed-peers { display: flex; flex-direction: column; gap: 0.4rem; }
+.lp-fed-peer { font-size: 0.9rem; color: var(--lp-ink-dim); }
+
+/* ---- Manifesto ---- */
+.lp-manifesto .lp-inner { max-width: 40rem; }
+.lp-manifesto-line {
+  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--lp-ink);
+}
+.lp-manifesto-line.dim { color: var(--lp-ink-dim); }
+.lp-manifesto-line.gap { margin-top: 1.6rem; }
+.lp-manifesto-line.accent { color: var(--lp-accent); }
+
+/* ---- Final CTA + footer ---- */
+.lp-final .lp-sub { margin-bottom: 0.5rem; }
+.lp-footer {
+  border-top: 1px solid var(--lp-card-brd);
+  padding: 2.5rem 1.5rem 3.5rem;
+  display: flex; flex-wrap: wrap; gap: 1.4rem;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.lp-footer a, .lp-footer button {
+  color: var(--lp-ink-faint); font-size: 0.85rem; font-family: inherit;
+  background: none; border: none; cursor: pointer; transition: color 180ms ease;
+}
+.lp-footer a:hover, .lp-footer button:hover { color: var(--lp-accent); }
+.lp-footer-mark { color: var(--lp-ink-dim); letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.75rem; }
