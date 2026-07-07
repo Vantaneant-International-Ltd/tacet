@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
-import { SourceBadge } from "./live";
+import { SourceBadge, PostCounts } from "./live";
 import { api, forgetSaved } from "./me";
 import type { SavedPost, CollectionSummary } from "./me";
 import { relativeTime } from "./openweb";
@@ -63,6 +63,7 @@ export function SavedCard({
 
       {saved.text && <p className="t-post__body">{saved.text}</p>}
       {image && <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />}
+      <PostCounts counts={saved.counts} />
 
       {saved.note && !editingNote && (
         <div className="t-savednote" onClick={() => { setNoteDraft(saved.note ?? ""); setEditingNote(true); }}>

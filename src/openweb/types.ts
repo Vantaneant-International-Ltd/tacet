@@ -39,6 +39,16 @@ export interface Moment {
   source: Source;
   title?: string; // long-form / video title (Article, Video, Page), optional
   sharedBy?: Person; // when this reached us because someone shared it (a "boost")
+  counts?: MomentCounts; // lightweight conversation context, when the home exposes it
+}
+
+// Contextual counts around a post — NOT engagement mechanics. Each is present only when
+// the source home exposes it (so absence ≠ zero). The UI shows them calmly and hides
+// zeros; there is no ranking, no vanity emphasis, no competition.
+export interface MomentCounts {
+  reactions?: number; // likes / favourites
+  replies?: number;
+  shares?: number; // boosts / announces
 }
 
 // A read conversation, as a first-class domain object. The UI receives this threaded
@@ -117,6 +127,7 @@ export interface OpenWebContent {
   url: string;
   account: OpenWebProfile;
   attachments: { url: string; type: string; description: string | null }[];
+  counts?: MomentCounts;
 }
 
 // The replaceable seam. ActivityPub has no discovery of its own, so discovery is a

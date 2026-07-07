@@ -8,9 +8,10 @@ export interface Person {
   bio: string; url: string; source: Source; verified: boolean;
 }
 export interface MomentMedia { url: string; kind: "image" | "video" | "other"; alt: string }
+export interface MomentCounts { reactions?: number; replies?: number; shares?: number }
 export interface Moment {
   id: string; author: Person; text: string; createdAt: string;
-  url: string; media: MomentMedia[]; source: Source; title?: string;
+  url: string; media: MomentMedia[]; source: Source; title?: string; counts?: MomentCounts;
 }
 export type DataMode = "live" | "cached" | "mock";
 export interface AdapterError { code: string; message: string }

@@ -67,6 +67,12 @@ function parseAttachments(raw: Record<string, unknown>): APAttachment[] {
   return out;
 }
 
+// The `totalItems` of a collection value, when embedded (e.g. object.likes.totalItems).
+function totalItemsOf(x: unknown): number | undefined {
+  if (isRecord(x) && typeof x["totalItems"] === "number") return x["totalItems"] as number;
+  return undefined;
+}
+
 export function parseObject(raw: unknown): APObject {
   if (!isRecord(raw)) throw new Error("object is not an object");
   const id = firstString(raw["id"]) ?? "";
@@ -88,6 +94,9 @@ export function parseObject(raw: unknown): APObject {
     attachments: parseAttachments(raw),
     inReplyTo: firstString(raw["inReplyTo"]),
     repliesUrl: typeof raw["replies"] === "string" ? (raw["replies"] as string) : isRecord(raw["replies"]) ? firstString((raw["replies"] as Record<string, unknown>)["id"]) : undefined,
+    repliesCount: totalItemsOf(raw["replies"]),
+    likesCount: totalItemsOf(raw["likes"]),
+    sharesCount: totalItemsOf(raw["shares"]),
     sensitive: raw["sensitive"] === true,
   };
 }

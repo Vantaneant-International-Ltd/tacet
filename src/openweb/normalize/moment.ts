@@ -1,4 +1,4 @@
-import type { Moment, MomentMedia, Person } from "../types";
+import type { Moment, MomentMedia, MomentCounts, Person } from "../types";
 import type { APObject, APActivity, APActor, APAttachment } from "../activitypub/apmodel";
 import { normalizePerson } from "./person";
 import { toPlainText } from "../text";
@@ -30,6 +30,15 @@ function sourceOf(host: string) {
   return { id: host, name: host, url: host ? `https://${host}` : "" };
 }
 
+// Build a counts object from any subset of known totals. Undefined when nothing is known.
+export function countsFrom(parts: { reactions?: number; replies?: number; shares?: number }): MomentCounts | undefined {
+  const c: MomentCounts = {};
+  if (typeof parts.reactions === "number") c.reactions = parts.reactions;
+  if (typeof parts.replies === "number") c.replies = parts.replies;
+  if (typeof parts.shares === "number") c.shares = parts.shares;
+  return Object.keys(c).length ? c : undefined;
+}
+
 // Canonical AP content object → Tacet Moment (a post). Needs an author: prefers the
 // object's embedded attributedTo actor, else a provided fallback (e.g. the outbox owner).
 export function normalizeObject(obj: APObject, fallbackAuthor?: Person): Moment | null {
@@ -58,6 +67,7 @@ export function normalizeObject(obj: APObject, fallbackAuthor?: Person): Moment 
     media,
     source: sourceOf(host),
     title,
+    counts: countsFrom({ reactions: obj.likesCount, replies: obj.repliesCount, shares: obj.sharesCount }),
   };
 }
 

@@ -82,6 +82,9 @@ interface SavedRow {
   pinned: number;
   read_later: number;
   saved_at: string;
+  reactions: number | null;
+  replies: number | null;
+  shares: number | null;
 }
 function parseMedia(json: string): SavedMedia[] {
   try {
@@ -110,11 +113,20 @@ function toSaved(r: SavedRow, collectionIds: string[]): SavedPost {
     readLater: r.read_later === 1,
     savedAt: r.saved_at,
     collectionIds,
+    counts: countsFromRow(r),
   };
 }
 
+function countsFromRow(r: SavedRow): SavedPost["counts"] {
+  const c: NonNullable<SavedPost["counts"]> = {};
+  if (r.reactions != null) c.reactions = r.reactions;
+  if (r.replies != null) c.replies = r.replies;
+  if (r.shares != null) c.shares = r.shares;
+  return Object.keys(c).length ? c : undefined;
+}
+
 const SAVED_COLS =
-  "id, remote_id, author_name, author_handle, author_avatar, title, text, url, media_json, source_id, source_software, remote_created_at, note, pinned, read_later, saved_at";
+  "id, remote_id, author_name, author_handle, author_avatar, title, text, url, media_json, source_id, source_software, remote_created_at, note, pinned, read_later, saved_at, reactions, replies, shares";
 
 // A map of saved_id → collectionIds for a profile (one extra query, then grouped).
 async function collectionsBySaved(db: D1Database, profileId: string): Promise<Map<string, string[]>> {
@@ -177,8 +189,8 @@ export async function savePost(db: D1Database, profileId: string, snap: PostSnap
   const now = new Date().toISOString();
   await db
     .prepare(
-      `INSERT INTO me_saved (id, profile_id, remote_id, author_name, author_handle, author_avatar, title, text, url, media_json, source_id, source_software, remote_created_at, note, pinned, read_later, saved_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, 0, 0, ?)`,
+      `INSERT INTO me_saved (id, profile_id, remote_id, author_name, author_handle, author_avatar, title, text, url, media_json, source_id, source_software, remote_created_at, note, pinned, read_later, saved_at, reactions, replies, shares)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, 0, 0, ?, ?, ?, ?)`,
     )
     .bind(
       id,
@@ -195,6 +207,9 @@ export async function savePost(db: D1Database, profileId: string, snap: PostSnap
       snap.sourceSoftware ?? null,
       snap.remoteCreatedAt ?? null,
       now,
+      snap.counts?.reactions ?? null,
+      snap.counts?.replies ?? null,
+      snap.counts?.shares ?? null,
     )
     .run();
   return {
@@ -215,6 +230,7 @@ export async function savePost(db: D1Database, profileId: string, snap: PostSnap
     readLater: false,
     savedAt: now,
     collectionIds: [],
+    counts: snap.counts,
   };
 }
 

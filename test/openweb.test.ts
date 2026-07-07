@@ -5,7 +5,8 @@ import { normalizePerson, normalizeObject, normalizeActivity } from "../src/open
 import { getToday, getPeople, __resetOpenWebCache } from "../src/openweb";
 import { buildSigningString, makeRsaSigner } from "../src/openweb/activitypub/signing";
 import { labelForSoftware } from "../src/openweb/activitypub/nodeinfo";
-import type { DiscoverySource, Moment, Person } from "../src/openweb/types";
+import { mapContent } from "../src/openweb/sources/mastodon";
+import type { DiscoverySource, Moment, Person, OpenWebContent } from "../src/openweb/types";
 
 // ── PARSER: raw JSON-LD → canonical AP objects (pure, no network) ─────────────
 describe("activitypub parser", () => {
@@ -169,6 +170,48 @@ describe("cross-implementation normalization", () => {
     const o = parseObject({ id: "https://bookwyrm.social/r/1", type: "Review", name: "Loved it", content: "<p>a book</p>", published: "2026-07-07T00:00:00Z", attributedTo: author });
     const m = normalizeObject(o)!;
     expect(m.title).toBe("Loved it");
+  });
+});
+
+// ── CONVERSATION COUNTS: contextual, generic, calm ───────────────────────────
+describe("conversation counts", () => {
+  it("normalizes embedded collection totals (likes/replies/shares) into Moment.counts", () => {
+    const obj = parseObject({
+      id: "https://mastodon.social/@a/1",
+      type: "Note",
+      content: "<p>hi</p>",
+      published: "2026-07-07T00:00:00Z",
+      attributedTo: { id: "https://mastodon.social/users/a", type: "Person", preferredUsername: "a" },
+      likes: { type: "Collection", totalItems: 104 },
+      replies: { type: "Collection", id: "https://mastodon.social/@a/1/replies", totalItems: 12 },
+      shares: { type: "Collection", totalItems: 5 },
+    });
+    expect(obj.likesCount).toBe(104);
+    expect(obj.repliesCount).toBe(12);
+    expect(obj.sharesCount).toBe(5);
+    const m = normalizeObject(obj)!;
+    expect(m.counts).toEqual({ reactions: 104, replies: 12, shares: 5 });
+  });
+
+  it("omits counts entirely when the home exposes none (absence ≠ zero)", () => {
+    const obj = parseObject({ id: "https://misskey.io/notes/1", type: "Note", content: "<p>hi</p>", attributedTo: { id: "https://misskey.io/users/x", type: "Person", preferredUsername: "x" } });
+    const m = normalizeObject(obj)!;
+    expect(m.counts).toBeUndefined();
+  });
+
+  it("Mastodon REST maps *_count fields into counts", () => {
+    const source = { id: "mastodon.social", name: "mastodon.social", url: "https://mastodon.social" };
+    const content: OpenWebContent = {
+      id: "https://mastodon.social/@a/2",
+      contentHtml: "<p>hi</p>",
+      createdAt: "2026-07-07T00:00:00Z",
+      url: "https://mastodon.social/@a/2",
+      account: { id: "1", displayName: "A", acct: "a", avatar: null, note: "", url: "https://mastodon.social/@a", bot: false },
+      attachments: [],
+      counts: { reactions: 7, replies: 0, shares: 3 },
+    };
+    const m = mapContent(content, source, "mastodon.social");
+    expect(m.counts).toEqual({ reactions: 7, replies: 0, shares: 3 });
   });
 });
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
-import type { Person, Moment, DataMode, Source } from "./openweb";
+import type { Person, Moment, DataMode, Source, MomentCounts } from "./openweb";
 import { relativeTime, profilePath, conversationPath } from "./openweb";
 import { Link, navigate } from "../router";
 import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
@@ -20,6 +20,20 @@ export function SourceBadge({ source }: { source?: Source }) {
       {source.software}
     </span>
   );
+}
+
+const compact = new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 1 });
+
+// Lightweight conversation context — never a scoreboard. Shows only what a home exposes,
+// hides zeros, no icons competing for attention. "104 reactions · 12 replies · 5 shared".
+export function PostCounts({ counts }: { counts?: MomentCounts }) {
+  if (!counts) return null;
+  const parts: string[] = [];
+  if (counts.reactions) parts.push(`${compact.format(counts.reactions)} ${counts.reactions === 1 ? "reaction" : "reactions"}`);
+  if (counts.replies) parts.push(`${compact.format(counts.replies)} ${counts.replies === 1 ? "reply" : "replies"}`);
+  if (counts.shares) parts.push(`${compact.format(counts.shares)} shared`);
+  if (!parts.length) return null;
+  return <p className="t-post__counts">{parts.join(" · ")}</p>;
 }
 
 function Identity({ person, time, source }: { person: Person; time?: string; source?: Source }) {
@@ -80,6 +94,8 @@ export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean 
         {moment.text && <p className="t-post__body">{moment.text}</p>}
         {image && <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />}
       </div>
+
+      <PostCounts counts={moment.counts} />
 
       <div className="t-post__actions">
         <button

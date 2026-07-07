@@ -12,6 +12,15 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Conversation counts (contextual, calm).** Posts everywhere now carry lightweight
+  context — `Moment.counts` (`reactions`/`replies`/`shares`), normalized generically:
+  from AP objects' embedded `likes`/`replies`/`shares` `totalItems`, and from Mastodon
+  REST `favourites_count`/`replies_count`/`reblogs_count`. Shown as one quiet tertiary
+  line ("104 reactions · 12 replies · 5 shared"), zeros hidden, absence ≠ zero, no icons
+  or ranking — context over competition. Rendered in `LiveMoment` (Today/Profiles/
+  Conversations) and `SavedCard`; counts are captured into the Saved snapshot
+  (`migration 0012`). No new engagement mechanics. 67 tests pass; live-verified.
+
 - **Conversations (read-only reader).** Opening a post now reads its *conversation* inside
   Tacet at `/c/<post>`: the context that started it (ancestors via `inReplyTo`), the post
   itself (prominent), and a nested reply tree (via `replies` collections), plus a

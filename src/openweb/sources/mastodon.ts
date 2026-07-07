@@ -41,6 +41,7 @@ export function mapContent(raw: OpenWebContent, source: Source, host: string): M
       alt: m.description || "",
     })),
     source,
+    counts: raw.counts,
   };
 }
 
@@ -103,6 +104,11 @@ export class MastodonSource implements DiscoverySource {
             type: m.type,
             description: m.description ?? null,
           })),
+          counts: {
+            reactions: typeof status.favourites_count === "number" ? status.favourites_count : undefined,
+            replies: typeof status.replies_count === "number" ? status.replies_count : undefined,
+            shares: typeof status.reblogs_count === "number" ? status.reblogs_count : undefined,
+          },
         };
         return mapContent(content, this.source, this.host);
       })

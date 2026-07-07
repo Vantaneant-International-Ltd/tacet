@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import type { Env, Variables } from "../types";
 import { HttpError } from "../lib/session";
 import { currentProfile } from "../me/profile";
-import type { PostSnapshot, SavedEdit, SavedFilter, SavedMedia } from "../me/types";
+import type { PostSnapshot, SavedEdit, SavedFilter, SavedMedia, SavedCounts } from "../me/types";
 import * as repo from "../me/repo";
 
 // The Me API — the user's local-first home. Routes are the ONLY place that ties HTTP to
@@ -13,6 +13,19 @@ export const meRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 function str(x: unknown): string | undefined {
   return typeof x === "string" ? x : undefined;
+}
+
+function num(x: unknown): number | undefined {
+  return typeof x === "number" && Number.isFinite(x) ? x : undefined;
+}
+function countsFrom(x: unknown): SavedCounts | undefined {
+  if (!x || typeof x !== "object") return undefined;
+  const o = x as Record<string, unknown>;
+  const c: SavedCounts = {};
+  if (num(o.reactions) !== undefined) c.reactions = num(o.reactions);
+  if (num(o.replies) !== undefined) c.replies = num(o.replies);
+  if (num(o.shares) !== undefined) c.shares = num(o.shares);
+  return Object.keys(c).length ? c : undefined;
 }
 
 function snapshotFrom(body: Record<string, unknown>): PostSnapshot {
@@ -35,6 +48,7 @@ function snapshotFrom(body: Record<string, unknown>): PostSnapshot {
     sourceId: str(body.sourceId) ?? "",
     sourceSoftware: str(body.sourceSoftware),
     remoteCreatedAt: str(body.remoteCreatedAt),
+    counts: countsFrom(body.counts),
   };
 }
 

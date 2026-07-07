@@ -7,10 +7,12 @@ import type { Moment } from "./openweb";
 
 export interface Profile { id: string; displayName: string; handle: string; bio: string; avatarUrl: string | null; createdAt: string }
 export interface SavedMedia { url: string; kind: "image" | "video" | "other"; alt: string }
+export interface SavedCounts { reactions?: number; replies?: number; shares?: number }
 export interface SavedPost {
   id: string; remoteId: string; authorName: string; authorHandle: string; authorAvatarUrl: string | null;
   title?: string; text: string; url: string; media: SavedMedia[]; sourceId: string; sourceSoftware?: string;
   remoteCreatedAt?: string; note?: string; pinned: boolean; readLater: boolean; savedAt: string; collectionIds: string[];
+  counts?: SavedCounts;
 }
 export interface CollectionSummary { id: string; name: string; count: number; createdAt: string }
 export interface RecentView { id: string; remoteId: string; authorName: string; authorHandle: string; text: string; url: string; sourceId: string; sourceSoftware?: string; viewedAt: string }
@@ -19,6 +21,7 @@ export interface RecentView { id: string; remoteId: string; authorName: string; 
 export interface SaveInput {
   remoteId: string; authorName: string; authorHandle: string; authorAvatarUrl: string | null;
   title?: string; text: string; url: string; media: SavedMedia[]; sourceId: string; sourceSoftware?: string; remoteCreatedAt?: string;
+  counts?: SavedCounts;
 }
 
 export function momentToInput(m: Moment): SaveInput {
@@ -34,6 +37,7 @@ export function momentToInput(m: Moment): SaveInput {
     sourceId: m.source.id,
     sourceSoftware: m.source.software,
     remoteCreatedAt: m.createdAt,
+    counts: m.counts,
   };
 }
 

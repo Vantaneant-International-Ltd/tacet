@@ -18,6 +18,7 @@ const post = {
   media: [{ url: "https://cdn/x.jpg", kind: "image", alt: "harbour" }],
   sourceId: "mastodon.social",
   sourceSoftware: "Mastodon",
+  counts: { reactions: 9, replies: 2 },
 };
 
 describe("Me — profile", () => {
@@ -45,8 +46,9 @@ describe("Me — saved", () => {
     const list = (await (await req("/api/me/saved", { cookie })).json()) as any;
     expect(list.saved.length).toBe(1);
 
-    // The snapshot survives (independent local copy).
+    // The snapshot survives (independent local copy), with contextual counts as saved.
     expect(list.saved[0].text).toBe("the harbour at dusk");
+    expect(list.saved[0].counts).toEqual({ reactions: 9, replies: 2 });
 
     const del = await req(`/api/me/saved/${s1.saved.id}`, { method: "DELETE", cookie });
     expect(((await del.json()) as any).ok).toBe(true);

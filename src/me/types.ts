@@ -17,6 +17,13 @@ export interface SavedMedia {
   alt: string;
 }
 
+// Contextual counts as captured at save time (see src/openweb MomentCounts).
+export interface SavedCounts {
+  reactions?: number;
+  replies?: number;
+  shares?: number;
+}
+
 // A saved post — a self-contained local snapshot that survives remote deletion.
 export interface SavedPost {
   id: string;
@@ -36,6 +43,7 @@ export interface SavedPost {
   readLater: boolean;
   savedAt: string;
   collectionIds: string[];
+  counts?: SavedCounts;
 }
 
 export interface CollectionSummary {
@@ -71,6 +79,7 @@ export interface PostSnapshot {
   sourceId?: string;
   sourceSoftware?: string;
   remoteCreatedAt?: string;
+  counts?: SavedCounts;
 }
 
 export type ProfileEdit = Partial<Pick<Profile, "displayName" | "handle" | "bio">>;

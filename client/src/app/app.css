@@ -273,6 +273,14 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
+/* Conversation context — calm, quiet, no icons or emphasis. Context, not competition. */
+.t-post__counts {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-meta);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.01em;
+}
+
 .t-post__actions {
   display: flex;
   align-items: center;

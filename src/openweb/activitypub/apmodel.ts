@@ -44,6 +44,10 @@ export interface APObject {
   attachments: APAttachment[];
   inReplyTo?: string; // the parent object's URL, for the ancestor chain
   repliesUrl?: string; // the replies Collection's URL, for the reply tree
+  // Contextual counts, when the home embeds the collection totals on the object.
+  repliesCount?: number;
+  likesCount?: number;
+  sharesCount?: number;
   sensitive?: boolean;
 }
 
