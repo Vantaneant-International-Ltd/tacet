@@ -3,6 +3,29 @@ import { LiveMoment, SourceNote } from "../live";
 import { Loading, EmptyState } from "../../design/primitives";
 import { Icon } from "../../design/icons";
 import { today } from "../mock";
+import { useSavedCount } from "../me";
+import { useHint } from "../onboarding/hints";
+import { Hint } from "../onboarding/Hint";
+import { navigate } from "../../router";
+
+// One gentle line that teaches Save through use, then the quiet reveal that a saved post
+// is now yours. Each shows once and never returns.
+function TodayNudges() {
+  const saved = useSavedCount();
+  const saveFirst = useHint("save-first");
+  const itsYours = useHint("saved-yours");
+  if (saved === 0 && saveFirst.show) {
+    return <Hint onDismiss={saveFirst.dismiss}>Save anything you love — it becomes part of your home.</Hint>;
+  }
+  if (saved > 0 && itsYours.show) {
+    return (
+      <Hint onDismiss={itsYours.dismiss} action={{ label: "Open Me", onClick: () => navigate("/me") }}>
+        That&rsquo;s yours now — it&rsquo;s waiting for you in Me.
+      </Hint>
+    );
+  }
+  return null;
+}
 
 // The calm entry point, now reading real public content from the open social web
 // through the adapter. Finite, curated-feeling, and honest about its source. If the
@@ -28,6 +51,7 @@ export function Today() {
 
       {state.status === "ready" && (
         <>
+          <TodayNudges />
           <SourceNote mode={state.result.mode} sourceName={state.result.source?.name} />
 
           {state.result.data.length === 0 ? (

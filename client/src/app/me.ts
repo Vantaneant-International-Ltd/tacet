@@ -122,6 +122,7 @@ export function useMeVersion(): number {
   );
 }
 export function useMeReady(): boolean { useMeVersion(); return ready; }
+export function useSavedCount(): number { useMeVersion(); return savedIndex.size; }
 
 // ── A tiny fetch hook for Me lists ────────────────────────────────────────────
 export type Load<T> = { status: "loading" } | { status: "ready"; data: T } | { status: "error" };

@@ -12,6 +12,14 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **The first five minutes.** A calm, Apple-setup-style first-run (`client/src/app/
+  onboarding/`) that runs once per device: Welcome → personalise your local profile
+  (name + optional handle) → hand off into Today. Not a tutorial or feature tour. The
+  product then teaches through use via gentle one-line, dismissible nudges: on Today,
+  "Save anything you love…" then, after the first save, "That's yours now — waiting in
+  Me"; on Me, a single nudge toward Collections. All device-local (localStorage), no new
+  social features, still read-only toward the open web. Client-only; no backend change.
+
 - **Me — local-first home.** The "Me" pillar is now real: a local profile plus persistent
   Saved, Collections, Private notes, Reading later, Pinned, and Recently viewed — all in
   Tacet's own D1 (`migrations/0011_me.sql`), owned by the user, never federated. Strict

@@ -4,10 +4,12 @@ import { Icon } from "../../design/icons";
 import type { IconName } from "../../design/icons";
 import { useTheme, setTheme } from "../../design/theme";
 import type { Theme } from "../../design/theme";
-import { api, useResource, useMeVersion } from "../me";
+import { api, useResource, useMeVersion, useSavedCount } from "../me";
 import type { Profile, CollectionSummary } from "../me";
 import { SavedCard } from "../SavedCard";
 import { relativeTime } from "../openweb";
+import { useHint } from "../onboarding/hints";
+import { Hint } from "../onboarding/Hint";
 
 // Me — your local-first home. Everything here lives in Tacet's own database and belongs
 // to you: what you save, collect, note, pin, and read later. Read-only toward the open
@@ -44,6 +46,7 @@ export function Me() {
         ))}
       </div>
 
+      {section === "saved" && <CollectionsNudge onGo={() => setSection("collections")} />}
       {section === "saved" && <SavedList filter="all" empty="Nothing saved yet" hint="Save a post from Today and it lives here — yours, even if the original disappears." />}
       {section === "later" && <SavedList filter="read_later" empty="Nothing to read later" hint="Mark a saved post “Later” and it waits for you here." />}
       {section === "pinned" && <SavedList filter="pinned" empty="Nothing pinned" hint="Pin the saved posts you want to keep close." />}
@@ -51,6 +54,18 @@ export function Me() {
       {section === "collections" && <Collections />}
       {section === "recent" && <Recent />}
     </div>
+  );
+}
+
+// A single gentle nudge toward Collections, once the user has something to organise.
+function CollectionsNudge({ onGo }: { onGo: () => void }) {
+  const saved = useSavedCount();
+  const hint = useHint("collections");
+  if (saved === 0 || !hint.show) return null;
+  return (
+    <Hint onDismiss={hint.dismiss} action={{ label: "Collections", onClick: () => { hint.dismiss(); onGo(); } }}>
+      When you&rsquo;re ready, group saves into Collections — like Photography or Recipes.
+    </Hint>
   );
 }
 
