@@ -44,6 +44,7 @@ export function LandingPage() {
   }, [selected]);
 
   const goEnter = () => navigate("/enter");
+  const goApp = () => navigate("/today");
 
   return (
     <div className="lp">
@@ -61,7 +62,7 @@ export function LandingPage() {
       <FederationSection />
       <ManifestoSection />
       <FinalCTA
-        onJoin={goEnter}
+        onJoin={goApp}
         onSignIn={goEnter}
         onReadManifesto={() => scrollToId("lp-manifesto")}
         onHowItWorks={() => scrollToId("lp-federation")}

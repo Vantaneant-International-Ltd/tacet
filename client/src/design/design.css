@@ -1,0 +1,143 @@
+/* Design-system component styles. Tokens only — see theme.css.
+   Primitives: button, icon-button, card, avatar, chip, section heading, empty. */
+
+/* ---------- Button ---------- */
+.t-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-label);
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out);
+}
+.t-btn:active { transform: translateY(0.5px) scale(0.99); }
+.t-btn--sm { min-height: 34px; padding: 0 var(--space-3); }
+.t-btn--md { min-height: 42px; padding: 0 var(--space-5); }
+.t-btn--lg { min-height: 50px; padding: 0 var(--space-6); font-size: var(--text-subheading); }
+.t-btn--full { width: 100%; }
+.t-btn--icon-only { padding: 0; aspect-ratio: 1; }
+.t-btn--icon-only.t-btn--md { width: 42px; }
+
+.t-btn--primary { background: var(--color-accent); color: var(--color-on-accent); }
+.t-btn--primary:hover { background: var(--color-accent-hover); box-shadow: var(--elevation-1); }
+
+.t-btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-hairline);
+}
+.t-btn--secondary:hover { border-color: var(--color-text-tertiary); box-shadow: var(--elevation-1); }
+
+.t-btn--ghost { background: transparent; color: var(--color-text-secondary); }
+.t-btn--ghost:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
+
+.t-btn--danger { background: transparent; color: var(--color-danger); border-color: color-mix(in srgb, var(--color-danger) 40%, transparent); }
+.t-btn--danger:hover { background: color-mix(in srgb, var(--color-danger) 10%, transparent); }
+
+.t-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+/* ---------- Icon button ---------- */
+.t-iconbtn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+.t-iconbtn:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
+.t-iconbtn.is-active { color: var(--color-accent); }
+
+/* ---------- Card ---------- */
+.t-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-1);
+}
+.t-card--raised { background: var(--color-surface-raised); box-shadow: var(--elevation-2); }
+.t-card--interactive {
+  cursor: pointer;
+  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
+}
+.t-card--interactive:hover {
+  box-shadow: var(--elevation-2);
+  border-color: color-mix(in srgb, var(--color-text-tertiary) 55%, var(--color-hairline));
+  transform: translateY(-1px);
+}
+.t-card--interactive:active { transform: translateY(0); }
+
+/* ---------- Avatar ---------- */
+.t-avatar {
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  flex: none;
+  user-select: none;
+}
+.t-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.t-avatar--ring { box-shadow: 0 0 0 2px var(--color-canvas), 0 0 0 4px var(--color-accent); }
+
+/* ---------- Chip ---------- */
+.t-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  line-height: 1;
+  padding: 5px var(--space-2);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+}
+.t-chip--accent { color: var(--color-accent); border-color: color-mix(in srgb, var(--color-accent) 30%, transparent); background: var(--color-accent-subtle); }
+.t-chip--open { color: var(--color-positive); border-color: color-mix(in srgb, var(--color-positive) 32%, transparent); background: color-mix(in srgb, var(--color-positive) 10%, transparent); }
+
+/* ---------- Section heading ---------- */
+.t-sectionhead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+.t-sectionhead__title { font-size: var(--text-heading); font-weight: 500; margin: 0; letter-spacing: -0.01em; }
+.t-sectionhead__sub { font-size: var(--text-body-sm); color: var(--color-text-secondary); margin: var(--space-1) 0 0; }
+
+/* ---------- Empty state ---------- */
+.t-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  color: var(--color-text-tertiary);
+}
+.t-empty__title { font-size: var(--text-subheading); font-weight: 500; color: var(--color-text-secondary); margin: 0; }
+.t-empty__body { font-size: var(--text-body-sm); max-width: 28rem; margin: 0; }
+
+/* ---------- Shared helpers ---------- */
+.t-mono { font-family: var(--font-mono); }
+.t-visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}

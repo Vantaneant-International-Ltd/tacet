@@ -1,0 +1,167 @@
+/* Tacet design system — the single source of visual truth in code.
+   Implements docs/03-design-system/* verbatim (color, type, spacing, radius,
+   elevation, motion). Components speak semantic tokens only; themes map them.
+   Light and dark are peers. This replaces the old hardcoded dark :root. */
+
+:root {
+  /* ---- Fonts ---- */
+  --font-sans: "Jost", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* ---- Type scale (docs/03-design-system/typography-scale.md) ---- */
+  --text-display: 2.25rem;
+  --text-title: 1.625rem;
+  --text-heading: 1.25rem;
+  --text-subheading: 1.0625rem;
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-label: 0.875rem;
+  --text-meta: 0.8125rem;
+  --text-micro: 0.75rem;
+
+  /* ---- Spacing (8px base, two half-steps) ---- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --measure-reading: 42rem;
+  --measure-wide: 56rem;
+
+  /* ---- Radius ---- */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+
+  /* ---- Motion (calm, soft, purposeful) ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 120ms; /* micro: hover, press */
+  --dur-2: 200ms; /* controls, toggles */
+  --dur-3: 320ms; /* surfaces, sheets */
+  --dur-4: 480ms; /* page reveals */
+
+  /* ---- Light theme — warm (default) ---- */
+  --color-canvas: #f7f4ef;
+  --color-surface: #fffdfa;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f1ede6;
+  --color-hairline: #e7e1d8;
+  --color-text-primary: #23201c;
+  --color-text-secondary: #6b655c;
+  --color-text-tertiary: #948d83;
+  --color-accent: #7a5cd0;
+  --color-accent-hover: #6b4bc4;
+  --color-accent-subtle: #efe9fb;
+  --color-on-accent: #ffffff;
+  --color-positive: #4e9e7e;
+  --color-warning: #b9862e;
+  --color-danger: #c0453e;
+  --color-focus-ring: #7a5cd0;
+
+  --elevation-0: none;
+  --elevation-1: 0 1px 2px rgba(35, 32, 28, 0.05), 0 2px 8px rgba(35, 32, 28, 0.04);
+  --elevation-2: 0 4px 12px rgba(35, 32, 28, 0.07), 0 2px 4px rgba(35, 32, 28, 0.05);
+  --elevation-3: 0 12px 32px rgba(35, 32, 28, 0.12), 0 4px 8px rgba(35, 32, 28, 0.06);
+
+  color-scheme: light;
+}
+
+/* ---- Dark theme — lamplit ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-canvas: #0d0d0d;
+    --color-surface: #161614;
+    --color-surface-raised: #1e1e1b;
+    --color-surface-sunken: #100f0e;
+    --color-hairline: #2a2a27;
+    --color-text-primary: #f5f5f2;
+    --color-text-secondary: #8a8a86;
+    --color-text-tertiary: #55554f;
+    --color-accent: #a88fe6;
+    --color-accent-hover: #bba6ee;
+    --color-accent-subtle: #221d33;
+    --color-on-accent: #16121f;
+    --color-positive: #6fbe9c;
+    --color-warning: #d6a24e;
+    --color-danger: #e06b63;
+    --color-focus-ring: #a88fe6;
+
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --elevation-2: 0 6px 16px rgba(0, 0, 0, 0.4);
+    --elevation-3: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+    color-scheme: dark;
+  }
+}
+
+/* Manual override wins over system preference. */
+[data-theme="dark"] {
+  --color-canvas: #0d0d0d;
+  --color-surface: #161614;
+  --color-surface-raised: #1e1e1b;
+  --color-surface-sunken: #100f0e;
+  --color-hairline: #2a2a27;
+  --color-text-primary: #f5f5f2;
+  --color-text-secondary: #8a8a86;
+  --color-text-tertiary: #55554f;
+  --color-accent: #a88fe6;
+  --color-accent-hover: #bba6ee;
+  --color-accent-subtle: #221d33;
+  --color-on-accent: #16121f;
+  --color-positive: #6fbe9c;
+  --color-warning: #d6a24e;
+  --color-danger: #e06b63;
+  --color-focus-ring: #a88fe6;
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --elevation-2: 0 6px 16px rgba(0, 0, 0, 0.4);
+  --elevation-3: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
+
+/* ---- Base ---- */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 1.5;
+  transition: background var(--dur-3) var(--ease-out), color var(--dur-3) var(--ease-out);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+::selection {
+  background: var(--color-accent-subtle);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

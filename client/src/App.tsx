@@ -19,10 +19,12 @@ import { PublicArchive } from "./views/PublicArchive";
 import { PublicPost } from "./views/PublicPost";
 import { Collection } from "./views/Collection";
 import { LandingPage } from "./views/landing/LandingPage";
+import { TacetApp, APP_ROUTES } from "./app/TacetApp";
 
 // Words reserved for the app itself — a community can't take one (they'd collide with a page).
 const RESERVED = new Set([
   "rooms", "discover", "you", "feed", "keeps", "about", "contact", "privacy", "admin", "join", "api", "c", "u", "settings", "collection", "enter",
+  "today", "people", "conversations", "me",
 ]);
 
 export function App() {
@@ -45,6 +47,10 @@ export function App() {
   if (coll) return <Collection id={coll[1]} />;
   const community = path.match(/^\/([a-z0-9][a-z0-9-]{1,49})$/);
   if (community && !RESERVED.has(community[1])) return <PublicArchive slug={community[1]} />;
+
+  // Frontend Alpha: the new Tacet experience (Today/People/Discover/Conversations/Me)
+  // runs on mock data and is walkable without a session. No backend is called here.
+  if (APP_ROUTES.some((r) => path === r || path.startsWith(r + "/"))) return <TacetApp />;
 
   // Loading the session.
   if (user === undefined) return <Loading />;
