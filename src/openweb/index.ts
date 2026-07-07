@@ -1,5 +1,6 @@
-import type { AdapterResult, Moment, Person, DiscoverySource, AdapterError } from "./types";
+import type { AdapterResult, Moment, Person, Source, DiscoverySource, AdapterError } from "./types";
 import { mockMoments, mockPeople } from "./mock";
+import { softwareOf } from "./activitypub/nodeinfo";
 
 // The read-only open-web adapter facade. It fans out to the configured discovery
 // sources, merges their DOMAIN objects (they never leak protocol shapes), and ALWAYS
@@ -32,6 +33,23 @@ function toAdapterError(e: unknown): AdapterError {
 
 function fulfilled<T>(r: PromiseSettledResult<T>): r is PromiseFulfilledResult<T> {
   return r.status === "fulfilled";
+}
+
+// Attribute where content lives by resolving each home's software (nodeinfo), then
+// stamping it onto the Source objects the UI already carries. Best-effort and graceful:
+// unknown homes simply get no badge. This is the ONLY place attribution is computed —
+// the UI just reads `source.software`.
+async function enrichSoftware(sourcesPerItem: Source[][]): Promise<void> {
+  const hosts = new Set<string>();
+  for (const group of sourcesPerItem) for (const s of group) if (s.id) hosts.add(s.id);
+  const labels = new Map<string, string | undefined>();
+  await Promise.all([...hosts].map(async (h) => labels.set(h, await softwareOf(h))));
+  for (const group of sourcesPerItem) {
+    for (const s of group) {
+      const sw = labels.get(s.id);
+      if (sw) s.software = sw;
+    }
+  }
 }
 
 function dedupe<T>(items: T[], key: (x: T) => string): T[] {
@@ -78,7 +96,13 @@ export function getToday(sources: DiscoverySource[], limit: number, now: number)
       );
       merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       if (merged.length === 0) throw new Error("unavailable");
-      return merged.slice(0, limit);
+      const top = merged.slice(0, limit);
+      try {
+        await enrichSoftware(top.map((m) => [m.source, m.author.source, ...(m.sharedBy ? [m.sharedBy.source] : [])]));
+      } catch {
+        /* attribution is best-effort; never fail the result */
+      }
+      return top;
     },
     mockMoments,
     now,
@@ -96,7 +120,13 @@ export function getPeople(sources: DiscoverySource[], limit: number, now: number
         (p) => p.id || p.handle,
       );
       if (merged.length === 0) throw new Error("unavailable");
-      return merged.slice(0, limit);
+      const top = merged.slice(0, limit);
+      try {
+        await enrichSoftware(top.map((p) => [p.source]));
+      } catch {
+        /* attribution is best-effort; never fail the result */
+      }
+      return top;
     },
     mockPeople,
     now,

@@ -1,14 +1,26 @@
 import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
-import type { Person, Moment, DataMode } from "./openweb";
+import type { Person, Moment, DataMode, Source } from "./openweb";
 import { relativeTime } from "./openweb";
 
 // Presentational components for live open-web domain objects. They reuse the design
 // system's classes (.t-post, .t-personrow, .t-identity) so live and sample content
 // look identical. Everyone is "a person"; every post is "a post" — no protocol words.
 
-function Identity({ person, time }: { person: Person; time?: string }) {
+// A calm, minimal note of where a person or post lives ("Mastodon", "Pixelfed"…).
+// Never protocol jargon; never dominant. Absent when the home's software is unknown.
+export function SourceBadge({ source }: { source?: Source }) {
+  if (!source?.software) return null;
+  return (
+    <span className="t-srcbadge" title={`Lives on ${source.software}`}>
+      <span className="t-srcbadge__dot" aria-hidden="true" />
+      {source.software}
+    </span>
+  );
+}
+
+function Identity({ person, time, source }: { person: Person; time?: string; source?: Source }) {
   return (
     <div className="t-identity">
       <span className="t-identity__name">{person.name}</span>
@@ -16,6 +28,7 @@ function Identity({ person, time }: { person: Person; time?: string }) {
         {person.handle}
         {time && <span aria-hidden="true"> · {time}</span>}
       </span>
+      {source?.software && <SourceBadge source={source} />}
     </div>
   );
 }
@@ -29,7 +42,7 @@ export function LiveMoment({ moment }: { moment: Moment }) {
     <article className="t-post t-card">
       <div className="t-post__head">
         <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
-        <Identity person={moment.author} time={relativeTime(moment.createdAt)} />
+        <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
         <a
           className="t-iconbtn t-post__more"
           href={moment.url}
@@ -76,7 +89,7 @@ export function LivePerson({ person }: { person: Person }) {
     <div className="t-personrow t-card">
       <Avatar name={person.name} src={person.avatarUrl} size={52} />
       <div className="t-personrow__body">
-        <Identity person={person} />
+        <Identity person={person} source={person.source} />
         {person.bio && <p className="t-personrow__bio">{person.bio}</p>}
       </div>
       {/* UI-only follow affordance — read-only milestone performs no remote write. */}

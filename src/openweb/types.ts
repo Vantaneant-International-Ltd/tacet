@@ -9,6 +9,10 @@ export interface Source {
   id: string; // canonical host, e.g. "mastodon.social"
   name: string; // human label for the home
   url: string; // https://<host>
+  // The software this home runs, as a friendly product label ("Mastodon", "Pixelfed",
+  // "PeerTube"…), when known. Powers subtle source attribution in the UI. Never a
+  // protocol name — it says where content lives, not how it travels.
+  software?: string;
 }
 
 // A person, wherever their home is. One coherent people model — never a "remote account".

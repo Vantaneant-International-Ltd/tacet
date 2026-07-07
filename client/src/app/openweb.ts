@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // Client mirror of the Worker's open-web domain contract (GET /api/openweb/*). The
 // UI renders these domain objects; it never sees or parses protocol details.
-export interface Source { id: string; name: string; url: string }
+export interface Source { id: string; name: string; url: string; software?: string }
 export interface Person {
   id: string; name: string; handle: string; avatarUrl: string | null;
   bio: string; url: string; source: Source; verified: boolean;

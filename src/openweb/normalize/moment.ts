@@ -4,9 +4,17 @@ import { normalizePerson } from "./person";
 import { toPlainText } from "../text";
 import { hostOf } from "../activitypub/jsonld";
 
-// Object types that render as a post. Others (e.g. actors, tombstones) are skipped.
-const RENDERABLE = new Set(["Note", "Article", "Image", "Video", "Audio", "Page", "Question", "Event"]);
-const TITLED = new Set(["Article", "Video", "Page", "Event"]);
+// Object types that render as a post, across implementations. Note (Mastodon, Pixelfed,
+// Misskey, Friendica, GoToSocial, Akkoma, Pleroma), Article (WriteFreely, Ghost,
+// WordPress, blog posts), Page (Lemmy posts), Video/Audio (PeerTube, Owncast),
+// Image (Pixelfed), Event (Mobilizon), Review/Comment/Quotation (BookWyrm), Question
+// (polls). Anything else (actors, Tombstone, Relationship…) is skipped.
+const RENDERABLE = new Set([
+  "Note", "Article", "Image", "Video", "Audio", "Page", "Question", "Event",
+  "Review", "Comment", "Quotation",
+]);
+// Object types that carry a title distinct from their body.
+const TITLED = new Set(["Article", "Video", "Page", "Event", "Review"]);
 
 function mediaKind(mt?: string, type?: string): MomentMedia["kind"] {
   if (mt?.startsWith("image/") || type === "Image") return "image";

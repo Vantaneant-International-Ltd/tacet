@@ -15,6 +15,12 @@ export interface Env {
   // OPENWEB_SEED: comma-separated @user@home handles for the generic ActivityPub seed.
   OPENWEB_INSTANCE?: string;
   OPENWEB_SEED?: string;
+  // Authorized fetch (optional). When AP_ACTOR_ID + AP_PRIVATE_KEY are set, outbound
+  // ActivityPub GETs are HTTP-signed so stricter homes serve public content; AP_ACTOR_ID
+  // must be a reachable URL serving the server actor (see /api/openweb/actor). Read-only.
+  AP_ACTOR_ID?: string; // e.g. https://tacet.social/api/openweb/actor
+  AP_PUBLIC_KEY?: string; // PEM (SPKI) — published in the actor document
+  AP_PRIVATE_KEY?: string; // PEM (PKCS#8) — secret; keep in .dev.vars / wrangler secret
 }
 
 // Shape carried through Hono's context after the session middleware runs.

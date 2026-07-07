@@ -1,6 +1,7 @@
 import type { DiscoverySource, Moment, Person } from "../types";
 import { ApClient } from "../activitypub/client";
 import { normalizePerson, normalizeActivity } from "../normalize";
+import type { RequestSigner } from "../activitypub/signing";
 
 // The universal discovery source. ActivityPub has no native discovery, so we seed a
 // small, tunable set of handles spanning DIFFERENT implementations and read them
@@ -16,6 +17,8 @@ export const DEFAULT_SEED = [
   "@syuilo@misskey.io", // Misskey
   "@Mastodon@mastodon.social", // Mastodon (organization)
   "@pixelfed@mastodon.social", // cross-posted account
+  "@thelinuxexperiment@tilvids.com", // PeerTube (best-effort)
+  "@bookwyrm@tech.lgbt", // BookWyrm project (best-effort)
 ];
 
 function fulfilled<T>(r: PromiseSettledResult<T>): r is PromiseFulfilledResult<T> {
@@ -24,11 +27,12 @@ function fulfilled<T>(r: PromiseSettledResult<T>): r is PromiseFulfilledResult<T
 
 export class SeedSource implements DiscoverySource {
   readonly id = "seed";
-  private client = new ApClient();
+  private client: ApClient;
   private seed: string[];
 
-  constructor(seed?: string[]) {
+  constructor(seed?: string[], signer?: RequestSigner) {
     this.seed = seed && seed.length ? seed : DEFAULT_SEED;
+    this.client = new ApClient(signer);
   }
 
   async people(limit: number): Promise<Person[]> {

@@ -66,11 +66,25 @@ and returns an `AdapterResult` that degrades **live → cached → mock**.
 or federation writes. Only the **open** social web — no Instagram / X / TikTok / LinkedIn
 / YouTube. Tacet begins with the open social web.
 
-**Known limitation — authorized fetch.** Some homes (e.g. Mastodon in "secure mode")
-require an HTTP-signed `GET` even for public objects and will refuse an unsigned read.
-Because Tacet holds no user identity here, those objects are simply skipped and the
-result degrades gracefully. A future server-actor signing key could widen coverage
-without changing this architecture.
+**Authorized fetch (optional, read-only).** Some homes (e.g. Mastodon in "secure mode",
+GoToSocial) require an HTTP-signed `GET` even for public objects. `activitypub/signing.ts`
+implements this: when `AP_ACTOR_ID` + `AP_PRIVATE_KEY` are configured, outbound AP `GET`s
+are signed with a **server** key (not a user), and `/api/openweb/actor` serves the actor
+document whose public key the remote home fetches to verify. It signs `GET` only — no
+posting, delivery, inbox processing, or user auth. Unconfigured, reads are unsigned exactly
+as before, and secure-mode homes degrade gracefully. Generate a key and set the env per
+[`.dev.vars.example`](../../.dev.vars.example); it is only verifiable once deployed at a
+publicly reachable actor URL.
+
+**Source attribution.** `activitypub/nodeinfo.ts` resolves each home's software (Mastodon,
+Pixelfed, PeerTube…) via the public nodeinfo standard, cached per host. The facade stamps
+it onto `Source.software`, which the UI shows as a calm badge — where content lives, never
+how it travels.
+
+See the **[compatibility matrix](../../docs/05-federation/compatibility.md)** for per-implementation
+support and **[architecture validation](../../docs/05-federation/architecture-validation.md)**
+for how the parser/normalizer/sources boundary is verified (and how a future protocol like
+AT Protocol would slot in).
 
 ## Data modes (honest provenance)
 

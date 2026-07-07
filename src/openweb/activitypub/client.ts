@@ -3,27 +3,29 @@ import { resolveActorUrl, looksLikeUrl } from "./webfinger";
 import { parseActor, parseObject, parseOutboxItem } from "./parse";
 import { fetchCollectionItems } from "./collection";
 import type { APActor, APObject, APActivity } from "./apmodel";
+import type { RequestSigner } from "./signing";
 
 // The generic ActivityPub client: resolve, fetch, and PARSE into canonical AP objects.
 // It never produces Tacet domain objects — that is the normalize/ layer's job. Works
 // against any ActivityPub implementation (Mastodon, Pixelfed, PeerTube, Lemmy, Misskey,
-// Friendica, …) because it speaks only the protocol. Read-only, unauthenticated.
+// Friendica, GoToSocial, Akkoma, BookWyrm, …) because it speaks only the protocol.
+// Read-only. An optional server signer widens access to stricter homes (authorized
+// fetch); WebFinger stays unsigned (it is a public discovery endpoint).
 export class ApClient {
-  // Resolve a handle (@user@home) or an actor URL to a parsed actor.
+  constructor(private readonly signer?: RequestSigner) {}
+
   async getActor(handleOrUrl: string): Promise<APActor> {
     const url = looksLikeUrl(handleOrUrl) ? handleOrUrl : await resolveActorUrl(handleOrUrl);
-    return parseActor(await fetchAp(url));
+    return parseActor(await fetchAp(url, { signer: this.signer }));
   }
 
-  // A finite slice of an actor's outbox as parsed activities (Create/Announce/…).
   async getOutbox(actor: APActor, limit: number): Promise<APActivity[]> {
     if (!actor.outbox) return [];
-    const items = await fetchCollectionItems(actor.outbox, limit);
+    const items = await fetchCollectionItems(actor.outbox, limit, 3, this.signer);
     return items.map(parseOutboxItem);
   }
 
-  // Fetch and parse a single content object by URL.
   async getObject(url: string): Promise<APObject> {
-    return parseObject(await fetchAp(url));
+    return parseObject(await fetchAp(url, { signer: this.signer }));
   }
 }

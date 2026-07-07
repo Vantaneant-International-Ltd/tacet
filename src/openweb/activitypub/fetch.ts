@@ -1,11 +1,13 @@
-// The one network primitive for ActivityPub reads. Unauthenticated GET with the AP
-// content type, a timeout, and a response-size guard. Read-only by construction — this
-// module has no way to POST, sign, or authenticate.
+// The one network primitive for ActivityPub reads. GET with the AP content type, a
+// timeout, and a response-size guard. Read-only by construction — this module can only
+// GET; it never POSTs, delivers, or authenticates a user.
 //
 // Note on "authorized fetch": some homes (e.g. Mastodon in secure mode) require an
-// HTTP-signed GET even for public objects and will answer 401/403 here. That is expected
-// and handled by degradation upstream (skip that actor/object, fall back) — we never
-// hold a user identity, so we simply can't read those. Documented in README.
+// HTTP-signed GET even for public objects and answer 401/403 otherwise. When a server
+// signer is configured (see signing.ts) the GET is signed and those homes open up;
+// otherwise we fall back to an unsigned GET and degrade gracefully upstream.
+
+import type { RequestSigner } from "./signing";
 
 const AP_ACCEPT =
   'application/activity+json, application/ld+json; profile="https://www.w3.org/ns/activitystreams", application/json';
@@ -18,11 +20,28 @@ export class ApFetchError extends Error {
   }
 }
 
-export async function fetchAp(url: string, timeoutMs = DEFAULT_TIMEOUT): Promise<unknown> {
+export async function fetchAp(
+  url: string,
+  opts: { signer?: RequestSigner; timeoutMs?: number } = {},
+): Promise<unknown> {
+  const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT;
+  const headers: Record<string, string> = {
+    accept: AP_ACCEPT,
+    "user-agent": "Tacet (+https://tacet.social)",
+  };
+  // Authorized fetch: sign the GET when a server signer is configured. Failure to sign
+  // never blocks the request — we fall back to an unsigned GET.
+  if (opts.signer) {
+    try {
+      Object.assign(headers, await opts.signer.sign("GET", url));
+    } catch {
+      /* proceed unsigned */
+    }
+  }
   let res: Response;
   try {
     res = await fetch(url, {
-      headers: { accept: AP_ACCEPT, "user-agent": "Tacet (+https://tacet.social)" },
+      headers,
       redirect: "follow",
       signal: AbortSignal.timeout(timeoutMs),
       cf: { cacheTtl: 120, cacheEverything: true },

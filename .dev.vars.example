@@ -14,3 +14,19 @@ SESSION_SECRET="replace-with-a-long-random-string"
 # is only enforced when both are set. Get them from the Cloudflare dashboard.
 TURNSTILE_SECRET=""
 TURNSTILE_SITE_KEY=""
+
+# Optional: open social web discovery.
+#   OPENWEB_INSTANCE — a Mastodon-compatible home for the REST discovery shim.
+#   OPENWEB_SEED     — comma-separated @user@home handles for the generic AP seed.
+# OPENWEB_INSTANCE="mastodon.social"
+# OPENWEB_SEED="@Gargron@mastodon.social,@dansup@pixelfed.social"
+
+# Optional: AUTHORIZED FETCH (read-only). Lets stricter homes (e.g. Mastodon secure
+# mode) serve public content by HTTP-signing outbound GETs. All three are needed, and
+# AP_ACTOR_ID must be a publicly reachable URL serving /api/openweb/actor. Generate a key:
+#   openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out ap_private.pem
+#   openssl rsa -in ap_private.pem -pubout -out ap_public.pem
+# Then paste the PEMs here (private stays secret; public is published in the actor doc).
+# AP_ACTOR_ID="https://tacet.social/api/openweb/actor"
+# AP_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"
+# AP_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"

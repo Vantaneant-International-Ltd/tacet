@@ -1,6 +1,7 @@
 import type { DiscoverySource } from "./types";
 import { MastodonSource } from "./sources/mastodon";
 import { SeedSource } from "./sources/seed";
+import type { RequestSigner } from "./activitypub/signing";
 
 // Which discovery sources feed the product. Order matters only for merge preference.
 // The generic SeedSource proves cross-implementation reading; the Mastodon shim keeps
@@ -8,8 +9,9 @@ import { SeedSource } from "./sources/seed";
 export interface OpenWebConfig {
   instance?: string; // Mastodon-compatible home for the REST discovery shim
   seed?: string[]; // handles for the generic ActivityPub seed source
+  signer?: RequestSigner; // optional server signer for authorized fetch (stricter homes)
 }
 
 export function buildSources(cfg: OpenWebConfig = {}): DiscoverySource[] {
-  return [new MastodonSource(cfg.instance || "mastodon.social"), new SeedSource(cfg.seed)];
+  return [new MastodonSource(cfg.instance || "mastodon.social"), new SeedSource(cfg.seed, cfg.signer)];
 }

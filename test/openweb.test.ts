@@ -3,6 +3,8 @@ import { toPlainText } from "../src/openweb/text";
 import { parseActor, parseObject, parseActivity, parseOutboxItem } from "../src/openweb/activitypub/parse";
 import { normalizePerson, normalizeObject, normalizeActivity } from "../src/openweb/normalize";
 import { getToday, getPeople, __resetOpenWebCache } from "../src/openweb";
+import { buildSigningString, makeRsaSigner } from "../src/openweb/activitypub/signing";
+import { labelForSoftware } from "../src/openweb/activitypub/nodeinfo";
 import type { DiscoverySource, Moment, Person } from "../src/openweb/types";
 
 // ── PARSER: raw JSON-LD → canonical AP objects (pure, no network) ─────────────
@@ -141,6 +143,76 @@ describe("normalizer", () => {
   it("strips markup to calm plain text", () => {
     expect(toPlainText("<p>Hello <b>world</b></p><p>second</p>")).toBe("Hello world\nsecond");
     expect(toPlainText("a &amp; b &lt;3")).toBe("a & b <3");
+  });
+});
+
+// ── BROADENED COMPATIBILITY: more implementations through one parser ──────────
+describe("cross-implementation normalization", () => {
+  const author = { id: "https://h/u", type: "Person", preferredUsername: "u", url: "https://h/u" };
+
+  it("Lemmy Page: title + body + thumbnail image", () => {
+    const o = parseObject({ id: "https://lemmy.world/post/1", type: "Page", name: "A link", content: "<p>discuss</p>", published: "2026-07-07T00:00:00Z", attributedTo: author, image: { type: "Image", url: "https://cdn/thumb.jpg" } });
+    const m = normalizeObject(o)!;
+    expect(m.title).toBe("A link");
+    expect(m.text).toBe("A link\n\ndiscuss");
+    expect(m.media.some((x) => x.kind === "image")).toBe(true);
+  });
+
+  it("Mobilizon Event renders as a titled post", () => {
+    const o = parseObject({ id: "https://mobilizon.fr/e/1", type: "Event", name: "Meetup", content: "<p>join us</p>", published: "2026-07-07T00:00:00Z", attributedTo: author });
+    const m = normalizeObject(o)!;
+    expect(m.title).toBe("Meetup");
+    expect(m.text).toContain("join us");
+  });
+
+  it("BookWyrm Review is renderable and titled", () => {
+    const o = parseObject({ id: "https://bookwyrm.social/r/1", type: "Review", name: "Loved it", content: "<p>a book</p>", published: "2026-07-07T00:00:00Z", attributedTo: author });
+    const m = normalizeObject(o)!;
+    expect(m.title).toBe("Loved it");
+  });
+});
+
+// ── AUTHORIZED FETCH: HTTP signature (generate key, sign, verify; no network) ──
+describe("authorized fetch signing", () => {
+  it("builds the canonical signing string", () => {
+    const s = buildSigningString("GET", new URL("https://example.social/users/x/outbox?page=1"), "Mon, 07 Jul 2026 00:00:00 GMT");
+    expect(s).toBe("(request-target): get /users/x/outbox?page=1\nhost: example.social\ndate: Mon, 07 Jul 2026 00:00:00 GMT");
+  });
+
+  it("produces a verifiable RSA signature over the request", async () => {
+    const kp = (await crypto.subtle.generateKey(
+      { name: "RSASSA-PKCS1-v1_5", modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+      true,
+      ["sign", "verify"],
+    )) as CryptoKeyPair;
+    const pkcs8 = (await crypto.subtle.exportKey("pkcs8", kp.privateKey)) as ArrayBuffer;
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(pkcs8)));
+    const pem = `-----BEGIN PRIVATE KEY-----\n${b64.replace(/(.{64})/g, "$1\n")}\n-----END PRIVATE KEY-----`;
+
+    const signer = makeRsaSigner("https://tacet.social/actor#main-key", pem);
+    const url = "https://example.social/users/anna";
+    const headers = await signer.sign("GET", url);
+
+    expect(headers.signature).toContain('keyId="https://tacet.social/actor#main-key"');
+    expect(headers.signature).toContain('headers="(request-target) host date"');
+
+    const sigB64 = /signature="([^"]+)"/.exec(headers.signature)![1];
+    const sigBytes = Uint8Array.from(atob(sigB64), (c) => c.charCodeAt(0));
+    const signingString = buildSigningString("GET", new URL(url), headers.date);
+    const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", kp.publicKey, sigBytes, new TextEncoder().encode(signingString));
+    expect(ok).toBe(true);
+  });
+});
+
+// ── SOURCE ATTRIBUTION: software labels (pure) ────────────────────────────────
+describe("source attribution labels", () => {
+  it("maps known software to friendly labels, never protocol jargon", () => {
+    expect(labelForSoftware("mastodon")).toBe("Mastodon");
+    expect(labelForSoftware("peertube")).toBe("PeerTube");
+    expect(labelForSoftware("bookwyrm")).toBe("BookWyrm");
+    expect(labelForSoftware("gotosocial")).toBe("GoToSocial");
+    expect(labelForSoftware("somethingnew")).toBe("Somethingnew");
+    expect(labelForSoftware(undefined)).toBeUndefined();
   });
 });
 

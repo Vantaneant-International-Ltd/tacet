@@ -169,6 +169,26 @@
 .t-identity__meta { font-size: var(--text-meta); color: var(--color-text-tertiary); }
 .t-identity__source { margin-top: var(--space-1); }
 
+/* Source attribution — where a person or post lives. Calm, minimal, never dominant. */
+.t-srcbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  font-size: var(--text-micro);
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.t-srcbadge__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-accent) 55%, var(--color-text-tertiary));
+  flex: none;
+}
+
 .t-post__title { font-size: var(--text-heading); font-weight: 500; margin: var(--space-4) 0 var(--space-2); letter-spacing: -0.01em; }
 .t-post__body { font-size: var(--text-body); line-height: 1.6; color: var(--color-text-primary); margin: var(--space-4) 0 0; }
 .t-post__read { margin-top: var(--space-4); }

@@ -58,6 +58,12 @@ function parseAttachments(raw: Record<string, unknown>): APAttachment[] {
       }
     }
   }
+  // A featured/thumbnail `image` (Lemmy post thumbnails, Article/Video headers) when
+  // no explicit image attachment already exists.
+  if (!out.some((a) => a.mediaType?.startsWith("image/") || a.type === "Image")) {
+    const img = firstString((raw["image"] as any)) ?? (isRecord(raw["image"]) ? firstString((raw["image"] as any)["url"]) : undefined);
+    if (img) out.push({ url: img, mediaType: "image/*", type: "Image" });
+  }
   return out;
 }
 
