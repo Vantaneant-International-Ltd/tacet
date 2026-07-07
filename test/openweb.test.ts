@@ -3,6 +3,7 @@ import { toPlainText } from "../src/openweb/text";
 import { parseActor, parseObject, parseActivity, parseOutboxItem } from "../src/openweb/activitypub/parse";
 import { normalizePerson, normalizeObject, normalizeActivity } from "../src/openweb/normalize";
 import { getToday, getPeople, __resetOpenWebCache } from "../src/openweb";
+import { assembleTimeline } from "../src/openweb/resolve";
 import { buildSigningString, makeRsaSigner } from "../src/openweb/activitypub/signing";
 import { labelForSoftware } from "../src/openweb/activitypub/nodeinfo";
 import { mapContent } from "../src/openweb/sources/mastodon";
@@ -170,6 +171,112 @@ describe("cross-implementation normalization", () => {
     const o = parseObject({ id: "https://bookwyrm.social/r/1", type: "Review", name: "Loved it", content: "<p>a book</p>", published: "2026-07-07T00:00:00Z", attributedTo: author });
     const m = normalizeObject(o)!;
     expect(m.title).toBe("Loved it");
+  });
+});
+
+// ── PROFILES 2.0: actor metadata, media, timeline, home vs software ───────────
+describe("profile actor metadata", () => {
+  it("parses and normalizes public profile fields", () => {
+    const a = parseActor({
+      id: "https://twit.social/users/leo",
+      type: "Person",
+      preferredUsername: "leo",
+      name: "Leo",
+      summary: "<p>tech</p>",
+      icon: { url: "https://cdn/av.png" },
+      image: { url: "https://cdn/banner.png" },
+      url: "https://twit.social/@leo",
+      outbox: "https://twit.social/users/leo/outbox",
+      followers: "https://twit.social/users/leo/followers",
+      following: "https://twit.social/users/leo/following",
+      published: "2017-04-01T00:00:00Z",
+      attachment: [
+        { type: "PropertyValue", name: "Website", value: '<a href="https://twit.tv">twit.tv</a>' },
+        { type: "PropertyValue", name: "Location", value: "Petaluma, CA" },
+      ],
+    });
+    expect(a.published).toBe("2017-04-01T00:00:00Z");
+    expect(a.followers).toContain("/followers");
+    expect(a.image?.url).toBe("https://cdn/banner.png");
+
+    const p = normalizePerson(a);
+    expect(p.joinedAt).toBe("2017-04-01T00:00:00Z");
+    expect(p.bannerUrl).toBe("https://cdn/banner.png");
+    expect(p.website).toBe("https://twit.tv");
+    expect(p.location).toBe("Petaluma, CA");
+    expect(p.fields).toEqual([
+      { name: "Website", value: "twit.tv", href: "https://twit.tv" },
+      { name: "Location", value: "Petaluma, CA", href: undefined },
+    ]);
+  });
+
+  it("home is the host; software is NOT leaked by the normalizer", () => {
+    const p = normalizePerson(parseActor({ id: "https://twit.social/users/leo", type: "Person", preferredUsername: "leo" }));
+    expect(p.source.id).toBe("twit.social");
+    expect(p.source.name).toBe("twit.social");
+    expect(p.source.software).toBeUndefined(); // added later by the facade, kept separate
+  });
+});
+
+describe("multi-attachment media", () => {
+  const author = { id: "https://h/u", type: "Person", preferredUsername: "u" };
+  it("preserves EVERY image attachment (a four-image post yields four)", () => {
+    const obj = parseObject({
+      id: "https://pixelfed.social/p/1",
+      type: "Note",
+      content: "<p>gallery</p>",
+      attributedTo: author,
+      attachment: [
+        { type: "Document", mediaType: "image/jpeg", url: "https://cdn/1.jpg" },
+        { type: "Document", mediaType: "image/jpeg", url: "https://cdn/2.jpg" },
+        { type: "Image", url: "https://cdn/3.jpg" },
+        { type: "Document", mediaType: "image/png", url: "https://cdn/4.png" },
+      ],
+    });
+    expect(obj.attachments.length).toBe(4);
+    const m = normalizeObject(obj)!;
+    expect(m.media.length).toBe(4);
+    expect(m.media.every((x) => x.kind === "image")).toBe(true);
+  });
+  it("one image yields one; no media yields none", () => {
+    const one = normalizeObject(parseObject({ id: "x", type: "Note", content: "<p>a</p>", attributedTo: author, attachment: [{ type: "Image", url: "https://cdn/1.jpg" }] }))!;
+    expect(one.media.length).toBe(1);
+    const none = normalizeObject(parseObject({ id: "y", type: "Note", content: "<p>b</p>", attributedTo: author }))!;
+    expect(none.media.length).toBe(0);
+  });
+});
+
+describe("profile timeline assembly", () => {
+  const owner = parseActor({ id: "https://h/users/o", type: "Person", preferredUsername: "o", url: "https://h/@o" });
+  const other = { id: "https://other/users/f", type: "Person", preferredUsername: "f" };
+  const src = (objects: Record<string, any>) => ({
+    async getObject(url: string) { if (!(url in objects)) throw new Error("404"); return parseObject(objects[url]); },
+    async getActor(url: string) { throw new Error("no actor " + url); },
+  });
+
+  it("includes embedded posts, resolves reference-only posts, and marks boosts as shared", async () => {
+    const acts = [
+      parseActivity({ type: "Create", object: { id: "https://h/1", type: "Note", content: "<p>embedded</p>", attributedTo: owner } }),
+      parseActivity({ type: "Create", object: "https://h/2" }), // reference-only → fetched
+      parseActivity({ type: "Announce", object: { id: "https://other/9", type: "Note", content: "<p>boosted</p>", attributedTo: other } }),
+    ];
+    const objects = { "https://h/2": { id: "https://h/2", type: "Note", content: "<p>fetched</p>", attributedTo: owner } };
+    const out = await assembleTimeline(src(objects), acts, owner, { cap: 30, netBudget: 5 });
+    expect(out.map((m) => m.text)).toEqual(["embedded", "fetched", "boosted"]);
+    expect(out[2].sharedBy?.handle).toBe("@o@h"); // reached us via the profile owner's boost
+    expect(out[2].author.handle).toBe("@f@other"); // original author preserved
+  });
+
+  it("skips unreachable reference-only posts and respects the network budget", async () => {
+    const acts = [
+      parseActivity({ type: "Create", object: "https://h/gone" }),
+      parseActivity({ type: "Create", object: "https://h/a" }),
+      parseActivity({ type: "Create", object: "https://h/b" }),
+    ];
+    const objects = { "https://h/a": { id: "https://h/a", type: "Note", content: "<p>a</p>", attributedTo: owner }, "https://h/b": { id: "https://h/b", type: "Note", content: "<p>b</p>", attributedTo: owner } };
+    const out = await assembleTimeline(src(objects), acts, owner, { cap: 30, netBudget: 1 });
+    // gone → throws (counts against budget? no: only successful fetches decrement). "a" fetched (budget 1→0), "b" skipped (budget exhausted).
+    expect(out.map((m) => m.text)).toEqual(["a"]);
   });
 });
 

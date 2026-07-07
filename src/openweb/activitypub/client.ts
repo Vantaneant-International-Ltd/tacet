@@ -34,4 +34,14 @@ export class ApClient {
   async getCollectionItems(url: string, limit: number): Promise<unknown[]> {
     return fetchCollectionItems(url, limit, 2, this.signer);
   }
+
+  // The `totalItems` of a Collection root (followers / following / outbox counts). One
+  // cheap request, no paging. Returns undefined when the home hides it.
+  async getCollectionTotal(url: string): Promise<number | undefined> {
+    const root = await fetchAp(url, { signer: this.signer });
+    if (root && typeof root === "object" && typeof (root as any).totalItems === "number") {
+      return (root as any).totalItems as number;
+    }
+    return undefined;
+  }
 }

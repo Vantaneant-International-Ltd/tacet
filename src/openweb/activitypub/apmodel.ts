@@ -19,6 +19,12 @@ export interface APAttachment {
 }
 
 // An account-like actor (Person, Service, Group, Application, Organization).
+// A labelled metadata row on an actor (ActivityStreams PropertyValue). Value is still HTML.
+export interface APPropertyValue {
+  name: string;
+  valueHtml: string;
+}
+
 export interface APActor {
   id: string;
   types: string[];
@@ -27,8 +33,13 @@ export interface APActor {
   name?: string;
   summaryHtml?: string; // still HTML — normalizer sanitizes to plain text
   icon: APImage | null;
+  image: APImage | null; // header/banner
   url?: string;
   outbox?: string;
+  followers?: string; // collection URL
+  following?: string; // collection URL
+  published?: string; // account creation time (ISO)
+  fields: APPropertyValue[]; // profile metadata rows
 }
 
 // A content object (Note, Article, Image, Video, Audio, Page, Question, …).

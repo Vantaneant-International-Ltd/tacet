@@ -15,7 +15,25 @@ export interface Source {
   software?: string;
 }
 
+// A labelled profile field (Mastodon-style metadata: "Website", "Pronouns", …). `href`
+// is present when the value is a link. Verification isn't asserted (see README).
+export interface ProfileField {
+  name: string;
+  value: string; // plain text
+  href?: string; // when the value is a link
+}
+
+// Public, contextual profile counts — surfaced calmly, never as a scoreboard. Present
+// only when the home exposes them (absence ≠ zero).
+export interface ProfileCounts {
+  followers?: number;
+  following?: number;
+  posts?: number;
+}
+
 // A person, wherever their home is. One coherent people model — never a "remote account".
+// The core fields are always present; the richer public-profile fields are populated when
+// the full profile is fetched and the home exposes them.
 export interface Person {
   id: string; // stable id (their public profile URL)
   name: string; // display name
@@ -25,6 +43,13 @@ export interface Person {
   url: string; // public profile URL
   source: Source;
   verified: boolean;
+  // Rich public profile (optional; populated by a full profile fetch when available):
+  bannerUrl?: string | null; // header image
+  joinedAt?: string; // ISO — when the account was created
+  website?: string; // primary website, when discoverable
+  location?: string; // when the home exposes it
+  fields?: ProfileField[]; // profile metadata rows
+  counts?: ProfileCounts; // followers / following / posts
 }
 
 // A post/moment from the open web. Not an "ActivityPub object" — a post. (The product

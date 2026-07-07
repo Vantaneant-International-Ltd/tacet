@@ -2,9 +2,10 @@ import type { AdapterResult, Moment, Person, Source, DiscoverySource, AdapterErr
 import { mockMoments, mockPeople } from "./mock";
 import { softwareOf } from "./activitypub/nodeinfo";
 import { ApClient } from "./activitypub/client";
-import { normalizePerson, normalizeActivity } from "./normalize";
+import { normalizePerson } from "./normalize";
 import type { RequestSigner } from "./activitypub/signing";
 import { buildConversation } from "./conversation";
+import { assembleTimeline } from "./resolve";
 import type { Conversation, ConversationNode } from "./types";
 
 // The read-only open-web adapter facade. It fans out to the configured discovery
@@ -125,23 +126,43 @@ export interface ProfileResult {
   error?: AdapterError;
 }
 
-export async function getProfile(actorRef: string, signer?: RequestSigner): Promise<ProfileResult> {
+const profileCache = new Map<string, Entry<ProfileResult>>();
+const PROFILE_TTL_MS = 90_000;
+
+export async function getProfile(actorRef: string, signer?: RequestSigner, now: number = Date.now()): Promise<ProfileResult> {
+  const cached = profileCache.get(actorRef);
+  if (cached && now - cached.at < PROFILE_TTL_MS) return cached.data;
   try {
     const client = new ApClient(signer);
     const actor = await client.getActor(actorRef);
     const profile = normalizePerson(actor);
-    let posts: Moment[] = [];
-    try {
-      const activities = await client.getOutbox(actor, 24);
-      posts = activities.map((a) => normalizeActivity(a, actor)).filter((m): m is Moment => !!m).slice(0, 24);
-    } catch {
-      /* posts are optional — a profile with no readable outbox still shows */
-    }
+
+    // Public counts + the timeline, in parallel. Each degrades independently: a home that
+    // hides a collection simply leaves that count unknown (never fabricated as zero).
+    const [followers, following, posts, timeline] = await Promise.all([
+      actor.followers ? client.getCollectionTotal(actor.followers).catch(() => undefined) : Promise.resolve(undefined),
+      actor.following ? client.getCollectionTotal(actor.following).catch(() => undefined) : Promise.resolve(undefined),
+      actor.outbox ? client.getCollectionTotal(actor.outbox).catch(() => undefined) : Promise.resolve(undefined),
+      (async () => {
+        try {
+          const activities = await client.getOutbox(actor, 40);
+          return await assembleTimeline(client, activities, actor, { cap: 30, netBudget: 14 });
+        } catch {
+          return [] as Moment[];
+        }
+      })(),
+    ]);
+    const c: NonNullable<Person["counts"]> = {};
+    if (typeof followers === "number") c.followers = followers;
+    if (typeof following === "number") c.following = following;
+    if (typeof posts === "number") c.posts = posts;
+    if (Object.keys(c).length) profile.counts = c;
+
     try {
       const sw = await softwareOf(profile.source.id);
       if (sw) {
         profile.source.software = sw;
-        for (const p of posts) {
+        for (const p of timeline) {
           if (p.source.id === profile.source.id) p.source.software = sw;
           if (p.author.source.id === profile.source.id) p.author.source.software = sw;
         }
@@ -149,7 +170,9 @@ export async function getProfile(actorRef: string, signer?: RequestSigner): Prom
     } catch {
       /* attribution is best-effort */
     }
-    return { profile, posts, source: profile.source };
+    const result: ProfileResult = { profile, posts: timeline, source: profile.source };
+    profileCache.set(actorRef, { data: result, at: now });
+    return result;
   } catch (e) {
     return { profile: null, posts: [], source: null, error: toAdapterError(e) };
   }

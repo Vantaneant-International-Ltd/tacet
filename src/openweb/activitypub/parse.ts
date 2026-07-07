@@ -1,4 +1,4 @@
-import type { APActor, APObject, APActivity, APAttachment, APImage } from "./apmodel";
+import type { APActor, APObject, APActivity, APAttachment, APImage, APPropertyValue } from "./apmodel";
 import { asArray, firstString, pickUrl, pickImageUrl, hostOf, isRecord } from "./jsonld";
 
 // The PARSER: raw JSON-LD → canonical AP objects. Defensive against the many shapes AP
@@ -16,6 +16,19 @@ export function parseImage(x: unknown): APImage | null {
   return { url, mediaType: first ? firstString(first["mediaType"]) : undefined };
 }
 
+// Profile metadata rows (PropertyValue attachments on the actor).
+function parseFields(raw: Record<string, unknown>): APPropertyValue[] {
+  const out: APPropertyValue[] = [];
+  for (const a of asArray(raw["attachment"])) {
+    if (!isRecord(a)) continue;
+    const isProp = asArray(a["type"]).some((t) => t === "PropertyValue" || t === "Property");
+    const name = firstString(a["name"]);
+    const value = firstString(a["value"]);
+    if (isProp && name && value != null) out.push({ name, valueHtml: value });
+  }
+  return out;
+}
+
 export function parseActor(raw: unknown): APActor {
   if (!isRecord(raw)) throw new Error("actor is not an object");
   const id = firstString(raw["id"]) ?? "";
@@ -28,8 +41,13 @@ export function parseActor(raw: unknown): APActor {
     name: firstString(raw["name"]),
     summaryHtml: firstString(raw["summary"]),
     icon: parseImage(raw["icon"]),
+    image: parseImage(raw["image"]),
     url,
     outbox: firstString(raw["outbox"]),
+    followers: firstString(raw["followers"]),
+    following: firstString(raw["following"]),
+    published: firstString(raw["published"]),
+    fields: parseFields(raw),
   };
 }
 

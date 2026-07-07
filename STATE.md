@@ -12,6 +12,21 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Profiles 2.0.** Tacet profiles now present a person's full *public* presence — banner,
+  avatar, name, handle, bio, **website + metadata fields**, **location**, **joined date**,
+  and **followers / following / posts** counts — in Tacet's own language, with Posts /
+  Media / About sections. Timeline made authoritative: `src/openweb/resolve.ts` resolves
+  reference-only and boosted posts (bounded fetch) so it's not limited to embedded Creates
+  (Gargron: 9→27 posts). Profiles briefly cached (90s). **QA fixes folded in:** (1)
+  multi-attachment media — every public image/video is preserved and rendered as a gallery
+  (a four-image post shows four; verified live); (2) **home vs software** — the person's
+  home (host, e.g. `twit.social`) is surfaced as identity; software (e.g. Mastodon) is
+  secondary infrastructure. All generic through the adapter; read-only. Domain `Person`
+  expanded (banner/joinedAt/website/location/fields/counts); parser reads actor
+  attachments/published/followers/following/image; `ApClient.getCollectionTotal` for
+  counts. 73 tests pass (7 new). Known gap: some Pixelfed-native outboxes yield no
+  normalizable posts (counts still shown). See `docs/05-federation/compatibility.md`.
+
 - **Conversation counts (contextual, calm).** Posts everywhere now carry lightweight
   context — `Moment.counts` (`reactions`/`replies`/`shares`), normalized generically:
   from AP objects' embedded `likes`/`replies`/`shares` `totalItems`, and from Mastodon

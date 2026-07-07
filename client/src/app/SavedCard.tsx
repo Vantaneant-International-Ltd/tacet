@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
-import { SourceBadge, PostCounts } from "./live";
+import { SourceBadge, PostCounts, PostMedia } from "./live";
 import { api, forgetSaved } from "./me";
 import type { SavedPost, CollectionSummary } from "./me";
 import { relativeTime } from "./openweb";
@@ -20,7 +20,6 @@ export function SavedCard({
   const [editingNote, setEditingNote] = useState(false);
   const [noteDraft, setNoteDraft] = useState(saved.note ?? "");
   const [showCollections, setShowCollections] = useState(false);
-  const image = saved.media.find((m) => m.kind === "image");
   const source = { id: saved.sourceId, name: saved.sourceId, url: "", software: saved.sourceSoftware };
 
   async function patch(edit: { pinned?: boolean; readLater?: boolean; note?: string | null }) {
@@ -62,7 +61,7 @@ export function SavedCard({
       </div>
 
       {saved.text && <p className="t-post__body">{saved.text}</p>}
-      {image && <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />}
+      <PostMedia media={saved.media} />
       <PostCounts counts={saved.counts} />
 
       {saved.note && !editingNote && (

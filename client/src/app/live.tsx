@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
-import type { Person, Moment, DataMode, Source, MomentCounts } from "./openweb";
+import type { Person, Moment, DataMode, Source, MomentCounts, MomentMedia } from "./openweb";
 import { relativeTime, profilePath, conversationPath } from "./openweb";
 import { Link, navigate } from "../router";
 import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
@@ -10,15 +10,54 @@ import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 // system's classes (.t-post, .t-personrow, .t-identity) so live and sample content
 // look identical. Everyone is "a person"; every post is "a post" — no protocol words.
 
-// A calm, minimal note of where a person or post lives ("Mastodon", "Pixelfed"…).
-// Never protocol jargon; never dominant. Absent when the home's software is unknown.
+// Where a person or post LIVES — their home (e.g. "twit.social"), which is part of their
+// identity. The software the home runs (e.g. "Mastodon") is infrastructure and shown only
+// as a quiet secondary note. Home leads; software follows. Absent when neither is known.
 export function SourceBadge({ source }: { source?: Source }) {
-  if (!source?.software) return null;
+  if (!source) return null;
+  const home = source.name || source.id;
+  if (!home && !source.software) return null;
   return (
-    <span className="t-srcbadge" title={`Lives on ${source.software}`}>
+    <span className="t-srcbadge" title={source.software && home ? `${home} · ${source.software}` : home || source.software}>
       <span className="t-srcbadge__dot" aria-hidden="true" />
-      {source.software}
+      {home ? <span className="t-srcbadge__home">{home}</span> : source.software}
+      {home && source.software && <span className="t-srcbadge__sw"> · {source.software}</span>}
     </span>
+  );
+}
+
+// Renders EVERY public attachment of a post — one image or four, images and video — as a
+// calm editorial gallery. Never drops attachments; degrades to nothing when there are none.
+export function PostMedia({ media, onOpen }: { media: MomentMedia[]; onOpen?: () => void }) {
+  const items = media.filter((m) => m.url && (m.kind === "image" || m.kind === "video"));
+  if (items.length === 0) return null;
+  const shown = items.slice(0, 4);
+  const extra = items.length - shown.length;
+  return (
+    <div className={`t-media-grid t-media-grid--${shown.length}`}>
+      {shown.map((m, i) =>
+        m.kind === "video" ? (
+          <video
+            key={i}
+            className="t-media-item"
+            src={m.url}
+            controls
+            preload="none"
+            onClick={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <img
+            key={i}
+            className="t-media-item"
+            src={m.url}
+            alt={m.alt}
+            loading="lazy"
+            onClick={onOpen}
+          />
+        ),
+      )}
+      {extra > 0 && <span className="t-media-more" aria-hidden="true">+{extra}</span>}
+    </div>
   );
 }
 
@@ -52,7 +91,6 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
 export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
   const [sparked, setSparked] = useState(false);
-  const image = moment.media.find((m) => m.kind === "image");
   const saved = isSaved(moment.id);
 
   // Opening a post is reading its conversation — the calm in-Tacet reader, not a jump out.
@@ -92,7 +130,7 @@ export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean 
 
       <div className={focus ? undefined : "t-post__open"} {...bodyProps}>
         {moment.text && <p className="t-post__body">{moment.text}</p>}
-        {image && <img className="t-post__img" src={image.url} alt={image.alt} loading="lazy" />}
+        <PostMedia media={moment.media} onOpen={focus ? undefined : openConversation} />
       </div>
 
       <PostCounts counts={moment.counts} />

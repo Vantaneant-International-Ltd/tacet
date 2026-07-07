@@ -36,6 +36,27 @@ No accounts, follows, likes, boosts, replies, publishing, or notifications.
 | **Ghost (ActivityPub)** | ✅ | ✅ (Article) | ✅ | ✅ title | ✅ | Expected | Newsletter/article objects. |
 | **Owncast** | ◑ actor | ◑ (Note) | ○ | ○ | ○ | Best-effort | Live-stream service; its actor posts "went live" Notes. Stream itself isn't AP content. |
 
+## Public profiles (read-only)
+
+Tacet aims to present a person's **public** presence faithfully, in its own design
+language. Through the generic core it normalizes, where the home exposes them: display
+name, handle, avatar, **banner**, bio, **website** and profile **metadata fields**,
+**location**, **joined date**, and **followers / following / posts** counts (from the
+respective collection `totalItems`). The person's **home** (the host, e.g. `twit.social`)
+is treated as identity and shown first; the **software** it runs (e.g. Mastodon) is
+infrastructure and shown only as a quiet secondary note. Every public **media**
+attachment is preserved (a four-image post shows four). Unknown values are never
+fabricated — absent, not zero. Profiles are briefly cached (90s) for speed.
+
+**Timeline completeness:** the profile timeline resolves reference-only and boosted posts
+(fetching the referenced object, bounded) so it isn't limited to embedded Creates.
+Verified live on Mastodon (full metadata, counts, multi-image posts). **Known gap:**
+some **Pixelfed** accounts expose counts but return an outbox that yields no
+generically-normalizable posts (non-embedded/likely auth-gated), so their timeline can be
+empty even though counts are present; Mastodon-hosted photo accounts normalize fully
+(including 4-image posts). Verified-link badges aren't asserted (ActivityPub actor
+attachments don't carry Mastodon's `verified_at`; unknown is preferred to incorrect).
+
 ## Conversations (read-only)
 
 Opening a post reads its **conversation** through the same generic core: `inReplyTo`
