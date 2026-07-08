@@ -4,7 +4,7 @@
 > no final spacing (those come in Stage 6). Read [00-overview.md](./00-overview.md) for the
 > conventions used here (`▓` media, `◯` avatar, `[ Button ]`, `( pill )`, `‹icon›`, `·dot·`,
 > `▁▁▁` skeleton). Every frame traces to [publishing-ui.md](../publishing-ui.md) and
-> [publishing-philosophy.md](../09-product/publishing-philosophy.md), obeys the Context Column
+> [publishing-philosophy.md](../../09-product/publishing-philosophy.md), obeys the Context Column
 > Law, and spends components from [components.md](../components.md).
 >
 > **The one truth these screens carry:** you make something, it is yours, and sharing is a
@@ -354,6 +354,6 @@ means *"kept, safe, yours"* — never *"published"*.
 
 ---
 
-*See also: [publishing-ui.md](../publishing-ui.md) (the spec), [publishing-philosophy.md](../09-product/publishing-philosophy.md)
+*See also: [publishing-ui.md](../publishing-ui.md) (the spec), [publishing-philosophy.md](../../09-product/publishing-philosophy.md)
 (the constitution), [media-system.md](../media-system.md), [components.md](../components.md),
 [00-overview.md](./00-overview.md) (conventions).*

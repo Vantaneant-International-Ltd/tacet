@@ -32,6 +32,7 @@ builds on the ones before it: identity → home → content → publishing → p
 | [ADR-013](./ADR-013-three-column-desktop-canvas.md) | Three-column desktop canvas | Rail · fixed-measure reading feed · context; width becomes context, not longer lines |
 | [ADR-014](./ADR-014-design-system-before-screens.md) | Design system before screens | The system is defined and reviewed before any screen is polished |
 | [ADR-015](./ADR-015-federation-citizenship.md) | Federation citizenship | Tacet gives back through Boost + Reply, never a like economy; write-actions are honestly gated |
+| [ADR-016](./ADR-016-timeless-system-swappable-style.md) | Timeless system, swappable style | The system is built to last; accent/typeface/rounding are a thin swappable style layer, not sacred |
 
 ## Format
 

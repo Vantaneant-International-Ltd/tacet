@@ -5,9 +5,9 @@
 > `( pill )` chip, `‹icon›`, `···` more, `▁▁▁` skeleton, `·dot·` presence). Every block is a grey
 > block; annotations name the [component](../components.md) and token it becomes in Stage 6.
 > Discover is the **gateway to the wider open web as human recommendation**
-> ([discover.md](../01-product/discover.md)); Search is a **global overlay, not a pillar**
+> ([discover.md](../../01-product/discover.md)); Search is a **global overlay, not a pillar**
 > ([IA §4](../information-architecture.md)). Communities are a **demoted supporting surface**
-> ([communities.md](../01-product/communities.md)), never the spine.
+> ([communities.md](../../01-product/communities.md)), never the spine.
 
 ---
 
@@ -304,5 +304,5 @@ pulsing `--color-accent` dot (§14 Loading), never a spinner.
 
 *Cross-links:* [00-overview.md](./00-overview.md) · [information-architecture.md](../information-architecture.md)
 (§3 Context Law, §4 Search-as-overlay) · [components.md](../components.md) (Person/Content Card, Badge,
-Text Input, Menu, Modal, Tabs, EmptyState) · [profile-system.md](./profile-system.md) (human places,
-no vanity counts) · [discover.md](../01-product/discover.md) · [communities.md](../01-product/communities.md).
+Text Input, Menu, Modal, Tabs, EmptyState) · [profile-system.md](../profile-system.md) (human places,
+no vanity counts) · [discover.md](../../01-product/discover.md) · [communities.md](../../01-product/communities.md).

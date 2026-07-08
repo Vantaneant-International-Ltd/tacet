@@ -396,7 +396,7 @@ a database sheet (profile-system §2). Reached from the Me header [Edit] or Sett
 
 *Cross-links:* [information-architecture.md §2/§6](../information-architecture.md) ·
 [profile-system.md §4/§6/§7](../profile-system.md) ·
-[publishing-philosophy.md](../09-product/publishing-philosophy.md) (owned vs kept; no "Entry"/"draft") ·
+[publishing-philosophy.md](../../09-product/publishing-philosophy.md) (owned vs kept; no "Entry"/"draft") ·
 [components.md](../components.md) · [responsive.md](../responsive.md) (Context Column Law) ·
 [00-overview.md](./00-overview.md) (glyph legend + frozen frame).
 ```

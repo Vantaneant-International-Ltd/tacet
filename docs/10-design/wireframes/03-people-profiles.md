@@ -7,7 +7,7 @@
 > [profile system](../profile-system.md): identity-forward **living space**, **no public vanity
 > counts**, relationship context instead, and source shown as a **human place** (the V1
 > `SourceBadge · Mastodon` suffix is retired). Components: Person Card, Content Card, Tabs, Badge,
-> SegmentedControl, Button, EmptyState, Toast — see [components.md](./components.md).
+> SegmentedControl, Button, EmptyState, Toast — see [components.md](../components.md).
 
 Glyph legend (from overview): `◯` avatar · `▓` banner/media · `[ Button ]` · `( pill )` segment/chip
 · `‹icon›` · `·dot·` quiet presence · `···` truncation. **No colour is implied.**
@@ -289,5 +289,5 @@ email). One accent action (L3). No follower goals, no suggested-to-grow-reach li
 ---
 
 *Cross-links:* [00-overview.md](./00-overview.md) · [information-architecture.md](../information-architecture.md)
-· [profile-system.md](../profile-system.md) · [components.md](./components.md) ·
-[../01-product/people.md](../01-product/people.md) · [responsive.md](../responsive.md).
+· [profile-system.md](../profile-system.md) · [components.md](../components.md) ·
+[../01-product/people.md](../../01-product/people.md) · [responsive.md](../responsive.md).

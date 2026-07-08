@@ -37,7 +37,7 @@ enter and settle); `--ease-in-out` is only for movement that leaves and returns.
 | Interaction | Duration | Easing | What it communicates |
 |---|---|---|---|
 | **Page / pillar transition** | `--dur-4` 480ms | `--ease-out` | You moved to a new place. Content fades up ~8px; the arriving screen settles, the leaving one fades. Enter and leave are staggered, never a hard cut. |
-| **Sheet spring-in** | `--dur-3` 320ms | `--ease-out` | A surface rose from an edge. Translate from off-screen to rest; `--ease-out`'s late curve gives the "spring feel" without a literal bounce or overshoot. |
+| **Sheet spring-in** | `--dur-3` 320ms | `--ease-out` | A surface rose from an edge. Translate from off-screen to rest; `--ease-out`'s late curve gives a settled arrival without a literal bounce or overshoot. |
 | **Sheet / sidebar dismiss** | `--dur-3` 320ms | `--ease-in-out` | It went back where it came from. Same axis in reverse; `--ease-in-out` because it leaves and returns. |
 | **Modal open / close** | `--dur-3` 320ms | `--ease-out` in / `--ease-in-out` out | A focused, blocking surface. Scrim fades (`--alpha-scrim`) while the dialog fades + rises ~4px. Close reverses. |
 | **Hover wash** | `--dur-1` 120ms | `--ease-out` | This is interactive. Background eases to `--alpha-hover`. Fast, near-instant, never a fade you can watch. |

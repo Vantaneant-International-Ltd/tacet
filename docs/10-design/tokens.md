@@ -310,3 +310,27 @@ These tokens land in [`client/src/design/theme.css`](../../client/src/design/the
 custom properties during the (later) implementation milestone — **not** in this design milestone.
 Stage 2 defines them; implementation spends them. Naming here is final so code and Figma variables
 (Stage 6) share one vocabulary.
+
+---
+
+## 14. The timeless system vs the swappable style layer
+
+From the [timelessness audit](./timelessness-audit.md) and [ADR-016](../06-decisions/ADR-016-timeless-system-swappable-style.md):
+a few token *values* are more tied to the taste of this decade than to Tacet itself. They are **not
+removed** — they are Tacet's current identity — but they are explicitly marked as the **style layer**:
+a value can change without the system changing, precisely because the token *names* (the roles) are
+what components depend on.
+
+| Token(s) | Role (timeless — never changes) | Value (style layer — may be re-tuned) |
+|---|---|---|
+| `--color-accent*` | one restrained accent; signal, not decoration | the specific **lavender** hue (a 2020s-coded choice) |
+| `--font-sans` | a humanist sans for reading | the specific face **Jost** |
+| `--font-mono` | a restrained mono for meta only | the specific face **Space Mono** *(the most fashion-bound token — most likely to be swapped first)* |
+| `--radius-lg` / `--radius-xl` | cards/sheets are gently rounded, not sharp | the *amount* (20/28px lean to this decade's soft-UI; moderate is timeless, extreme ages) |
+
+**Rule:** components bind to the **name**, never the value. Re-tuning the accent hue, swapping a
+typeface, or moderating the largest radii is a *style* change — one place, no structural churn. The
+*system* (semantic tokens, one accent, humanist-sans-for-reading, mono-for-meta-only, the spacing
+rhythm, the reading measure, AA contrast) is the part built to last a decade. This is why Tacet can
+stay recognisably itself while its surface is refreshed — and it is the discipline that keeps the
+product from ageing with any single year's taste.

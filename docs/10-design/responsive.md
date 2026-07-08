@@ -93,8 +93,11 @@ Rules that keep it honest:
 
 ## 5. Phone & tablet chrome
 
-- **Top bar** (`--topbar-height` 56px, sticky, `backdrop-filter` blur): screen title / brand, search
-  affordance, avatar. Blur is subtle, warm, and honoured only where supported.
+- **Top bar** (`--topbar-height` 56px, sticky, **solid `--color-surface` with a bottom hairline**):
+  screen title / brand, search affordance, avatar. No frosted-glass `backdrop-filter` blur — depth
+  comes from a solid surface + hairline, not a translucency effect (timelessness audit; the "depth
+  from contrast, not effects" principle). A solid bar also reads correctly on any content and needs
+  no fallback.
 - **Bottom tab bar** (`--tabbar-height` 72px, fixed, `--z-nav`): five pillars, icon + 10px label.
   Respects `env(safe-area-inset-bottom)`.
 - **Compose FAB** (`--fab-size` 56px, `--z-fab`): a single calm affordance, bottom-right, above the

@@ -243,5 +243,5 @@ engineered to make emptiness feel like an achievement. Emptiness here simply *is
 
 ---
 
-*The test ([conversations.md](../01-product/conversations.md)): if opening this surface lowers your
+*The test ([conversations.md](../../01-product/conversations.md)): if opening this surface lowers your
 shoulders instead of raising them, it's doing its job.*
