@@ -37,6 +37,49 @@ outward motion of a home that already holds what you keep and who you are.
 
 ---
 
+## What is Home?
+
+Before publishing, there is **Home**.
+
+**Home is the permanent place where a person's digital social life lives.** It holds their
+identity, the things they make, the things they keep, and the record of their time on the
+open social web — all of it owned by the person, all of it in one place, all of it
+outliving any network or protocol. Home is the noun this whole product is built around;
+the five pillars are how you move through it, and Me is where it is most obviously *yours*.
+
+Concretely, a Home contains:
+
+- **Identity** — who you are (your workspace(s), profile, handle, avatar).
+- **Entries** — the things you create.
+- **Saved Moments** — posts from the open web you chose to keep.
+- **Collections, notes, reading later, pinned** — the ways you organize and annotate.
+- **History** — your record (recently viewed, and in time, more).
+
+**Publishing is one capability of Home — not its purpose.** A Home is complete and
+worthwhile for someone who never publishes a single thing: it is where they read, keep,
+reflect, and hold their identity. Publishing simply lets Home *reach outward* when its
+owner chooses. We build Home first, always; publishing is something Home can do, never the
+reason it exists.
+
+### Owned content vs kept content
+
+A Home holds two kinds of things, and the distinction matters:
+
+- **Owned content — what you create.** Your **Entries** (Thoughts, Photos, Articles,
+  Videos, Events). You are the author. These are the source of truth for your own work;
+  publishing distributes copies of them.
+- **Kept content — what you choose to keep.** **Saved Moments** from the open web, and the
+  **collections, notes, and reading-later** you wrap around them. Someone else authored the
+  Moment; you are its *keeper*, not its author. Your note on it is yours; the post is theirs.
+
+Both belong in your Home — it is a place for your work *and* the world you've gathered
+around yourself — but **only one is authored by you.** This is why they behave differently:
+you can edit and publish what you *own*; you keep, annotate, and organize what you've
+*kept*, and you never publish it as if it were yours. Home is the union of the two; the
+line between them is never blurred.
+
+---
+
 ## The publishing laws
 
 Six laws. Every publishing decision is judged against them first.
@@ -58,9 +101,10 @@ Six laws. Every publishing decision is judged against them first.
    piece of content maps onto a protocol's objects and activities.
 
 5. **Content is a superset, not an intersection.** The content model expresses what humans
-   want to make, not what any one protocol happens to support. Adapters map *downward*,
-   degrading gracefully to each destination. Tacet never shrinks human expression to the
-   lowest common denominator of a wire format.
+   want to make, not what any one protocol happens to support. Each adapter *represents*
+   the content as faithfully as its destination allows. Tacet never shrinks human
+   expression to the lowest common denominator of a wire format; the full work always stays
+   home, and each network receives the truest representation it can hold.
 
 6. **Your work outlives every protocol.** Identity outlives the protocol; content outlives
    the protocol. If ActivityPub vanished tomorrow, everything you have made would still be
@@ -81,6 +125,13 @@ We give it one name: an **Entry**. An Entry is the atom of creation — the owne
 authoritative object. It has a *kind* (what sort of thing it is), a body appropriate to
 that kind, optional media, timestamps, a version, and a distribution state. It belongs to
 exactly one workspace. It is complete the moment it exists, published or not.
+
+> **"Entry" is an internal domain abstraction — a word for engineers, never for users.**
+> It exists so the model can *unify* the human content types under one shape. In the
+> product, people never see or hear "Entry"; they make a **Thought**, a **Photo**, an
+> **Article**, a **Video**, an **Event**. The UI always speaks in those human terms. This
+> document uses "Entry" precisely because it is the engineering unification of them — and
+> for the same reason, the interface never does.
 
 This is a deliberate inversion of the platform "post":
 
@@ -126,8 +177,9 @@ make*, not around a platform's tab structure. But:
 extensibility is a governed act, not a free-for-all.**
 
 A kind is not a database column; it is a **definition** in a registry. A kind declares:
-its human meaning, its structured fields, how it renders, and how each adapter maps it to
-a protocol (and how it degrades where a protocol can't represent it). Adding **Audio**, a
+its human meaning, its structured fields, how it renders, and how each adapter represents
+it on a protocol (including the best representation where a protocol has no exact match).
+Adding **Audio**, a
 **Thread/Series**, a **Poll**, a **Place**, a **Review** (BookWyrm-style), or a **Recipe**
 later is *adding a definition* — never re-architecting, never a migration of the core.
 
@@ -331,11 +383,12 @@ workspaces, and the act of sharing be unchanged?* The answer must always be **ye
 publishing feature only makes sense as "an ActivityPub thing," it is in the wrong layer.
 
 **Superset, not intersection** (Law 5, made concrete): the content model holds the full
-richness of human expression. Each adapter maps *down* to what its protocol supports and
-degrades gracefully — e.g., an **Article** sent to a protocol without long-form becomes a
-short Note that *links back to the canonical copy in the user's home*. The rich original
-never leaves home; the network gets the best representation the destination can hold, plus
-a pointer home. We never delete a paragraph to fit a wire format.
+richness of human expression. Each adapter *represents* the content as faithfully as its
+destination allows — e.g., an **Article** sent to a protocol without long-form is
+represented as a short piece that *links back to the canonical copy in the user's home*.
+The rich original never leaves home; the network receives the truest representation the
+destination can hold, plus a pointer home. We never delete a paragraph to fit a wire
+format — we represent the work, we do not diminish it.
 
 ---
 
@@ -410,7 +463,7 @@ provisional; the relationships are the point.)
 - **Destination** — a human "where," owned by a workspace: `label`, a bound
   `protocolAdapter`, a `connectedIdentity` on that protocol, audience defaults.
 - **PublishAdapter** — the protocol seam (mirror of the read adapter): declares which
-  kinds it can carry and how they degrade; `map(entry) → protocol payload`; `deliver`,
+  kinds it can carry and how each is represented; `map(entry) → protocol payload`; `deliver`,
   `update`, `retract`. The *only* place a protocol is named.
 - **Kind registry** — definitions (meaning, fields, render, adapter mappings) for Thought,
   Photo, Article, Video, Event, and future kinds. Extending it is configuration.
