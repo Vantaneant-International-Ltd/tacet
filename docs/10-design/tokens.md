@@ -121,7 +121,7 @@ For disabled/hover/scrim math via `color-mix`, so we stop inventing opacities in
 --alpha-disabled: 0.40;
 --alpha-hover:    0.06;   /* subtle wash on hover (mix accent/text into surface) */
 --alpha-pressed:  0.12;
---alpha-scrim:    0.55;   /* over media, see §7 */
+--alpha-scrim:    0.62;   /* over media, see §7 — raised from 0.55 so on-media text clears AA */
 ```
 
 ### 5.3 Icon sizes **[V2+ — resolves Stage-5 B2]**
@@ -138,29 +138,36 @@ Their *rendered* size is tokenised so components never hardcode a pixel:
 
 ## 6. Colour tokens **[V1]** — warm, both themes
 
-### 6.1 Light — *warm ivory*
+### 6.1 Light — *warm ivory*  **[V2Δ — contrast-corrected to WCAG AA, pre-Figma review §8]**
 ```css
 --color-canvas:         #F7F4EF;   --color-surface:        #FFFDFA;
 --color-surface-raised: #FFFFFF;   --color-surface-sunken: #F1EDE6;
 --color-hairline:       #E7E1D8;
---color-text-primary:   #23201C;   --color-text-secondary: #6B655C;   --color-text-tertiary: #948D83;
+--color-text-primary:   #23201C;   --color-text-secondary: #6B655C;   --color-text-tertiary: #726B63;
 --color-accent:         #7A5CD0;   --color-accent-hover:   #6B4BC4;   --color-accent-subtle: #EFE9FB;
 --color-on-accent:      #FFFFFF;
---color-positive:       #4E9E7E;   --color-warning:        #B9862E;   --color-danger:        #C0453E;
+--color-positive:       #3F8A6B;   --color-warning:        #946A1F;   --color-danger:        #C0453E;
 --color-focus-ring:     #7A5CD0;
 ```
+> **Contrast corrections (were failing AA on the real hex — pre-figma-review §8):**
+> `text-tertiary` `#948D83`→`#726B63` (2.99→~4.8 on canvas); `positive` `#4E9E7E`→`#3F8A6B`
+> (2.94→~3.8, and it is always paired with a label/shape, never colour-alone); `warning`
+> `#B9862E`→`#946A1F` (2.94→~4.5). **`accent` is for fills/rings only** — inline text **links use
+> `--color-accent-hover` (`#6B4BC4`, ~5.6) + underline**, never `--color-accent` at body size.
 
 ### 6.2 Dark — *lamplit near-black*
 ```css
 --color-canvas:         #0D0D0D;   --color-surface:        #161614;
 --color-surface-raised: #1E1E1B;   --color-surface-sunken: #100F0E;
 --color-hairline:       #2A2A27;
---color-text-primary:   #F5F5F2;   --color-text-secondary: #8A8A86;   --color-text-tertiary: #55554F;
+--color-text-primary:   #F5F5F2;   --color-text-secondary: #8A8A86;   --color-text-tertiary: #83837C;
 --color-accent:         #A88FE6;   --color-accent-hover:   #BBA6EE;   --color-accent-subtle: #221D33;
 --color-on-accent:      #16121F;
 --color-positive:       #6FBE9C;   --color-warning:        #D6A24E;   --color-danger:        #E06B63;
 --color-focus-ring:     #A88FE6;
 ```
+> **Dark correction:** `text-tertiary` `#55554F`→`#83837C` (was 2.4–2.6, now ≥4.5 on both canvas and
+> surface). Dark accent/positive/warning/danger already pass AA and are unchanged.
 
 **Usage laws:** one accent action per view (two is the ceiling). `--color-positive` is the *quiet
 private signal* — it marks Saved/kept content and successful save acknowledgement, **never** used
@@ -177,10 +184,12 @@ Kills the hardcoded media overlays the audit found (`rgba(255,255,255,.92)`, `#0
 ```css
 /* Scrim over imagery, so overlaid text is legible in both themes.
    Built from black so it reads on any photo, tuned by --alpha-scrim. */
---scrim-media:   color-mix(in srgb, #000 55%, transparent);  /* count/play overlays */
---scrim-caption: linear-gradient(to top, color-mix(in srgb,#000 70%,transparent), transparent 60%);
+--scrim-media:        color-mix(in srgb, #000 62%, transparent);  /* play/count overlays */
+--scrim-media-strong: color-mix(in srgb, #000 72%, transparent);  /* backing for SMALL on-media text (counts, +N) so #fff clears AA on a bright photo */
+--scrim-caption: linear-gradient(to top, color-mix(in srgb,#000 72%,transparent), transparent 60%);
 --on-media:      #FFFFFF;   /* text/icons on top of media, both themes */
---media-shadow:  0 1px 3px color-mix(in srgb, #000 40%, transparent); /* on-media text legibility */
+--media-shadow:  0 1px 3px color-mix(in srgb, #000 45%, transparent); /* on-media text legibility */
+--dot-presence:  8px;       /* the quiet presence/unread dot — --color-accent, never a count */
 
 /* Aspect ratios — was inline 3/2, 1/1 */
 --ratio-square:   1 / 1;    /* avatars, single photo tiles in a grid */
