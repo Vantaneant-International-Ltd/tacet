@@ -57,14 +57,44 @@ async function json(c: { req: { json: () => Promise<unknown> } }): Promise<Recor
   return b && typeof b === "object" ? (b as Record<string, unknown>) : {};
 }
 
-// ── Profile ──────────────────────────────────────────────────────────────────
-meRoutes.get("/profile", async (c) => c.json({ profile: await currentProfile(c) }));
+// ── Profile & workspace ──────────────────────────────────────────────────────
+meRoutes.get("/profile", async (c) => {
+  const profile = await currentProfile(c);
+  const workspace = await repo.getWorkspace(c.env.DB, profile.workspaceId);
+  return c.json({ profile, workspace });
+});
+
+function fieldsFrom(x: unknown): { name: string; value: string }[] | undefined {
+  if (!Array.isArray(x)) return undefined;
+  return x
+    .filter((f): f is Record<string, unknown> => !!f && typeof f === "object")
+    .map((f) => ({ name: str(f.name)?.trim() ?? "", value: str(f.value)?.trim() ?? "" }))
+    .filter((f) => f.name || f.value)
+    .slice(0, 8);
+}
 
 meRoutes.patch("/profile", async (c) => {
   const p = await currentProfile(c);
   const b = await json(c);
-  const updated = await repo.updateProfile(c.env.DB, p.id, { displayName: str(b.displayName), handle: str(b.handle), bio: str(b.bio) });
+  const updated = await repo.updateProfile(c.env.DB, p.id, {
+    displayName: str(b.displayName),
+    handle: str(b.handle)?.replace(/^@/, ""),
+    bio: str(b.bio),
+    website: str(b.website),
+    location: str(b.location),
+    avatarUrl: "avatarUrl" in b ? (str(b.avatarUrl) ?? "") : undefined,
+    bannerUrl: "bannerUrl" in b ? (str(b.bannerUrl) ?? "") : undefined,
+    fields: fieldsFrom(b.fields),
+  });
   return c.json({ profile: updated });
+});
+
+// The default workspace (rename allowed). One personal workspace per device for now.
+meRoutes.patch("/workspace", async (c) => {
+  const p = await currentProfile(c);
+  const name = str((await json(c)).name)?.trim();
+  if (!name) throw new HttpError(400, "a name is required");
+  return c.json({ workspace: await repo.renameWorkspace(c.env.DB, p.workspaceId, name) });
 });
 
 // ── Saved ────────────────────────────────────────────────────────────────────

@@ -1,11 +1,13 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { Avatar, Button, Chip, Card, SectionHeading, EmptyState, IconButton } from "../../design/primitives";
 import { Icon } from "../../design/icons";
 import type { IconName } from "../../design/icons";
 import { useTheme, setTheme } from "../../design/theme";
 import type { Theme } from "../../design/theme";
+import { navigate } from "../../router";
 import { api, useResource, useMeVersion, useSavedCount } from "../me";
-import type { Profile, CollectionSummary } from "../me";
+import type { Profile, Workspace, CollectionSummary, ProfileField } from "../me";
 import { SavedCard } from "../SavedCard";
 import { relativeTime } from "../openweb";
 import { useHint } from "../onboarding/hints";
@@ -69,33 +71,43 @@ function CollectionsNudge({ onGo }: { onGo: () => void }) {
   );
 }
 
-// ── Profile ────────────────────────────────────────────────────────────────────
+// ── Profile (your identity) ─────────────────────────────────────────────────────
+type Draft = { displayName: string; handle: string; bio: string; website: string; location: string; avatarUrl: string; bannerUrl: string; fields: ProfileField[] };
+
 function ProfileCard() {
-  const res = useResource<Profile>(() => api.getProfile(), []);
+  const res = useResource<{ profile: Profile; workspace: Workspace | null }>(() => api.getProfileAndWorkspace(), []);
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState<{ displayName: string; handle: string; bio: string }>({ displayName: "", handle: "", bio: "" });
+  const [draft, setDraft] = useState<Draft>({ displayName: "", handle: "", bio: "", website: "", location: "", avatarUrl: "", bannerUrl: "", fields: [] });
 
   if (res.status !== "ready") {
     return <Card raised className="t-profile"><p className="t-profile__handle">Your home</p></Card>;
   }
-  const p = res.data;
+  const p = res.data.profile;
+  const workspace = res.data.workspace;
   const name = p.displayName || "Your name";
 
   function begin() {
-    setDraft({ displayName: p.displayName, handle: p.handle, bio: p.bio });
+    setDraft({ displayName: p.displayName, handle: p.handle, bio: p.bio, website: p.website, location: p.location, avatarUrl: p.avatarUrl ?? "", bannerUrl: p.bannerUrl ?? "", fields: p.fields.length ? p.fields : [] });
     setEditing(true);
   }
   async function save() {
-    await api.updateProfile(draft);
+    await api.updateProfile({ ...draft, fields: draft.fields.filter((f) => f.name.trim() || f.value.trim()) });
     setEditing(false);
     res.reload();
   }
+  const setField = (i: number, patch: Partial<ProfileField>) => setDraft({ ...draft, fields: draft.fields.map((f, j) => (j === i ? { ...f, ...patch } : f)) });
 
   return (
     <Card raised className="t-profile">
-      <div className="t-profile__top">
-        <Avatar name={name} size={76} />
-        {!editing && <Button variant="secondary" size="sm" icon="settings" onClick={begin}>Edit profile</Button>}
+      {p.bannerUrl && <div className="t-profile__banner" style={{ backgroundImage: `url(${p.bannerUrl})` }} />}
+      <div className={"t-profile__top" + (p.bannerUrl ? " t-profile__top--banner" : "")}>
+        <Avatar name={name} src={p.avatarUrl} size={76} />
+        {!editing && (
+          <div className="t-profile__topactions">
+            <Button variant="ghost" size="sm" icon="me" onClick={() => navigate("/me/preview")}>View as public</Button>
+            <Button variant="secondary" size="sm" icon="settings" onClick={begin}>Edit</Button>
+          </div>
+        )}
       </div>
 
       {!editing ? (
@@ -104,23 +116,36 @@ function ProfileCard() {
           <p className="t-profile__handle t-mono">{p.handle ? `@${p.handle}` : "set a handle"}</p>
           <p className="t-profile__bio">{p.bio || "A calm home on the open social web."}</p>
           <div className="t-profile__chips">
+            {workspace && <Chip icon="me">{workspace.name} workspace</Chip>}
             <Chip icon="check">Local & private — lives only in Tacet</Chip>
           </div>
         </>
       ) : (
         <div className="t-profile__edit">
-          <label className="t-field">
-            <span className="t-field__label">Display name</span>
-            <input className="t-input t-input--block" value={draft.displayName} onChange={(e) => setDraft({ ...draft, displayName: e.target.value })} placeholder="Your name" />
-          </label>
-          <label className="t-field">
-            <span className="t-field__label">Preferred handle</span>
-            <input className="t-input t-input--block" value={draft.handle} onChange={(e) => setDraft({ ...draft, handle: e.target.value })} placeholder="you" autoCapitalize="none" />
-          </label>
-          <label className="t-field">
-            <span className="t-field__label">Bio</span>
-            <textarea className="t-input t-input--block" value={draft.bio} onChange={(e) => setDraft({ ...draft, bio: e.target.value })} rows={2} placeholder="A line about you" />
-          </label>
+          <Field label="Display name"><input className="t-input t-input--block" value={draft.displayName} onChange={(e) => setDraft({ ...draft, displayName: e.target.value })} placeholder="Your name" /></Field>
+          <Field label="Preferred handle" hint="Local for now — not yet a @you@tacet.social address.">
+            <input className="t-input t-input--block" value={draft.handle} onChange={(e) => setDraft({ ...draft, handle: e.target.value.replace(/^@/, "") })} placeholder="you" autoCapitalize="none" spellCheck={false} />
+          </Field>
+          <Field label="Bio"><textarea className="t-input t-input--block" value={draft.bio} onChange={(e) => setDraft({ ...draft, bio: e.target.value })} rows={2} placeholder="A line about you" /></Field>
+          <div className="t-profile__grid">
+            <Field label="Website"><input className="t-input t-input--block" value={draft.website} onChange={(e) => setDraft({ ...draft, website: e.target.value })} placeholder="https://…" autoCapitalize="none" spellCheck={false} /></Field>
+            <Field label="Location"><input className="t-input t-input--block" value={draft.location} onChange={(e) => setDraft({ ...draft, location: e.target.value })} placeholder="Where you are" /></Field>
+          </div>
+          <div className="t-profile__grid">
+            <Field label="Avatar URL"><input className="t-input t-input--block" value={draft.avatarUrl} onChange={(e) => setDraft({ ...draft, avatarUrl: e.target.value })} placeholder="https://… (optional)" autoCapitalize="none" spellCheck={false} /></Field>
+            <Field label="Banner URL"><input className="t-input t-input--block" value={draft.bannerUrl} onChange={(e) => setDraft({ ...draft, bannerUrl: e.target.value })} placeholder="https://… (optional)" autoCapitalize="none" spellCheck={false} /></Field>
+          </div>
+          <div className="t-field">
+            <span className="t-field__label">Links & fields</span>
+            {draft.fields.map((f, i) => (
+              <div className="t-fieldrow" key={i}>
+                <input className="t-input" value={f.name} onChange={(e) => setField(i, { name: e.target.value })} placeholder="Label (e.g. GitHub)" />
+                <input className="t-input" value={f.value} onChange={(e) => setField(i, { value: e.target.value })} placeholder="Value or URL" autoCapitalize="none" spellCheck={false} />
+                <button className="t-iconbtn" aria-label="Remove field" onClick={() => setDraft({ ...draft, fields: draft.fields.filter((_, j) => j !== i) })}><Icon name="close" size={16} /></button>
+              </div>
+            ))}
+            {draft.fields.length < 4 && <button className="t-thread__more" onClick={() => setDraft({ ...draft, fields: [...draft.fields, { name: "", value: "" }] })}>+ Add a field</button>}
+          </div>
           <div className="t-profile__editactions">
             <Button variant="ghost" size="sm" onClick={() => setEditing(false)}>Cancel</Button>
             <Button variant="primary" size="sm" onClick={save}>Save</Button>
@@ -128,6 +153,16 @@ function ProfileCard() {
         </div>
       )}
     </Card>
+  );
+}
+
+function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
+  return (
+    <label className="t-field">
+      <span className="t-field__label">{label}</span>
+      {children}
+      {hint && <span className="t-field__hint">{hint}</span>}
+    </label>
   );
 }
 

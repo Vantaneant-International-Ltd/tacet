@@ -5,7 +5,14 @@ import type { Moment } from "./openweb";
 // Save control reflects reality everywhere. The UI talks to these functions and hooks; it
 // never knows about D1, cookies, or SQL. (UI → this → server routes → persistence.)
 
-export interface Profile { id: string; displayName: string; handle: string; bio: string; avatarUrl: string | null; createdAt: string }
+export interface ProfileField { name: string; value: string }
+export interface Workspace { id: string; name: string; kind: "personal" | "business"; isDefault: boolean; createdAt: string }
+export interface Profile {
+  id: string; workspaceId: string; displayName: string; handle: string; bio: string;
+  avatarUrl: string | null; bannerUrl: string | null; website: string; location: string;
+  fields: ProfileField[]; createdAt: string;
+}
+export type ProfileEdit = Partial<Pick<Profile, "displayName" | "handle" | "bio" | "avatarUrl" | "bannerUrl" | "website" | "location" | "fields">>;
 export interface SavedMedia { url: string; kind: "image" | "video" | "other"; alt: string }
 export interface SavedCounts { reactions?: number; replies?: number; shares?: number }
 export interface SavedPost {
@@ -49,8 +56,10 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   getProfile: () => req<{ profile: Profile }>("/profile").then((r) => r.profile),
-  updateProfile: (edit: Partial<Pick<Profile, "displayName" | "handle" | "bio">>) =>
+  getProfileAndWorkspace: () => req<{ profile: Profile; workspace: Workspace | null }>("/profile"),
+  updateProfile: (edit: ProfileEdit) =>
     req<{ profile: Profile }>("/profile", { method: "PATCH", body: JSON.stringify(edit) }).then((r) => r.profile),
+  renameWorkspace: (name: string) => req<{ workspace: Workspace }>("/workspace", { method: "PATCH", body: JSON.stringify({ name }) }).then((r) => r.workspace),
   listSaved: (opts: { filter?: string; collection?: string } = {}) => {
     const q = new URLSearchParams();
     if (opts.filter) q.set("filter", opts.filter);

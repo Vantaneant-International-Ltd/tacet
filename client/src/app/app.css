@@ -282,6 +282,25 @@
 
 .t-post__title { font-size: var(--text-heading); font-weight: 500; margin: var(--space-4) 0 var(--space-2); letter-spacing: -0.01em; }
 .t-post__body { font-size: var(--text-body); line-height: 1.6; color: var(--color-text-primary); margin: var(--space-4) 0 0; }
+
+/* Text spillover fix — long URLs / unbreakable words must never overflow a card. Applied
+   wherever user/remote text renders (Today, Profiles, Conversations, Saved, Me). */
+.t-post__body,
+.t-post__reply p,
+.t-identity__name,
+.t-identity__meta,
+.t-personrow__bio,
+.t-phead__bio,
+.t-phead__handle,
+.t-about__bio,
+.t-about__value,
+.t-convorow__name,
+.t-profile__bio,
+.t-savednote p {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.t-identity, .t-post__author, .t-personrow__body, .t-personrow__open, .t-convorow__body { min-width: 0; }
 .t-post__read { margin-top: var(--space-4); }
 
 .t-media {
@@ -552,9 +571,26 @@ video.t-media-item { cursor: default; }
 .t-tabs--scroll::-webkit-scrollbar { display: none; }
 .t-tabs--scroll .t-tab-pill { white-space: nowrap; flex: none; }
 
-/* Profile edit */
+/* Profile edit + identity */
+.t-profile { position: relative; }
+.t-profile__banner { height: 6.5rem; margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-4); border-radius: var(--radius-lg) var(--radius-lg) 0 0; background-size: cover; background-position: center; background-color: var(--color-surface-sunken); }
+.t-profile__top--banner { margin-top: -3rem; }
+.t-profile__top--banner .t-avatar { box-shadow: 0 0 0 3px var(--color-surface-raised); }
+.t-profile__topactions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 .t-profile__edit { display: flex; flex-direction: column; gap: var(--space-4); }
 .t-profile__editactions { display: flex; justify-content: flex-end; gap: var(--space-2); }
+.t-profile__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+@media (max-width: 560px) { .t-profile__grid { grid-template-columns: 1fr; } }
+.t-field__hint { font-size: var(--text-micro); color: var(--color-text-tertiary); }
+.t-fieldrow { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-2); }
+.t-fieldrow .t-input { flex: 1; min-width: 0; }
+.t-fieldrow .t-iconbtn { width: 36px; height: 36px; flex: none; }
+
+/* Public preview extras */
+.t-phead__local { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-meta); color: var(--color-text-tertiary); }
+.t-phead__local > svg { color: var(--color-positive); }
+.t-preview-cta { display: flex; justify-content: center; margin-top: var(--space-5); }
+.t-about__empty { color: var(--color-text-tertiary); font-size: var(--text-body-sm); }
 
 /* Saved card extras */
 .t-saved__pin { margin-left: auto; color: var(--color-accent); display: inline-flex; }

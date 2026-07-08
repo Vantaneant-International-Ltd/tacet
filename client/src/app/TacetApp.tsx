@@ -7,6 +7,7 @@ import { Discover } from "./screens/Discover";
 import { Conversations } from "./screens/Conversations";
 import { Me } from "./screens/Me";
 import { Profile } from "./screens/Profile";
+import { PublicPreview } from "./screens/PublicPreview";
 import { Conversation } from "./screens/Conversation";
 import { FirstRun } from "./onboarding/FirstRun";
 import { firstRunDone } from "./onboarding/hints";
@@ -21,6 +22,7 @@ function screenFor(path: string) {
   if (path.startsWith("/people")) return <People />;
   if (path.startsWith("/discover")) return <Discover />;
   if (path.startsWith("/conversations")) return <Conversations />;
+  if (path.startsWith("/me/preview")) return <PublicPreview />;
   if (path.startsWith("/me")) return <Me />;
   return <Today />;
 }

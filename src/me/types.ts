@@ -2,12 +2,36 @@
 // nothing about SQL, D1, columns, or the open-web adapter. The persistence layer maps
 // rows to these; routes return these; the UI renders these.
 
+// A workspace — an owned identity space (personal now; business/project later). One
+// default per device for this milestone. Its identity is the Profile below.
+export interface Workspace {
+  id: string;
+  name: string;
+  kind: "personal" | "business";
+  isDefault: boolean;
+  createdAt: string;
+}
+
+// A profile field / link on the local identity (mirrors a remote profile's metadata row).
+export interface ProfileField {
+  name: string;
+  value: string;
+}
+
+// The user's local identity inside Tacet. Local only — a local handle is NOT a federation
+// handle, and no @user@tacet.social is claimed. Public-facing fields mirror what a remote
+// profile exposes so the same UI can preview it.
 export interface Profile {
   id: string;
+  workspaceId: string;
   displayName: string;
   handle: string; // preferred local handle (not a federation identity)
   bio: string;
   avatarUrl: string | null;
+  bannerUrl: string | null;
+  website: string;
+  location: string;
+  fields: ProfileField[];
   createdAt: string;
 }
 
@@ -82,6 +106,6 @@ export interface PostSnapshot {
   counts?: SavedCounts;
 }
 
-export type ProfileEdit = Partial<Pick<Profile, "displayName" | "handle" | "bio">>;
+export type ProfileEdit = Partial<Pick<Profile, "displayName" | "handle" | "bio" | "avatarUrl" | "bannerUrl" | "website" | "location" | "fields">>;
 export type SavedEdit = Partial<{ note: string | null; pinned: boolean; readLater: boolean }>;
 export type SavedFilter = "all" | "pinned" | "read_later" | "notes";

@@ -1,6 +1,8 @@
 import { ulid } from "../lib/ulid";
 import type {
   Profile,
+  ProfileField,
+  Workspace,
   SavedPost,
   SavedMedia,
   CollectionSummary,
@@ -15,53 +17,103 @@ import type {
 // D1Database and returns domain objects (src/me/types.ts) — never rows. Routes and the UI
 // never see a column name. This is the UI → Domain → Persistence → Storage boundary.
 
+// ── Workspaces ───────────────────────────────────────────────────────────────
+interface WorkspaceRow {
+  id: string;
+  name: string;
+  kind: string;
+  is_default: number;
+  created_at: string;
+}
+function toWorkspace(r: WorkspaceRow): Workspace {
+  return { id: r.id, name: r.name, kind: r.kind === "business" ? "business" : "personal", isDefault: r.is_default === 1, createdAt: r.created_at };
+}
+
+export async function getWorkspace(db: D1Database, id: string): Promise<Workspace | null> {
+  const r = await db.prepare("SELECT id, name, kind, is_default, created_at FROM me_workspaces WHERE id = ?").bind(id).first<WorkspaceRow>();
+  return r ? toWorkspace(r) : null;
+}
+
+export async function renameWorkspace(db: D1Database, id: string, name: string): Promise<Workspace | null> {
+  await db.prepare("UPDATE me_workspaces SET name = ? WHERE id = ?").bind(name.trim(), id).run();
+  return getWorkspace(db, id);
+}
+
 // ── Profiles ─────────────────────────────────────────────────────────────────
 interface ProfileRow {
   id: string;
+  workspace_id: string | null;
   display_name: string;
   handle: string;
   bio: string;
-  avatar_key: string | null;
+  avatar_url: string | null;
+  banner_url: string | null;
+  website: string | null;
+  location: string | null;
+  fields_json: string | null;
   created_at: string;
+}
+function parseFields(json: string | null): ProfileField[] {
+  if (!json) return [];
+  try {
+    const arr = JSON.parse(json);
+    return Array.isArray(arr) ? arr.filter((f) => f && typeof f.name === "string").map((f) => ({ name: String(f.name), value: String(f.value ?? "") })) : [];
+  } catch {
+    return [];
+  }
 }
 function toProfile(r: ProfileRow): Profile {
   return {
     id: r.id,
+    workspaceId: r.workspace_id ?? r.id,
     displayName: r.display_name,
     handle: r.handle,
     bio: r.bio,
-    avatarUrl: null, // avatar_key reserved for a future R2-backed avatar
+    avatarUrl: r.avatar_url ?? null,
+    bannerUrl: r.banner_url ?? null,
+    website: r.website ?? "",
+    location: r.location ?? "",
+    fields: parseFields(r.fields_json),
     createdAt: r.created_at,
   };
 }
 
+const PROFILE_COLS = "id, workspace_id, display_name, handle, bio, avatar_url, banner_url, website, location, fields_json, created_at";
+
 export async function getProfileRow(db: D1Database, id: string): Promise<Profile | null> {
-  const r = await db
-    .prepare("SELECT id, display_name, handle, bio, avatar_key, created_at FROM me_profiles WHERE id = ?")
-    .bind(id)
-    .first<ProfileRow>();
+  const r = await db.prepare(`SELECT ${PROFILE_COLS} FROM me_profiles WHERE id = ?`).bind(id).first<ProfileRow>();
   return r ? toProfile(r) : null;
 }
 
+// Create a profile AND its owning default workspace (1:1). New devices get both.
 export async function createProfile(db: D1Database, id: string, now: string): Promise<Profile> {
+  await db.prepare("INSERT INTO me_workspaces (id, name, kind, is_default, created_at) VALUES (?, 'Personal', 'personal', 1, ?)").bind(id, now).run();
   await db
-    .prepare("INSERT INTO me_profiles (id, display_name, handle, bio, avatar_key, created_at, updated_at) VALUES (?, '', '', '', NULL, ?, ?)")
-    .bind(id, now, now)
+    .prepare("INSERT INTO me_profiles (id, workspace_id, display_name, handle, bio, avatar_key, avatar_url, banner_url, website, location, fields_json, created_at, updated_at) VALUES (?, ?, '', '', '', NULL, NULL, NULL, NULL, NULL, '[]', ?, ?)")
+    .bind(id, id, now, now)
     .run();
-  return { id, displayName: "", handle: "", bio: "", avatarUrl: null, createdAt: now };
+  return { id, workspaceId: id, displayName: "", handle: "", bio: "", avatarUrl: null, bannerUrl: null, website: "", location: "", fields: [], createdAt: now };
 }
 
 export async function updateProfile(db: D1Database, id: string, edit: ProfileEdit): Promise<Profile | null> {
   const cur = await getProfileRow(db, id);
   if (!cur) return null;
-  const displayName = edit.displayName ?? cur.displayName;
-  const handle = edit.handle ?? cur.handle;
-  const bio = edit.bio ?? cur.bio;
+  const next: Profile = {
+    ...cur,
+    displayName: edit.displayName ?? cur.displayName,
+    handle: edit.handle ?? cur.handle,
+    bio: edit.bio ?? cur.bio,
+    avatarUrl: edit.avatarUrl === undefined ? cur.avatarUrl : edit.avatarUrl || null,
+    bannerUrl: edit.bannerUrl === undefined ? cur.bannerUrl : edit.bannerUrl || null,
+    website: edit.website ?? cur.website,
+    location: edit.location ?? cur.location,
+    fields: edit.fields ?? cur.fields,
+  };
   await db
-    .prepare("UPDATE me_profiles SET display_name = ?, handle = ?, bio = ?, updated_at = ? WHERE id = ?")
-    .bind(displayName, handle, bio, new Date().toISOString(), id)
+    .prepare("UPDATE me_profiles SET display_name = ?, handle = ?, bio = ?, avatar_url = ?, banner_url = ?, website = ?, location = ?, fields_json = ?, updated_at = ? WHERE id = ?")
+    .bind(next.displayName, next.handle, next.bio, next.avatarUrl, next.bannerUrl, next.website, next.location, JSON.stringify(next.fields), new Date().toISOString(), id)
     .run();
-  return { ...cur, displayName, handle, bio };
+  return next;
 }
 
 // ── Saved ────────────────────────────────────────────────────────────────────

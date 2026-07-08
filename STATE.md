@@ -12,6 +12,21 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Identity & Workspace foundations.** The local Me is now a real Tacet identity, owned by
+  a **workspace** (an owned identity space; one default "Personal" per device now,
+  business/project later). `migration 0013` adds `me_workspaces` and expands `me_profiles`
+  (banner/website/location/fields + `workspace_id`); the workspace id **equals** the profile
+  id (1:1) so all existing content (saved/collections/notes/reading-later/pinned/recently-
+  viewed) is workspace-scoped with **zero re-keying** — nothing broke. Local identity fields:
+  display name, preferred handle (local, **not** a federation handle — no `@you@tacet.social`
+  claimed), bio, avatar/banner (URL for now), website, location, profile fields/links,
+  timestamps. **Public vs private split:** Me is the private home (saved/notes/history);
+  a new **Public Profile Preview** (`/me/preview`, "View as public") renders the identity
+  through the **same** shared `ProfileView` used for remote people — public fields only, no
+  saved/notes/history. Strict UI→Domain→Persistence layering; **no** write/federation path.
+  Also fixed **text spillover** (long URLs/words now wrap across Today/Profiles/Conversations/
+  Saved/Me). 75 tests pass (workspace default, full-identity round-trip, per-device isolation).
+
 - **Profiles 2.0.** Tacet profiles now present a person's full *public* presence — banner,
   avatar, name, handle, bio, **website + metadata fields**, **location**, **joined date**,
   and **followers / following / posts** counts — in Tacet's own language, with Posts /

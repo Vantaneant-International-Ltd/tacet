@@ -32,6 +32,49 @@ describe("Me — profile", () => {
     const p2 = (await upd.json()) as any;
     expect(p2.profile).toMatchObject({ displayName: "Ren", handle: "ren", bio: "hi" });
   });
+
+  it("belongs to a default workspace and round-trips the full identity", async () => {
+    const cookie = await newMe();
+    const me = (await (await req("/api/me/profile", { cookie })).json()) as any;
+    // Every profile belongs to a workspace (id == profile id, 1:1).
+    expect(me.workspace).toBeTruthy();
+    expect(me.workspace.isDefault).toBe(true);
+    expect(me.workspace.kind).toBe("personal");
+    expect(me.profile.workspaceId).toBe(me.profile.id);
+    expect(me.workspace.id).toBe(me.profile.id);
+
+    const upd = await req("/api/me/profile", {
+      method: "PATCH",
+      cookie,
+      body: {
+        displayName: "Renato",
+        handle: "@renato",
+        website: "https://vnta.xyz",
+        location: "Dublin",
+        avatarUrl: "https://cdn/a.png",
+        bannerUrl: "https://cdn/b.png",
+        fields: [{ name: "GitHub", value: "https://github.com/x" }, { name: "  ", value: "  " }],
+      },
+    });
+    const p = ((await upd.json()) as any).profile;
+    expect(p).toMatchObject({ displayName: "Renato", handle: "renato", website: "https://vnta.xyz", location: "Dublin", avatarUrl: "https://cdn/a.png", bannerUrl: "https://cdn/b.png" });
+    expect(p.fields).toEqual([{ name: "GitHub", value: "https://github.com/x" }]); // blank field dropped
+
+    // Rename the workspace.
+    const w = ((await (await req("/api/me/workspace", { method: "PATCH", cookie, body: { name: "VNTA" } })).json()) as any).workspace;
+    expect(w.name).toBe("VNTA");
+  });
+
+  it("keeps profile and saved data isolated per device (workspace scope)", async () => {
+    const a = await newMe();
+    const b = await newMe();
+    await req("/api/me/profile", { method: "PATCH", cookie: a, body: { displayName: "A" } });
+    await req("/api/me/saved", { method: "POST", cookie: a, body: post });
+    const bProfile = (await (await req("/api/me/profile", { cookie: b })).json()) as any;
+    const bSaved = (await (await req("/api/me/saved", { cookie: b })).json()) as any;
+    expect(bProfile.profile.displayName).toBe(""); // b is a separate workspace
+    expect(bSaved.saved.length).toBe(0);
+  });
 });
 
 describe("Me — saved", () => {
