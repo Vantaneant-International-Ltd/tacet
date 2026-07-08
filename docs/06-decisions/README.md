@@ -31,6 +31,7 @@ builds on the ones before it: identity → home → content → publishing → p
 | [ADR-012](./ADR-012-the-context-column-law.md) | The Context Column Law | The desktop context column helps the current task, or is empty — never a dashboard |
 | [ADR-013](./ADR-013-three-column-desktop-canvas.md) | Three-column desktop canvas | Rail · fixed-measure reading feed · context; width becomes context, not longer lines |
 | [ADR-014](./ADR-014-design-system-before-screens.md) | Design system before screens | The system is defined and reviewed before any screen is polished |
+| [ADR-015](./ADR-015-federation-citizenship.md) | Federation citizenship | Tacet gives back through Boost + Reply, never a like economy; write-actions are honestly gated |
 
 ## Format
 

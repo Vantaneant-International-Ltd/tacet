@@ -166,9 +166,9 @@ PHONE (<768)                                   DESKTOP (≥900)
 │  │   Writes slow food.   │  │                 │  │      [ Following ]   │ │   [ Follow ] │ │
 │  │        [ Follow ]     │  │  ‹✓› following  │  └──────────────────────┘ └──────────────┘ │
 │  └──────────────────────┘  │  swap state     │                                             │
-│                            │                 │   Bringing 2 so far. Add more, or —          │  running count,
-│  Bringing 2 so far.        │  --text-body-sm │                                             │  --text-body-sm
-│                            │  secondary      │             [ Take me home ]                 │  Button primary lg,
+│                            │                 │   Ada and Jae are coming with you. Add more, │  faces coming,
+│  Ada and Jae are coming    │  --text-body-sm │   or —                                       │  no tally --text-body-sm
+│  with you.                 │  secondary      │             [ Take me home ]                 │  Button primary lg,
 │    [ Take me home ]        │  Button primary │                                             │  enabled from 1st follow
 │                            │  size lg, full  └───────────────────────────────────────────┘
 │   ● ● ●○                   │  step 3 of 4
@@ -195,7 +195,7 @@ PHONE (<768)                                   DESKTOP (≥900)
   no toast).
 - **A person's home is a human place** ("Lisbon", "Essays, weekly") — never "server" or "instance".
 - **`[ Take me home ]`** activates on the first follow, so Today lands populated (≤ 4 steps). Skipping
-  is allowed but the copy gently rewards bringing at least one person.
+  is allowed but the copy gently encourages bringing at least one person.
 
 ---
 

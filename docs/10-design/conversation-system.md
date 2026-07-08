@@ -201,3 +201,26 @@ If a count would make you feel watched or behind, it does not ship.
 
 *The test (from [conversations.md](../01-product/conversations.md)): if opening this surface lowers
 your shoulders instead of raising them, it's doing its job.*
+
+---
+
+## Content notes in threads
+
+A thread turn that carries a **content note** renders **collapsed** by default: a calm summary line
+in `--text-body-sm`, `--color-text-secondary`, with a single **"Show"** action to reveal the turn
+beneath it. This is the same pattern as [media-system.md](./media-system.md)
+"Content notes (reading)" — carried forward into correspondence so a difficult reply never ambushes
+the reader. The turn's attribution line (face, name, timestamp) still shows; only the body waits.
+
+- The word is always the calm, human **"content note"** — never "CW", "trigger", "spoiler", or
+  "sensitive content warning". Human words only (L9).
+- Revealing is a quiet, deliberate act by the reader — never automatic, never on scroll. The turn
+  expands in place over `--dur-2` (motion.md); nothing jumps.
+- **Sensitive media inside a thread** uses the same **blur + reveal** treatment as everywhere else:
+  editorial radius, one `--scrim-media`, blur-up on reveal (L5). The note gates the words; the blur
+  gates the image; both answer to the reader.
+- A revealed turn can settle back to collapsed if the reader chooses — the thread never punishes you
+  for having looked, and never keeps count of what you opened.
+
+The point is consent, quietly: the thread tells you what's coming and lets you decide when to meet
+it. No spectacle, no "click to unlock," no engagement furniture (Principle 2).

@@ -227,3 +227,47 @@ keeps Tacet honest.
 - Turn the context column into a dashboard or a scoreboard (L7).
 - Require a logout to change workspace, or make leaving hard.
 - Lean on borders for hierarchy where weight, colour, and whitespace will do (L1).
+
+---
+
+## 9. Trust: verified links & workspace kind
+
+The pre-Figma review found one honest gap: a person arriving from LinkedIn can't yet tell that an
+official company account is *really* that company, and a business has no calm way to say *this is
+us*. The answer is a **trust surface that is factual, not a vanity tier** — it fits the honesty
+doctrine (L5) exactly because it proves a fact rather than awards a status.
+
+### 9.1 Verified links (`rel="me"`)
+
+A person or a workspace can **prove they own** a domain or link. When a link is confirmed, it renders
+with a **quiet "confirmed" affordance** — a small `check` glyph sitting on the link in
+`--color-positive` (the same private/positive signal, not a hue-only cue), with a human tooltip:
+*"confirmed theirs"*. Nothing louder.
+
+- **Never** a blue-check status badge, a "verified" tier, or a rank. A confirmed link states one
+  fact — *they proved they own this* — and nothing about worth or importance.
+- On a **business workspace**, the confirmed domain reads as a plain fact in the link / About fact
+  row: *"confirmed vnta.xyz"* (`--text-meta`, link text in `--color-accent`, the `check` in
+  `--color-positive`). An *unconfirmed* link is simply a link — no scolding, no red mark.
+- The affordance is legible without colour: the `check` glyph and the tooltip word carry the meaning
+  (accessibility is the floor, L10).
+
+### 9.2 Workspace kind cue
+
+A quiet, non-vanity indicator distinguishes a **workspace / business** account from a person — this
+is **orientation, not status**. It is a subtle *"Workspace"* label near the name (`--text-micro`,
+`--color-text-secondary`) and/or a **squared-avatar treatment** (a business face steps from
+`--radius-full` toward `--radius-md`, so a company reads as a company at a glance). It never implies
+a business is more important than a person; it only helps you place who you're looking at.
+
+Pair the kind cue with §9.1 verification so an **official company account is legible both in the
+feed and on its own profile**: *VNTA* shows the "Workspace" cue **and** its *"confirmed vnta.xyz"*
+link, and the two together are how you *know*.
+
+### 9.3 Anti-impersonation
+
+Handles are **unique per home** (`@vnta@tacet.social` is one place, one owner), and the **confirmed
+link is how you know it's really them** — not a badge you're asked to trust on faith. No protocol
+terms are ever surfaced (L9): you see a place name and a confirmed fact, never "rel=me",
+"WebFinger", or "verification API". The plumbing stays out of sight, exactly like the home place
+(§5).

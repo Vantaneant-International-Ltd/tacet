@@ -149,3 +149,47 @@ Designers and engineers run this on **every** screen before it is called done.
 
 If any row fails, the screen is not finished. An interface that respects the user respects
 *every* user — that is the standard of care, applied to bodies and abilities.
+
+---
+
+## Content notes, alt text, and the presence dot — the AT contract
+
+Three of Tacet's calmest surfaces — the content note, the image, and the presence dot — carry
+meaning that a sighted, pointer-using person reads at a glance. This section fixes the **exact
+assistive-technology contract** so that same meaning reaches a screen-reader, switch, or
+keyboard user with nothing lost. Calm is also accessible; these are the guarantees that make it so.
+
+**1. Content notes are a real, labelled button.** The **"Show"** control that reveals a
+content-noted turn (see [conversation-system.md](./conversation-system.md) and
+[media-system.md](./media-system.md)) is a genuine `<button>`, never a `div` or a bare tap target.
+Its accessible name states what it does and what it gates — e.g. *"Show turn with content note:
+[summary]"* — and its expanded state is exposed with `aria-expanded`. Revealing the turn **does not
+trap focus**: focus stays with the button (or moves predictably into the revealed body), the reader
+can `Esc` or tab straight out, and re-collapsing returns focus cleanly. Blurred sensitive media in a
+thread reveals the same way — a labelled control, no focus trap.
+
+**2. Every image's alt text is its accessible name — mandatory.** Content images and avatars carry
+**meaningful alt** (who the person is, what the media shows); media is editorial (L5) and its meaning
+must reach AT. This is not optional and not auto-filled with a filename. **Decorative** imagery
+(background textures, the AtmosphereBackground, purely aesthetic flourishes) is **hidden** from
+assistive tech (`alt=""` / `aria-hidden`) so a screen-reader user is never read noise. Meaning lives
+in real text, never baked into pixels behind `--scrim-media` / `--on-media`.
+
+**3. The presence **·dot·** speaks.** The quiet dot beside Conversations
+(`--dot-presence`, see [navigation.md](./navigation.md) — the Presence Signal Law) is meaning by a
+dot's *presence*, not its hue or its place. For AT it exposes a **visually-hidden accessible name**,
+*"new correspondence"*, so it is never a silent glyph. Its **arrival is announced once** through an
+`aria-live="polite"` region — informative, never spammy; the dot appearing is a real change worth a
+single calm word, and its disappearance is not announced at all. Meaning is **never carried by
+colour or position alone**: the accessible name and the live announcement carry it in full even with
+no colour perceived.
+
+**4. Skip-link first, landmarks correct.** The **skip-to-content link is the first focusable
+element** on every screen, jumping past the rail / top bar to `main`, and it shows the visible
+`--color-focus-ring` when reached. Landmarks are correct and complete — `banner` (top bar),
+`navigation` (rail / tab bar), `main` (the reading column), `complementary` (the context column) —
+so a person can move by region and by heading, and the presence live region sits where it will be
+heard without hijacking the reading order.
+
+None of this is extra polish; it is the floor (L10). If the "Show" button isn't labelled, an image
+lacks alt, or the dot is silent, the screen is not finished.

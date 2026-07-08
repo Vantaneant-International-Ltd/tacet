@@ -28,7 +28,7 @@ never engagement-ranked. Search is an affordance, not a destination.
 │ Keep the people you came for   │  subtitle · --text-body-sm · --color-text-secondary
 │ close.                        │
 │                               │
-│ ( All )( Close )( Brands )(AI) │  SegmentedControl · neutral, NEVER accent (L3)
+│ (All)(Close)(Brands)(Creators)│  SegmentedControl · neutral, NEVER accent (L3)
 │  └ thumb on "All"             │  thumb slides --dur-2; you shape closeness, not an algorithm
 │                               │
 │ ┌───────────────────────────┐ │  Person Card · Row · padding --space-4 (compact)
@@ -69,7 +69,7 @@ quick card + *people you both know***, or it is empty. It is never a dashboard o
 │ tacet  │  People                       │  Context             │  context 320px
 │        │  Keep them close.             │                      │
 │ ◈ Today│                               │  ── Focused person ──│  ← the row under focus
-│▸People │ ( All )( Close )( Brands )(AI) │  ┌────────────────┐  │
+│▸People │ (All)(Close)(Brands)(Creators) │  ┌────────────────┐  │
 │ Discvr │                               │  │   ▓▓▓ banner   │  │  quick card = mini
 │ Convos │ ┌───────────────────────────┐ │  │  ◯ Ana Solheim │  │  Person Card (Full)
 │ Me     │ │◯ Ana Solheim   (Following✓)│▸│  │  @ana@social..  │  │  ◯ lg 64
@@ -237,7 +237,7 @@ Following is reversible; unfollowing is quiet and carries no drama.
   [D] confirmation micro-state              [E] they're in People now
   ┌────────────────────────────┐            ┌───────────────────────────────┐
   │ ▓ banner ▓                 │            │ People                        │
-  │  ◯ Ana Solheim             │            │ ( All )( Close )( Brands )(AI) │
+  │  ◯ Ana Solheim             │            │ (All)(Close)(Brands)(Creators) │
   │  [  Following ✓  ]         │  settles → │ ┌───────────────────────────┐ │
   │                            │            │ │ ◯ Ana Solheim (Following✓)│ │  ← newly joined,
   │  ┌──────────────────────┐  │            │ │   Lives at social.coop    │ │    at the top

@@ -41,7 +41,7 @@ visibly distinct. Private items appear as finished things labelled `( Private )`
 │  └───────────────────────────┘│
 │  ┌───────────────────────────┐│  owned Photo, PRIVATE — complete work, NOT a draft
 │  │ ◯ Renato · 5d  ( Private )││  Badge neutral "Private" = home-only, dignified, not lesser
-│  │ ▓▓▓▓▓ --ratio-4-3         ││  shown in full, exactly as finished
+│  │ ▓▓▓▓▓ --ratio-photo       ││  shown in full, exactly as finished
 │  │ Morning fog over the bay. ││
 │  └───────────────────────────┘│
 │                               │
@@ -121,7 +121,7 @@ is the quiet positive/`spark` signal (`--color-positive`), never a number.
 │  └───────────────────────────┘│
 │  ┌───────────────────────────┐│
 │  │ ◯ Devi · lives at indieweb…││
-│  │ ▓▓▓▓ --ratio-16-9         ││  media honest ratio, --radius-md
+│  │ ▓▓▓▓ --ratio-video        ││  media honest ratio, --radius-md
 │  │  ‹spark saved› ‹collect›  ‹⋯›││
 │  └───────────────────────────┘│
 ├───────────────────────────────┤
@@ -181,7 +181,7 @@ is the quiet positive/`spark` signal (`--color-positive`), never a number.
 │                               │
 │  ┌───────────────────────────┐│  kept Moment cards — author + home place preserved
 │  │ ◯ Ana · social.coop       ││
-│  │ ▓▓▓▓ --ratio-4-3          ││
+│  │ ▓▓▓▓ --ratio-photo        ││
 │  │ ‹spark saved› ‹remove›    ││  "remove" = remove FROM this collection (still saved)
 │  └───────────────────────────┘│
 │  ┌───────────────────────────┐│

@@ -11,7 +11,7 @@
 > separate deliberate act. Creation ≠ distribution. Private work is *complete*, never a draft.
 > The words **Entry · post · server · federation · protocol · draft · degrade** never appear
 > on any surface below — only human kinds (Thought/Photo/Article/Video/Event) and human verbs
-> (Save · Share · Update · Retract · Delete).
+> (Keep · Share · Update · Retract · Delete).
 
 ---
 
@@ -63,13 +63,13 @@ MOBILE — sheet rising from bottom edge          DESKTOP — centred modal (≤
 
 The whole surface is one generous text area (`--text-body`/`--leading-relaxed` — the reading
 voice). Shared chassis: close · kind title · primary action (header); author row; distribution
-footer. Primary action reads **Save** while Private — never "Post".
+footer. Primary action reads **Keep** while Private — never "Post".
 
 ```
 ┌───────────────────────────────────────────────┐
-│ ‹✕›   Thought                     [ Save ]     │ ‹header: close IconButton (aria "Close
+│ ‹✕›   Thought                     [ Keep ]     │ ‹header: close IconButton (aria "Close
 │                                   ‹secondary   │  composer") · kind name --text-heading ·
-├───────────────────────────────────────────────┤  primary = Save while Private (§7)
+├───────────────────────────────────────────────┤  primary = Keep while Private (§7)
 │ ◯ Renato  ‹⌄›                                  │ ‹author row = workspace switcher (§7);
 ├───────────────────────────────────────────────┤  avatar + name + chevron. Calm switch.
 │                                               │
@@ -101,7 +101,7 @@ tall image may use `--ratio-portrait` 4/5; a set tiles at `--ratio-square`). Blu
 
 ```
 ┌───────────────────────────────────────────────┐
-│ ‹✕›   Photo                       [ Save ]     │
+│ ‹✕›   Photo                       [ Keep ]     │
 ├───────────────────────────────────────────────┤
 │ ◯ Renato  ‹⌄›                                  │ ‹author row (workspace)
 ├───────────────────────────────────────────────┤
@@ -139,7 +139,7 @@ to a comfortable height.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ ‹✕›   Article                                   [ Save ]      │ ‹chassis header
+│ ‹✕›   Article                                   [ Keep ]      │ ‹chassis header
 ├──────────────────────────────────────────────────────────────┤
 │ ◯ Renato  ‹⌄›                                                 │ ‹author row (workspace)
 ├──────────────────────────────────────────────────────────────┤
@@ -174,7 +174,7 @@ affordance stands in until asked (media-system §7).
 
 ```
 ┌───────────────────────────────────────────────┐
-│ ‹✕›   Video                       [ Save ]     │
+│ ‹✕›   Video                       [ Keep ]     │
 ├───────────────────────────────────────────────┤
 │ ◯ Renato  ‹⌄›                                  │ ‹author row (workspace)
 ├───────────────────────────────────────────────┤
@@ -213,7 +213,7 @@ spaced at `--space-5`, hierarchy from type and whitespace, never a cramped form 
 
 ```
 ┌───────────────────────────────────────────────┐
-│ ‹✕›   Event                       [ Save ]     │
+│ ‹✕›   Event                       [ Keep ]     │
 ├───────────────────────────────────────────────┤
 │ ◯ Renato  ‹⌄›                                  │ ‹author row (workspace)
 ├───────────────────────────────────────────────┤
@@ -249,7 +249,7 @@ spaced at `--space-5`, hierarchy from type and whitespace, never a cramped form 
 There is **no** "Publish" toggle and **no** "Draft" switch — only **distribution state**, a calm
 `SegmentedControl` (neutral track, never `--color-accent`; word + glyph, never hue alone). Moving
 from Private toward Shared is the moment creation becomes distribution — a **deliberate act**, so
-the primary button *changes verb* (**Save** → **Share**). Audience + destinations appear **only**
+the primary button *changes verb* (**Keep** → **Share**). Audience + destinations appear **only**
 once Shared is chosen (progressive disclosure — a private note never sees them).
 
 ```
@@ -269,10 +269,10 @@ STATE A — Private (default, resting)         STATE B — Shared (reveals audie
 │  ‹--color-positive quiet mark. This   │   │ │ The open web                        ‹⌄›   │ │  selector. Never a
 │   is complete work, not a draft.›     │   │ └───────────────────────────────────────────┘ │  growth lever, never
 ├───────────────────────────────────────┤   │  ‹never nudged wider›                         │  nudged wider.
-│               [ Save ]                │   │                                               │
-│  ‹primary VERB = Save while Private›  │   │ Where it goes                                 │ ‹DESTINATIONS —
+│               [ Keep ]                │   │                                               │
+│  ‹primary VERB = Keep while Private›  │   │ Where it goes                                 │ ‹DESTINATIONS —
 └───────────────────────────────────────┘   │ ┌───────────────────────────────────────────┐ │  human "wheres",
-   Save/pin acknowledgement (§ micro):       │ │ ‹✓ The open social web                     │ │  NEVER a protocol.
+   Keep/pin acknowledgement (§ micro):       │ │ ‹✓ The open social web                     │ │  NEVER a protocol.
    glyph fills toward --color-positive,       │ │ ‹✓ Your Mastodon home                      │ │  Word + check.
    the ‹✦ spark› settles once — confirmation, │ └───────────────────────────────────────────┘ │
    not celebration; --dur-2 / --ease-out.     │ ( ‹🌐› Shares to the open web )                │ ‹Badge tone=open —
@@ -282,7 +282,7 @@ STATE A — Private (default, resting)         STATE B — Shared (reveals audie
                                              │ links back.  ‹--text-body-sm, honest›          │  representation,
                                              ├───────────────────────────────────────────────┤  never "degrade" /
                                              │              [ Share ]                        │  "lost".
-                                             │  ‹primary VERB changes: Save → Share›         │
+                                             │  ‹primary VERB changes: Keep → Share›         │
                                              └───────────────────────────────────────────────┘  ‹Scheduled: first-
                                                                                                  class option, adds
                                                                                                  a when-picker; not
@@ -344,7 +344,7 @@ DELETE confirm (danger — a Modal §10)
 
 ---
 
-## Micro-interaction — Save / pin acknowledgement (applies to §2–7)
+## Micro-interaction — Keep / pin acknowledgement (applies to §2–7)
 
 When work is saved to Home the glyph fills toward `--color-positive` and the `spark` (`✦`) settles
 in with one small scale-and-fade — **confirmation, not celebration** (`--dur-2`/`--ease-out`; no

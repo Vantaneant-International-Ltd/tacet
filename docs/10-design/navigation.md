@@ -149,3 +149,26 @@ almost always has a home already. A calm map of five places beats a crowded shel
   motion.
 - Every pillar, the compose action, and every secondary surface is fully keyboard-reachable
   with a visible focus ring.
+
+---
+
+## 9. Tab bar & FAB geometry (resolved)
+
+The mobile bottom bar and the compose FAB have one settled geometry; this closes it.
+
+- **The tab bar holds the five pillars only** — Today · People · Discover · Conversations · Me —
+  and nothing else. Compose is **never a tab slot** (§5): the bar carries places, not actions, so a
+  sixth item never creeps in even when the five ≥ 44px targets leave room to spare. A calm map of
+  five beats a crowded shelf.
+- **The FAB floats above the bar, offset.** The compose FAB (`--fab-size` 56px, `--z-fab`) sits
+  bottom-right *above* the `--tabbar-height` bar, deliberately offset so its **56px hit area never
+  overlaps** the rightmost pillar's (**Me**'s) 44px zone. The two touch targets stay cleanly
+  separated — no ambiguous tap, no accidental compose.
+- **Labels are legible.** Tab labels are **≥ `--text-micro` (12px)**, weight 500, on
+  `--leading-normal` — **never 10px**. Small enough to be quiet, never so small they strain.
+- **The bar flexes, it doesn't clip.** `--tabbar-height` is a comfortable resting height, not a hard
+  ceiling: under font-scaling or 200% zoom the bar **grows to fit** icon + label rather than clipping
+  the words (accessibility.md §9). It always honours `env(safe-area-inset-bottom)`.
+
+And, restated because it matters: compose is a calm FAB, **never a glowing centre-orb** (§5). It
+waits quietly bottom-right; it never pulses, glows, or claims the middle of the bar.

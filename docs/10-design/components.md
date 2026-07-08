@@ -321,6 +321,73 @@ supports words; it never replaces meaning (L3 — *legible over clever*).
 
 ---
 
+## 17. New V2 components: ContentNote, AltMarker, VerifiedLink, WorkspaceCue
+
+Four small pieces the pre-Figma review surfaced — each carries a fact humanely and none of them
+counts, ranks, or rewards (L6). All values are tokens from [tokens.md](./tokens.md).
+
+### 17.1 ContentNote — *New in V2*
+
+**Purpose:** a calm way to fold a summary over content that a reader may want to open deliberately (a
+content warning, a spoiler, sensitive media) — honest, never bait. **Anatomy:** a note line
+(`--text-body-sm`, `--color-text-secondary`) + a **"Show"** control (`ghost` Button, §1), wrapping
+the real content which stays collapsed until asked for. **Sensitive-media variant:** the media
+renders behind a blur over `--scrim-media`, with the "Show" control centred; revealing is one quiet
+action, and it can be re-hidden. **States:** collapsed (rest) · revealed · (media) blurred → shown.
+The reader is told plainly what's behind it; the summary is human words, never a tease. Real
+`aria-expanded` on the control; revealed content is not hidden from AT while collapsed inappropriately
+(the summary names it).
+
+### 17.2 AltMarker — *New in V2*
+
+**Purpose:** a quiet **"ALT"** affordance on an image that, when opened, reveals the author's image
+description — so alt text is honoured *and* legible to sighted readers. **Anatomy:** a small
+`--text-micro`, weight 500, `--tracking-wide` marker in a `--scrim-caption` chip at the image corner,
+`--radius-sm`; tapping opens the description in a small popover/inline panel
+(`--color-surface-raised`, `--elevation-2`). **States:** rest · hover text→primary · focus-visible
+`--color-focus-ring` 2px/2px · open. **AT contract:** the marker is never the image's accessible
+name — the description **is** the image's `alt`; the marker is a supplementary control with its own
+`aria-label` ("Show image description"). An image with no description shows no marker (no nag).
+
+### 17.3 VerifiedLink — *New in V2*
+
+**Purpose:** a link a person or workspace has **proven they own**, rendered with a quiet confirmed
+check — the trust surface from [profile-system.md §9](./profile-system.md), and explicitly **NOT a
+vanity badge**. **Anatomy:** link text (`--color-accent`) + trailing `check`/`verified` glyph in
+`--color-positive`, `--icon-sm`; a human `title`/tooltip *"confirmed theirs"* (or *"confirmed
+vnta.xyz"* on a workspace). **States:** rest · hover (underline, text→`--color-accent-hover`) ·
+focus-visible `--color-focus-ring` 2px/2px. An **unconfirmed** link is the plain link with no glyph —
+absence is not a demerit. Meaning never rides on hue alone: the glyph + tooltip word carry it (L10).
+It states one fact (ownership proven); it never ranks, tiers, or awards a blue-check status (L6).
+
+### 17.4 WorkspaceCue — *New in V2*
+
+**Purpose:** a quiet indicator that an account is a **workspace / business** rather than a person —
+orientation, not status (profile-system §9.2). **Anatomy:** a subtle *"Workspace"* label
+(`--text-micro`, `--color-text-secondary`) beside the name, and/or the **squared-avatar** treatment
+(a business Avatar steps from `--radius-full` toward `--radius-md`). Static (no interactive states).
+It never implies a business outranks a person; pair it with VerifiedLink so an official company reads
+as legible and honest in the feed and on its profile.
+
+### 17.5 Content Card contract update
+
+The **Content Card** (§4) may now render a **ContentNote** wrapper around its body/media (collapsed
+summary + "Show", or the sensitive-media blur over `--scrim-media`), and a per-image **AltMarker** on
+each media item. These additions change nothing about its economy: the action row **remains
+Reply · Share · Save with NO counts** — no like tally, comment count, or view counter (L6). **Save**
+stays the private `spark`/`--color-positive` signal, *kept-for-yourself*, and the author-only "♥ you"
+acknowledgement remains a **spark for others' moments**, reaching the author alone, never tallied.
+
+| Component | Status | Note |
+|---|---|---|
+| ContentNote | **New in V2** | collapsed summary + Show; sensitive-media blur over `--scrim-media` |
+| AltMarker | **New in V2** | quiet "ALT" reveal; description is the image `alt`, marker is supplementary |
+| VerifiedLink | **New in V2** | confirmed `check`; a fact, not a vanity badge |
+| WorkspaceCue | **New in V2** | workspace label / squared avatar; orientation, not status |
+
+---
+
 *Cross-links:* [tokens.md](./tokens.md) (canonical values) · [design-principles.md](./design-principles.md)
 (the laws) · [typography.md](./typography.md) · [media-system.md](./media-system.md) ·
-[motion.md](./motion.md) · [responsive.md](./responsive.md) · [accessibility.md](./accessibility.md).
+[motion.md](./motion.md) · [responsive.md](./responsive.md) · [accessibility.md](./accessibility.md) ·
+[profile-system.md](./profile-system.md) (trust surface §9).

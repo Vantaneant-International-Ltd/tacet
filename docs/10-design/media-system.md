@@ -154,6 +154,64 @@ composed frame until a person chooses to play it.
 
 ---
 
+## Content notes (reading)
+
+A **content note** is Tacet's human name for what the open web calls a content warning. When a
+moment arrives with one — whether authored here or federated in — we honour the poster's request to
+let a reader *choose* before they see. That is care, not alarm. So a content note is a calm door, not
+a hazard sign.
+
+- **Faithful inbound mapping.** A content warning from the open web (Mastodon and kin) maps directly
+  to a content note; the poster's words are preserved verbatim as the note's summary
+  ([ADR-005](../30-architecture/) representation). We never drop it, and we never restyle its meaning.
+- **Collapsed by default.** A moment carrying a note renders folded: a single quiet summary line —
+  *"Content note: <summary>"* set in `--color-text-secondary` at `--text-meta` — above a soft
+  **"Show"** control. The body text and any media stay hidden until the reader reveals them. There is
+  **no red, no warning-triangle, no alarm styling**: the note reads in the same calm register as the
+  rest of the surface (see [design-principles.md](./design-principles.md), L3).
+- **Sensitive media, individually.** Media inside a noted moment (or flagged sensitive on its own) sits
+  behind a blur overlay built from `--scrim-media`, carrying a quiet *"Sensitive — tap to view"* label
+  in `--on-media` at `--text-meta`. Each image is revealed on its own — showing one does not force the
+  set open.
+- **Reveal is per-session, not permanent.** Once a reader shows a note or a sensitive image, it stays
+  shown for that session; we do **not** persist a permanent dismissal that quietly erases the poster's
+  request forever. A fresh session re-folds, honouring the note again.
+- **Human term, always.** It is a **content note** everywhere in the interface and the copy — never
+  "CW", "spoiler", "content warning", or any protocol word (L9).
+- **Accessibility.** The "Show" control is a real `<button>` with a clear accessible name (e.g.
+  *"Show content: <summary>"*), not a bare icon or a clickable `<div>`. Revealing expands the body in
+  place and moves focus naturally forward — it never traps focus or steals it (see
+  [accessibility.md](./accessibility.md)). Authoring of notes lives in
+  [publishing-ui.md](./publishing-ui.md); the reveal control is specced in [components.md](./components.md).
+
+---
+
+## Alt text (reading)
+
+An image description is content, not metadata — it is how a blind reader sees the photograph, and how
+a sighted reader learns what the poster wanted noticed. Tacet treats alt text as a first-class part of
+the image (Law L5 — media is editorial), surfaced quietly for everyone rather than buried.
+
+- **A quiet "ALT" marker.** Every image with a description carries a small **"ALT"** affordance in a
+  corner — a real text control, not a vanity badge — that reveals the full description on tap or focus.
+  It is an offer to read more, never a decoration and never a boast about compliance.
+- **Screen readers first (mandatory).** The description is set as the image's accessible name, so
+  assistive technology speaks it as the image itself — this is not optional
+  ([accessibility.md](./accessibility.md), and Law L10, the floor). Decorative images with no meaningful
+  content are hidden from assistive tech entirely (empty alt / `aria-hidden`) so they don't clutter the
+  reading.
+- **Preserve the open web's descriptions.** Alt text federated from the source is kept intact and shown
+  as-is ([ADR-005](../30-architecture/)); we never silently strip a description a poster took care to
+  write.
+- **Editorial, unobtrusive styling.** The marker uses `--text-micro` in `--on-media` over `--scrim-media`
+  when it sits on an image — legible on any photograph, in either theme, without a second colour system.
+  It is tucked into a corner and **never covers the image** or crowds the composition; restraint is the
+  premium signal (L5).
+- The marker component and the description panel are specced in [components.md](./components.md); writing
+  and prompting for alt text at compose time lives in [publishing-ui.md](./publishing-ui.md).
+
+---
+
 ## 9. Do's and don'ts
 
 **Do**

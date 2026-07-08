@@ -41,7 +41,7 @@ server, instance, or software string. The word "Entry" is never used — these a
 │ ┌───────────────────────────┐ │  ── Content Card · PHOTO MOMENT · 2-up gallery (media-system §3) ──
 │ │ ◯  Jonas Vold        ‹···›│ │
 │ │    @jonas@tacet.social    │ │
-│ │    shared from Pixelfed·9:40 │ media attribution = human place, not protocol
+│ │    shared from pixel.town·9:40 │ media attribution = human place, not protocol
 │ │                           │ │
 │ │ Morning walk, before the  │ │  body --text-body
 │ │ street woke up.           │ │
@@ -57,7 +57,7 @@ server, instance, or software string. The word "Entry" is never used — these a
 │ ┌───────────────────────────┐ │  ── Content Card · VIDEO MOMENT · poster + play, no autoplay (§7) ──
 │ │ ◯  Reef Studio       ‹···›│ │
 │ │    @reef@tacet.social     │ │
-│ │    shared from PeerTube·11:05 │ human-place attribution
+│ │    shared from tilvids.com·11:05 │ human-place attribution
 │ │                           │ │
 │ │ A three-minute look at the│ │  body --text-body
 │ │ workshop.                 │ │
@@ -100,7 +100,7 @@ quiet Toast; it is the only positive colour on the card and is never a public nu
 │            │   └──────────────────────────────────────┘   │
 │            │   ┌──────────────────────────────────────┐   │  ── PHOTO MOMENT · 2-up ──
 │            │   │ ◯  Jonas Vold                   ‹···›│   │
-│            │   │    @jonas · shared from Pixelfed·9:40│   │
+│            │   │    @jonas · shared from pixel.town·9:40│ │
 │            │   │    ┌─────────────┬─────────────┐     │   │  2 images, equal halves --ratio-square
 │            │   │    │    ▓▓▓▓     │    ▓▓▓▓     │     │   │  shared outer --radius-lg
 │            │   │    └─────────────┴─────────────┘     │   │
@@ -131,14 +131,16 @@ line length does not. No third column yet: below `--bp-xl` the "continue" conten
 │ ◯ Me     │  │   @mara · 8:12          │  │  │  web"        │  │  hairline only, --elevation-0
 │          │  │   Finished the long edit│  │  │ ▓▓▓ 6 min    │  │  progress hint --text-meta
 │          │  │   at last.              │  │  │ left · Resume│  │  [ Resume ] ghost → reopens reader
-│ [ ⊕ New ]│  │   ‹reply›Reply ‹share›Share ‹save›Save │  └──────────────┘  │
+│ [ ⊕ New ]│  │   ‹reply›Reply ‹share›Share ‹save›Save │  │·dot· new     │  │  ·dot· + qualitative phrase,
+│          │  │                        │  │  │ replies from │  │  NEVER "N unread" — no count
+│          │  │                        │  │  └──────────────┘  │
 │          │  └──────────────────────────┘  │                    │
-│          │  ┌──────────────────────────┐  │  ┌──────────────┐  │  optionally: a live thread you were in
-│          │  │ ◯ Jonas Vold       ‹···›│  │  │ ‹reply› Thread│  │
-│          │  │   @jonas·Pixelfed·9:40  │  │  │ with Mara —   │  │
-│          │  │   ┌──────────┬────────┐ │  │  │ 2 unread ·dot·│  │  presence = ·dot·, never red count
-│          │  │   │  ▓▓▓▓    │ ▓▓▓▓   │ │  │  │ Resume        │  │
-│          │  │   └──────────┴────────┘ │  │  └──────────────┘  │
+│          │  ┌──────────────────────────┐  │                    │  exactly ONE continuation — no
+│          │  │ ◯ Jonas Vold       ‹···›│  │                    │  second card (Context Column Law)
+│          │  │   @jonas·pixel.town·9:40│  │                    │
+│          │  │   ┌──────────┬────────┐ │  │                    │
+│          │  │   │  ▓▓▓▓    │ ▓▓▓▓   │ │  │                    │
+│          │  │   └──────────┴────────┘ │  │                    │
 │          │  │   ‹reply›Reply ‹share›Share ‹save›Save │                    │
 │          │  └──────────────────────────┘  │  Nothing else here.│  law: context helps you RESUME,
 │          │                                │  When you're done, │  then be done — never a dashboard,

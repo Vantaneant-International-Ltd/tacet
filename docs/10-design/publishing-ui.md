@@ -74,7 +74,7 @@ intent. This is the philosophy's "same object, shaped for a different human inte
 
 **Shared chassis (every kind):**
 - **Header:** a close `IconButton` (`aria-label` "Close composer"), the kind name as the title at
-  `--text-heading`, and the primary action at the trailing edge (see §3 — it is **Save** or
+  `--text-heading`, and the primary action at the trailing edge (see §3 — it is **Keep** or
   **Share**, never "Post").
 - **Author row:** the [workspace](../09-product/publishing-philosophy.md) avatar + name — *who is
   making this* (see §3). Always present, because the workspace *is* the author.
@@ -226,7 +226,7 @@ The rule, made visible: *you edit your work; you separately decide whether to re
 
 ---
 
-## 7. Save / pin acknowledgement — the micro-interaction
+## 7. Keep / Save acknowledgement — the micro-interaction
 
 When work is saved to Home, or a Moment is kept, the acknowledgement is the **quiet positive
 signal** defined in [motion.md](./motion.md) (*Save / pin acknowledgement*, `--dur-2` / `--ease-out`):
@@ -266,7 +266,7 @@ Because saving is not sharing, this signal means *"kept, safe, yours"* — never
 
 Buttons are **verbs**; state is **honest**; empties are **calm and dignified**.
 
-- **Primary actions:** **Save** (to Home, private) · **Share** (to the open web) · **Update**
+- **Primary actions:** **Keep** (to Home, private) · **Share** (to the open web) · **Update**
   (re-send an edited copy) · **Retract** (unshare a copy) · **Delete** (remove the original).
   Never "Post," never "Publish," never "Submit."
 - **Placeholders:** Thought — *"Say something to your people…"* · Article title — *"Give it a
@@ -283,11 +283,157 @@ relevant," no vanity scaffolding ([compose.md](../01-product/compose.md)).
 
 ---
 
-## 10. Do / Don't
+## 10. Content notes & sensitive media (authoring)
+
+Some pieces need a gentle threshold before them — a spoiler for a plot, a heads-up before a hard
+subject, a warning ahead of an intense image. Tacet gives the maker that care without borrowing
+platform jargon: **human words only, never "CW" or "spoiler."**
+
+- **Add a content note** — a quiet toggle in the composer body (off by default). Switching it on
+  reveals a short summary field at `--text-body-sm`, placeholder *"What should people know first?"*.
+  The note is what a reader sees *before* the piece opens — a courtesy, not a lock. Use it for
+  spoilers, heavy topics, or anything a person might want to choose into. Keep it one calm line;
+  it is a threshold, not an essay.
+- **Mark sensitive** — a per-image toggle sitting on each attachment in the media well
+  (`aria-label` "Mark this image sensitive"). When on, that image opens softened behind a calm
+  reveal, so a reader taps to see it rather than meeting it unprepared. This is per-image, not
+  per-piece: one photo in a set can be marked while the rest stay open.
+
+Both are the maker's care made visible, never a punishment and never a compliance checkbox. Copy
+stays warm: *"A content note lets people choose when they're ready."* Neither is required; both are
+offered plainly. (L9 — human acts, not protocol nouns.)
+
+---
+
+## 11. Alt text (authoring)
+
+Every image in the composer carries an **alt-text field** directly beneath it (`--text-body-sm`,
+placeholder *"Describe this image for people who can't see it."*). Alt text is how a photo reaches
+someone using a screen reader — without it, the image is simply absent for them (L10; the floor,
+not a tier).
+
+- **Encouraged always, required on Share.** Going public (**Share**) means reaching people you'll
+  never meet, so alt is **required** before a copy goes to the open web. Keeping something private
+  (**Keep**) is for you and yours, so alt stays **optional** there — offered, never forced.
+- **Prefill when re-sharing.** When you re-share someone else's moment, we carry their alt text in
+  so the description isn't lost. You can refine it; you never start from blank.
+- **Nudge, don't shame.** Missing alt on **Share** raises a calm, specific prompt —
+  *"Add a short description so everyone can see this?"* — with a clear way to add it and an honest
+  way to continue. It is a courtesy reminder at `--color-text-secondary`, never a red error, never
+  a scold. On **Keep**, silence: an optional thing left undone is not a problem.
+
+The rule, made visible: *describe your images for everyone; we insist only when you go public,
+and even then we ask kindly.*
+
+---
+
+## 12. Scheduled publishing
+
+The distribution control's **Scheduled** state (see §3) opens a calm **when-picker** — a date and a
+time, nothing more. It is the same deliberate act as **Share**, only aimed at a later moment.
+
+- The picker is plain and unhurried: a date, a time, your timezone stated in words. No urgency,
+  no "posts perform best at…" nudging (L2 — no engagement scaffolding).
+- A scheduled piece appears in **Home (Me)** with a quiet **"Scheduled for <date>"** line at
+  `--text-meta` (mono) — a statement of state, not a **countdown-urgency widget**. It sits calmly
+  beside your other work, never ticking, never pressuring.
+- It is **editable and cancellable before it sends.** You can move the time, change the piece, or
+  cancel the sending entirely; cancelling returns it to Private (kept at home), because the work was
+  always complete on its own.
+
+Scheduling changes *nothing* about creation. The piece was finished the moment you made it
+([ADR-004](../06-decisions/ADR-004-publishing-is-distribution.md)); scheduling only queues the
+**distribution** for later. Creation is still complete-in-itself; the calendar touches only where
+and when a copy goes out.
+
+---
+
+## 13. Export — taking your world with you
+
+The honest door out lives in **Settings**, reached calmly and never buried: **Export — take your
+world with you.** Because your identity, your content, and your connections are *yours*, leaving is
+a right, not a negotiation ([ADR-001](../06-decisions/ADR-001-identity-before-platform.md),
+[ADR-002](../06-decisions/ADR-002-home-is-the-source-of-truth.md)).
+
+- **What it packages, said plainly:** *"Your identity, everything you've made, and everyone you're
+  connected to — packaged so you can take it anywhere."* Identity + owned content (every Thought,
+  Photo, Article, Video, Event) + your connections, in a portable form.
+- **No friction, no confirm-shaming.** There is no "are you sure you want to leave us?", no guilt
+  step, no reach-loss warning, no cooling-off delay. One calm **Export** verb. Leaving well is part
+  of the product working (design principle 5; L2).
+- **A warm success state, not a farewell.** When the package is ready:
+  *"Your world is yours — packaged and ready."* `--color-positive`, the same quiet signal that means
+  *kept, safe, yours* elsewhere (§7). The tone is generous: this is your world leaving whole, not a
+  door slammed.
+
+Export is the proof, made real, that Tacet holds your world *for* you and never *over* you. If the
+way out is honest and easy, the way in was never a trap.
+
+---
+
+## 14. One-handed publishing (mobile)
+
+On a phone, the two controls that *complete* the core task — **the visibility control** and **the
+primary verb** — must both fall inside the thumb's arc and must never hide beneath the keyboard.
+
+- The composer docks a **keyboard-riding action bar**: a slim bar pinned directly *above* the
+  on-screen keyboard, rising and falling with it so it is always visible while you type. It holds the
+  **Visibility control** (Private · Shared · Scheduled) and the **primary verb** — **Keep** when the
+  piece is private, **Share** when it is shared (see §3 and §15). These are the resting-thumb
+  controls.
+- The **header button becomes a secondary echo** — still present at the trailing edge for people who
+  reach up or navigate by keyboard, but no longer the only way to finish. The action bar is the
+  primary path on phone.
+- This means completing the task — choosing where it goes and sending it — is a one-handed act, and
+  the moment of choosing to Share is never obscured by the very keyboard you used to write it.
+
+The chassis is unchanged; only the *reach* is optimised for the phone. See
+[responsive.md](./responsive.md) for tier behaviour and the mobile compose sheet.
+
+---
+
+## 15. Keep vs Share — the private/public verb (compose)
+
+The compose primary action names exactly what it does, and it *changes with the piece's state*:
+
+- When the piece is **Private**, the primary verb is **Keep** — *"Keep to your home."* Keeping is
+  finishing something and holding it safe with you; it is complete work, not a draft, not a
+  staging step ([ADR-004](../06-decisions/ADR-004-publishing-is-distribution.md)).
+- When the piece is **Shared**, the primary verb is **Share** — sharing *your own* content
+  publishes it to the open web. (Re-sharing *someone else's* moment is a different act, handled
+  elsewhere; it never appears here as the compose verb.)
+
+**"Save" is not used in compose.** Save belongs only to keeping *others'* moments elsewhere (the
+spark/keep signal, §7). In your own composer the words are **Keep** (private) and **Share**
+(public) — and never *draft*, never *post*.
+
+### The read-only honesty gate
+
+Interactive publish — a live **Share** that sends a copy to the open web — is the target state.
+Until write-federation ships, **Share tells the truth instead of failing silently.** It is never a
+dead button that pretends to work and quietly drops the piece.
+
+- The **Keep** path is fully live now: private work is made and held at Home today, no gate.
+- The **Share** path, while write-federation is pending, presents a calm **"not yet — coming"**
+  state: the piece is kept safely at Home, and the UI says plainly *"Sharing to the open web is
+  coming soon — this is kept safe at your home until then."* at `--text-body-sm`,
+  `--color-text-secondary`. No spinner that never resolves, no success animation for a thing that
+  didn't happen, no lost work.
+
+The gate is honesty, not friction: we would rather say *"not yet"* warmly than let a **Share** look
+done when it isn't. (Design principle 5; L9.)
+
+---
+
+## 16. Do / Don't
 
 **Do**
 - Begin with **intent** (Thought/Photo/Article/Video/Event), never destination.
-- Keep creation and distribution visibly separate — **Save** ≠ **Share**.
+- Keep creation and distribution visibly separate — **Keep** (private) ≠ **Share** (public).
+- Require alt on **Share**, keep it optional on **Keep**, and prefill it when re-sharing.
+- Say **"not yet — coming"** honestly for Share until write-federation ships; never a dead button.
+- Keep the visibility control and primary verb in the **thumb arc** on phone (keyboard-riding bar).
+- Make **Export** a warm, frictionless door out — *"Your world is yours."*
 - Show private work as **complete and dignified**, marked *Private*, never *draft*.
 - Make **who authors it** always visible; switch workspace, never re-login.
 - Word Retract and Delete as **two distinct, honest actions** with plain consequences.
@@ -299,8 +445,11 @@ relevant," no vanity scaffolding ([compose.md](../01-product/compose.md)).
 - Don't collapse making and sharing into one button.
 - Don't nudge audience wider, predict reach, or surface counts — no vanity scaffolding (L2, L6).
 - Don't use a glowing orb / pulsing badge for Compose — one calm affordance only.
-- Don't confirm-shame, and don't hide destructive truth in fine print.
+- Don't confirm-shame, and don't hide destructive truth in fine print — including at Export.
 - Don't let owned and kept blur, or let kept content be publishable as if yours.
+- Don't shame missing alt; nudge kindly, and only on Share.
+- Don't turn **Scheduled** into a ticking countdown or an urgency widget.
+- Don't say **"Save"** or **"draft"** in compose — the verbs are **Keep** and **Share**.
 
 ### Never surface these words
 **Entry · post · server · instance · federation · protocol · ActivityPub · draft · degrade.**

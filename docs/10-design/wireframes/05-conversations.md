@@ -14,7 +14,7 @@
 ┌─────────────────────────────────────────────┐
 │ ‹≡›   Conversations              ‹⌕›   ◯     │  topbar (frozen frame). Title --text-title.
 ├─────────────────────────────────────────────┤
-│  (  All  ·  Mentions  ·  Replies  ·  Msgs )  │  SegmentedControl (§13). --radius-full track,
+│  (  All  · Mentions · Replies · Messages  )  │  SegmentedControl (§13). --radius-full track,
 │                                              │  raised thumb on active. NEUTRAL — never accent,
 │                                              │  never shows a per-tab count. --dur-2 cross-fade.
 ├─────────────────────────────────────────────┤
@@ -221,7 +221,7 @@ warm nod, never a send-and-earn reward. On phone the composer may rise as a `--r
 ┌─────────────────────────────────────────────┐
 │ ‹≡›   Conversations              ‹⌕›   ◯     │
 ├─────────────────────────────────────────────┤
-│  (  All  ·  Mentions  ·  Replies  ·  Msgs )  │  SegmentedControl stays present + calm.
+│  (  All  · Mentions · Replies · Messages  )  │  SegmentedControl stays present + calm.
 ├─────────────────────────────────────────────┤
 │                                              │
 │                    ‹ ✉ ›                     │  EmptyState (§14): 28px conversations icon,
