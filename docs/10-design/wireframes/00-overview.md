@@ -34,13 +34,16 @@ PHONE (<768)                         WIDE (≥1200) — three-column canvas
 │                           │        │ Me     │   │   content    │  │              │
 ├───────────────────────────┤        │        │   └──────────────┘  │              │
 │  ◈    ◯    ⊕    ◇    ◯    │ tabbar │  ⊕     │                    │              │
-│ Today People (Compose)... │        │ ◯ you  │                    │              │
+│ Today People Disc Conv Me  │ ← 5 pillars only; ⊕ Compose floats above, not a slot        │ ◯ you  │                    │              │
 └───────────────────────────┘        └────────┴────────────────────┴──────────────┘
    FAB = ⊕ (compose)                   rail 250px   feed 42rem        context 320px
 ```
 
-Rules encoded in the frame:
-- **Compose** is a calm affordance (FAB `⊕` / rail button), never a glowing centre orb.
+Rules encoded in the frame (**canonical — supersedes any individual frame that differs**):
+- **The tab bar holds the five pillars only** — Today · People · Discover · Conversations · Me — in
+  that order, on every tier. It is never four-plus-compose (Stage-5 fix A1).
+- **Compose** floats: a FAB `⊕` bottom-right *above* the bar on phone/tablet, a labelled "New"
+  button in the rail on desktop. Never a tab-bar slot, never a glowing centre orb.
 - **Presence** shows as `·dot·` beside Conversations, never a red count.
 - The **reading measure is fixed** (42rem) at every tier ≥ desktop; extra width becomes context,
   then quiet margin. The feed never widens into long lines.

@@ -124,6 +124,16 @@ For disabled/hover/scrim math via `color-mix`, so we stop inventing opacities in
 --alpha-scrim:    0.55;   /* over media, see §7 */
 ```
 
+### 5.3 Icon sizes **[V2+ — resolves Stage-5 B2]**
+Icons are drawn on a 24px grid, 1.75 stroke, `currentColor` (see [components.md](./components.md#icons)).
+Their *rendered* size is tokenised so components never hardcode a pixel:
+```css
+--icon-inline: 1em;   /* sits in a line of text; scales with the type around it */
+--icon-sm:     18px;  /* dense controls, meta rows, chips */
+--icon-md:     22px;  /* default UI icon — buttons, nav, actions */
+--icon-lg:     28px;  /* prominent affordances, empty-state glyphs */
+```
+
 ---
 
 ## 6. Colour tokens **[V1]** — warm, both themes

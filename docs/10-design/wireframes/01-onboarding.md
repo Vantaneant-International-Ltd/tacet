@@ -216,8 +216,8 @@ PHONE (<768) — now inside the frozen frame       DESKTOP (≥900) — rail + f
 │  ◯ Ada Chen      ·9:14·    │  Content Card   │ Me     │  @ada@pixelfed.social        │  handle --text-meta
 │  @ada@pixelfed.social      │  handle mono    │        │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓          │  ▓ media
 │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓          │  ▓ media        │        │  Morning light, Lisbon.      │  --text-body (sacred)
-│  Morning light, Lisbon.    │  --text-body    │  ⊕     │  ‹♡ save›  ‹↩ reply›         │  calm actions
-│  ‹♡ save› ‹↩ reply›        │  quiet actions  │ ◯ you  ├─────────────────────────────┤
+│  Morning light, Lisbon.    │  --text-body    │  ⊕     │  ‹reply›  ‹share›  ‹spark save›         │  calm actions
+│  ‹reply› ‹share› ‹spark save›        │  quiet actions  │ ◯ you  ├─────────────────────────────┤
 ├───────────────────────────┤                 │        │  ◯ Ren Oduya   ·yesterday    │  Content Card
 │  ◯ Ren Oduya    ·yest.·    │  Content Card   │        │  @ren@writefreely.social     │
 │  @ren@writefreely.social   │                 │        │  On paying attention →        │  article lead
