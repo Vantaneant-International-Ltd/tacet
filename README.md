@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/hero.png" alt="Tacet — Your home on the open social web." width="100%" />
+</p>
+
 # Tacet
 
 **Your home on the open social web.**
