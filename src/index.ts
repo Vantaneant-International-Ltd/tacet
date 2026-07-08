@@ -15,6 +15,45 @@ import { meRoutes } from "./routes/me";
 // so we serve the SPA shell (index.html) for it.
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
+// Content Security Policy. Same-origin app + Cloudflare Turnstile; open-web media
+// (avatars, banners, images, video) comes from arbitrary https hosts, so img/media
+// allow `https:`. Inline styles are used (style attributes), hence 'unsafe-inline' for
+// style only — never for script.
+const CSP = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "img-src 'self' https: data:",
+  "media-src 'self' https:",
+  "font-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "script-src 'self' https://challenges.cloudflare.com",
+  "connect-src 'self'",
+  "frame-src https://challenges.cloudflare.com",
+].join("; ");
+
+// Security + cache headers on every response. Responses returned by the assets binding
+// have immutable headers, so we rebuild the response to attach ours. Dynamic API
+// responses are never cached; the SPA shell must always revalidate so deploys are seen.
+app.use("*", async (c, next) => {
+  await next();
+  const url = new URL(c.req.url);
+  const headers = new Headers(c.res.headers);
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("Content-Security-Policy", CSP);
+  headers.set("Permissions-Policy", "interest-cohort=()");
+  if (url.protocol === "https:") headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  // Only /api and the SPA shell reach the Worker (hashed static assets are served
+  // directly by the assets binding, which keeps their immutable caching).
+  if (url.pathname.startsWith("/api/")) headers.set("Cache-Control", "no-store");
+  else headers.set("Cache-Control", "no-cache");
+  c.res = new Response(c.res.body, { status: c.res.status, statusText: c.res.statusText, headers });
+});
+
 const api = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 // Every API request carries the current user (or null) in c.var.user.

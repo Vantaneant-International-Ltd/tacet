@@ -12,6 +12,25 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Production readiness (Cloudflare).** Localhost is now **development only**; the
+  production target is **tacet.social** on Cloudflare. Hardened the Worker: security
+  headers on API responses + a `client/public/_headers` file for the static/SPA responses
+  (CSP allowing open-web media, HSTS, nosniff, X-Frame-Options DENY, Referrer-Policy,
+  Permissions-Policy); `Cache-Control: no-store` on `/api/*`, `no-cache` on the SPA shell,
+  immutable on hashed assets. Enabled Workers **observability** (logging). Config/secret
+  separation intact (placeholders in tracked `wrangler.jsonc`; real ids only in git-ignored
+  `wrangler.local.jsonc`). Verified: typecheck + build + 75 tests, dry-run deploy (bindings
+  resolve), and headers confirmed live under the runtime. **NOT yet deployed — hard gate:**
+  `tacet.social` nameservers are still at Blacknight (not on Cloudflare), so the zone/custom
+  domain can't be attached. Deploy is blocked on moving nameservers (Blacknight login),
+  adding the zone, applying remote D1 migrations 0011–0013, and confirming `SESSION_SECRET`.
+  See `docs/08-roadmap/deployment-plan.md`.
+
+- **Publishing philosophy** (`docs/09-product/publishing-philosophy.md`) — foundational
+  design doc; refined pass added a "What is Home?" section, owned-vs-kept distinction,
+  clarified Entry is an internal abstraction (UI stays human), and reframed protocol
+  mapping as faithful representation.
+
 - **Identity & Workspace foundations.** The local Me is now a real Tacet identity, owned by
   a **workspace** (an owned identity space; one default "Personal" per device now,
   business/project later). `migration 0013` adds `me_workspaces` and expands `me_profiles`

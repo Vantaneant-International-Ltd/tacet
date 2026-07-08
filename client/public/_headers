@@ -1,0 +1,19 @@
+# Security + cache headers for static assets and the SPA shell. The assets layer serves
+# these responses directly (bypassing the Worker), so the headers live here. Dynamic
+# /api/* responses get their headers (and no-store) from the Worker instead.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: interest-cohort=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' https: data:; media-src 'self' https:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://challenges.cloudflare.com; connect-src 'self'; frame-src https://challenges.cloudflare.com
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cache-Control: no-cache
+
+# Hashed, immutable build assets — cache hard.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

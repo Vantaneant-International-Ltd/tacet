@@ -7,8 +7,14 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
+  // Production logging (Workers Logs). Safe to enable; not a secret.
+  "observability": { "enabled": true },
   // Your Cloudflare account id (deploy only). Not required for local dev.
   "account_id": "<your-cloudflare-account-id>",
+
+  // To serve tacet.social, the zone must first be active on Cloudflare (nameservers
+  // moved from Blacknight). Then attach a custom domain in the dashboard, or uncomment:
+  // "routes": [{ "pattern": "tacet.social/*", "custom_domain": true }],
 
   // The Vite build emits the React SPA to dist/client. The Worker handles /api/*;
   // everything else is served from the built assets, with unmatched routes falling
