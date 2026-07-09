@@ -1,0 +1,148 @@
+<!-- @dsCard group="Web App" viewport="1280x820" subtitle="Today view — sidebar, feed, people rail; interactive" name="Tacet web app" -->
+<!-- @startingPoint section="Screens" subtitle="Three-column Tacet web app (Today view)" viewport="1280x820" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>tacet — Today</title>
+<link rel="icon" href="../../assets/logo/favicon.svg">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script>
+/* Load the platform-compiled bundle if present; otherwise the local fallback bundle. */
+(function () {
+  function loadSync(url) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send();
+      if (x.status >= 200 && x.status < 300 && x.responseText) { (0, eval)(x.responseText); return true; }
+    } catch (e) {}
+    return false;
+  }
+  var base = '../../';
+  loadSync(base + '_ds_bundle' + '.js') || loadSync(base + 'tacet-bundle.js');
+})();
+</script>
+</head>
+<body style="margin:0; background:var(--bg)">
+<div id="root"></div>
+<script type="text/babel">
+const NS = (() => { for (const k of Object.getOwnPropertyNames(window)) { try { const v = window[k]; if (v && typeof v === 'object' && typeof v.PostCard === 'function' && typeof v.SideNav === 'function') return v; } catch (e) {} } return null; })();
+const { SideNav, SearchField, Button, IconButton, Icon, Avatar, Tabs, Chip, PostCard, PersonCard, CommunityCard, Card, Toast } = NS || {};
+
+const FEED = [
+  { id: 1, author: 'Maya Chen', handle: '@maya@tacet.home', time: '2h', likes: 24, replies: 6, shares: 7,
+    body: 'Just finished a new illustration series about small, hopeful internet moments. It felt good to make something slow.' },
+  { id: 2, author: 'Sam Osei', handle: '@sam@social.coop', time: '4h', likes: 11, replies: 3, shares: 1,
+    body: 'Sunday plan: fix the squeaky gate, bake bread, answer three letters from people I actually know. The web can wait, and that\u2019s the point.' },
+  { id: 3, author: 'Ana Reyes', handle: '@ana@quiet.garden', time: '7h', likes: 42, replies: 12, shares: 9,
+    body: 'Our little photography community crossed 128 people today. No growth hacks — just neighbours inviting neighbours.' },
+];
+
+function App() {
+  const [view, setView] = React.useState('today');
+  const [tab, setTab] = React.useState('everyone');
+  const [dark, setDark] = React.useState(false);
+  const [liked, setLiked] = React.useState({});
+  const [following, setFollowing] = React.useState(false);
+  const [joined, setJoined] = React.useState(false);
+  const [posts, setPosts] = React.useState(FEED);
+  const [draft, setDraft] = React.useState('');
+  const [toast, setToast] = React.useState(null);
+
+  React.useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  const share = () => {
+    if (!draft.trim()) return;
+    setPosts([{ id: Date.now(), author: 'You', handle: '@you@tacet.home', time: 'now', likes: 0, replies: 0, shares: 0, body: draft.trim() }, ...posts]);
+    setDraft('');
+    setToast('Shared with your people');
+  };
+
+  return (
+    <div data-theme={dark ? 'dark' : undefined} data-screen-label="Today" style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: 'var(--font-sans)', transition: 'background var(--duration-gentle) var(--ease-glide)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr 320px', gap: 24, maxWidth: 1220, margin: '0 auto', padding: '0 24px' }}>
+
+        {/* Sidebar */}
+        <aside style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 20, boxSizing: 'border-box' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 12px 18px' }}>
+            <img src="../../assets/logo/tacet-mark-iris.svg" width="30" height="30" alt=""/>
+            <img src={dark ? '../../assets/logo/wordmark-white.png' : '../../assets/logo/wordmark-ink.png'} style={{ height: 20 }} alt="tacet"/>
+          </div>
+          <SideNav value={view} onChange={setView} style={{ width: '100%', padding: 0 }}/>
+          <Button variant="soft" iconLeft={<Icon name="square-pen" size={18}/>} style={{ margin: '16px 0 0' }}>Compose</Button>
+          <div style={{ marginTop: 'auto', paddingBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Avatar name="You" size={36} status="online"/>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>You</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)' }}>@you@tacet.home</div>
+            </div>
+            <IconButton name={dark ? 'sun' : 'moon'} size="sm" label="Theme" onClick={() => setDark(!dark)}/>
+            <IconButton name="settings" size="sm" label="Settings"/>
+          </div>
+        </aside>
+
+        {/* Feed */}
+        <main style={{ paddingTop: 20, paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <SearchField style={{ flex: 1 }}/>
+            <IconButton name="bell" label="Notifications"/>
+          </div>
+          <Card padding={16}>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Avatar name="You" size={40}/>
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="What's on your mind? No pressure."
+                rows={2}
+                style={{ flex: 1, resize: 'none', border: 'none', outline: 'none', background: 'transparent', fontFamily: 'var(--font-sans)', fontSize: 15, lineHeight: '23px', color: 'var(--text-primary)', paddingTop: 8 }}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 10 }}>
+              <IconButton name="image" size="sm" label="Photo"/>
+              <IconButton name="link" size="sm" label="Link"/>
+              <IconButton name="map-pin" size="sm" label="Place"/>
+              <span style={{ flex: 1 }}/>
+              <Button size="sm" disabled={!draft.trim()} onClick={share}>Share</Button>
+            </div>
+          </Card>
+          <Tabs tabs={[{ value: 'everyone', label: 'Everyone' }, { value: 'close', label: 'Close friends' }, { value: 'local', label: 'tacet.home' }]} value={tab} onChange={setTab}/>
+          {posts.map((p) => (
+            <PostCard key={p.id} author={p.author} handle={p.handle} time={p.time}
+              likes={p.likes + (liked[p.id] ? 1 : 0)} replies={p.replies} shares={p.shares}
+              liked={!!liked[p.id]} onLike={() => setLiked({ ...liked, [p.id]: !liked[p.id] })}>
+              {p.body}
+            </PostCard>
+          ))}
+        </main>
+
+        {/* Right rail */}
+        <aside style={{ paddingTop: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>People you may know</div>
+          <PersonCard name="Jo Park" handle="@jo@quiet.garden" bio="Gardens, film photos, slow mornings." status="online" following={following} onFollow={() => setFollowing(!following)}/>
+          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', textTransform: 'uppercase', color: 'var(--text-muted)', marginTop: 8 }}>Communities</div>
+          <CommunityCard name="Slow Photography" server="tacet.home" members="128 people" description="Film, patience, natural light." joined={joined} onJoin={() => setJoined(!joined)}/>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Chip active>Nearby</Chip><Chip>Art</Chip><Chip>Music</Chip><Chip>Reading</Chip>
+          </div>
+        </aside>
+      </div>
+
+      {toast && (
+        <div style={{ position: 'fixed', left: '50%', bottom: 28, transform: 'translateX(-50%)', zIndex: 50 }}>
+          <Toast tone="success">{toast}</Toast>
+        </div>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  NS ? <App/> : <div style={{ padding: 20, fontFamily: 'monospace', fontSize: 12 }}>bundle not built yet</div>
+);
+</script>
+</body></html>

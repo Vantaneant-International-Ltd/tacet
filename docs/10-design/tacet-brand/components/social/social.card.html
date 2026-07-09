@@ -1,0 +1,54 @@
+<!-- @dsCard group="Components" viewport="700x430" subtitle="Post, person, community, notifications" name="Social" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script>
+/* Load the platform-compiled bundle if present; otherwise the local fallback bundle. */
+(function () {
+  function loadSync(url) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send();
+      if (x.status >= 200 && x.status < 300 && x.responseText) { (0, eval)(x.responseText); return true; }
+    } catch (e) {}
+    return false;
+  }
+  var base = '../../';
+  loadSync(base + '_ds_bundle' + '.js') || loadSync(base + 'tacet-bundle.js');
+})();
+</script>
+</head>
+<body style="margin:0; background:var(--bg)">
+<div id="root"></div>
+<script type="text/babel">
+const NS = (() => { for (const k of Object.getOwnPropertyNames(window)) { try { const v = window[k]; if (v && typeof v === 'object' && typeof v.PostCard === 'function') return v; } catch (e) {} } return null; })();
+const { PostCard, PersonCard, CommunityCard, NotificationItem, Card } = NS || {};
+
+function Demo() {
+  const [liked, setLiked] = React.useState(false);
+  return (
+    <div style={{ padding:'18px 22px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, alignItems:'start' }}>
+      <PostCard author="Maya Chen" handle="@maya@tacet.home" time="2h" likes={liked ? 25 : 24} replies={6} shares={7} liked={liked} onLike={() => setLiked(!liked)}>
+        Just finished a new illustration series about small, hopeful internet moments. It felt good to make something slow.
+      </PostCard>
+      <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+        <PersonCard name="Jo Park" handle="@jo@quiet.garden" bio="Gardens, film photos, slow mornings." status="online"/>
+        <CommunityCard name="Slow Photography" server="tacet.home" members="128 people" description="Film, patience, natural light."/>
+      </div>
+      <Card padding={8} style={{ gridColumn:'1 / -1' }}>
+        <NotificationItem kind="like" name="Maya Chen" time="2h" unread>appreciated your post</NotificationItem>
+        <NotificationItem kind="follow" name="Jo Park" time="1d">is now following you</NotificationItem>
+        <NotificationItem kind="reply" name="Sam Osei" time="3d">replied: “This is exactly what I needed today.”</NotificationItem>
+      </Card>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  NS ? <Demo/> : <div style={{ padding:20, fontFamily:'var(--font-mono)', fontSize:12 }}>bundle not built yet</div>
+);
+</script>
+</body></html>

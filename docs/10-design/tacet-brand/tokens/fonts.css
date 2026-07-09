@@ -1,0 +1,22 @@
+/* TACET webfonts — variable, latin subset (downloaded from Google Fonts) */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('../assets/fonts/HankenGrotesk-wght-.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('../assets/fonts/HankenGrotesk-Italic-wght-.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spline Sans Mono';
+  src: url('../assets/fonts/SplineSansMono-wght-.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}

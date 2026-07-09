@@ -1,0 +1,50 @@
+<!-- @dsCard group="Components" viewport="700x330" subtitle="Desktop sidebar & mobile glass bottom bar" name="Navigation" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script>
+/* Load the platform-compiled bundle if present; otherwise the local fallback bundle. */
+(function () {
+  function loadSync(url) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send();
+      if (x.status >= 200 && x.status < 300 && x.responseText) { (0, eval)(x.responseText); return true; }
+    } catch (e) {}
+    return false;
+  }
+  var base = '../../';
+  loadSync(base + '_ds_bundle' + '.js') || loadSync(base + 'tacet-bundle.js');
+})();
+</script>
+</head>
+<body style="margin:0; background:var(--bg)">
+<div id="root"></div>
+<script type="text/babel">
+const NS = (() => { for (const k of Object.getOwnPropertyNames(window)) { try { const v = window[k]; if (v && typeof v === 'object' && typeof v.SideNav === 'function') return v; } catch (e) {} } return null; })();
+const { SideNav, BottomNav } = NS || {};
+
+function Demo() {
+  const [v, setV] = React.useState('today');
+  const [m, setM] = React.useState('today');
+  return (
+    <div style={{ padding:'18px 22px', display:'flex', gap:24, alignItems:'flex-start' }}>
+      <div style={{ background:'var(--surface-1)', border:'1px solid var(--border-subtle)', borderRadius:'var(--radius-md)', boxShadow:'var(--shadow-1)' }}>
+        <SideNav value={v} onChange={setV}/>
+      </div>
+      <div style={{ flex:1, borderRadius:'var(--radius-lg)', overflow:'hidden', border:'1px solid var(--border-subtle)', boxShadow:'var(--shadow-1)' }}>
+        <div style={{ height:210, background:'var(--surface-2)', backgroundImage:'url(../../assets/backgrounds/constellation-light.svg)', backgroundSize:'cover' }}></div>
+        <BottomNav value={m} onChange={setM}/>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  NS ? <Demo/> : <div style={{ padding:20, fontFamily:'var(--font-mono)', fontSize:12 }}>bundle not built yet</div>
+);
+</script>
+</body></html>

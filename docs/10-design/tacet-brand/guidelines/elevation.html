@@ -1,0 +1,22 @@
+<!-- @dsCard group="Foundations" viewport="700x190" subtitle="Violet-tinted shadows, light & dark" name="Elevation" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:190px; display:grid; grid-template-columns:1fr 1fr; font-family:var(--font-mono); }
+  .pane { background:var(--bg); display:flex; align-items:center; justify-content:center; gap:18px; }
+  .e { width:88px; height:88px; border-radius:var(--radius-md); background:var(--surface-1); display:flex; align-items:flex-end; justify-content:center; padding-bottom:8px; box-sizing:border-box; font-size:10px; color:var(--text-muted); }
+</style></head>
+<body>
+  <div class="pane">
+    <div class="e" style="box-shadow:var(--shadow-1)">1</div>
+    <div class="e" style="box-shadow:var(--shadow-2)">2</div>
+    <div class="e" style="box-shadow:var(--shadow-3)">3</div>
+    <div class="e" style="box-shadow:var(--shadow-4)">4</div>
+  </div>
+  <div class="pane" data-theme="dark">
+    <div class="e" style="box-shadow:var(--shadow-1)">1</div>
+    <div class="e" style="box-shadow:var(--shadow-2)">2</div>
+    <div class="e" style="box-shadow:var(--shadow-3)">3</div>
+    <div class="e" style="box-shadow:var(--shadow-4)">4</div>
+  </div>
+</body></html>

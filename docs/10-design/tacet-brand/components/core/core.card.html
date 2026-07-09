@@ -1,0 +1,76 @@
+<!-- @dsCard group="Components" viewport="700x400" subtitle="Buttons, fields, switch, tabs, chips, badges, avatars" name="Core" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script>
+/* Load the platform-compiled bundle if present; otherwise the local fallback bundle. */
+(function () {
+  function loadSync(url) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send();
+      if (x.status >= 200 && x.status < 300 && x.responseText) { (0, eval)(x.responseText); return true; }
+    } catch (e) {}
+    return false;
+  }
+  var base = '../../';
+  loadSync(base + '_ds_bundle' + '.js') || loadSync(base + 'tacet-bundle.js');
+})();
+</script>
+</head>
+<body style="margin:0; background:var(--bg)">
+<div id="root"></div>
+<script type="text/babel">
+const NS = (() => { for (const k of Object.getOwnPropertyNames(window)) { try { const v = window[k]; if (v && typeof v === 'object' && typeof v.Button === 'function' && typeof v.Icon === 'function') return v; } catch (e) {} } return null; })();
+const { Button, IconButton, Input, SearchField, Switch, Tabs, Chip, Badge, Avatar, Icon } = NS || {};
+
+function Demo() {
+  const [tab, setTab] = React.useState('Today');
+  const [on, setOn] = React.useState(true);
+  const Row = ({ children, style }) => <div style={{ display:'flex', alignItems:'center', gap:10, flexWrap:'wrap', ...style }}>{children}</div>;
+  return (
+    <div style={{ padding:'18px 22px', display:'flex', flexDirection:'column', gap:14 }}>
+      <Row>
+        <Button>Follow</Button>
+        <Button variant="secondary">Message</Button>
+        <Button variant="soft" iconLeft={<Icon name="square-pen" size={18}/>}>Compose</Button>
+        <Button variant="ghost">Not now</Button>
+        <Button variant="destructive">Leave</Button>
+        <Button disabled>Follow</Button>
+        <IconButton name="bell" label="Notifications"/>
+        <IconButton name="bookmark" active label="Saved"/>
+      </Row>
+      <Row>
+        <Input label="Display name" placeholder="Maya" style={{ width:200 }}/>
+        <Input label="Handle" defaultValue="maya" error="That handle is taken." style={{ width:200 }}/>
+        <SearchField style={{ width:230, alignSelf:'flex-end' }}/>
+      </Row>
+      <Row>
+        <Tabs tabs={['Today','People','Media']} value={tab} onChange={setTab} style={{ flex:'0 0 auto' }}/>
+        <Switch checked={on} onChange={setOn}/>
+        <Switch checked={false}/>
+        <Chip active>Nearby</Chip><Chip>Art</Chip><Chip>Music</Chip>
+      </Row>
+      <Row>
+        <Badge tone="accent">New</Badge>
+        <Badge tone="success" dot>Online</Badge>
+        <Badge tone="warning">Moving</Badge>
+        <Badge tone="error">Offline</Badge>
+        <Badge>Draft</Badge>
+        <Avatar name="Maya Chen" size={40} status="online"/>
+        <Avatar name="Jo Park" size={40}/>
+        <Avatar name="Sam Osei" size={40} status="away"/>
+        <Avatar name="Ana Reyes" size={28}/>
+      </Row>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  NS ? <Demo/> : <div style={{ padding:20, fontFamily:'var(--font-mono)', fontSize:12 }}>bundle not built yet</div>
+);
+</script>
+</body></html>

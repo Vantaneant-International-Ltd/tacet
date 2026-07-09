@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x190" subtitle="Semantic tones — moss, amber, rose; desaturated to stay calm" name="Semantic colors" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:190px; background:var(--bg); display:flex; align-items:center; justify-content:center; gap:16px; padding:0 20px; box-sizing:border-box; }
+  .col { flex:1; border-radius:12px; overflow:hidden; border:1px solid var(--border-subtle); font-family:var(--font-sans); }
+  .head { padding:10px 12px; font-size:13px; font-weight:600; color:#fff; display:flex; justify-content:space-between; }
+  .head code { font-family:var(--font-mono); font-size:10px; opacity:0.85; font-weight:400; }
+  .soft { padding:10px 12px; font-size:12px; display:flex; justify-content:space-between; }
+  .soft code { font-family:var(--font-mono); font-size:10px; opacity:0.7; }
+</style></head>
+<body>
+  <div class="col">
+    <div class="head" style="background:var(--moss-600)">Success <code>--success</code></div>
+    <div class="soft" style="background:var(--moss-50); color:var(--moss-600)">Post shared <code>--success-soft</code></div>
+  </div>
+  <div class="col">
+    <div class="head" style="background:var(--amber-600)">Warning <code>--warning</code></div>
+    <div class="soft" style="background:var(--amber-50); color:var(--amber-600)">Server moving <code>--warning-soft</code></div>
+  </div>
+  <div class="col">
+    <div class="head" style="background:var(--rose-600)">Error <code>--error</code></div>
+    <div class="soft" style="background:var(--rose-50); color:var(--rose-600)">Couldn't reach home <code>--error-soft</code></div>
+  </div>
+</body></html>

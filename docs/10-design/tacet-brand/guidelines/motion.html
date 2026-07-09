@@ -1,0 +1,20 @@
+<!-- @dsCard group="Foundations" viewport="700x210" subtitle="Water, breathing, paper, glass — durations & easings, live" name="Motion" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:210px; background:var(--bg); padding:20px 26px; box-sizing:border-box; font-family:var(--font-sans); }
+  .lane { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .track { position:relative; flex:1; height:26px; background:var(--surface-2); border:1px solid var(--border-subtle); border-radius:999px; }
+  .ball { position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:var(--accent); }
+  code { font-family:var(--font-mono); font-size:10px; color:var(--text-muted); width:220px; }
+  @keyframes go { 0%,12% { left:2px; } 50%,62% { left:calc(100% - 22px); } 100% { left:2px; } }
+  .breathe { width:20px; height:20px; border-radius:50%; background:var(--iris-400); animation:breathe var(--duration-breathe) var(--ease-breathe) infinite; }
+  @keyframes breathe { 0%,100% { transform:scale(0.8); opacity:0.6; } 50% { transform:scale(1.15); opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { .ball, .breathe { animation:none !important; } }
+</style></head>
+<body>
+  <div class="lane"><div class="track"><div class="ball" style="animation:go 2.4s var(--ease-glide) infinite"></div></div><code>ease-glide · UI default</code></div>
+  <div class="lane"><div class="track"><div class="ball" style="animation:go 2.4s var(--ease-enter) infinite"></div></div><code>ease-enter · things arriving</code></div>
+  <div class="lane"><div class="track" style="background:transparent;border-color:transparent;display:flex;align-items:center;justify-content:center"><div class="breathe"></div></div><code>ease-breathe · ambient 4s</code></div>
+  <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); margin-top:4px;">durations · 120 hover · 200 toggle · 320 card/dialog · 560 page — no bounces, no overshoot</div>
+</body></html>

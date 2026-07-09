@@ -1,0 +1,19 @@
+<!-- @dsCard group="Foundations" viewport="700x260" subtitle="Lucide — outline, rounded, 2px stroke, currentColor" name="Icons" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:260px; background:var(--bg); padding:18px 22px; box-sizing:border-box; }
+  .grid { display:grid; grid-template-columns:repeat(9, 1fr); gap:6px; }
+  .i { display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 2px; border-radius:8px; color:var(--text-secondary); }
+  .i img { width:22px; height:22px; }
+  .i span { font-family:var(--font-mono); font-size:8.5px; color:var(--text-muted); }
+</style></head>
+<body>
+  <div class="grid" id="g"></div>
+  <script>
+    const names = ['sun','users','compass','users-round','message-circle','search','settings','square-pen','bell','circle-user','bookmark','image','video','file-text','link','map-pin','calendar','globe','lock','network','server','download','upload','heart','repeat-2','share','ellipsis'];
+    document.getElementById('g').innerHTML = names.map(n =>
+      `<div class="i"><img src="../assets/icons/${n}.svg" alt=""><span>${n}</span></div>`
+    ).join('');
+  </script>
+</body></html>

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Colors" viewport="700x230" subtitle="Semantic surfaces & text in both themes" name="Light & dark" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:230px; display:grid; grid-template-columns:1fr 1fr; font-family:var(--font-sans); }
+  .pane { padding:18px 22px; background:var(--bg); }
+  .card { background:var(--surface-1); border:1px solid var(--border-subtle); border-radius:var(--radius-md); box-shadow:var(--shadow-1); padding:14px 16px; }
+  .t1 { color:var(--text-primary); font-size:15px; font-weight:600; }
+  .t2 { color:var(--text-secondary); font-size:13px; margin-top:4px; }
+  .t3 { color:var(--text-muted); font-size:12px; margin-top:8px; }
+  .row { display:flex; gap:8px; margin-top:12px; align-items:center; }
+  .acc { height:28px; padding:0 12px; border-radius:8px; background:var(--accent); color:var(--text-on-accent); font-size:12px; font-weight:600; display:inline-flex; align-items:center; }
+  .lnk { font-size:12px; }
+</style></head>
+<body>
+  <div class="pane">
+    <div class="card">
+      <div class="t1">Light — text-primary</div>
+      <div class="t2">text-secondary on surface-1 over bg</div>
+      <div class="t3">text-muted · border-subtle · shadow-1</div>
+      <div class="row"><span class="acc">accent</span><a class="lnk" href="#">link colour</a></div>
+    </div>
+  </div>
+  <div class="pane" data-theme="dark">
+    <div class="card">
+      <div class="t1">Dark — text-primary</div>
+      <div class="t2">text-secondary on surface-1 over bg</div>
+      <div class="t3">text-muted · border-subtle · shadow-1</div>
+      <div class="row"><span class="acc">accent</span><a class="lnk" href="#">link colour</a></div>
+    </div>
+  </div>
+</body></html>

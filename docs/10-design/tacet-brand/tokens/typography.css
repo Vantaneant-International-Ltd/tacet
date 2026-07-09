@@ -1,0 +1,29 @@
+/* ─────────────────────────────────────────────────────────────
+   TACET · Typography tokens
+   One family, many voices. Hanken Grotesk (Satoshi's closest
+   open match) + Spline Sans Mono for handles, servers, code.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --font-sans: 'Hanken Grotesk', -apple-system, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Spline Sans Mono', 'SF Mono', ui-monospace, 'Menlo', monospace;
+
+  /* Weights */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Scale — size / line-height / tracking */
+  --type-display-size: 56px;  --type-display-line: 62px;  --type-display-track: -0.022em; --type-display-weight: 650;
+  --type-h1-size: 40px;       --type-h1-line: 46px;       --type-h1-track: -0.018em;      --type-h1-weight: 650;
+  --type-h2-size: 28px;       --type-h2-line: 34px;       --type-h2-track: -0.012em;      --type-h2-weight: 600;
+  --type-h3-size: 21px;       --type-h3-line: 28px;       --type-h3-track: -0.008em;      --type-h3-weight: 600;
+  --type-title-size: 17px;    --type-title-line: 24px;    --type-title-track: -0.004em;   --type-title-weight: 600;
+  --type-body-lg-size: 17px;  --type-body-lg-line: 27px;  --type-body-lg-track: 0em;
+  --type-body-size: 15px;     --type-body-line: 23px;     --type-body-track: 0.001em;
+  --type-caption-size: 13px;  --type-caption-line: 18px;  --type-caption-track: 0.004em;
+  --type-micro-size: 11px;    --type-micro-line: 15px;    --type-micro-track: 0.02em;
+  --type-button-size: 15px;   --type-button-line: 20px;   --type-button-track: 0.002em;
+  --type-mono-size: 13px;     --type-mono-line: 20px;     --type-mono-track: 0em;
+}

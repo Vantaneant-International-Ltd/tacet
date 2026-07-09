@@ -1,0 +1,140 @@
+/* ─────────────────────────────────────────────────────────────
+   TACET · Colour tokens
+   Dark-first brand, light-default UI. Theme scope: [data-theme="dark"]
+   Base ramps first, semantic aliases second. Never use ramp values
+   directly in product UI — always the semantic aliases.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Iris (primary) ─────────────────────────────── */
+  --iris-50:  #F4F2FF;
+  --iris-100: #E9E4FF;
+  --iris-200: #D6CCFF;
+  --iris-300: #BCAAFF;
+  --iris-400: #A18BFF;
+  --iris-500: #8A70FF;
+  --iris-600: #7B61FF;  /* brand core */
+  --iris-700: #6A4FE8;
+  --iris-800: #5740BF;
+  --iris-900: #453394;
+  --iris-950: #2A1D5E;
+
+  /* ── Companion accents (use sparingly) ──────────── */
+  --lavender: #B19CFF;   /* glow, focus, illustration */
+  --blossom:  #FFB1E8;   /* warmth, illustration only */
+
+  /* ── Ink (violet-cast neutrals) ─────────────────── */
+  --ink-990: #080014;
+  --ink-950: #0A0613;
+  --ink-900: #120C1E;
+  --ink-850: #171028;
+  --ink-800: #1D1530;
+  --ink-750: #241A3A;
+  --ink-700: #2C2144;
+  --ink-600: #3D3158;
+  --ink-500: #55486F;
+  --ink-400: #776B8F;
+  --ink-300: #9C92B2;
+  --ink-200: #C4BCD6;
+  --ink-100: #E2DDEC;
+  --ink-50:  #F1EEF7;
+  --ink-25:  #F8F7FC;
+  --ink-0:   #FDFDFE;
+
+  /* ── Semantic hues (chroma-matched, calm) ───────── */
+  --moss-500:  #3E9E77;  --moss-600:  #2F8763;  --moss-200: #BFE7D6;  --moss-50: #EDF8F3;
+  --amber-500: #C98F35;  --amber-600: #A97524;  --amber-200: #F0DDB8; --amber-50: #FBF5E9;
+  --rose-500:  #CC5F76;  --rose-600:  #B24A61;  --rose-200:  #F2C9D3; --rose-50:  #FBEEF1;
+  /* dark-mode lifted variants */
+  --moss-300d:  #6FD3A6;
+  --amber-300d: #E4B268;
+  --rose-300d:  #EE8FA3;
+
+  /* ═══ Semantic aliases — LIGHT (default) ═════════ */
+  --bg:              var(--ink-25);
+  --bg-sunken:       var(--ink-50);
+  --surface-1:       #FFFFFF;
+  --surface-2:       var(--ink-25);
+  --surface-3:       var(--ink-50);
+  --surface-overlay: rgba(253, 253, 254, 0.82);
+
+  --text-primary:    var(--ink-900);
+  --text-secondary:  var(--ink-500);
+  --text-muted:      var(--ink-400);
+  --text-inverse:    var(--ink-25);
+  --text-on-accent:  #FFFFFF;
+
+  --accent:          var(--iris-600);
+  --accent-hover:    var(--iris-700);
+  --accent-press:    var(--iris-800);
+  --accent-soft:     var(--iris-100);
+  --accent-soft-hover: var(--iris-200);
+  --accent-text:     var(--iris-700);
+  --link:            var(--iris-700);
+  --link-hover:      var(--iris-800);
+
+  --border-subtle:   rgba(29, 21, 48, 0.08);
+  --border-default:  rgba(29, 21, 48, 0.12);
+  --border-strong:   rgba(29, 21, 48, 0.22);
+  --focus-ring:      0 0 0 2px var(--bg), 0 0 0 4px var(--iris-500);
+
+  --success:         var(--moss-600);
+  --success-soft:    var(--moss-50);
+  --warning:         var(--amber-600);
+  --warning-soft:    var(--amber-50);
+  --error:           var(--rose-600);
+  --error-soft:      var(--rose-50);
+
+  --hover-veil:      rgba(29, 21, 48, 0.04);
+  --press-veil:      rgba(29, 21, 48, 0.08);
+  --selection:       var(--iris-100);
+  --skeleton-base:   var(--ink-50);
+  --skeleton-sheen:  #FFFFFF;
+  --status-online:   var(--moss-500);
+  --status-away:     var(--amber-500);
+}
+
+/* ═══ Semantic aliases — DARK ══════════════════════ */
+[data-theme="dark"] {
+  --bg:              var(--ink-950);
+  --bg-sunken:       var(--ink-990);
+  --surface-1:       var(--ink-900);
+  --surface-2:       var(--ink-850);
+  --surface-3:       var(--ink-800);
+  --surface-overlay: rgba(18, 12, 30, 0.78);
+
+  --text-primary:    var(--ink-50);
+  --text-secondary:  var(--ink-300);
+  --text-muted:      var(--ink-400);
+  --text-inverse:    var(--ink-900);
+  --text-on-accent:  #FFFFFF;
+
+  --accent:          var(--iris-500);
+  --accent-hover:    var(--iris-400);
+  --accent-press:    var(--iris-600);
+  --accent-soft:     rgba(123, 97, 255, 0.16);
+  --accent-soft-hover: rgba(123, 97, 255, 0.24);
+  --accent-text:     var(--iris-300);
+  --link:            var(--iris-300);
+  --link-hover:      var(--iris-200);
+
+  --border-subtle:   rgba(226, 221, 236, 0.07);
+  --border-default:  rgba(226, 221, 236, 0.11);
+  --border-strong:   rgba(226, 221, 236, 0.22);
+  --focus-ring:      0 0 0 2px var(--bg), 0 0 0 4px var(--iris-400);
+
+  --success:         var(--moss-300d);
+  --success-soft:    rgba(111, 211, 166, 0.12);
+  --warning:         var(--amber-300d);
+  --warning-soft:    rgba(228, 178, 104, 0.12);
+  --error:           var(--rose-300d);
+  --error-soft:      rgba(238, 143, 163, 0.12);
+
+  --hover-veil:      rgba(226, 221, 236, 0.05);
+  --press-veil:      rgba(226, 221, 236, 0.09);
+  --selection:       var(--iris-950);
+  --skeleton-base:   var(--ink-850);
+  --skeleton-sheen:  var(--ink-750);
+  --status-online:   var(--moss-300d);
+  --status-away:     var(--amber-300d);
+}

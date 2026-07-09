@@ -1,0 +1,69 @@
+<!-- @dsCard group="Components" viewport="700x330" subtitle="Card, dialog, toasts, skeletons" name="Surfaces" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script>
+/* Load the platform-compiled bundle if present; otherwise the local fallback bundle. */
+(function () {
+  function loadSync(url) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', url, false);
+      x.send();
+      if (x.status >= 200 && x.status < 300 && x.responseText) { (0, eval)(x.responseText); return true; }
+    } catch (e) {}
+    return false;
+  }
+  var base = '../../';
+  loadSync(base + '_ds_bundle' + '.js') || loadSync(base + 'tacet-bundle.js');
+})();
+</script>
+</head>
+<body style="margin:0; background:var(--bg)">
+<div id="root"></div>
+<script type="text/babel">
+const NS = (() => { for (const k of Object.getOwnPropertyNames(window)) { try { const v = window[k]; if (v && typeof v === 'object' && typeof v.Card === 'function' && typeof v.Toast === 'function') return v; } catch (e) {} } return null; })();
+const { Card, Dialog, Toast, Skeleton, Button } = NS || {};
+
+function Demo() {
+  return (
+    <div style={{ padding:'18px 22px', display:'grid', gridTemplateColumns:'240px 1fr', gap:16 }}>
+      <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+        <Card interactive>
+          <div style={{ fontSize:15, fontWeight:600, color:'var(--text-primary)' }}>A quiet card</div>
+          <div style={{ fontSize:13, color:'var(--text-secondary)', marginTop:4 }}>surface-1 · radius 14 · shadow-1, lifts on hover</div>
+        </Card>
+        <Card padding={16}>
+          <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+            <Skeleton circle height={36}/>
+            <div style={{ flex:1, display:'flex', flexDirection:'column', gap:6 }}>
+              <Skeleton width="55%" height={12}/>
+              <Skeleton width="80%" height={12}/>
+            </div>
+          </div>
+        </Card>
+        <div style={{ display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start' }}>
+          <Toast tone="success" action="Undo">Post shared</Toast>
+          <Toast tone="error">Couldn't reach quiet.garden</Toast>
+        </div>
+      </div>
+      <div style={{ position:'relative', transform:'scale(1)', overflow:'hidden', borderRadius:'var(--radius-md)', border:'1px solid var(--border-subtle)', minHeight:280 }}>
+        <Dialog
+          open
+          title="Move home?"
+          description="Your people, posts and bookmarks come with you. quiet.garden will forward visitors for a year."
+          width={360}
+          actions={<React.Fragment><Button variant="ghost">Not now</Button><Button>Move home</Button></React.Fragment>}
+        />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  NS ? <Demo/> : <div style={{ padding:20, fontFamily:'var(--font-mono)', fontSize:12 }}>bundle not built yet</div>
+);
+</script>
+</body></html>

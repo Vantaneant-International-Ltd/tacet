@@ -1,0 +1,17 @@
+<!-- @dsCard group="Foundations" viewport="700x150" subtitle="Soft everywhere, never sharp" name="Radius" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; height:150px; background:var(--bg); display:flex; align-items:center; justify-content:center; gap:20px; }
+  .r { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .box { width:72px; height:56px; background:var(--surface-1); border:1px solid var(--border-strong); }
+  code { font-family:var(--font-mono); font-size:10px; color:var(--text-muted); }
+</style></head>
+<body>
+  <script>
+    const steps = [['xs',6,'chips'],['sm',10,'buttons'],['md',14,'cards'],['lg',20,'dialogs'],['xl',28,'sheets'],['full',28,'pills']];
+    document.body.innerHTML = steps.map(([n,px,use]) =>
+      `<div class="r"><div class="box" style="border-radius:${n==='full'?'999px':px+'px'}"></div><code>${n} · ${n==='full'?'999':px} · ${use}</code></div>`
+    ).join('');
+  </script>
+</body></html>
