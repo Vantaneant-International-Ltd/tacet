@@ -17,13 +17,11 @@ export function HeroSection({
       <div className="lp-hero-center">
         <TacetMark className="lp-hearth lp-hero-mark" />
         <h1 className="lp-h1 lp-hero-title">
-          The internet, <span className="lp-accent-word">quiet enough</span> to feel
-          like home.
+          The social web.
+          <br />
+          <span className="lp-accent-word">Finally.</span>
         </h1>
-        <p className="lp-hero-sub">
-          Tacet is your home on the open social web. Your people, your pace, your
-          place — on an internet nobody owns.
-        </p>
+        <p className="lp-hero-sub">One identity. Your people. No walls.</p>
         <div className="lp-cta-row lp-hero-cta">
           <button className="lp-btn" onClick={onJoin}>
             Join the beta <span aria-hidden="true">&rarr;</span>
