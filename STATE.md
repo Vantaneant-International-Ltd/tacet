@@ -20,10 +20,30 @@
   immutable on hashed assets. Enabled Workers **observability** (logging). Config/secret
   separation intact (placeholders in tracked `wrangler.jsonc`; real ids only in git-ignored
   `wrangler.local.jsonc`). Verified: typecheck + build + 75 tests, dry-run deploy (bindings
-  resolve), and headers confirmed live under the runtime. **NOT yet deployed — hard gate:**
-  `tacet.social` nameservers are still at Blacknight (not on Cloudflare), so the zone/custom
-  domain can't be attached. Deploy is blocked on moving nameservers (Blacknight login),
-  adding the zone, applying remote D1 migrations 0011–0013, and confirming `SESSION_SECRET`.
+  resolve), and headers confirmed live under the runtime.
+
+- **Production DEPLOYED (2026-07-09) — live on `*.workers.dev`; custom domain pending one manual step.**
+  Nameservers for `tacet.social` were moved to Cloudflare (`anirban`/`serenity.ns.cloudflare.com`);
+  the zone is **Active** on the account that owns the existing D1/R2 (Option A, reuse — no data move).
+  Done this session:
+  - Remote D1 migrations **0010–0013 applied** to the live `tacet` DB (0001–0009 were already applied);
+    `migrations list --remote` now clean.
+  - `wrangler deploy --config wrangler.local.jsonc` succeeded (Worker + SPA assets); bindings resolve
+    (DB `tacet`, BUCKET `tacet-images`, ASSETS). `SESSION_SECRET` already present (not rotated).
+  - **Live + verified on `https://tacet.singpurwalakevin.workers.dev`:** `/` 200 (SPA shell),
+    `/api/health` 200 `{"ok":true}` (`Cache-Control: no-store`), `/api/openweb/today` & `/api/openweb/people`
+    200 with real federated data; security headers present (CSP, HSTS, `X-Frame-Options: DENY`, nosniff).
+  - **Custom domains NOT yet attached — MANUAL dashboard step remaining.** `wrangler` custom-domain
+    attach failed at the Cloudflare API (`.../domains/records`) because the **apex `tacet.social`
+    already has a proxied A record** (imported during the zone scan; currently returns a broken 520,
+    not the app). `www.tacet.social` has no record. The CLI OAuth token has zone-read but **not**
+    DNS-write scope, so this can't be automated from here. **To finish:** Cloudflare dashboard →
+    Workers & Pages → `tacet` → Settings → Domains & Routes → **Add Custom Domain** → `tacet.social`
+    (accept "replace existing DNS record") and `www.tacet.social`. Then re-run the smoke tests against
+    `https://tacet.social`. Alternatively add the routes to `wrangler.local.jsonc` **after** the
+    conflicting apex record is removed:
+    `"routes":[{"pattern":"tacet.social","custom_domain":true},{"pattern":"www.tacet.social","custom_domain":true}]`.
+  - **Rollback:** `npx wrangler rollback --config wrangler.local.jsonc` (prior live version was `****ea21`).
   See `docs/08-roadmap/deployment-plan.md`.
 
 - **Publishing philosophy** (`docs/09-product/publishing-philosophy.md`) — foundational
