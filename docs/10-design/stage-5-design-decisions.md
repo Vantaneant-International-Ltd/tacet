@@ -3,9 +3,12 @@
 > **Milestone:** Visual System V2 · **Stage:** 5 (Self-critique & reduction) · **Status:** Complete.
 > A skeptical review of the whole corpus (16 docs + ~54 wireframe screens) surfaced a small number
 > of real conflicts, two undefined token families, one doctrine slip, and several reduce/merge wins.
-> This doc records **every decision** — what was fixed, what was cut, what the Figma build must add.
-> Per the revised workflow, **Figma is now the visual source of truth**; the markdown wireframes are
-> supporting rationale, and these decisions are the spec the Figma wireframes are built from.
+> This doc records **every decision** — what was fixed, what was cut, what the High-Fidelity build
+> must add. Per the revised workflow, **Claude Design is the High-Fidelity build environment**
+> (replacing Figma); the **repository remains the source of truth**. The markdown wireframes are
+> supporting rationale, and these decisions are the spec the High-Fidelity screens are built from.
+> *(References to "the Figma build" below mean the Claude Design build — see
+> [stage-6-design-direction.md](./stage-6-design-direction.md).)*
 
 ---
 

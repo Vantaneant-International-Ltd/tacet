@@ -155,10 +155,10 @@
     old rooms views (`RoomList`, `Feed`, `Timeline`, …) remain in the tree but are
     routed around. Sign-in (`Enter`) rebuilt on the design system and routes to
     `/today`.
-  - **Design source of truth caveat:** the Figma/Claude Design workspace could not be
-    opened (design access unauthenticated this session), so the alpha was built to the
-    repo's `docs/03-design-system` spec by Ren's direction — to be reconciled against
-    the approved design later.
+  - **Design source of truth caveat:** the Claude Design workspace (our High-Fidelity
+    environment, replacing Figma) could not be opened this session, so the alpha was
+    built to the repo's `docs/03-design-system` spec by Ren's direction — to be
+    reconciled against the approved High-Fidelity design later.
   - Typecheck + `vite build` green. Local dev: `npm run dev` (→ 8787).
 
 ---

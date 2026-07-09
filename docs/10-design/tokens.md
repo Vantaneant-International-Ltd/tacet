@@ -308,8 +308,8 @@ Formalises the decision to make desktop a designed tier, not scaled mobile. See
 
 These tokens land in [`client/src/design/theme.css`](../../client/src/design/theme.css) as CSS
 custom properties during the (later) implementation milestone — **not** in this design milestone.
-Stage 2 defines them; implementation spends them. Naming here is final so code and Figma variables
-(Stage 6) share one vocabulary.
+Stage 2 defines them; implementation spends them. Naming here is final so code and Claude Design
+variables (Stage 6) share one vocabulary.
 
 ---
 

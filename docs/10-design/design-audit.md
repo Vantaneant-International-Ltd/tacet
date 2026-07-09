@@ -264,7 +264,10 @@ Stage 1 is complete. Proceeding to:
   surface lives, tighten flows. (Navigation stays; clarity improves.)
 - **Stage 4 — Low-fidelity wireframes** (grey, ~30–50 screens).
 - **Stage 5 — Self-critique and reduction.**
-- **Stage 6 — High-fidelity in Figma** (desktop/tablet/mobile, components, variables, prototype).
+- **Stage 6 — High Fidelity + Prototype in Claude Design** (desktop/tablet/mobile, components,
+  variables, prototype). *(Claude Design replaces Figma — see
+  [stage-6-design-direction.md](./stage-6-design-direction.md).)*
+- **Stage 7 — Claude Design → Repository handoff** (the repo remains the source of truth).
 
 **Design North Star for the milestone:** *Would Apple ship this? Would Linear accept it? Will it
 still feel modern in five years? Does it feel unmistakably like Tacet?* If any answer is no, keep

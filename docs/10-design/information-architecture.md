@@ -57,23 +57,26 @@ Every screen Tacet has, and where it hangs. Nothing floats; nothing duplicates.
 
 ## 3. The three-column canvas per pillar
 
-The [Context Column Law](./responsive.md#3-the-context-column-is-a-law-not-a-slot): the right column
-helps you **understand or continue the current task**, or it is **empty**. Here is exactly what each
-pillar puts in each column at the wide tier (≥1200px). Below that tier, the context column's content
-folds into the main flow or disappears — nothing *lives* only there.
+The [Context Column Law](./responsive.md#3-the-context-column-is-a-law-your-world-never-your-score):
+the right column is a **living contextual space** that helps you **understand and move through your
+world** — governed by the **informing vs. manipulating** test, not by emptiness
+([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)). Here is what each pillar may put in
+each column at the wide tier (≥1200px). Below that tier, the content folds into the main flow or
+disappears — nothing *lives* only there.
 
-| Pillar | Rail | Feed (centre, fixed reading measure) | Context column (contextual only) |
+| Pillar | Rail | Feed (centre, fixed reading measure) | Context column (world-directed; informing, never a score) |
 |---|---|---|---|
-| **Today** | nav | The bounded digest of moments | *Continue where you left off* — the one article/thread you were mid-way through. If none: **empty**. |
-| **People** | nav | Your people (list, faces-first) | The person under focus: quick card + *people you both know*. If none selected: **empty**. |
-| **Discover** | nav | Human recommendations, communities | *About the place you're exploring* — a community's purpose in one sentence + a few people there. |
+| **Today** | nav | The bounded digest of moments | *Continue where you left off*; *people close to you* who are around; a calm *worth exploring* door; represented momentum from your world (a conversation/piece, framed — never a tally). Rests quietly if genuinely nothing applies. |
+| **People** | nav | Your people (list, faces-first) | The person under focus: quick card + *people you both know*; who's recently around. |
+| **Discover** | nav | Human recommendations, communities | *About the place you're exploring* — a community's purpose in one sentence, a few people there, communities active today. |
 | **Conversations** | nav | Thread list, or the open thread | *The thread's participants + the moment it hangs off* — so context stays in view while reading. |
-| **Me** | nav | Your home: owned + kept content | *Your private context* — drafts/saved counts (for you, never public), identity/workspace switch. |
+| **Me** | nav | Your home: owned + kept content | *Your private self-context* — drafts/saved counts (for you, never a public score), identity/workspace switch. |
 | **Remote Profile** | nav | Their posts/media | *About this person* — bio, where they live (a human place), people you both follow. |
 
-This is the discipline that stops the wide canvas from becoming the reference mockups' sidebar of
-trending tallies and "federation status." If the current screen has nothing genuinely helpful to
-add on the right, the feed simply centres.
+This is the discipline that stops the wide canvas from becoming the reference mockups' *manipulative*
+sidebar — vanity tallies about you, a ranked leaderboard, a live "federation status" ticker — while
+still letting it **make the open social web feel alive.** The enemy is the score, not the world. When
+a screen genuinely has nothing to add, the column rests quietly rather than inventing filler.
 
 ---
 

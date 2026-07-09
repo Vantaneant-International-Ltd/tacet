@@ -10,8 +10,9 @@
 ## What this is
 
 Visual System V2 is Tacet's design language, intended to hold for the next decade. It is defined in
-documents first (this corpus), then wireframed, then built in Figma, then implemented. **System
-first, product second, polish last.** A beautiful screen without a coherent system does not ship.
+documents first (this corpus), then wireframed, then built in **Claude Design** (our High-Fidelity
+tool and prototype environment; it replaces Figma), then implemented. **System first, product second,
+polish last.** A beautiful screen without a coherent system does not ship.
 
 This corpus supersedes nothing in `03-design-system/` — it *matures* it. Where V1 defined tokens,
 V2 completes them; where V1 shipped primitives, V2 specifies every state; where V1 left gaps (motion
@@ -55,10 +56,18 @@ Recorded so future contributors understand **why**, not just what.
 - **D5 — Media becomes editorial.** Tokenised scrims, ratios, blur-up, captions.
 - **D6 — Full three-column desktop canvas.** Rail · reading feed (fixed measure) · context column.
   *(User decision.)*
-- **D7 — The Context Column Law.** The right column is contextual to the current task — helps you
-  understand or continue what you're doing — or it is empty. Never a dashboard. *(User decision.)*
-- **D8 — Extract the references' craft, reject their casino.** Depth, media-first, desktop canvas
-  in; public counts, story rings, trending tallies, and the federation-status panel out. *(Audit §6.)*
+- **D7 — The Context Column Law: your world, never your score.** The right column is a living
+  contextual space — people close to you, what your world is reading, active conversations,
+  communities that moved, a calm onward door. Rich when genuine, quiet when not. Never a dashboard, a
+  leaderboard, or anxiety furniture; gated by informing-vs-manipulating, not by emptiness.
+  *(Revised 2026-07-09 — [ADR-012](../06-decisions/ADR-012-the-context-column-law.md),
+  [stage-6-design-direction.md](./stage-6-design-direction.md).)*
+- **D8 — Extract the references' craft, reject their casino — but represent the world.** Depth,
+  media-first, desktop canvas, and the open web's *real life* (people, momentum, communities) in;
+  self-directed vanity counts, people-rankings, story-ring streaks, and the live federation-status
+  ticker out. The line is informing vs manipulating, not rich vs empty. *(Revised 2026-07-09;
+  supersedes the earlier "reject trending/federation entirely" reading — see
+  [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md).)*
 - **D9 — Both themes designed.** Light gets its own loving pass, not an inversion.
 - **D10 — Landing stays a distinct "keynote surface."** It keeps its own dark visual language; the
   boundary is documented rather than merged.
@@ -67,9 +76,11 @@ Recorded so future contributors understand **why**, not just what.
 
 ## Stage map
 
-1. **Audit** ✅ · 2. **Design System (this corpus)** ⏳ · 3. **Information Architecture** ·
-4. **Low-fi wireframes (~30–50, grey)** · 5. **Self-critique & reduction** ·
-6. **High-fidelity in Figma** (desktop/tablet/mobile, components, variables, prototype).
+1. **Design Audit** ✅ · 2. **Design System V2 (this corpus)** ⏳ · 3. **Information Architecture** ·
+4. **Low Fidelity / Wireframes (~30–50, grey)** · 5. **Review & Reduction** ·
+6. **High Fidelity + Prototype in Claude Design** (desktop/tablet/mobile, components, variables,
+prototype) · 7. **Claude Design → Repository handoff** (repo stays the source of truth).
+See [stage-6-design-direction.md](./stage-6-design-direction.md) for the full workflow.
 
 ## The bar
 

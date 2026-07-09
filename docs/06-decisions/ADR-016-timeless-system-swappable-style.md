@@ -31,7 +31,7 @@ Design for **timelessness at the level of the system, and treat visual style as 
    never raw values.
 2. **Style is a thin, swappable layer.** The specific accent *hue*, the specific *typefaces*, and the
    *amount* of rounding are Tacet's current identity but are explicitly **not sacred**. Any of them
-   can be re-tuned in one place (a token value / a Figma variable) without structural change —
+   can be re-tuned in one place (a token value / a Claude Design variable) without structural change —
    because nothing depends on the value, only the name.
 3. **Remove what is fashionable-only.** Anything that exists solely because it is in vogue *and* earns
    nothing structural is cut. (First application: the frosted-glass `backdrop-filter` blur, removed in

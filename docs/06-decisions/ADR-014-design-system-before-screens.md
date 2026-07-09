@@ -21,8 +21,11 @@ a system rather than to isolated pixels.
 Order is doctrine: **system first, product second, polish last.** The tokens,
 components, principles, and information architecture are settled in documents
 first (the Visual System V2 corpus), then wireframed low-fidelity in grey, then
-critiqued and reduced, and only then taken to high fidelity in Figma. Wireframes
-precede visuals; the system precedes the wireframes.
+critiqued and reduced, and only then taken to high fidelity in **Claude Design**
+(our High-Fidelity tool and prototype environment, which replaces Figma; the
+repository remains the source of truth — see
+[../10-design/stage-6-design-direction.md](../10-design/stage-6-design-direction.md)).
+Wireframes precede visuals; the system precedes the wireframes.
 
 The governing acceptance criterion is blunt: **a beautiful interface without a
 coherent system will not be accepted.** A gorgeous screen that borrows an

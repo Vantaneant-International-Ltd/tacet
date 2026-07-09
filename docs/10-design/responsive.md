@@ -49,33 +49,42 @@ it.
 
 ---
 
-## 3. The context column is a law, not a slot
+## 3. The context column is a law: your world, never your score
 
-> **Context Column Law.** The right-hand column is *contextual to what the person is doing right
-> now*. Its only job is to help them **understand or continue the current thing**. It is never a
-> dashboard, never a set of standalone widgets, never a scoreboard. When nothing genuinely helpful
-> exists for the current view, the column is **empty** — the feed simply centres.
+> **Context Column Law ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)).** The
+> right-hand column is a **living contextual space** whose job is to help a person **understand and
+> move through their world** — people close to them, what their world is reading, active
+> conversations, communities that moved, a calm onward door. It may be genuinely rich. It is **never**
+> a dashboard, a leaderboard, a personal-analytics panel, a self-directed scoreboard, or anxiety
+> furniture. The gate is the **informing vs. manipulating** test (design-principles L11), not
+> emptiness. When a view genuinely has nothing to add, the column rests quietly — but *quiet is a
+> composed state, not a blank slot to be proud of.*
 
-This is the single rule that keeps the wide canvas from becoming the reference mockups' sidebar of
-trending tallies and "federation status." What appears is **derived from the current screen:**
+This keeps the wide canvas from becoming the reference mockups' *manipulative* sidebar (vanity
+tallies about you, a ranked leaderboard, a live-ticking "federation status" dashboard) while letting
+it do the thing a home should — **make the open social web feel alive without becoming noisy.** What
+appears is derived from the current screen and the person's real relationships:
 
-| Current screen | Context column shows | It helps you… |
+| Current screen | Context column may show | It helps you… |
 |---|---|---|
-| **Today** | "Continue where you left off" — the last conversation or article you were reading; nothing else | resume, then be done |
-| **People** | The selected person's quick card — avatar, name, a line of bio, "people you both know" | understand who you're about to open |
-| **Profile (remote)** | About this person; where they post from (as a human place, not a server); people you both follow | understand this person before you follow |
-| **Discover** | About the place you're exploring (a community's purpose in one human sentence); a few people there | understand a corner of the open web |
+| **Today** | Continue where you left off; people close to you who are around; a calm "worth exploring" onward door; represented momentum from *your* world (a conversation, a piece — framed, not tallied) | resume, feel your world is alive, then be done |
+| **People** | The selected person's quick card — avatar, name, a line of bio, "people you both know"; who's recently around | understand who you're about to open |
+| **Profile (remote)** | About this person; where they post from (a human place, not a server); people you both follow | understand this person before you follow |
+| **Discover** | About the place you're exploring (a community's purpose in one human sentence); a few people there; communities active today | understand a corner of the open web |
 | **Conversation** | The participants; the moment the thread hangs off of | keep the thread's context in view while reading |
-| **Me** | Quiet counts *as private context* (drafts, saved) and identity/workspace switch — never public vanity numbers | manage your own home |
+| **Me** | Quiet counts *as private self-context* (drafts, saved) and identity/workspace switch — never a public score about your reach | manage your own home |
 
-Rules that keep it honest:
-- **No content that isn't about the current view.** If you're reading Today, the column does not
-  advertise Discover.
-- **No metrics as rewards.** Any number here is private context for *you* (e.g. "3 drafts"), never a
-  public tally.
-- **Degrades to nothing.** Below `--bp-xl` the column's content either folds into the main flow
-  (e.g. "people you both know" becomes a row on the profile) or is simply not shown. No feature
-  *lives* only in the context column.
+Rules that keep it honest (the informing/manipulating line, applied):
+- **World-directed and relationship-derived content is welcome** — it informs. Content unrelated to
+  the person's world is not (the column is not an ad space for other pillars).
+- **No self-directed scores.** Numbers about *your* reach, rankings of people, streaks, or growth
+  mechanics never appear. A number about the *world* (softened toward qualitative where a raw tally
+  would read as a scoreboard) or private self-context ("3 drafts") is fine.
+- **No anxiety furniture** — no red counts, urgency halos, or a live-metrics ticker. Represent
+  momentum calmly; never manufacture a race.
+- **Degrades gracefully.** Below `--bp-xl` the column's content folds into the main flow (e.g.
+  "people you both know" becomes a row on the profile) or is not shown. No feature *lives* only in
+  the context column.
 
 ---
 
@@ -132,7 +141,8 @@ Rules that keep it honest:
 ## 8. What to verify (Stage 6 / implementation)
 
 - The reading column measure is identical desktop → ultra-wide (no line-length creep).
-- The context column is genuinely empty on views with nothing contextual, and never shows a metric
-  as a reward.
+- The context column is genuinely useful (world-directed, relationship-derived) or quietly at rest —
+  never a dashboard, a people-ranking, or a self-directed score. Every block passes the
+  informing/manipulating test.
 - Nothing is *only* reachable in the context column.
 - Every tier looks designed in isolation — screenshot each at 390 / 834 / 1024 / 1440 / 1728px.
