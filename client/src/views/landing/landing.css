@@ -419,18 +419,43 @@
 .lp-manifesto-line.gap { margin-top: 1.6rem; }
 .lp-manifesto-line.accent { color: var(--lp-accent); }
 
-/* ---- Final CTA + footer ---- */
-.lp-final .lp-sub { margin-bottom: 0.5rem; }
+/* ---- Final CTA band (dark, lamplit purple) ---- */
+.lp-band-cta {
+  min-height: 66vh;
+  background: linear-gradient(180deg, transparent, #1b1633 45%, #241a3e);
+}
+.lp-final .lp-sub { margin-bottom: 0.5rem; max-width: 40rem; }
+
+/* ---- Footer ---- */
 .lp-footer {
   border-top: 1px solid var(--lp-card-brd);
-  padding: 2.5rem 1.5rem 3.5rem;
-  display: flex; flex-wrap: wrap; gap: 1.4rem;
+  padding: 2.4rem clamp(1.25rem, 4vw, 3rem) 3rem;
+  display: flex; flex-wrap: wrap; gap: 1.2rem 2rem;
+  align-items: center; justify-content: space-between;
+  background: var(--lp-bg);
+}
+.lp-footer-brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--lp-ink); text-decoration: none;
+  font-size: 1.1rem; font-weight: 300;
+}
+.lp-footer-links {
+  display: flex; flex-wrap: wrap; gap: 1.1rem;
   align-items: center; justify-content: center;
-  text-align: center;
 }
-.lp-footer a, .lp-footer button {
+.lp-footer-links a, .lp-footer-links button {
   color: var(--lp-ink-faint); font-size: 0.85rem; font-family: inherit;
-  background: none; border: none; cursor: pointer; transition: color 180ms ease;
+  background: none; border: none; cursor: pointer; text-decoration: none;
+  transition: color 180ms ease;
 }
-.lp-footer a:hover, .lp-footer button:hover { color: var(--lp-accent); }
-.lp-footer-mark { color: var(--lp-ink-dim); letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.75rem; }
+.lp-footer-links a:hover, .lp-footer-links button:hover { color: var(--lp-accent); }
+.lp-footer-copy { color: var(--lp-ink-faint); font-size: 0.8rem; }
+@media (max-width: 46rem) {
+  .lp-footer { flex-direction: column; text-align: center; gap: 1.3rem; }
+}
+
+/* Larger sunburst for the convergence core; white so it reads on the accent disc. */
+.lp-mark-lg { width: 1.9rem; height: 1.9rem; }
+.lp-core .lp-mark {
+  background: conic-gradient(from 0deg, #ffffff, #e6ddff, #ffffff, #e6ddff, #ffffff);
+}
