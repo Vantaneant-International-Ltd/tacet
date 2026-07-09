@@ -7,6 +7,7 @@ import { IconButton, Button, Avatar } from "../design/primitives";
 import { useResolvedTheme, setTheme } from "../design/theme";
 import { me } from "./mock";
 import { ComposeSheet } from "./ComposeSheet";
+import { TacetMark } from "../views/landing/TacetMark";
 
 type NavItem = { to: string; label: string; icon: IconName };
 
@@ -46,7 +47,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Desktop side rail */}
       <aside className="t-rail" aria-label="Primary">
         <Link to="/today" className="t-rail__brand" aria-label="Tacet home">
-          <span className="t-rail__mark">Tacet</span>
+          <TacetMark className="t-mark" />
+          <span className="t-rail__mark">tacet</span>
         </Link>
 
         <nav className="t-rail__nav">
@@ -59,12 +61,13 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <Icon name={item.icon} size={22} />
               <span>{item.label}</span>
+              {item.to === "/conversations" && <span className="t-navitem__dot" aria-hidden="true" />}
             </Link>
           ))}
         </nav>
 
         <Button variant="primary" icon="compose" full className="t-rail__compose" onClick={() => setComposing(true)}>
-          Compose
+          New
         </Button>
 
         <div className="t-rail__foot">
@@ -78,7 +81,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Mobile top bar */}
       <header className="t-topbar">
-        <Link to="/today" className="t-topbar__brand" aria-label="Tacet home">Tacet</Link>
+        <Link to="/today" className="t-topbar__brand" aria-label="Tacet home">
+          <TacetMark className="t-mark t-mark--sm" />
+          <span>tacet</span>
+        </Link>
         <div className="t-topbar__actions">
           <ThemeToggle />
         </div>

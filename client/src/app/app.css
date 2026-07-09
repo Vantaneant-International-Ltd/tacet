@@ -8,7 +8,7 @@
 
 .t-topbar {
   position: sticky;
-  top: 0;
+  top: var(--devbar-h, 0px);
   z-index: 20;
   display: flex;
   align-items: center;
@@ -19,7 +19,11 @@
   backdrop-filter: saturate(1.1) blur(12px);
   border-bottom: 1px solid var(--color-hairline);
 }
-.t-topbar__brand { font-size: var(--text-heading); font-weight: 500; letter-spacing: -0.01em; }
+.t-topbar__brand { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-heading); font-weight: 500; letter-spacing: -0.01em; }
+/* The Hearth mark in the app chrome (iris; dot uses currentColor here). */
+.t-mark { width: 1.6rem; height: 1.6rem; color: var(--color-accent); flex: none; }
+.t-mark .lp-hearth-dot { fill: currentColor; }
+.t-mark--sm { width: 1.4rem; height: 1.4rem; }
 
 .t-main {
   padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
@@ -86,20 +90,32 @@
 
   .t-rail {
     position: sticky;
-    top: 0;
+    top: var(--devbar-h, 0px);
     align-self: start;
-    height: 100vh;
+    height: calc(100vh - var(--devbar-h, 0px));
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-5) var(--space-4);
     border-right: 1px solid var(--color-hairline);
+    background: linear-gradient(180deg, var(--color-surface), var(--color-canvas));
   }
-  .t-rail__brand { padding: var(--space-2) var(--space-3) var(--space-5); }
+  .t-rail__brand {
+    position: relative;
+    display: flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3) var(--space-5);
+  }
+  /* Accent lamp glow behind the wordmark. */
+  .t-rail__brand::before {
+    content: ""; position: absolute; top: -0.5rem; left: 0.5rem;
+    width: 6rem; height: 4rem; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent);
+  }
   .t-rail__mark { font-size: var(--text-title); font-weight: 500; letter-spacing: -0.01em; }
   .t-rail__nav { display: flex; flex-direction: column; gap: 2px; }
 
   .t-navitem {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -111,9 +127,18 @@
     transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
   }
   .t-navitem:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
-  .t-navitem.is-active { background: var(--color-accent-subtle); color: var(--color-accent); }
+  /* Active = accent-subtle gradient pill with accent text. */
+  .t-navitem.is-active {
+    background: linear-gradient(180deg, var(--color-accent-subtle), color-mix(in srgb, var(--color-accent-subtle) 55%, transparent));
+    color: var(--color-accent);
+  }
+  /* Presence dot on Conversations (never a count). */
+  .t-navitem__dot {
+    width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full);
+    background: var(--status-online, var(--color-positive)); margin-left: auto;
+  }
 
-  .t-rail__compose { margin-top: var(--space-4); }
+  .t-rail__compose { margin-top: var(--space-4); box-shadow: var(--glow-accent, 0 8px 28px color-mix(in srgb, var(--color-accent) 22%, transparent)); }
   .t-rail__foot {
     margin-top: auto;
     display: flex;

@@ -1,26 +1,34 @@
-// Minimal, non-moving developer notice. Mounted ONCE at the App root so it shows on
-// every page (landing, welcome funnel, auth, and the app). In-flow (not fixed) so it
-// pushes content down at rest and scrolls away — never covering the app's sticky rail
-// or top bar. Self-contained. When the site is stable, delete this file + its single
-// mount in App.tsx.
+import { usePath } from "../../router";
+
+// Minimal developer notice, pinned at the very top on every page. On the app (read-only
+// walkable alpha) it says so and names the source; elsewhere it flags the dev preview.
+// It exposes --devbar-h so sticky app chrome (rail, top bar) can sit just below it.
+// When the site is stable, delete this file + its single mount in App.tsx.
+const APP_PREFIXES = ["/today", "/people", "/discover", "/conversations", "/me", "/p/", "/c/"];
+
 export function DevBanner() {
+  const path = usePath();
+  const isApp = APP_PREFIXES.some((p) => path === p || path.startsWith(p));
   return (
     <>
       <style>{css}</style>
       <div className="devbar" role="status">
         <span className="devbar-dot" aria-hidden="true" />
-        Developer preview — breaking changes. Nothing here is final.
+        {isApp
+          ? "Read-only preview — live data from the open social web (ActivityPub). Nothing here saves yet."
+          : "Developer preview — breaking changes. Nothing here is final."}
       </div>
     </>
   );
 }
 
 const css = `
+:root { --devbar-h: 2.15rem; }
 .devbar {
-  position: relative;
+  position: sticky;
+  top: 0; left: 0; right: 0;
   z-index: 2147483000;
-  width: 100%; box-sizing: border-box;
-  height: 2.15rem;
+  height: var(--devbar-h);
   display: flex; align-items: center; justify-content: center; gap: 0.55rem;
   background: #14131a;
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
