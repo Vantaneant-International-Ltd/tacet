@@ -33,18 +33,26 @@
   - **Live + verified on `https://tacet.singpurwalakevin.workers.dev`:** `/` 200 (SPA shell),
     `/api/health` 200 `{"ok":true}` (`Cache-Control: no-store`), `/api/openweb/today` & `/api/openweb/people`
     200 with real federated data; security headers present (CSP, HSTS, `X-Frame-Options: DENY`, nosniff).
-  - **Custom domains NOT yet attached — MANUAL dashboard step remaining.** `wrangler` custom-domain
-    attach failed at the Cloudflare API (`.../domains/records`) because the **apex `tacet.social`
-    already has a proxied A record** (imported during the zone scan; currently returns a broken 520,
-    not the app). `www.tacet.social` has no record. The CLI OAuth token has zone-read but **not**
-    DNS-write scope, so this can't be automated from here. **To finish:** Cloudflare dashboard →
-    Workers & Pages → `tacet` → Settings → Domains & Routes → **Add Custom Domain** → `tacet.social`
-    (accept "replace existing DNS record") and `www.tacet.social`. Then re-run the smoke tests against
-    `https://tacet.social`. Alternatively add the routes to `wrangler.local.jsonc` **after** the
-    conflicting apex record is removed:
-    `"routes":[{"pattern":"tacet.social","custom_domain":true},{"pattern":"www.tacet.social","custom_domain":true}]`.
   - **Rollback:** `npx wrangler rollback --config wrangler.local.jsonc` (prior live version was `****ea21`).
   See `docs/08-roadmap/deployment-plan.md`.
+
+- **Custom-domain cutover (2026-07-09) — `www.tacet.social` LIVE; apex `tacet.social` blocked on one record deletion.**
+  Attached via the Cloudflare Workers-domains API (`PUT /accounts/{acct}/workers/domains`) with an
+  account API token (Workers scope; token was single-use and must be rotated — it was shared in chat).
+  - **`www.tacet.social` ✅ LIVE + verified** (cert provisioned): `/` 200 (SPA + CSP/HSTS/`X-Frame-Options: DENY`/nosniff),
+    `/api/health` 200 `{"ok":true}` `Cache-Control: no-store`, `/api/openweb/today` & `/people` 200 non-empty.
+    *(Verified with IP-pinned `curl --resolve` because the sandbox blocks fresh UDP DNS; DoH confirmed the record.)*
+  - **Apex `tacet.social` ⛔ still blocked.** Attach returned CF error **100117** — the apex already has an
+    *externally-managed* A record (stale Blacknight import → dead host, returns 520). The Workers-scoped
+    token can *create* new records (www worked) but **cannot delete** the pre-existing apex record; that
+    needs **Zone / DNS / Edit**, which the token lacks. **To finish (either):** (a) dashboard → DNS →
+    Records → delete the apex `A tacet.social` record, then attach via API:
+    `PUT /accounts/{acct}/workers/domains {zone_id, hostname:"tacet.social", service:"tacet", environment:"production"}`;
+    or (b) provide a token with **Zone/DNS/Edit + Workers Scripts/Edit** and re-run (auto delete + attach);
+    or (c) dashboard → Workers & Pages → `tacet` → Domains & Routes → **Add Custom Domain → tacet.social**
+    (accept "replace existing DNS record").
+  - workers.dev URL remained enabled and 200 throughout (no wrangler deploy this session).
+  - DNS backup NOT created (token lacked DNS-read scope; nothing was deleted, so no rollback artifact needed).
 
 - **Publishing philosophy** (`docs/09-product/publishing-philosophy.md`) — foundational
   design doc; refined pass added a "What is Home?" section, owned-vs-kept distinction,
