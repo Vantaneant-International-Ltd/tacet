@@ -108,44 +108,30 @@
 }
 
 /* ---- Buttons ---- */
+/* Primary = solid iris with a soft glow (brand). Quiet = translucent ghost. */
 .lp-btn {
-  display: inline-block;
-  font-family: inherit;
-  font-weight: 400;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-  padding: 0.85rem 2.1rem;
-  border-radius: 999px;
-  color: #14101f;
-  background: linear-gradient(180deg, #c6b6f6, var(--lp-accent));
-  border: none;
-  cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
-  box-shadow: 0 8px 30px rgba(122, 92, 208, 0.35);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: inherit; font-weight: 600; font-size: 1rem;
+  letter-spacing: 0.005em;
+  height: 3.1rem; padding: 0 1.6rem;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--lp-accent-deep);
+  border: none; cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+  box-shadow: 0 0 32px rgba(123, 97, 255, 0.32);
 }
-.lp-btn:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 12px 40px rgba(122, 92, 208, 0.45); }
-.lp-btn:active { transform: translateY(0); }
-.lp-btn-ghost {
-  background: transparent;
-  color: var(--lp-ink);
+.lp-btn:hover { background: #8a70ff; box-shadow: 0 0 40px rgba(123, 97, 255, 0.42); }
+.lp-btn:active { transform: scale(0.98); }
+.lp-btn-quiet {
+  background: rgba(226, 221, 236, 0.07);
+  color: #e2ddec;
+  border: 1px solid rgba(226, 221, 236, 0.14);
   box-shadow: none;
-  border: 1px solid var(--lp-card-brd);
 }
-.lp-btn-ghost:hover { border-color: var(--lp-accent); box-shadow: none; filter: none; }
-/* Light pill — the desktop hero's primary action reads as calm ivory, not neon. */
-.lp-btn-light {
-  background: #f6f4ef;
-  color: #14101f;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-}
-.lp-btn-light:hover { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45); }
-/* Compact pill for the nav. */
-.lp-btn-sm {
-  font-size: 0.9rem;
-  padding: 0.55rem 1.2rem;
-  box-shadow: 0 6px 20px rgba(122, 92, 208, 0.3);
-}
+.lp-btn-quiet:hover { background: rgba(226, 221, 236, 0.12); color: #fff; box-shadow: none; }
 .lp-btn span[aria-hidden] { margin-left: 0.4em; }
+@media (prefers-reduced-motion: reduce) { .lp-btn:active { transform: none; } }
 .lp-linkbtn {
   background: none; border: none; cursor: pointer;
   font-family: inherit; color: var(--lp-ink-dim); font-size: 0.95rem;
@@ -164,8 +150,15 @@
   gap: 1.1rem;
 }
 
-/* ---- Hero ---- */
-.lp-hero { position: relative; }
+/* ---- Hero (canonical brand hero: deep ink, glow + blossom, breathing Hearth) ---- */
+.lp-hero {
+  position: relative;
+  justify-content: stretch;
+  padding: calc(var(--lp-devbar-h) + 5.5rem) 1.5rem 2.5rem;
+  background:
+    radial-gradient(ellipse 60% 75% at 50% 8%, rgba(123, 97, 255, 0.28), rgba(123, 97, 255, 0.06) 55%, transparent 78%),
+    radial-gradient(ellipse 40% 45% at 82% 96%, rgba(255, 177, 232, 0.10), transparent 70%);
+}
 .lp-hero-canvas {
   position: absolute;
   inset: 0;
@@ -174,39 +167,59 @@
   z-index: 0;
   pointer-events: none;
 }
-.lp-hero .lp-inner { position: relative; z-index: 1; }
-.lp-hero-title { margin-bottom: 0.5rem; }
-.lp-hero-lead { margin-top: 1.75rem; }
-/* The lead reads as three calm lines on mobile, one confident line on desktop. */
-@media (min-width: 40rem) {
-  .lp-hero-lead .lp-lead-lines span { display: inline; }
-  .lp-hero-lead .lp-lead-lines span + span { margin-left: 0.4em; }
+.lp-hero-center {
+  position: relative; z-index: 1;
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; max-width: 50rem; margin: 0 auto;
 }
-.lp-scroll-cue {
-  position: absolute;
-  bottom: 2rem; left: 50%; transform: translateX(-50%);
-  animation: lp-float 2.6s ease-in-out infinite;
+.lp-hero-mark {
+  width: 5.2rem; height: 5.2rem;
+  color: #8a70ff;
+  animation: lp-breathe-hero 4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
-/* A small mouse glyph as the scroll invitation. */
-.lp-mouse {
-  display: block;
-  width: 1.4rem; height: 2.2rem;
-  border: 1.5px solid var(--lp-ink-faint);
-  border-radius: 999px;
-  position: relative;
+.lp-hero-mark .lp-hearth-dot { fill: var(--lp-accent-deep); }
+@keyframes lp-breathe-hero {
+  0%, 100% { transform: scale(0.97); opacity: 0.92; }
+  50% { transform: scale(1.03); opacity: 1; }
 }
-.lp-mouse::after {
-  content: "";
-  position: absolute; top: 0.4rem; left: 50%;
-  width: 2px; height: 0.45rem; border-radius: 2px;
-  transform: translateX(-50%);
-  background: var(--lp-ink-dim);
-  animation: lp-wheel 2.6s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) { .lp-hero-mark { animation: none; } }
+.lp-hero-title {
+  margin: 2rem 0 0;
+  font-weight: 600;
+  font-size: clamp(2.3rem, 5.4vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  max-width: 20em;
+  text-wrap: balance;
 }
-@keyframes lp-float { 0%,100% { transform: translateX(-50%) translateY(0);} 50% { transform: translateX(-50%) translateY(6px);} }
-@keyframes lp-wheel { 0%,100% { opacity: 0.3; transform: translateX(-50%) translateY(0);} 50% { opacity: 1; transform: translateX(-50%) translateY(0.4rem);} }
-@media (prefers-reduced-motion: reduce) {
-  .lp-scroll-cue, .lp-mouse::after { animation: none; }
+.lp-hero-sub {
+  margin: 1.25rem 0 0;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--lp-ink-dim);
+  max-width: 34rem;
+}
+.lp-hero-cta {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2.4rem;
+  gap: 0.85rem;
+}
+.lp-hero-values {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap;
+  justify-content: center; align-items: center;
+  gap: 0.8rem 3.2rem;
+  padding-top: 2rem;
+  color: var(--lp-ink-faint);
+  font-size: 0.85rem;
+}
+.lp-hero-values span { white-space: nowrap; }
+.lp-hero-values b { color: var(--lp-ink-dim); font-weight: 600; }
+@media (max-width: 40rem) {
+  .lp-hero-values { gap: 0.5rem 1.6rem; font-size: 0.8rem; }
 }
 
 /* ---- Top nav ---- */
@@ -232,10 +245,16 @@
   flex: none;
 }
 .lp-hearth-dot { fill: var(--lp-accent-deep); }
-.lp-nav-actions { display: flex; align-items: center; gap: 1.1rem; }
-.lp-nav-signin { color: var(--lp-ink); }
-@media (max-width: 30rem) {
-  .lp-nav-signin { display: none; }
+.lp-nav-actions { display: flex; align-items: center; gap: 1.6rem; }
+.lp-navlink {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+  color: #c4bcd6;
+  transition: color 160ms ease;
+}
+.lp-navlink:hover { color: #f1eef7; }
+@media (max-width: 40rem) {
+  .lp-nav-marketing { display: none; }
 }
 
 /* ---- Platform selector ---- */

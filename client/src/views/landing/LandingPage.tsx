@@ -28,10 +28,15 @@ export function LandingPage() {
   return (
     <div className="lp">
       <DevBanner />
-      <LandingNav onSignIn={goEnter} onJoin={goApp} />
-      <HeroSection
-        onContinue={() => scrollToId("lp-fragmentation")}
+      <LandingNav
+        onWhy={() => scrollToId("lp-fragmentation")}
+        onCommunities={() => scrollToId("lp-convergence")}
+        onOpenWeb={() => scrollToId("lp-email")}
         onSignIn={goEnter}
+      />
+      <HeroSection
+        onFindHome={goEnter}
+        onHowItWorks={() => scrollToId("lp-email")}
       />
       <FragmentationSection />
       <ConvergenceSection />

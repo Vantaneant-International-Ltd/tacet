@@ -1,14 +1,18 @@
-// Top navigation over the hero. Placeholder sunburst mark (operator instruction —
-// swap for a real mark later) + wordmark on the left; Sign in + Join the beta on the
-// right. The gradient pill is the page's single strongest call to action.
 import { TacetMark } from "./TacetMark";
 
+// Top navigation over the hero, per the canonical brand hero: the Hearth lockup on
+// the left; Why tacet · Communities · Open web · Sign in on the right. The marketing
+// links collapse on small screens (mobile stays cosy — wordmark + Sign in only).
 export function LandingNav({
+  onWhy,
+  onCommunities,
+  onOpenWeb,
   onSignIn,
-  onJoin,
 }: {
+  onWhy: () => void;
+  onCommunities: () => void;
+  onOpenWeb: () => void;
   onSignIn: () => void;
-  onJoin: () => void;
 }) {
   return (
     <header className="lp-nav">
@@ -17,12 +21,10 @@ export function LandingNav({
         <span className="lp-nav-word">tacet</span>
       </a>
       <nav className="lp-nav-actions">
-        <button className="lp-linkbtn lp-nav-signin" onClick={onSignIn}>
-          Sign in
-        </button>
-        <button className="lp-btn lp-btn-sm" onClick={onJoin}>
-          Join the beta <span aria-hidden="true">&rarr;</span>
-        </button>
+        <button className="lp-navlink lp-nav-marketing" onClick={onWhy}>Why tacet</button>
+        <button className="lp-navlink lp-nav-marketing" onClick={onCommunities}>Communities</button>
+        <button className="lp-navlink lp-nav-marketing" onClick={onOpenWeb}>Open web</button>
+        <button className="lp-navlink" onClick={onSignIn}>Sign in</button>
       </nav>
     </header>
   );
