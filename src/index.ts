@@ -37,6 +37,19 @@ const CSP = [
 // Security + cache headers on every response. Responses returned by the assets binding
 // have immutable headers, so we rebuild the response to attach ours. Dynamic API
 // responses are never cached; the SPA shell must always revalidate so deploys are seen.
+
+// Canonical host: the bare apex `tacet.social`. `www` is served (custom domain) but
+// 301s to the apex so there is one canonical URL. Other hosts (workers.dev, localhost)
+// are left untouched.
+app.use("*", async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.hostname === "www.tacet.social") {
+    url.hostname = "tacet.social";
+    return c.redirect(url.toString(), 301);
+  }
+  await next();
+});
+
 app.use("*", async (c, next) => {
   await next();
   const url = new URL(c.req.url);

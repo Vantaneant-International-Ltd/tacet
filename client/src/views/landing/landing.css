@@ -3,6 +3,24 @@
    Direction: dark, calm, elegant; strong whitespace; subtle lavender accent;
    a network that breathes rather than shouts. */
 
+/* Brand webfonts (docs/10-design/tacet-brand) — served same-origin from /fonts,
+   so they satisfy the Worker CSP `font-src 'self'`. */
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/HankenGrotesk-wght-.woff2") format("woff2");
+  font-weight: 300 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/HankenGrotesk-Italic-wght-.woff2") format("woff2");
+  font-weight: 300 800; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("/fonts/SplineSansMono-wght-.woff2") format("woff2");
+  font-weight: 400 600; font-style: normal; font-display: swap;
+}
+
 .lp {
   --lp-bg: #0a0a0d;
   --lp-bg-2: #0e0d14;
@@ -19,8 +37,8 @@
   position: relative;
   background: var(--lp-bg);
   color: var(--lp-ink);
-  font-family: "Jost", system-ui, -apple-system, sans-serif;
-  font-weight: 300;
+  font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  font-weight: 400;
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
@@ -69,10 +87,10 @@
   margin: 0;
 }
 .lp-h2 {
-  font-weight: 300;
+  font-weight: 600;
   font-size: clamp(1.9rem, 5vw, 3.2rem);
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.022em;
   margin: 0 0 1.5rem;
 }
 .lp-lead {
@@ -424,7 +442,7 @@
 .lp-band-dark { background: transparent; }
 .lp-email-you {
   margin-top: 1.25rem;
-  font-family: "Space Mono", ui-monospace, monospace;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
   font-size: 0.9rem; letter-spacing: 0.01em;
   color: var(--lp-accent);
 }
@@ -437,7 +455,7 @@
 .lp-email-place { fill: #171028; stroke: var(--lp-accent); stroke-width: 1.5; }
 .lp-email-place-label {
   fill: var(--lp-ink-dim);
-  font-family: "Space Mono", ui-monospace, monospace;
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
   font-size: 9px; text-anchor: end;
 }
 /* Flowing dashes read as messages travelling from you out to each place. */
