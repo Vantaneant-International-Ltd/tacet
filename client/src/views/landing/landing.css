@@ -242,6 +242,36 @@
   .lp-hero-values { gap: 0.5rem 1.6rem; font-size: 0.8rem; }
 }
 
+/* Scroll cue (mock 3): mouse glyph + chevron, bottom-centre. */
+.lp-scroll-cue {
+  position: absolute; z-index: 1;
+  bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+}
+.lp-mouse {
+  width: 1.4rem; height: 2.2rem;
+  border: 1.5px solid var(--lp-ink-faint); border-radius: 999px;
+  position: relative;
+}
+.lp-mouse::after {
+  content: ""; position: absolute; top: 0.35rem; left: 50%;
+  width: 2px; height: 0.45rem; border-radius: 2px;
+  transform: translateX(-50%); background: var(--lp-ink-dim);
+  animation: lp-wheel 2.4s ease-in-out infinite;
+}
+.lp-scroll-chevron {
+  width: 0.55rem; height: 0.55rem;
+  border-right: 1.5px solid var(--lp-ink-faint);
+  border-bottom: 1.5px solid var(--lp-ink-faint);
+  transform: rotate(45deg);
+  animation: lp-chev 2.4s ease-in-out infinite;
+}
+@keyframes lp-wheel { 0%,100% { opacity: 0.3; transform: translateX(-50%) translateY(0);} 50% { opacity: 1; transform: translateX(-50%) translateY(0.35rem);} }
+@keyframes lp-chev { 0%,100% { opacity: 0.3; transform: rotate(45deg) translate(0,0);} 50% { opacity: 0.9; transform: rotate(45deg) translate(2px,2px);} }
+@media (prefers-reduced-motion: reduce) {
+  .lp-mouse::after, .lp-scroll-chevron { animation: none; }
+}
+
 /* ---- Top nav ---- */
 .lp-nav {
   position: absolute;

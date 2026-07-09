@@ -40,6 +40,10 @@ export function HeroSection({
         <span><b>Calm</b> before addiction</span>
         <span><b>Open</b> before closed</span>
       </div>
+      <div className="lp-scroll-cue" aria-hidden="true">
+        <span className="lp-mouse" />
+        <span className="lp-scroll-chevron" />
+      </div>
     </section>
   );
 }
