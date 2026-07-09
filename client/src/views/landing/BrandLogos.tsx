@@ -86,6 +86,14 @@ export function BrandLogo({ id }: { id: string }): ReactElement {
           <path d="M10 7.8 16.5 12 10 16.2z" fill="#fff" />
         </svg>
       );
+    case "friendica":
+      return (
+        <svg {...p}>
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="#1D2A54" />
+          <path d="M15.5 12a3.5 3.5 0 1 0-3.5 3.5" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+          <path d="M12 12a1.7 1.7 0 1 1 1.7 1.7" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      );
     default:
       return (
         <svg {...p}>

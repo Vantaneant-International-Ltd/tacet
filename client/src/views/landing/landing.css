@@ -498,33 +498,121 @@
 .lp-orb-av--4 { background: linear-gradient(140deg, #93d6c0, #8ab4ff); }
 @media (prefers-reduced-motion: reduce) { .lp-orb { opacity: 1; transition: none; } }
 
-/* ---- Email band (dark; the metaphor, alive) ---- */
-.lp-band-dark { background: transparent; }
-.lp-email-you {
-  margin-top: 1.25rem;
-  font-size: 1rem;
-  color: var(--lp-accent);
+/* ==== People band: "The people matter. Not where they signed up." ==== */
+.lp-people-inner {
+  width: 100%; max-width: 70rem; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.15fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
+  text-align: left;
 }
-.lp-email-diagram {
-  width: 100%; max-width: 26rem; justify-self: center;
+.lp-people-copy { min-width: 0; }
+.lp-people-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.35rem 0.8rem; border-radius: 999px;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  color: var(--lp-accent-deep); font-size: 0.82rem; font-weight: 500;
+  margin-bottom: 1.1rem;
 }
-.lp-email-diagram svg { width: 100%; height: auto; overflow: visible; }
-.lp-email-you-node { fill: var(--lp-accent-deep); }
-.lp-email-halo { fill: none; stroke: var(--lp-accent); stroke-width: 1; opacity: 0.35; }
-.lp-email-place { fill: #171028; stroke: var(--lp-accent); stroke-width: 1.5; }
-.lp-email-place-label {
-  fill: var(--lp-ink-dim);
-  font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 9px; text-anchor: end;
+.lp-people-badge svg { color: var(--lp-accent-deep); }
+/* This section's heading is display-scale (unlike the modest band headings). */
+.lp-band .lp-people-h {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+  margin: 0 0 1.1rem;
 }
-/* Flowing dashes read as messages travelling from you out to each place. */
-.lp-email-link {
-  stroke: var(--lp-accent); stroke-width: 1.5;
-  stroke-dasharray: 4 7; opacity: 0.55;
-  animation: lp-flow 1.5s linear infinite;
+.lp-people-accent {
+  margin: 1.1rem 0 0; color: var(--lp-accent-deep);
+  font-weight: 500; font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.35;
 }
-@keyframes lp-flow { to { stroke-dashoffset: -22; } }
-@media (prefers-reduced-motion: reduce) { .lp-email-link { animation: none; } }
+.lp-people-features {
+  list-style: none; margin: 1.75rem 0 0; padding: 1.5rem 0 0;
+  border-top: 1px solid var(--lp-card-brd);
+  display: flex; flex-wrap: wrap; gap: 1.25rem 1.5rem;
+}
+.lp-people-features li { display: flex; align-items: flex-start; gap: 0.6rem; flex: 1 1 8rem; }
+.lp-people-fi {
+  width: 1.9rem; height: 1.9rem; flex: none;
+  display: grid; place-items: center; border-radius: 8px;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  color: var(--lp-accent-deep);
+}
+.lp-people-ft { font-size: 0.85rem; color: var(--lp-ink-dim); line-height: 1.35; }
+.lp-people-ft b { display: block; color: var(--lp-ink); font-weight: 600; }
+
+/* Flow: cards → Hearth → Today */
+.lp-people-flow { position: relative; display: flex; flex-direction: column; align-items: center; }
+.lp-people-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; width: 100%; }
+.lp-pcard {
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  border-radius: 14px; padding: 0.7rem; box-shadow: 0 8px 24px rgba(30, 25, 20, 0.06);
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-align: center;
+}
+.lp-pcard-head {
+  display: flex; align-items: center; gap: 0.3rem; align-self: flex-start;
+  font-size: 0.72rem; font-weight: 500; color: var(--lp-ink);
+}
+.lp-pcard-head svg { width: 1rem; height: 1rem; }
+.lp-pcard-av { width: 3rem; height: 3rem; border-radius: 999px; margin-top: 0.3rem; background-size: cover; }
+.lp-pcard-name { font-size: 0.82rem; font-weight: 600; color: var(--lp-ink); }
+.lp-pcard-role { font-size: 0.68rem; color: var(--lp-ink-dim); }
+.lp-pcard-note {
+  display: flex; gap: 0.35rem; align-items: center;
+  margin-top: 0.3rem; padding: 0.4rem 0.45rem; width: 100%; box-sizing: border-box;
+  border-radius: 8px; background: rgba(0, 0, 0, 0.03); border: 1px solid var(--lp-card-brd);
+  font-size: 0.64rem; color: var(--lp-ink-dim); text-align: left; line-height: 1.3;
+}
+.lp-pcard-thumb { width: 1.5rem; height: 1.5rem; flex: none; border-radius: 5px; background-size: cover; }
+.lp-pcard-media { width: 100%; height: 2.6rem; margin-top: 0.3rem; border-radius: 8px; background-size: cover; position: relative; }
+.lp-pcard-video { display: grid; place-items: center; }
+.lp-pcard-play {
+  width: 0; height: 0; border-style: solid;
+  border-width: 0.4rem 0 0.4rem 0.65rem; border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+.lp-people-connect { width: 100%; height: 3rem; }
+.lp-people-connect path { fill: none; stroke: color-mix(in srgb, var(--lp-accent-deep) 40%, transparent); stroke-width: 0.5; stroke-dasharray: 1.2 1.6; }
+.lp-people-core {
+  width: 5rem; height: 5rem; border-radius: 999px; display: grid; place-items: center;
+  background: var(--lp-card-solid, #fff); border: 1px solid var(--lp-card-brd);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--lp-accent) 10%, transparent), 0 10px 30px rgba(122, 92, 208, 0.18);
+}
+.lp-people-arrow {
+  width: 1px; height: 1.75rem; margin: 0.25rem 0;
+  background: repeating-linear-gradient(var(--lp-accent-deep) 0 3px, transparent 3px 6px);
+  opacity: 0.5;
+}
+.lp-people-today {
+  width: 100%; box-sizing: border-box;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  border-radius: 16px; padding: 1rem 1.1rem 1.1rem; box-shadow: 0 8px 24px rgba(30, 25, 20, 0.06);
+}
+.lp-today-label {
+  text-align: center; text-transform: uppercase; letter-spacing: 0.28em;
+  font-size: 0.7rem; font-weight: 600; color: var(--lp-accent-deep); margin-bottom: 0.8rem;
+}
+.lp-today-row { display: flex; justify-content: space-between; gap: 0.4rem; }
+.lp-today-av { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; min-width: 0; }
+.lp-today-face { width: 2.4rem; height: 2.4rem; border-radius: 999px; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(30, 25, 20, 0.12); background-size: cover; }
+.lp-today-more {
+  width: 2.4rem; height: 2.4rem; border-radius: 999px; display: grid; place-items: center;
+  border: 1px dashed var(--lp-accent); color: var(--lp-accent-deep); font-size: 1.1rem;
+}
+.lp-today-name { font-size: 0.62rem; color: var(--lp-ink-dim); }
+
+.lp-people-foot { text-align: center; margin-top: clamp(2rem, 5vh, 3.5rem); }
+.lp-people-foot-h { margin: 0; font-size: clamp(1.6rem, 3.4vw, 2.4rem); font-weight: 600; letter-spacing: -0.02em; color: var(--lp-ink); }
+.lp-people-foot-sub { margin: 0.6rem 0 0; color: var(--lp-ink-dim); font-size: clamp(1rem, 2vw, 1.15rem); }
+
+@media (max-width: 60rem) {
+  .lp-people-inner { grid-template-columns: 1fr; }
+  .lp-people-copy { text-align: center; }
+  .lp-people-badge { margin-left: auto; margin-right: auto; }
+  .lp-people-features { justify-content: center; }
+}
+@media (max-width: 34rem) {
+  .lp-pcard-role, .lp-pcard-note { display: none; }
+  .lp-today-name { display: none; }
+}
 
 /* ---- Divided: heading · dispersion · closing line (split-tone) ---- */
 .lp-band-divided {

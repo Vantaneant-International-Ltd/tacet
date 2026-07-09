@@ -3,7 +3,7 @@ import { LandingNav } from "./LandingNav";
 import { HeroSection } from "./HeroSection";
 import { FragmentationSection } from "./FragmentationSection";
 import { ConvergenceSection } from "./ConvergenceSection";
-import { EmailSection } from "./EmailSection";
+import { PeopleSection } from "./PeopleSection";
 import { DividedSection } from "./DividedSection";
 import { ManifestoSection } from "./ManifestoSection";
 import { FinalCTA } from "./FinalCTA";
@@ -29,11 +29,11 @@ export function LandingPage() {
       <LandingNav onSignIn={goEnter} onJoin={goJoin} />
       <HeroSection
         onJoin={goJoin}
-        onHowItWorks={() => scrollToId("lp-email")}
+        onHowItWorks={() => scrollToId("lp-people")}
       />
       <FragmentationSection />
       <ConvergenceSection />
-      <EmailSection />
+      <PeopleSection />
       <DividedSection />
       <ManifestoSection />
       <FinalCTA
