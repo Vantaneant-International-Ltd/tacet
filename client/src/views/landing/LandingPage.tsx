@@ -9,6 +9,7 @@ import { ConvergenceSection } from "./ConvergenceSection";
 import { FederationSection } from "./FederationSection";
 import { ManifestoSection } from "./ManifestoSection";
 import { FinalCTA } from "./FinalCTA";
+import { DevWarningOverlay } from "./DevWarningOverlay";
 import "./landing.css";
 
 // When nothing is chosen yet, the fragmentation/convergence visuals still need
@@ -48,6 +49,7 @@ export function LandingPage() {
 
   return (
     <div className="lp">
+      <DevWarningOverlay />
       <HeroSection
         onContinue={() => scrollToId("lp-selector")}
         onSignIn={goEnter}

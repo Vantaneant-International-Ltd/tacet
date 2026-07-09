@@ -3,6 +3,7 @@ import { api, ApiError } from "../api";
 import { setUser } from "../session";
 import { navigate, Link } from "../router";
 import { Button } from "../design/primitives";
+import { DevWarningOverlay } from "./landing/DevWarningOverlay";
 
 // Loads the Turnstile script once (only when a site key exists).
 let turnstileLoading: Promise<void> | null = null;
@@ -85,6 +86,7 @@ export function Enter({ invite: prefill }: { invite?: string }) {
 
   return (
     <main className="t-auth">
+      <DevWarningOverlay />
       <div className="t-auth__card">
         <Link to="/" className="t-auth__brand">Tacet</Link>
         <p className="t-auth__line">
