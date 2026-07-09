@@ -12,6 +12,35 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Welcome funnel + landing→Stage-6 refinements + brand type, LIVE (2026-07-09).** Deploy
+  **`d57eb64d`** (rollback anchor `47192575`). Verified on `https://tacet.social`: new build
+  served; `/`, `/welcome/world`, `/welcome/home`, `/today`, `/enter` all 200; `/api/health`
+  200; CSP/HSTS/`X-Frame-Options: DENY`/nosniff intact.
+  - **Welcome funnel (new).** The landing IS step 1. `/welcome/world` (step 2 "Your world") —
+    platform picker with a 1·2·3 stepper and **honest copy** (selections orient your home, stay
+    on device; no closed-platform integration promise). `/welcome/home` (step 3 "Your home") —
+    the guided setup lives here and **only** here: "Welcome home." greeting → account creation
+    **reusing the Enter create path** (new optional `onComplete`/`defaultMode` props — auth never
+    forked) → identity basics → `/today`; "Skip for now" → `/today`.
+  - **Wizard interception removed from `/today`** — anonymous `/today` now shows the walkable app
+    directly (`TacetApp` no longer mounts `FirstRun`; `FirstRun.tsx`/`onboarding/hints.ts` are now
+    unreferenced dead code, left in place). Signed-in visitors on any `/welcome/*` → `/today`.
+  - **CTA unification.** One verb — **"Join the beta"** (nav pill, hero primary, final CTA) all →
+    `/welcome/world`; **"Sign in"** → `/enter` everywhere. Removed "Find your home" / navigating
+    "Continue". Nav = mark+wordmark left, Sign in + Join-the-beta pill right.
+  - **Doctrine:** closed-platform logos appear ONLY in Fragmentation (the scattered status quo);
+    only open-web places (Mastodon/Pixelfed/PeerTube) converge into the Tacet mark — no closed
+    icon converges. EmailSection reframed to **direction, not a present-tense handle claim** (no
+    `you@tacet.social`).
+  - **Brand type:** landing now uses **Hanken Grotesk + Spline Sans Mono** (served same-origin from
+    `/fonts`, CSP-safe). Hero background enriched: pointer parallax on desktop, lighter field on
+    mobile, reduced-motion static.
+  - **Hygiene:** Stage-6 exports moved `hifi/prototypes/ → hifi/handoff/`; stray `tacet-brand/test` removed.
+  - **REMAINING (follow-up, not blocking):** pixel-fidelity polish toward image-1/2 — converging
+    thread-lines under the Fragmentation grid, avatars in the Convergence orbit, and image-2 card
+    detailing on `/welcome/world`. Optional: apply Hanken app-wide (currently landing-scoped); a
+    zone Redirect Rule so the `www` SPA shell (not just worker paths) 301s to the apex.
+
 - **Canonical brand hero adopted + apex domain FIXED, LIVE (2026-07-09).**
   - **Hero** rebuilt to the brand kit's own landing hero (`docs/10-design/tacet-brand/ui_kits/landing`):
     full-height deep-ink moment — breathing **Hearth** mark, "The internet, quiet enough to feel like
