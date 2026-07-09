@@ -107,7 +107,8 @@ Article / Video / Event*, never a "post" (L9).
 Moving between places is a gentle traversal, tuned in [motion.md](./motion.md):
 
 - Content crossfades / settles over `--dur-3` (320ms) with `--ease-in-out` — the easing for
-  moves that *leave and return*, matching the spatial model of stepping between rooms.
+  moves that *leave and return*, matching the sense of moving between destinations (the pillars are
+  distinct places in the product, not a visual metaphor of rooms).
 - The rail and tab bar themselves stay put; only the destination content moves. Nav chrome is
   a fixed frame, so the person's anchor never shifts.
 - Motion here *means something* — it says "you arrived at a different place" (L4). It never

@@ -22,8 +22,10 @@
 3. **Legible over clever.** A person always knows where they are, what a thing is, and what a touch
    will do — without decoding an icon or a gesture. Words carry meaning; icons support words.
 4. **Warmth over austerity.** Cosy, not clinical. Light mode is a first-class citizen. Type is
-   human. The product feels like a home — a living city you come back to — not a terminal, and not a
-   minimalist magazine.
+   human. Tacet feels warm, confident, and purposeful — *the place where a person's open-social-web
+   life comes together and the one they return to.* "Home" is a **product principle, not a visual
+   metaphor**: we do not make the UI resemble a house, a room, or a city — we make it feel like *where
+   everything comes together.* Not a terminal, not a sterile magazine, not theatrical.
 5. **Honesty over manipulation.** No dark patterns. Real state, real consequences, easy to leave.
    If a design only works because the user didn't notice, it does not ship.
 
@@ -108,8 +110,9 @@ Before any screen is "done":
 
 1. Would Apple ship this? Would Linear accept it? Would Arc? (Calm **and** intentionally rich?)
 2. Will it still feel modern in five years?
-3. Does it feel unmistakably like **Tacet** — calm, warm, honest, media-first, people-first, and
-   *alive* — a living city, not a minimalist magazine?
+3. Does it feel unmistakably like **Tacet** — calm, warm, confident, honest, media-first,
+   people-first, and *alive* — the definitive product for the open social web (where everything comes
+   together), never theatrical?
 4. Is everything here earning its place by **informing** the person about their world?
 5. Does any part of it manipulate — a self-directed score, a ranking, an engagement mechanic,
    anxiety furniture? *(If yes — cut it.)*

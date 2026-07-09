@@ -74,9 +74,11 @@ pressures you (ADR-011). Nothing may *live* only in this column; below the wide 
 its content folds into the main flow or the person loses nothing essential.
 
 ## Consequences
-- **Benefit:** desktop width finally serves the product's aspiration — a home that
-  feels like a living city, where the world is present without being noisy. The column
-  is where "the open social web is alive" becomes visible, calmly.
+- **Benefit:** desktop width finally serves the product's aspiration — the place where a
+  person's open-social-web life comes together, with the world present without being noisy.
+  The column is where "the open social web is alive" becomes visible, calmly. ("Home" here is a
+  product principle — where everything converges — not a visual metaphor; we do not draw a room or a
+  city.)
 - **Cost / discipline:** every block earns its place by the informing/manipulating
   test, per screen. "Rich" is not license for a dashboard; the ban list is absolute and
   is an explicit test gate at implementation. Richness that cannot pass the test is cut,

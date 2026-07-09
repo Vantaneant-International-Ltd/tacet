@@ -21,7 +21,7 @@ the raw energy; this plan keeps their warmth and life and removes their casino.
 | Context column empty by default | Context column is a **living space**: your people, your world's momentum, continue |
 | No counts anywhere, ever | **Self-directed** counts on your own posts: still none. **World-directed** reception: represented, framed, calm |
 | "No trending, ever" | **Represented momentum**, relationship-scoped, editorial — the thing first, the number softened |
-| Feels like a still room | Feels like **coming home to a living city** — present, warm, not noisy |
+| Feels like a still, empty product | Feels like **where everything comes together** — present, warm, confident, not noisy |
 
 Unchanged: no infinite scroll (Today ends), no autoplay, no red badges, no streaks, protocol
 invisible, human words only, one primary action per view, 42rem fixed reading measure.

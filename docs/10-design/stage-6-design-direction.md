@@ -39,21 +39,31 @@ These two ideas now govern every design decision. See
 
 ---
 
-## The north star: a living city, not a minimalist magazine
+## The north star: the definitive product for the open social web
 
-Tacet should feel like **coming home to a living city** — an ecosystem with people, communities,
-relationships, conversations, culture, unexpected discoveries, and different neighbourhoods. The open
-social web *is* that city; Tacet is the calmest, warmest, most beautiful window onto it ever built.
+**"Home" is a product principle, not a visual metaphor.** When Tacet says *your home on the open
+social web*, it describes a **relationship** — this is the place a person's social world converges and
+the one they naturally return to — not a look. We do **not** design a house, a living room, a
+neighbourhood, a city, or a magazine. We design **the definitive product for understanding, creating,
+discovering, and participating in the open social web.** The user should feel *"this is where
+everything comes together,"* never *"this looks like my home."*
 
-- The **feed is one room** inside the home, not the whole home.
-- **People, Discover, Conversations, and the context column** are what make the world feel alive —
-  present and warm, **without ever becoming noisy.**
-- "Alive without noise" is the whole craft: momentum you can feel, not a leaderboard; people around
-  you, not a presence-surveillance panel; a neighbourhood worth walking, not a directory.
+Everything a person's social life is made of converges here — identity, people, conversations,
+discovery, publishing, media, relationships — and Tacet is the calmest, warmest, most confident place
+that brings it together.
+
+- The **feed is one part** of the product, not the whole of it.
+- **People, Discover, Conversations, and the context column** are what make the open web feel
+  present — oriented and warm, **without ever becoming noisy.**
+- "Present without noise" is the whole craft: momentum you can feel, not a leaderboard; your people
+  in view, not a surveillance panel; an honest way to find your place on the open web, not a directory.
 
 The failure mode on one side is the incumbents' casino. The failure mode on the other — the one we
-are correcting — is the empty show-home. Stage 6 aims precisely between them: **rich, warm, calm,
-clear.**
+are correcting — is the empty, under-built product that hides the world in the name of calm. Stage 6
+aims precisely between them: **rich, warm, calm, clear, confident.**
+
+The measure of success is not *"I stayed for hours."* It is *"I always know what's happening, where my
+people are, and where I belong on the open social web."*
 
 ---
 
@@ -67,9 +77,9 @@ frozen; what changes is how alive each surface is allowed to feel.
   stands). But it should feel **alive**: curated with a visible human hand, media-first, with a warm
   greeting and a sense that the world is present. Not a bare chronological dump. See
   [hifi/today.md](./hifi/today.md).
-- **Discover → the neighbourhood walk.** Not a directory, not a leaderboard — an **editorial
-  exploration** of the open social web. Corners worth visiting, people worth meeting, communities
-  that moved, framed by a curator's voice.
+- **Discover → editorial exploration.** Not a directory, not a leaderboard — an **editorial way to
+  find your place on the open social web**: people worth meeting, communities that moved, conversations
+  worth joining, framed by a curator's voice.
 - **The context column → your world, never your score.** A living space: people close to you,
   continue-where-you-left-off, active conversations, communities active today, worth-exploring, calm
   system reassurance, context about the room you're in. Never rankings, leaderboards, analytics,
@@ -138,10 +148,11 @@ Before any High-Fidelity screen is "done", it must pass all of
 
 1. **Calm *and* rich?** Would Apple ship it, would Linear accept it, would Arc? Is it clear and
    unhurried — *without* being empty?
-2. **Alive?** Does the open social web feel present — people, momentum, neighbourhoods — the way a
-   living city feels alive when you walk into it?
+2. **Alive?** Does the open social web feel present — people, momentum, conversations — so the person
+   knows what's happening and where they belong?
 3. **Informing, not manipulating?** Every element that shows the world or a number passes L11.
-4. **A home, not a magazine?** Warm, personal, inhabited — not a sterile editorial layout.
+4. **"Where everything comes together"?** Confident, warm, purposeful, media-first — the definitive
+   place for the open social web, never theatrical and never a sterile layout.
 5. **No refusal broken?** No self-directed score, ranking, engagement mechanic, or anxiety furniture
    slipped in under a new name.
 

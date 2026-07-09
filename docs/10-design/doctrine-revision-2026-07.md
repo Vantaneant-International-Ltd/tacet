@@ -11,7 +11,9 @@
 
 1. **Calm is clarity, not subtraction.** The design doctrine had drifted into equating calm with
    emptiness. Corrected: calm is *unhurried clarity*, and the product should be **intentionally rich**
-   like Apple / Linear / Arc / Notion. North star: *a living city, not a minimalist magazine.*
+   like Apple / Linear / Arc / Notion. North star: *the definitive product for the open social web —
+   where everything comes together.* ("Home" is a **product principle, not a visual metaphor** —
+   refined 2026-07; we do not design a house, room, city, or magazine.)
 2. **Informing, not manipulating** becomes a core design law (L11). Faithfully representing the open
    social web's reality is honest; only optimizing it for attention is manipulation.
 
@@ -49,7 +51,7 @@ now carries a doctrine-reconciliation banner pointing to the revised law and to
 |---|---|---|
 | [02-human-interface-guidelines/design-principles.md](../02-human-interface-guidelines/design-principles.md) | Principle 1 → "Calm is clarity, not emptiness"; principle 2 split self-directed vs world-directed; L11 cross-refs added. | ✅ |
 | [wireframes/02-today.md](./wireframes/02-today.md) | Header rewritten: editorial homepage + living context column; self-directed ban kept, world-directed momentum allowed; points to hifi/today.md. | ✅ |
-| [wireframes/04-discover-search.md](./wireframes/04-discover-search.md) | Reframed as the "neighbourhood walk"; doctrine banner distinguishes represented momentum from a leaderboard; federation reassurance vs dashboard. | ✅ |
+| [wireframes/04-discover-search.md](./wireframes/04-discover-search.md) | Reframed as **editorial exploration** of the open web (not a directory/leaderboard); doctrine banner distinguishes represented momentum from a leaderboard; federation reassurance vs dashboard. | ✅ |
 | [wireframes/00-overview.md](./wireframes/00-overview.md) | Figma → Claude Design; frozen-frame context note → "your world" (people, momentum, continue); doctrine-reconciliation banner. | ✅ |
 | [components.md](./components.md) · Content Card §4 | Split: per-card self-directed scoreboard banned; world-directed reception, framed, allowed in editorial/context surfaces. | ✅ |
 | [design-audit.md](./design-audit.md) | §6 reconciliation note + per-item "reject the manipulation / represent the reality" rewrite; stage map → Claude Design + Stage 7. | ✅ |

@@ -222,8 +222,8 @@ of Design I extract the feeling and reject the furniture, explicitly:
   is the persistent metrics panel, not the fact that the open web is large and alive.
 - **"Trending" as a raw ascending leaderboard** ("12.4K people talking" as the headline, ranked hot
   topics). **Cut** the leaderboard form. *But* **represented momentum** — *what your world is reading /
-  discussing*, relationship-scoped, led by the thing not the number — is Discover-as-neighbourhood-walk
-  and belongs (discover.md; [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+  discussing*, relationship-scoped, led by the thing not the number — is Discover as editorial
+  exploration of the open web and belongs (discover.md; [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
 - **Story rings as a streak / urgency halo** ("watch me before it disappears"). **Cut** the FOMO
   mechanic. *But* "people you care about, and their genuine recent moments" can exist without a
   disappearing-timer — revisit in a dedicated spec.

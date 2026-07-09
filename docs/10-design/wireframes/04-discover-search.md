@@ -4,10 +4,10 @@
 > no final type. Read [00-overview.md](./00-overview.md) for conventions (`▓` media, `◯` avatar,
 > `( pill )` chip, `‹icon›`, `···` more, `▁▁▁` skeleton, `·dot·` presence). Every block is a grey
 > block; annotations name the [component](../components.md) and token it becomes in Stage 6.
-> Discover is the **neighbourhood walk** — an *editorial exploration* of the open social web
-> ([discover.md](../../01-product/discover.md), [stage-6-design-direction.md](../stage-6-design-direction.md)):
-> corners worth visiting, people worth meeting, communities that moved, framed by a curator's voice.
-> Not a directory, not a leaderboard. Search is a **global overlay, not a pillar**
+> Discover is **editorial exploration of the open social web** — an editorial way to *find your place*
+> on it ([discover.md](../../01-product/discover.md), [stage-6-design-direction.md](../stage-6-design-direction.md)):
+> people worth meeting, communities that moved, conversations worth joining, framed by a curator's
+> voice. Not a directory, not a leaderboard. Search is a **global overlay, not a pillar**
 > ([IA §4](../information-architecture.md)). Communities are a **demoted supporting surface**
 > ([communities.md](../../01-product/communities.md)), never the spine.
 
@@ -15,11 +15,11 @@
 
 ## Doctrine banner (governs every frame below)
 
-- **Discover is a curated neighbourhood walk, not a hot-list.** It represents the open web's real life
-  — people, places, communities active today, things worth exploring — with a **human editorial
-  hand**, relationship-scoped. What it rejects is the *manipulative* form: a raw ascending
-  leaderboard, "12.4K talking" as a headline, a ranking of people, engagement pressure. Represent the
-  neighbourhood's life; never manufacture a race ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+- **Discover is curated editorial exploration, not a hot-list.** It represents the open web's real
+  life — people, communities active today, conversations worth joining, things worth exploring — with
+  a **human editorial hand**, relationship-scoped. What it rejects is the *manipulative* form: a raw
+  ascending leaderboard, "12.4K talking" as a headline, a ranking of people, engagement pressure.
+  Represent the open web's life; never manufacture a race ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
   [design-principles L11](../design-principles.md)).
 - **No "Federation status" / server / instance *dashboard*.** Federation is invisible plumbing like
   email. Open-web platforms appear as **human places you can be**, never as protocol, software, or a
