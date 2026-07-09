@@ -7,20 +7,23 @@
   display: flex;
   flex-direction: column;
   color: var(--color-text-primary);
-  /* Cool iris wash over the canvas — nods to the brand's lavender-cast light surface. */
-  background:
-    radial-gradient(120% 70% at 50% -5%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 62%),
-    var(--color-canvas);
+  /* Cool lavender-white light surface to match the funnel mock + the brand's
+     lavender-cast light surface (brand `--ink-25` #F8F7FC). Dark theme keeps canvas. */
+  background: linear-gradient(180deg, #f1eff9, #f8f7fc);
 }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .wz { background: var(--color-canvas); }
+}
+[data-theme="dark"] .wz { background: var(--color-canvas); }
 .wz-inner {
-  flex: 1;
   width: 100%;
   max-width: 58rem;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-5) var(--space-9);
+  padding: var(--space-6) var(--space-5) var(--space-8);
   text-align: center;
 }
-.wz-inner--narrow { max-width: 32rem; }
+/* WelcomeHome (greeting/identity) has no bands, so centre it in the viewport. */
+.wz-inner--narrow { max-width: 32rem; margin: auto; }
 
 /* ---- Funnel nav ---- */
 .wz-nav {
@@ -201,6 +204,97 @@
 @media (max-width: 52rem) {
   .wz-grid { grid-template-columns: repeat(2, 1fr); }
   .wz-grid-other .wz-card { width: calc((100% - var(--space-3)) / 2); }
+}
+.wz-sub-accent { color: var(--color-accent); }
+
+/* ==== Below-flow bands (full mock) ==== */
+.wz-band { padding: var(--space-9) clamp(var(--space-4), 5vw, var(--space-8)); }
+.wz-band-scatter {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent);
+}
+.wz-band-converge {
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--color-accent) 7%, transparent));
+}
+.wz-band-inner {
+  max-width: 62rem; margin: 0 auto;
+  display: grid; grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(var(--space-5), 5vw, var(--space-8));
+  align-items: center;
+}
+.wz-band-copy { text-align: left; }
+.wz-band-title {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-title); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em;
+}
+.wz-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.wz-checks li {
+  display: flex; align-items: center; gap: var(--space-2);
+  color: var(--color-text-secondary); font-size: var(--text-body);
+}
+.wz-tick {
+  width: 1.25rem; height: 1.25rem; flex: none;
+  display: grid; place-items: center; border-radius: var(--radius-full);
+  background: var(--color-accent-subtle); color: var(--color-accent); font-size: var(--text-micro);
+}
+
+/* Scatter diagram */
+.wz-scatter { position: relative; width: 100%; aspect-ratio: 3 / 2; }
+.wz-scatter-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wz-scatter-lines line {
+  stroke: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  stroke-width: 0.5; stroke-dasharray: 1.5 2;
+}
+.wz-scatter-chip {
+  position: absolute; transform: translate(-50%, -50%);
+  width: 3rem; height: 3rem;
+  display: grid; place-items: center; border-radius: var(--radius-md);
+  background: var(--color-surface-raised); border: 1px solid var(--color-hairline);
+  box-shadow: var(--elevation-1);
+}
+.wz-scatter-chip svg { width: 1.8rem; height: 1.8rem; }
+
+/* Convergence diagram — only the open web flows into Tacet */
+.wz-converge { position: relative; width: 100%; aspect-ratio: 3 / 2; }
+.wz-converge-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wz-converge-in { fill: none; stroke: color-mix(in srgb, var(--color-accent) 55%, transparent); stroke-width: 0.6; }
+.wz-converge-out {
+  fill: none; stroke: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  stroke-width: 0.6; stroke-dasharray: 1.5 2;
+}
+.wz-converge-chip {
+  position: absolute; left: 8%; transform: translate(-50%, -50%);
+  width: 2.6rem; height: 2.6rem;
+  display: grid; place-items: center; border-radius: var(--radius-sm);
+  background: var(--color-surface-raised); border: 1px solid var(--color-hairline);
+  box-shadow: var(--elevation-1);
+}
+.wz-converge-chip svg { width: 1.6rem; height: 1.6rem; }
+.wz-converge-core {
+  position: absolute; left: 52%; top: 50%; transform: translate(-50%, -50%);
+  width: 5rem; height: 5rem; border-radius: var(--radius-full);
+  display: grid; place-items: center;
+  background: var(--color-surface-raised); border: 1px solid var(--color-hairline);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 10%, transparent), var(--elevation-2);
+}
+.wz-hearth-core { width: 2.4rem; height: 2.4rem; color: var(--color-accent); }
+.wz-hearth-core .lp-hearth-dot { fill: currentColor; }
+
+/* Home band */
+.wz-band-home { text-align: center; padding: var(--space-8) var(--space-5) var(--space-9); }
+.wz-home-title { margin: 0; font-size: var(--text-display); font-weight: 600; letter-spacing: -0.02em; }
+.wz-accent-word { color: var(--color-accent); }
+.wz-home-tag { margin: var(--space-3) 0 var(--space-6); color: var(--color-text-secondary); }
+.wz-backlink {
+  background: none; border: none; cursor: pointer;
+  color: var(--color-accent); font-family: inherit; font-size: var(--text-body-sm);
+}
+
+@media (max-width: 52rem) {
+  .wz-grid { grid-template-columns: repeat(2, 1fr); }
+  .wz-grid-other .wz-card { width: calc((100% - var(--space-3)) / 2); }
+  .wz-band-inner { grid-template-columns: 1fr; }
+  .wz-band-copy { text-align: center; }
+  .wz-checks { align-items: center; }
 }
 @media (max-width: 40rem) {
   .wz-stepper { gap: var(--space-4); }
