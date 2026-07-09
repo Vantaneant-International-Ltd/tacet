@@ -55,7 +55,6 @@ export function ConvergenceSection() {
           })}
           <div className="lp-core">
             <TacetMark className="lp-hearth lp-hearth-core" />
-            <span className="lp-core-word">tacet</span>
           </div>
         </div>
       </div>

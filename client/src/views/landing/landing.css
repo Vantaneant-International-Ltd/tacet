@@ -478,31 +478,41 @@
   margin: 0 auto;
   justify-self: center;
 }
-/* dashed orbit ring */
-.lp-converge::before {
+/* Soft central wash behind the disc. */
+.lp-converge {
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--lp-accent) 12%, transparent), transparent 55%);
+}
+/* Two concentric dotted orbit rings. */
+.lp-converge::before, .lp-converge::after {
   content: "";
   position: absolute; top: 50%; left: 50%;
-  width: 300px; height: 300px; max-width: 84%; max-height: 84%;
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  border: 1px dashed color-mix(in srgb, var(--lp-accent-deep) 45%, transparent);
+  border: 1.5px dotted color-mix(in srgb, var(--lp-accent-deep) 32%, transparent);
 }
+.lp-converge::before { width: 84%; height: 84%; }
+.lp-converge::after { width: 58%; height: 58%; opacity: 0.7; }
+/* The centrepiece: large white disc, iris mark, strong soft shadow. */
 .lp-core {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 6.5rem; height: 6.5rem; border-radius: 999px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
-  background: radial-gradient(circle at 50% 38%, #c6b6f6, var(--lp-accent-deep));
-  color: #fff; font-weight: 400; letter-spacing: 0.02em;
-  box-shadow: 0 12px 40px rgba(122, 92, 208, 0.35);
-  z-index: 2;
+  width: 7.5rem; height: 7.5rem; border-radius: 999px;
+  display: grid; place-items: center;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--lp-accent) 8%, transparent),
+    0 26px 60px rgba(122, 92, 208, 0.28),
+    0 10px 26px rgba(30, 25, 20, 0.10);
+  z-index: 3;
 }
-.lp-core-word { font-size: 0.95rem; }
-/* Ring nodes: people (avatars) + open-web place chips, joined by dashed radial lines. */
-.lp-orb-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+/* Iris mark on the white disc; breathes (keyframes defined below). */
+.lp-hearth-core { width: 3rem; height: 3rem; color: var(--lp-accent-deep); }
+.lp-hearth-core .lp-hearth-dot { fill: var(--lp-accent-deep); }
+/* Ring nodes: people (avatars) + open-web place chips, joined by dotted radial lines. */
+.lp-orb-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 .lp-orb-lines line {
-  stroke: color-mix(in srgb, var(--lp-accent-deep) 38%, transparent);
-  stroke-width: 0.4; stroke-dasharray: 1 1.4;
+  stroke: color-mix(in srgb, var(--lp-accent-deep) 42%, transparent);
+  stroke-width: 0.6; stroke-linecap: round; stroke-dasharray: 0.4 2.4;
 }
 .lp-orb {
   position: absolute; transform: translate(-50%, -50%);
@@ -511,15 +521,15 @@
 }
 .lp-converge.is-in .lp-orb { opacity: 1; }
 .lp-orb-place {
-  width: 2.6rem; height: 2.6rem; border-radius: var(--radius-full, 999px);
+  width: 2.7rem; height: 2.7rem; border-radius: var(--radius-full, 999px);
   display: grid; place-items: center;
-  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
-  box-shadow: 0 4px 14px rgba(30, 25, 20, 0.08);
+  background: #ffffff; border: 1px solid var(--lp-card-brd);
+  box-shadow: 0 8px 20px rgba(30, 25, 20, 0.14);
 }
-.lp-orb-place .lp-logo { width: 1.5rem; height: 1.5rem; }
+.lp-orb-place .lp-logo { width: 1.6rem; height: 1.6rem; }
 .lp-orb-av {
-  width: 3rem; height: 3rem; border-radius: 999px;
-  border: 2px solid #fff; box-shadow: 0 6px 16px rgba(30, 25, 20, 0.14);
+  width: 3.1rem; height: 3.1rem; border-radius: 999px;
+  border: 2.5px solid #fff; box-shadow: 0 10px 24px rgba(30, 25, 20, 0.22);
 }
 .lp-orb-av--0 { background: linear-gradient(140deg, #a18bff, #e6b0ec); }
 .lp-orb-av--1 { background: linear-gradient(140deg, #7b61ff, #a996ec); }
