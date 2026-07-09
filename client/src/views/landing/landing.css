@@ -444,8 +444,7 @@
 .lp-band-dark { background: transparent; }
 .lp-email-you {
   margin-top: 1.25rem;
-  font-family: "Spline Sans Mono", ui-monospace, monospace;
-  font-size: 0.9rem; letter-spacing: 0.01em;
+  font-size: 1rem;
   color: var(--lp-accent);
 }
 .lp-email-diagram {

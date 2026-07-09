@@ -18,11 +18,11 @@ export function EmailSection() {
         <div className="lp-band-copy">
           <h2 className="lp-h2">It should work like email.</h2>
           <p className="lp-band-sub">
-            You have one address. Your friends can live anywhere.
+            One address, and your people can live anywhere.
             <br />
-            Messages still arrive. People still connect.
+            A message still arrives. A person still connects.
           </p>
-          <p className="lp-email-you">you@tacet.social</p>
+          <p className="lp-email-you">One home. Your people, wherever they are.</p>
         </div>
 
         <div className={"lp-email-diagram" + (inView ? " is-in" : "")} aria-hidden="true">

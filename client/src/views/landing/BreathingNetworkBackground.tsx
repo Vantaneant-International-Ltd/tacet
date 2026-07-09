@@ -47,8 +47,10 @@ export function BreathingNetworkBackground() {
     const BLUE = [110, 150, 235];
 
     function seed() {
-      // Denser than a plain field, but capped for calm + perf.
-      const target = Math.min(150, Math.round((width * height) / 13000));
+      // Denser than a plain field, but capped for calm + perf. Mobile gets a lighter
+      // field (fewer nodes) so it stays smooth and uncluttered.
+      const cap = width < 700 ? 72 : 150;
+      const target = Math.min(cap, Math.round((width * height) / 13000));
       const cx = width / 2;
       const cy = height * 0.5;
       const rx = width * 0.46;
@@ -164,10 +166,31 @@ export function BreathingNetworkBackground() {
     }
     window.addEventListener("resize", onResize);
 
+    // Subtle pointer parallax on desktop only — the field leans away from the cursor.
+    // The canvas is scaled slightly so the shift never reveals an edge. Off for touch
+    // and reduced-motion.
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    let pointerRaf = 0;
+    function onPointer(e: PointerEvent) {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      cancelAnimationFrame(pointerRaf);
+      pointerRaf = requestAnimationFrame(() => {
+        canvas!.style.transform = `translate(${nx * -10}px, ${ny * -10}px) scale(1.06)`;
+      });
+    }
+    if (!reduce && finePointer) {
+      canvas.style.transform = "scale(1.06)";
+      canvas.style.willChange = "transform";
+      window.addEventListener("pointermove", onPointer, { passive: true });
+    }
+
     return () => {
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(pointerRaf);
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("pointermove", onPointer);
     };
   }, []);
 

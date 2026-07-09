@@ -2,9 +2,10 @@ import { PLATFORMS } from "./types";
 import { BrandLogo } from "./BrandLogos";
 import { useInView } from "./useInView";
 
-// The walls a visitor already lives behind. Naming the problem — not promising to
-// integrate with any of them. Closed platforms only; the open web converges next.
-const CLOSED = PLATFORMS.filter((p) => p.category === "closed");
+// The scattered status quo: the places a visitor already lives, closed and open alike
+// (Instagram … PeerTube), named as the fragmentation — not a promise of integration.
+// Closed platforms appear ONLY here; only the open web converges into Tacet later.
+const SCATTERED = PLATFORMS.filter((p) => p.id !== "other");
 
 export function FragmentationSection() {
   const { ref, inView } = useInView<HTMLDivElement>(0.2);
@@ -20,7 +21,7 @@ export function FragmentationSection() {
           </p>
         </div>
         <div className="lp-logo-row" aria-hidden="true">
-          {CLOSED.map((p) => (
+          {SCATTERED.map((p) => (
             <div className="lp-logo-card" key={p.id}>
               <BrandLogo id={p.id} />
               <span className="lp-logo-name">{p.name}</span>
