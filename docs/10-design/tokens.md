@@ -268,14 +268,17 @@ Formalises the decision to make desktop a designed tier, not scaled mobile. See
 - **< 768px (phone):** single column, top bar + bottom tab bar + compose FAB.
 - **768–899px (tablet):** single wide column, tab bar; reading measure widens.
 - **900–1199px (desktop):** rail + centred feed. No context column yet.
-- **≥ 1200px (wide):** rail · feed · **context column**. **The context column is *contextual*, never
-  a dashboard.** It always helps the person *understand or continue what they are doing right now* —
-  and it adapts per screen: on Today, *continue where you left off*; on a Profile, *about this person
-  + people you both know*; in a Conversation, *the participants and thread*; on Discover, *about the
-  place you're exploring*. It holds no standalone widgets, **never** counts, trending, or a
-  federation dashboard (audit §6), and when there's nothing genuinely helpful it stays **empty**
-  rather than inventing filler. This is a design law, not a slot to fill — see
-  [responsive.md](./responsive.md) and the IA review.
+- **≥ 1200px (wide):** rail · feed · **context column**. **The context column is a *living*
+  contextual space — "your world, never your score"** ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)).
+  It helps the person *understand and move through their world* and adapts per screen: on Today,
+  *continue where you left off* + people close to you + represented momentum (framed, not tallied);
+  on a Profile, *about this person + people you both know*; in a Conversation, *the participants and
+  thread*; on Discover, *about the place you're exploring + communities active today*. It is gated by
+  the **informing vs. manipulating** test (design-principles L11), not by emptiness: world-directed,
+  relationship-derived content is welcome; **self-directed scoreboards, people-rankings, personal
+  analytics, and a live federation dashboard are not.** When a view genuinely has nothing to add it
+  rests quietly (a composed quiet, not celebrated blankness). This is a design law — see
+  [responsive.md §3](./responsive.md) and [ADR-012](../06-decisions/ADR-012-the-context-column-law.md).
 - **≥ 1600px (ultra-wide):** content capped at `--canvas-max`; extra space becomes quiet margin.
 
 ---
