@@ -53,7 +53,7 @@ export function FinalCTA({
           </a>
           <button onClick={onHowItWorks}>Contact</button>
         </nav>
-        <span className="lp-footer-copy">© 2026 Tacet. All rights reserved.</span>
+        <span className="lp-footer-copy">© 2026 Tacet, a VNTA Group venture.</span>
       </footer>
     </>
   );
