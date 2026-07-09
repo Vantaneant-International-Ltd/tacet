@@ -4,6 +4,8 @@ import { useUser, refreshUser } from "./session";
 import { Loading } from "./design/primitives";
 import { Enter } from "./views/Enter";
 import { LandingPage } from "./views/landing/LandingPage";
+import { WelcomeWorld } from "./views/welcome/WelcomeWorld";
+import { WelcomeHome } from "./views/welcome/WelcomeHome";
 import { TacetApp, APP_ROUTES } from "./app/TacetApp";
 
 // One navigation model. There is exactly one product flow:
@@ -30,6 +32,14 @@ export function App() {
 
   // Resolve the session before deciding the front door.
   if (user === undefined) return <Loading />;
+
+  // Welcome funnel (public). Signed-in visitors are already home.
+  if (path.startsWith("/welcome")) {
+    if (user) return <Redirect to="/today" />;
+    if (path === "/welcome/world") return <WelcomeWorld />;
+    if (path === "/welcome/home") return <WelcomeHome />;
+    return <Redirect to="/welcome/world" />;
+  }
 
   // Signed out: the landing page is the only front door.
   if (user === null) {

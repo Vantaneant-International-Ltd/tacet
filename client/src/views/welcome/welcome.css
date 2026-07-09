@@ -1,0 +1,177 @@
+/* Welcome funnel (steps 2–3). App-side surface: semantic theme tokens only, both
+   themes. Cosy on mobile — generous spacing, never cramped. */
+
+.wz {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-8) var(--space-5) var(--space-9);
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+}
+.wz-inner {
+  width: 100%;
+  max-width: 54rem;
+  margin: 0 auto;
+  text-align: center;
+}
+.wz-inner--narrow { max-width: 30rem; }
+
+/* ---- Stepper ---- */
+.wz-stepper {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  margin: 0 0 var(--space-8);
+  padding: 0;
+}
+.wz-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-tertiary);
+  font-size: var(--text-meta);
+}
+.wz-step-dot {
+  width: 1.75rem; height: 1.75rem;
+  display: grid; place-items: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-hairline);
+  font-size: var(--text-label); font-weight: 500;
+}
+.wz-step.is-current { color: var(--color-text-primary); }
+.wz-step.is-current .wz-step-dot {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.wz-step.is-done { color: var(--color-text-secondary); }
+.wz-step.is-done .wz-step-dot {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent-subtle);
+  color: var(--color-accent);
+}
+
+/* ---- Type ---- */
+.wz-title {
+  margin: 0;
+  font-size: var(--text-display);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.wz-sub {
+  margin: var(--space-4) auto 0;
+  max-width: 34rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-subheading);
+  line-height: 1.5;
+}
+
+/* ---- Platform grid ---- */
+.wz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-7) 0 var(--space-4);
+}
+.wz-card {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: var(--elevation-1);
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.wz-card:hover { box-shadow: var(--elevation-2); }
+.wz-card.is-on {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+.wz-card svg { width: 2.25rem; height: 2.25rem; }
+.wz-card-name { font-weight: 500; font-size: var(--text-body-sm); }
+.wz-card-desc { color: var(--color-text-tertiary); font-size: var(--text-meta); }
+.wz-check {
+  position: absolute; top: var(--space-2); right: var(--space-2);
+  width: 1.15rem; height: 1.15rem;
+  border-radius: var(--radius-full);
+  display: grid; place-items: center;
+  border: 1px solid var(--color-hairline);
+  font-size: var(--text-micro); color: var(--color-on-accent);
+  background: transparent;
+}
+.wz-card.is-on .wz-check {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.wz-fine {
+  color: var(--color-text-tertiary);
+  font-size: var(--text-meta);
+  margin: 0 0 var(--space-6);
+}
+
+/* ---- Actions / buttons ---- */
+.wz-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.wz-actions--center { justify-content: center; }
+.wz-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4em;
+  height: 3rem; padding: 0 var(--space-6);
+  border-radius: var(--radius-sm);
+  font-family: inherit; font-size: var(--text-body); font-weight: 600;
+  border: 1px solid transparent; cursor: pointer;
+  transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.wz-btn-primary { background: var(--color-accent); color: var(--color-on-accent); }
+.wz-btn-primary:hover { background: var(--color-accent-hover); }
+.wz-btn-primary:disabled { opacity: 0.6; cursor: default; }
+.wz-btn-ghost { background: transparent; color: var(--color-text-secondary); border-color: var(--color-hairline); }
+.wz-btn-ghost:hover { color: var(--color-text-primary); border-color: var(--color-text-tertiary); }
+.wz-skip {
+  display: inline-block; margin-top: var(--space-5);
+  background: none; border: none; cursor: pointer;
+  color: var(--color-text-tertiary); font-family: inherit; font-size: var(--text-body-sm);
+}
+.wz-skip:hover { color: var(--color-text-secondary); }
+
+/* ---- Identity form ---- */
+.wz-form {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  max-width: 22rem; margin: var(--space-7) auto 0;
+  text-align: left;
+}
+.wz-input {
+  width: 100%; box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: inherit; font-size: var(--text-body);
+}
+.wz-input:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.wz-handle {
+  display: flex; align-items: center; gap: var(--space-2);
+  color: var(--color-text-tertiary);
+}
+.wz-handle .wz-input { flex: 1; }
+
+@media (max-width: 40rem) {
+  .wz { padding: var(--space-7) var(--space-4) var(--space-8); }
+  .wz-stepper { gap: var(--space-4); }
+  .wz-grid { grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
+}

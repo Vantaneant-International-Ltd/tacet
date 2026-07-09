@@ -1,18 +1,13 @@
 import { TacetMark } from "./TacetMark";
 
-// Top navigation over the hero, per the canonical brand hero: the Hearth lockup on
-// the left; Why tacet · Communities · Open web · Sign in on the right. The marketing
-// links collapse on small screens (mobile stays cosy — wordmark + Sign in only).
+// Top navigation over the hero: the Hearth lockup on the left; Sign in + the single
+// "Join the beta" pill on the right. One verb across the whole page.
 export function LandingNav({
-  onWhy,
-  onCommunities,
-  onOpenWeb,
   onSignIn,
+  onJoin,
 }: {
-  onWhy: () => void;
-  onCommunities: () => void;
-  onOpenWeb: () => void;
   onSignIn: () => void;
+  onJoin: () => void;
 }) {
   return (
     <header className="lp-nav">
@@ -21,10 +16,10 @@ export function LandingNav({
         <span className="lp-nav-word">tacet</span>
       </a>
       <nav className="lp-nav-actions">
-        <button className="lp-navlink lp-nav-marketing" onClick={onWhy}>Why tacet</button>
-        <button className="lp-navlink lp-nav-marketing" onClick={onCommunities}>Communities</button>
-        <button className="lp-navlink lp-nav-marketing" onClick={onOpenWeb}>Open web</button>
         <button className="lp-navlink" onClick={onSignIn}>Sign in</button>
+        <button className="lp-btn lp-btn-sm" onClick={onJoin}>
+          Join the beta <span aria-hidden="true">&rarr;</span>
+        </button>
       </nav>
     </header>
   );

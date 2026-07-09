@@ -5,10 +5,10 @@ import { TacetMark } from "./TacetMark";
 // breathing constellation under an iris glow + blossom wash, the Hearth, one primary
 // action, and the five values. Full-height — it holds the screen before anything below.
 export function HeroSection({
-  onFindHome,
+  onJoin,
   onHowItWorks,
 }: {
-  onFindHome: () => void;
+  onJoin: () => void;
   onHowItWorks: () => void;
 }) {
   return (
@@ -25,8 +25,8 @@ export function HeroSection({
           place — on an internet nobody owns.
         </p>
         <div className="lp-cta-row lp-hero-cta">
-          <button className="lp-btn" onClick={onFindHome}>
-            Find your home
+          <button className="lp-btn" onClick={onJoin}>
+            Join the beta <span aria-hidden="true">&rarr;</span>
           </button>
           <button className="lp-btn lp-btn-quiet" onClick={onHowItWorks}>
             How it works

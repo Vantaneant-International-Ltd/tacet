@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { usePath, navigate } from "../router";
+import { usePath } from "../router";
 import { AppShell } from "./AppShell";
 import { Today } from "./screens/Today";
 import { People } from "./screens/People";
@@ -9,11 +8,10 @@ import { Me } from "./screens/Me";
 import { Profile } from "./screens/Profile";
 import { PublicPreview } from "./screens/PublicPreview";
 import { Conversation } from "./screens/Conversation";
-import { FirstRun } from "./onboarding/FirstRun";
-import { firstRunDone } from "./onboarding/hints";
 
 // The five surfaces of the IA, plus person profiles at /p/<actor> and conversation reads
-// at /c/<post>. The first-run setup gates the experience once per device, then to Today.
+// at /c/<post>. The app is a walkable alpha — an anonymous visit shows the app directly.
+// The guided setup lives only in the welcome funnel (/welcome/home), never here.
 export const APP_ROUTES = ["/today", "/people", "/discover", "/conversations", "/me", "/p", "/c"];
 
 function screenFor(path: string) {
@@ -29,18 +27,5 @@ function screenFor(path: string) {
 
 export function TacetApp() {
   const path = usePath();
-  const [firstRun, setFirstRun] = useState(() => !firstRunDone());
-
-  if (firstRun) {
-    return (
-      <FirstRun
-        onDone={() => {
-          setFirstRun(false);
-          navigate("/today");
-        }}
-      />
-    );
-  }
-
   return <AppShell>{screenFor(path)}</AppShell>;
 }

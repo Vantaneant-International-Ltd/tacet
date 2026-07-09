@@ -24,8 +24,19 @@ function loadTurnstile(): Promise<void> {
 // Login / register. Registration needs an invite code (except the first, bootstrap account).
 // An invite link (/join/<code>) arrives here with the code prefilled. When a Turnstile site
 // key is configured, registration shows the challenge.
-export function Enter({ invite: prefill }: { invite?: string }) {
-  const [mode, setMode] = useState<"in" | "up">(prefill ? "up" : "in");
+// `onComplete` lets the welcome funnel reuse this exact auth path (never forked) and
+// continue into identity setup instead of jumping straight to /today. `defaultMode`
+// opens directly on create ("up") when the funnel enters here.
+export function Enter({
+  invite: prefill,
+  defaultMode,
+  onComplete,
+}: {
+  invite?: string;
+  defaultMode?: "in" | "up";
+  onComplete?: () => void;
+}) {
+  const [mode, setMode] = useState<"in" | "up">(defaultMode ?? (prefill ? "up" : "in"));
   const [handle, setHandle] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [invite, setInvite] = useState(prefill ?? "");
@@ -76,7 +87,8 @@ export function Enter({ invite: prefill }: { invite?: string }) {
           ? await api.login(handle, passphrase)
           : await api.register(handle, passphrase, invite || undefined, token ?? undefined);
       setUser(user);
-      navigate("/today");
+      if (onComplete) onComplete();
+      else navigate("/today");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "something went wrong");
     } finally {

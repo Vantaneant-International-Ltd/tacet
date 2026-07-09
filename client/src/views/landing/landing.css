@@ -148,6 +148,8 @@
   box-shadow: none;
 }
 .lp-btn-quiet:hover { background: rgba(226, 221, 236, 0.12); color: #fff; box-shadow: none; }
+/* Compact pill for the nav. */
+.lp-btn-sm { height: 2.5rem; padding: 0 1.15rem; font-size: 0.9rem; box-shadow: 0 0 22px rgba(123, 97, 255, 0.28); }
 .lp-btn span[aria-hidden] { margin-left: 0.4em; }
 @media (prefers-reduced-motion: reduce) { .lp-btn:active { transform: none; } }
 .lp-linkbtn {

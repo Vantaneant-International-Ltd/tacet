@@ -22,20 +22,15 @@ function scrollToId(id: string) {
 // fragmentation → convergence → divided → quote → CTA → footer. The platform picker
 // lives in onboarding, not here.
 export function LandingPage() {
-  const goEnter = () => navigate("/enter");
-  const goApp = () => navigate("/today");
+  const goEnter = () => navigate("/enter"); // Sign in
+  const goJoin = () => navigate("/welcome/world"); // one verb: Join the beta → funnel
 
   return (
     <div className="lp">
       <DevBanner />
-      <LandingNav
-        onWhy={() => scrollToId("lp-fragmentation")}
-        onCommunities={() => scrollToId("lp-convergence")}
-        onOpenWeb={() => scrollToId("lp-email")}
-        onSignIn={goEnter}
-      />
+      <LandingNav onSignIn={goEnter} onJoin={goJoin} />
       <HeroSection
-        onFindHome={goEnter}
+        onJoin={goJoin}
         onHowItWorks={() => scrollToId("lp-email")}
       />
       <FragmentationSection />
@@ -44,7 +39,7 @@ export function LandingPage() {
       <DividedSection />
       <ManifestoSection />
       <FinalCTA
-        onJoin={goApp}
+        onJoin={goJoin}
         onSignIn={goEnter}
         onReadManifesto={() => scrollToId("lp-manifesto")}
         onHowItWorks={() => scrollToId("lp-divided")}
