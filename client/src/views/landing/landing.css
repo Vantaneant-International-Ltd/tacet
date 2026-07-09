@@ -14,6 +14,7 @@
   --lp-line: rgba(169, 150, 236, 0.14);
   --lp-card: rgba(255, 255, 255, 0.035);
   --lp-card-brd: rgba(255, 255, 255, 0.08);
+  --lp-devbar-h: 2.15rem;
 
   position: relative;
   background: var(--lp-bg);
@@ -211,7 +212,7 @@
 /* ---- Top nav ---- */
 .lp-nav {
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: var(--lp-devbar-h); left: 0; right: 0;
   z-index: 3;
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem;
@@ -296,76 +297,113 @@
 }
 .lp-tile.is-sel .lp-tag { color: var(--lp-accent); }
 
-/* ---- Fragmentation: scattered islands ---- */
-.lp-scatter {
-  position: relative;
-  width: 100%;
-  max-width: 46rem;
-  height: 22rem;
-  margin: 2rem auto 0;
+/* ---- Light / lavender bands (two-column: copy left, visual right) ---- */
+.lp-band { text-align: left; }
+/* Bands override the local ink + card tokens so the shared type rules read dark. */
+.lp-band-light {
+  --lp-ink: #1c1a17;
+  --lp-ink-dim: #5c574e;
+  --lp-ink-faint: #8a8379;
+  --lp-card: #ffffff;
+  --lp-card-brd: #e6e0d6;
+  background: #f4f1ea;
 }
-.lp-island {
-  position: absolute;
-  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
-  padding: 0.9rem 1rem;
-  border-radius: 14px;
-  background: var(--lp-card);
-  border: 1px solid var(--lp-card-brd);
-  color: var(--lp-ink);
-  transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease;
+.lp-band-lavender {
+  --lp-ink: #211c2e;
+  --lp-ink-dim: #5f5872;
+  --lp-ink-faint: #8f88a0;
+  --lp-card: #ffffff;
+  --lp-card-brd: #e5ddf2;
+  background: linear-gradient(180deg, #efeafa, #f4f1f8);
 }
-.lp-island .lp-tile-glyph { color: var(--lp-ink-dim); }
-.lp-island-name { font-size: 0.85rem; color: var(--lp-ink-dim); }
+.lp-band .lp-h2 { color: var(--lp-ink); }
+.lp-band-inner {
+  width: 100%; max-width: 66rem; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+}
+.lp-band-copy .lp-h2 { margin-bottom: 0; }
+.lp-band-sub {
+  color: var(--lp-ink-dim);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.5;
+  margin-top: 1rem;
+}
+@media (max-width: 52rem) {
+  .lp-band { text-align: center; }
+  .lp-band-inner { grid-template-columns: 1fr; }
+  .lp-band-copy { order: -1; }
+}
 
-/* ---- Convergence ---- */
+/* ---- Fragmentation: logo cards ---- */
+.lp-logo-row {
+  display: flex; flex-wrap: wrap; gap: 0.7rem;
+  justify-content: flex-start;
+}
+.lp-logo-card {
+  display: flex; flex-direction: column; align-items: center; gap: 0.55rem;
+  width: 5.1rem; padding: 0.95rem 0.5rem;
+  border-radius: 14px;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  box-shadow: 0 4px 14px rgba(30, 25, 20, 0.05);
+}
+.lp-logo { width: 2rem; height: 2rem; display: block; }
+.lp-logo-name { font-size: 0.72rem; color: var(--lp-ink-dim); }
+.lp-logo-more .lp-logo { color: var(--lp-ink-faint); }
+@media (max-width: 52rem) { .lp-logo-row { justify-content: center; } }
+
+/* ---- Convergence: a stable orbit collapsing into one home ---- */
 .lp-converge {
   position: relative;
-  width: 100%;
-  max-width: 46rem;
-  height: 24rem;
-  margin: 2.5rem auto 0;
+  width: 100%; max-width: 30rem;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  justify-self: center;
+}
+/* dashed orbit ring */
+.lp-converge::before {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: 300px; height: 300px; max-width: 84%; max-height: 84%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border: 1px dashed color-mix(in srgb, var(--lp-accent-deep) 45%, transparent);
 }
 .lp-core {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 7.5rem; height: 7.5rem; border-radius: 999px;
-  display: grid; place-items: center;
-  background: radial-gradient(circle at 50% 40%, rgba(198,182,246,0.9), var(--lp-accent-deep));
-  color: #14101f; font-weight: 400; letter-spacing: 0.05em;
-  box-shadow: 0 0 60px rgba(122,92,208,0.55);
+  width: 6.5rem; height: 6.5rem; border-radius: 999px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
+  background: radial-gradient(circle at 50% 38%, #c6b6f6, var(--lp-accent-deep));
+  color: #fff; font-weight: 400; letter-spacing: 0.02em;
+  box-shadow: 0 12px 40px rgba(122, 92, 208, 0.35);
   z-index: 2;
 }
-.lp-core-word { font-size: 1.05rem; }
+.lp-core-word { font-size: 0.95rem; }
 .lp-orbit {
   position: absolute; top: 50%; left: 50%;
   display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  padding: 0.7rem 0.85rem; border-radius: 12px;
+  padding: 0.55rem 0.7rem; border-radius: 12px;
   background: var(--lp-card); border: 1px solid var(--lp-card-brd);
-  transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease;
-  opacity: 0.55;
+  box-shadow: 0 4px 14px rgba(30, 25, 20, 0.06);
+  opacity: 0;
+  transition: opacity 700ms ease;
 }
-.lp-converge.is-in .lp-orbit { transform: translate(-50%, -50%) !important; opacity: 0.95; }
-.lp-orbit .lp-tile-glyph { color: var(--lp-accent); font-size: 1.1rem; }
-.lp-orbit-name { font-size: 0.75rem; color: var(--lp-ink-dim); }
-@media (prefers-reduced-motion: reduce) {
-  .lp-orbit { transition: opacity 400ms ease; }
-}
+.lp-converge.is-in .lp-orbit { opacity: 1; }
+.lp-orbit .lp-logo { width: 1.5rem; height: 1.5rem; }
+.lp-orbit-name { font-size: 0.72rem; color: var(--lp-ink-dim); }
+@media (prefers-reduced-motion: reduce) { .lp-orbit { opacity: 1; transition: none; } }
 
-/* ---- Federation diagram ---- */
-.lp-fed-diagram {
-  margin: 2.5rem auto 0;
-  max-width: 34rem;
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  font-family: "Space Mono", ui-monospace, monospace;
+/* ---- Divided: a scattered field resolving to one node ---- */
+.lp-divided-visual {
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
 }
-.lp-fed-you {
-  font-size: 1rem; color: var(--lp-ink);
-  padding: 0.6rem 1rem; border-radius: 10px;
-  background: rgba(169,150,236,0.12); border: 1px solid var(--lp-accent);
+.lp-divided-svg { width: 100%; max-width: 22rem; height: auto; }
+.lp-divided-aside {
+  color: var(--lp-ink-dim);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  max-width: 18rem; text-align: center; margin: 0;
 }
-.lp-fed-verb { color: var(--lp-ink-faint); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; }
-.lp-fed-peers { display: flex; flex-direction: column; gap: 0.4rem; }
-.lp-fed-peer { font-size: 0.9rem; color: var(--lp-ink-dim); }
 
 /* ---- Manifesto ---- */
 .lp-manifesto .lp-inner { max-width: 40rem; }
