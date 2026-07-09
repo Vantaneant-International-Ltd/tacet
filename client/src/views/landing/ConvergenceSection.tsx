@@ -1,19 +1,25 @@
-import { PLATFORMS } from "./types";
 import { BrandLogo } from "./BrandLogos";
 import { TacetMark } from "./TacetMark";
 import { useInView } from "./useInView";
 
-// The open social web Tacet actually connects to, orbiting one home. Place badges,
-// not protocol talk. These stay in a stable ring — they do not collapse into a count.
-const OPEN = PLATFORMS.filter((p) => p.category === "open");
+// The mock's orbital: people (avatars) and the OPEN-web places ring the Tacet Hearth,
+// joined by dashed radial lines. Only open places converge into Tacet — no closed
+// platform does (honest). Avatars are gradient placeholders for real people.
+const NODES = [
+  { type: "av", g: 0 },
+  { type: "place", id: "mastodon" },
+  { type: "av", g: 1 },
+  { type: "place", id: "pixelfed" },
+  { type: "av", g: 2 },
+  { type: "place", id: "peertube" },
+  { type: "av", g: 3 },
+  { type: "av", g: 4 },
+] as const;
 
-function ringOffset(index: number, total: number): { x: string; y: string } {
-  const angle = (index / Math.max(total, 1)) * Math.PI * 2 - Math.PI / 2;
-  const radius = 150; // px from centre
-  return {
-    x: `calc(-50% + ${Math.cos(angle) * radius}px)`,
-    y: `calc(-50% + ${Math.sin(angle) * radius}px)`,
-  };
+const R = 40; // ring radius, % of the square
+function pos(i: number, n: number) {
+  const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+  return { x: 50 + Math.cos(a) * R, y: 50 + Math.sin(a) * R };
 }
 
 export function ConvergenceSection() {
@@ -30,17 +36,21 @@ export function ConvergenceSection() {
         </div>
 
         <div className={"lp-converge" + (inView ? " is-in" : "")} aria-hidden="true">
-          {OPEN.map((p, i) => {
-            const off = ringOffset(i, OPEN.length);
-            return (
-              <div
-                className="lp-orbit"
-                key={p.id}
-                style={{ transform: `translate(${off.x}, ${off.y})` }}
-              >
-                <BrandLogo id={p.id} />
-                <span className="lp-orbit-name">{p.name}</span>
+          <svg className="lp-orb-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {NODES.map((_, i) => {
+              const p = pos(i, NODES.length);
+              return <line key={i} x1="50" y1="50" x2={p.x} y2={p.y} />;
+            })}
+          </svg>
+          {NODES.map((node, i) => {
+            const p = pos(i, NODES.length);
+            const style = { left: `${p.x}%`, top: `${p.y}%`, transitionDelay: `${i * 55}ms` };
+            return node.type === "place" ? (
+              <div className="lp-orb lp-orb-place" style={style} key={i}>
+                <BrandLogo id={node.id} />
               </div>
+            ) : (
+              <div className={`lp-orb lp-orb-av lp-orb-av--${node.g}`} style={style} key={i} />
             );
           })}
           <div className="lp-core">

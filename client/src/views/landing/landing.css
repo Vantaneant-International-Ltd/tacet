@@ -455,21 +455,35 @@
   z-index: 2;
 }
 .lp-core-word { font-size: 0.95rem; }
-.lp-orbit {
-  position: absolute; top: 50%; left: 50%;
-  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  padding: 0.55rem 0.7rem; border-radius: 12px;
-  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
-  box-shadow: 0 4px 14px rgba(30, 25, 20, 0.06);
-  opacity: 0;
-  transition: opacity 700ms ease;
+/* Ring nodes: people (avatars) + open-web place chips, joined by dashed radial lines. */
+.lp-orb-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.lp-orb-lines line {
+  stroke: color-mix(in srgb, var(--lp-accent-deep) 38%, transparent);
+  stroke-width: 0.4; stroke-dasharray: 1 1.4;
 }
-.lp-converge.is-in .lp-orbit { opacity: 1; }
-.lp-converge.is-in .lp-orbit:nth-child(2) { transition-delay: 0.12s; }
-.lp-converge.is-in .lp-orbit:nth-child(3) { transition-delay: 0.24s; }
-.lp-orbit .lp-logo { width: 1.5rem; height: 1.5rem; }
-.lp-orbit-name { font-size: 0.72rem; color: var(--lp-ink-dim); }
-@media (prefers-reduced-motion: reduce) { .lp-orbit { opacity: 1; transition: none; } }
+.lp-orb {
+  position: absolute; transform: translate(-50%, -50%);
+  z-index: 2;
+  opacity: 0; transition: opacity 600ms ease;
+}
+.lp-converge.is-in .lp-orb { opacity: 1; }
+.lp-orb-place {
+  width: 2.6rem; height: 2.6rem; border-radius: var(--radius-full, 999px);
+  display: grid; place-items: center;
+  background: var(--lp-card); border: 1px solid var(--lp-card-brd);
+  box-shadow: 0 4px 14px rgba(30, 25, 20, 0.08);
+}
+.lp-orb-place .lp-logo { width: 1.5rem; height: 1.5rem; }
+.lp-orb-av {
+  width: 3rem; height: 3rem; border-radius: 999px;
+  border: 2px solid #fff; box-shadow: 0 6px 16px rgba(30, 25, 20, 0.14);
+}
+.lp-orb-av--0 { background: linear-gradient(140deg, #a18bff, #e6b0ec); }
+.lp-orb-av--1 { background: linear-gradient(140deg, #7b61ff, #a996ec); }
+.lp-orb-av--2 { background: linear-gradient(140deg, #8ab4ff, #7b61ff); }
+.lp-orb-av--3 { background: linear-gradient(140deg, #f0aa78, #e58bb0); }
+.lp-orb-av--4 { background: linear-gradient(140deg, #93d6c0, #8ab4ff); }
+@media (prefers-reduced-motion: reduce) { .lp-orb { opacity: 1; transition: none; } }
 
 /* ---- Email band (dark; the metaphor, alive) ---- */
 .lp-band-dark { background: transparent; }
