@@ -330,7 +330,20 @@
 .lp-tile.is-sel .lp-tag { color: var(--lp-accent); }
 
 /* ---- Light / lavender bands (two-column: copy left, visual right) ---- */
-.lp-band { text-align: left; }
+/* Bands are compact horizontal strips, not full-height sections (only the hero fills
+   the viewport). */
+.lp-band {
+  text-align: left;
+  min-height: 0;
+  padding-top: clamp(3.5rem, 8vh, 6rem);
+  padding-bottom: clamp(3.5rem, 8vh, 6rem);
+}
+/* Band headings are modest — the display size is reserved for the hero. */
+.lp-band .lp-h2 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
 /* Bands override the local ink + card tokens so the shared type rules read dark. */
 .lp-band-light {
   --lp-ink: #1c1a17;
@@ -513,15 +526,28 @@
 @keyframes lp-flow { to { stroke-dashoffset: -22; } }
 @media (prefers-reduced-motion: reduce) { .lp-email-link { animation: none; } }
 
-/* ---- Divided: a scattered field resolving to one node ---- */
-.lp-divided-visual {
-  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+/* ---- Divided: heading · dispersion · closing line (split-tone) ---- */
+.lp-band-divided {
+  background: linear-gradient(100deg, #f6efee 0%, #f2f0ea 45%, #eaf1f2 100%);
 }
-.lp-divided-svg { width: 100%; max-width: 22rem; height: auto; }
+.lp-divided-inner {
+  width: 100%; max-width: 68rem; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.5fr 1fr;
+  align-items: center; gap: clamp(1.5rem, 4vw, 3rem);
+  text-align: left;
+}
+.lp-divided-h { margin: 0; }
+.lp-divided-visual { display: flex; justify-content: center; }
+.lp-divided-svg { width: 100%; max-width: 26rem; height: auto; }
 .lp-divided-aside {
   color: var(--lp-ink-dim);
   font-size: clamp(1rem, 2vw, 1.2rem);
-  max-width: 18rem; text-align: center; margin: 0;
+  max-width: 14rem; margin: 0;
+}
+@media (max-width: 60rem) {
+  .lp-divided-inner { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .lp-divided-h br { display: none; }
+  .lp-divided-aside { max-width: 22rem; }
 }
 
 /* ---- Manifesto ---- */
