@@ -1,5 +1,6 @@
 import { PLATFORMS } from "./types";
 import { BrandLogo } from "./BrandLogos";
+import { TacetMark } from "./TacetMark";
 import { useInView } from "./useInView";
 
 // The open social web Tacet actually connects to, orbiting one home. Place badges,
@@ -43,7 +44,7 @@ export function ConvergenceSection() {
             );
           })}
           <div className="lp-core">
-            <span className="lp-mark lp-mark-lg" aria-hidden="true" />
+            <TacetMark className="lp-hearth lp-hearth-core" />
             <span className="lp-core-word">tacet</span>
           </div>
         </div>

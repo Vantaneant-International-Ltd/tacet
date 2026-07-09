@@ -1,6 +1,8 @@
 // Top navigation over the hero. Placeholder sunburst mark (operator instruction —
 // swap for a real mark later) + wordmark on the left; Sign in + Join the beta on the
 // right. The gradient pill is the page's single strongest call to action.
+import { TacetMark } from "./TacetMark";
+
 export function LandingNav({
   onSignIn,
   onJoin,
@@ -11,7 +13,7 @@ export function LandingNav({
   return (
     <header className="lp-nav">
       <a className="lp-nav-brand" href="/" aria-label="Tacet — home">
-        <span className="lp-mark" aria-hidden="true" />
+        <TacetMark className="lp-hearth" />
         <span className="lp-nav-word">tacet</span>
       </a>
       <nav className="lp-nav-actions">

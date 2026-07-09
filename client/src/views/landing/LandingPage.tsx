@@ -3,6 +3,7 @@ import { LandingNav } from "./LandingNav";
 import { HeroSection } from "./HeroSection";
 import { FragmentationSection } from "./FragmentationSection";
 import { ConvergenceSection } from "./ConvergenceSection";
+import { EmailSection } from "./EmailSection";
 import { DividedSection } from "./DividedSection";
 import { ManifestoSection } from "./ManifestoSection";
 import { FinalCTA } from "./FinalCTA";
@@ -34,6 +35,7 @@ export function LandingPage() {
       />
       <FragmentationSection />
       <ConvergenceSection />
+      <EmailSection />
       <DividedSection />
       <ManifestoSection />
       <FinalCTA

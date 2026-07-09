@@ -1,4 +1,5 @@
 import { useInView } from "./useInView";
+import { TacetMark } from "./TacetMark";
 
 export function FinalCTA({
   onJoin,
@@ -35,7 +36,7 @@ export function FinalCTA({
 
       <footer className="lp-footer">
         <a className="lp-footer-brand" href="/" aria-label="Tacet — home">
-          <span className="lp-mark" aria-hidden="true" />
+          <TacetMark className="lp-hearth" />
           <span>tacet</span>
         </a>
         <nav className="lp-footer-links">
