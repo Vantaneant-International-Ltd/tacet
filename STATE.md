@@ -12,6 +12,27 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Landing fidelity pass to mocks 1–3, LIVE (2026-07-09).** Deploy **`bdcad653`** (rollback
+  anchor `451dadb6`). Spec: `docs/10-design/hifi/fidelity-specs.md`. Verified on
+  `https://tacet.social`: `/`, `/welcome/world`, `/welcome/home`, `/today` all 200; `/api/health`
+  200; CSP/HSTS/`X-Frame-Options: DENY` intact; Join-the-beta → funnel flow resolves.
+  - **§1 Hero background** — rebuilt from sparse to a dense encircling constellation (~340 nodes
+    desktop / ~120 mobile), warm-left / cool-right + lavender, hub glow, fixed nearest-neighbour
+    edge list; perpetual calm motion (wobble + twinkle + breathe); reduced-motion static (W4).
+    Scroll cue re-added. Hero copy unchanged (W1). (`e280634`)
+  - **§4 Convergence** — large white soft-shadow disc + iris Hearth, two concentric dotted rings,
+    dotted radial connectors, stronger avatar/place drop shadows, central lavender wash. Open-web
+    icons only converge (W2). (`fa8cef8`)
+  - **§7 Nav + Final CTA** — 'Join the beta' is now a purple gradient pill (nav, hero, final CTA)
+    per mock 1; footer copyright matches mock. (`5bcf359`)
+  - **§2 Nav, §3 Fragmentation, §5 Divided, §6 People/Manifesto, §8 Welcome step 2** were brought to
+    fidelity in the prior passes and left in place.
+  - **Whitelist applied:** W1 (hero copy kept), W2 (open-only converge), W3 (honest 'your open web'
+    phrasing; no present-tense handle claims). **Objections suppressed per contract:** (a) avatars are
+    gradient placeholders, not the mock's stock photos — I won't fabricate copyrighted faces; wire real
+    content later. (b) footer now reads 'All rights reserved.' per the mock, though the brand kit's
+    README specified '© 2026 Tacet, a VNTA Group venture.' — flagging in case the brand line is preferred.
+
 - **Welcome funnel + landing→Stage-6 refinements + brand type, LIVE (2026-07-09).** Deploy
   **`d57eb64d`** (rollback anchor `47192575`). Verified on `https://tacet.social`: new build
   served; `/`, `/welcome/world`, `/welcome/home`, `/today`, `/enter` all 200; `/api/health`
