@@ -12,6 +12,28 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Canonical brand hero adopted + apex domain FIXED, LIVE (2026-07-09).**
+  - **Hero** rebuilt to the brand kit's own landing hero (`docs/10-design/tacet-brand/ui_kits/landing`):
+    full-height deep-ink moment — breathing **Hearth** mark, "The internet, quiet enough to feel like
+    home." (iris "quiet enough"), your-people/your-pace/your-place subline, **Find your home** (solid
+    iris) + **How it works** (quiet), and the five values row. Iris glow + blossom wash over the moving
+    constellation. Nav → brand links (Why tacet · Communities · Open web · Sign in; collapse on mobile).
+    This supersedes the interim "The social web. Finally." hero. Sections below unchanged.
+  - **Brand kit vendored** at `docs/10-design/tacet-brand/` (Hearth mark/wordmark SVGs, constellation
+    backgrounds, tokens, guidelines). Landing accent aligned to **iris `#7B61FF`** / highlight `#A18BFF`.
+  - **"Works like email"** band brought back as an animated dark band (flowing links from one address
+    out to people on their places). Real platform logos in Fragmentation/Convergence (operator override
+    of the handoff's neutral-monogram rule — recorded).
+  - **Apex `tacet.social` now LIVE over HTTPS.** Root cause: the apex is *proxied* through Cloudflare
+    (returned CF **520** to a stale/dead origin), so TLS already terminated at the edge — the fix did
+    **not** need DNS-edit permission (the OAuth token is `zone:read` only). Added a **Worker route**
+    `tacet.social/*` (git-ignored `wrangler.local.jsonc`; tracked config untouched) which intercepts the
+    apex at the edge and serves the Worker before the dead origin. `www` stays a custom domain;
+    workers.dev fallback kept. **Verified:** `/` 200 (15/15 stable), `/api/health` 200, `today`/`people`
+    200, TLS verify=0, HTTP/2, CSP/HSTS/`X-Frame-Options: DENY`/nosniff intact; serves the new hero build.
+  - Deploy version **`11deb8ac-aeca-4c18-ab56-42bf855a8988`** (route added). Prior versions this session:
+    `55c3e602` (brand hero), `a0005de2` (first hi-fi landing). Rollback: `npx wrangler rollback --config wrangler.local.jsonc`.
+
 - **Landing → Stage 6 high fidelity, LIVE (2026-07-09).** Rebuilt the public landing at `/`
   to the canonical handoff (`docs/10-design/hifi/prototypes/`, README authoritative) in three
   pushed surfaces: (1) hero identity — "The social web. **Finally.**" with a top nav carrying
