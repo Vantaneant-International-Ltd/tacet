@@ -5,19 +5,42 @@
   min-height: 100vh;
   box-sizing: border-box;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: var(--space-8) var(--space-5) var(--space-9);
-  background: var(--color-canvas);
+  flex-direction: column;
   color: var(--color-text-primary);
+  /* Cool iris wash over the canvas — nods to the brand's lavender-cast light surface. */
+  background:
+    radial-gradient(120% 70% at 50% -5%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 62%),
+    var(--color-canvas);
 }
 .wz-inner {
+  flex: 1;
   width: 100%;
-  max-width: 54rem;
+  max-width: 58rem;
   margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-9);
   text-align: center;
 }
-.wz-inner--narrow { max-width: 30rem; }
+.wz-inner--narrow { max-width: 32rem; }
+
+/* ---- Funnel nav ---- */
+.wz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
+}
+.wz-nav-brand {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  color: var(--color-text-primary); text-decoration: none;
+  font-size: var(--text-heading); font-weight: 500; letter-spacing: -0.01em;
+}
+.wz-hearth { width: 1.6rem; height: 1.6rem; color: var(--color-accent); flex: none; }
+.wz-hearth .lp-hearth-dot { fill: currentColor; }
+.wz-nav-word { line-height: 1; }
+.wz-nav-signin {
+  color: var(--color-text-secondary); text-decoration: none; font-size: var(--text-body-sm);
+}
+.wz-nav-signin span { color: var(--color-accent); }
+.wz-nav-signin:hover span { color: var(--color-accent-hover); }
 
 /* ---- Stepper ---- */
 .wz-stepper {
@@ -73,17 +96,19 @@
   line-height: 1.5;
 }
 
-/* ---- Platform grid ---- */
+/* ---- Platform grid (4 across, Other centred on its own row) ---- */
 .wz-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-3);
-  margin: var(--space-7) 0 var(--space-4);
+  margin: var(--space-7) 0 var(--space-3);
 }
+.wz-grid-other { display: flex; justify-content: center; margin-bottom: var(--space-5); }
+.wz-grid-other .wz-card { width: calc((100% - 3 * var(--space-3)) / 4); }
 .wz-card {
   position: relative;
   display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
-  padding: var(--space-5) var(--space-3);
+  padding: var(--space-6) var(--space-4);
   border-radius: var(--radius-md);
   background: var(--color-surface-raised);
   border: 1px solid var(--color-hairline);
@@ -98,7 +123,7 @@
   border-color: var(--color-accent);
   box-shadow: 0 0 0 1px var(--color-accent);
 }
-.wz-card svg { width: 2.25rem; height: 2.25rem; }
+.wz-card svg { width: 2.5rem; height: 2.5rem; margin-bottom: var(--space-1); }
 .wz-card-name { font-weight: 500; font-size: var(--text-body-sm); }
 .wz-card-desc { color: var(--color-text-tertiary); font-size: var(--text-meta); }
 .wz-check {
@@ -139,6 +164,9 @@
 .wz-btn-primary { background: var(--color-accent); color: var(--color-on-accent); }
 .wz-btn-primary:hover { background: var(--color-accent-hover); }
 .wz-btn-primary:disabled { opacity: 0.6; cursor: default; }
+/* Neutral dark progression button (funnel Continue), per mock — reserves the accent. */
+.wz-btn-dark { background: var(--color-text-primary); color: var(--color-canvas); padding: 0 var(--space-7); }
+.wz-btn-dark:hover { background: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-canvas)); }
 .wz-btn-ghost { background: transparent; color: var(--color-text-secondary); border-color: var(--color-hairline); }
 .wz-btn-ghost:hover { color: var(--color-text-primary); border-color: var(--color-text-tertiary); }
 .wz-skip {
@@ -170,8 +198,11 @@
 }
 .wz-handle .wz-input { flex: 1; }
 
+@media (max-width: 52rem) {
+  .wz-grid { grid-template-columns: repeat(2, 1fr); }
+  .wz-grid-other .wz-card { width: calc((100% - var(--space-3)) / 2); }
+}
 @media (max-width: 40rem) {
-  .wz { padding: var(--space-7) var(--space-4) var(--space-8); }
   .wz-stepper { gap: var(--space-4); }
-  .wz-grid { grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
+  .wz-nav-signin { font-size: var(--text-meta); }
 }

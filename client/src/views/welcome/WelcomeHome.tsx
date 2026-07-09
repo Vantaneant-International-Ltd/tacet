@@ -2,6 +2,7 @@ import { useState } from "react";
 import { navigate } from "../../router";
 import { Enter } from "../Enter";
 import { api } from "../../app/me";
+import { WelcomeNav } from "./WelcomeNav";
 import { WelcomeStepper } from "./WelcomeStepper";
 import "./welcome.css";
 
@@ -36,6 +37,7 @@ export function WelcomeHome() {
 
   return (
     <main className="wz">
+      <WelcomeNav />
       <div className="wz-inner wz-inner--narrow">
         <WelcomeStepper current={3} />
 

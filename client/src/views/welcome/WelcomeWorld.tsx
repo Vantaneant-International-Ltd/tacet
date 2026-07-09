@@ -2,8 +2,13 @@ import { useState } from "react";
 import { navigate } from "../../router";
 import { PLATFORMS } from "../landing/types";
 import { BrandLogo } from "../landing/BrandLogos";
+import { WelcomeNav } from "./WelcomeNav";
 import { WelcomeStepper } from "./WelcomeStepper";
 import "./welcome.css";
+
+// The eight named places (4×2 grid), then "Other" centred on its own row — per mock.
+const PLACES = PLATFORMS.filter((p) => p.id !== "other");
+const OTHER = PLATFORMS.find((p) => p.id === "other")!;
 
 // Human descriptors — plain place words, no protocol jargon.
 const DESC: Record<string, string> = {
@@ -32,8 +37,27 @@ export function WelcomeWorld() {
     });
   }
 
+  const card = (p: (typeof PLATFORMS)[number]) => {
+    const on = selected.has(p.id);
+    return (
+      <button
+        key={p.id}
+        type="button"
+        className={"wz-card" + (on ? " is-on" : "")}
+        aria-pressed={on}
+        onClick={() => toggle(p.id)}
+      >
+        <span className="wz-check" aria-hidden="true">{on ? "✓" : ""}</span>
+        <BrandLogo id={p.id} />
+        <span className="wz-card-name">{p.name}</span>
+        <span className="wz-card-desc">{DESC[p.id] ?? ""}</span>
+      </button>
+    );
+  };
+
   return (
     <main className="wz">
+      <WelcomeNav />
       <div className="wz-inner">
         <WelcomeStepper current={2} />
 
@@ -44,24 +68,9 @@ export function WelcomeWorld() {
         </p>
 
         <div className="wz-grid" role="group" aria-label="Places you use">
-          {PLATFORMS.map((p) => {
-            const on = selected.has(p.id);
-            return (
-              <button
-                key={p.id}
-                type="button"
-                className={"wz-card" + (on ? " is-on" : "")}
-                aria-pressed={on}
-                onClick={() => toggle(p.id)}
-              >
-                <span className="wz-check" aria-hidden="true">{on ? "✓" : ""}</span>
-                <BrandLogo id={p.id} />
-                <span className="wz-card-name">{p.name}</span>
-                <span className="wz-card-desc">{DESC[p.id] ?? ""}</span>
-              </button>
-            );
-          })}
+          {PLACES.map(card)}
         </div>
+        <div className="wz-grid-other">{card(OTHER)}</div>
 
         <p className="wz-fine">
           <span aria-hidden="true">🔒</span> Your selections are private and stay on this device.
@@ -69,9 +78,9 @@ export function WelcomeWorld() {
 
         <div className="wz-actions">
           <button className="wz-btn wz-btn-ghost" onClick={() => navigate("/")}>
-            &larr; Back
+            <span aria-hidden="true">&larr;</span> Back
           </button>
-          <button className="wz-btn wz-btn-primary" onClick={() => navigate("/welcome/home")}>
+          <button className="wz-btn wz-btn-dark" onClick={() => navigate("/welcome/home")}>
             Continue <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
