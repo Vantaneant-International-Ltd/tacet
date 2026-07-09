@@ -102,10 +102,18 @@ important components alongside the Person Card.
    `--scrim-caption` for overlaid captions, alt text required, no autoplay (L5).
 4. **Affordance row** — **Reply · Share · Save**. That is the whole row.
 
-**Explicitly rejected (from the references):** no public like tally, no comment count, no repost/
-boost count, no reaction rail, no "trending", no view counter. There is nothing to perform for
-(principle 2, L6). The affordance row carries *actions the reader can take*, never *scores others
-produced*.
+**The affordance row is actions, never a self-directed scoreboard.** On the card itself: no tally of
+the reader's or author's *own* likes/comments/reposts/views sitting on the card as a standing score,
+no reaction rail, no ranking. There is nothing to perform for (principle 2). The row carries *actions
+the reader can take*, never *a self-directed score*.
+
+**World-directed reception is a separate, allowed thing (reconciled 2026-07-09).** Representing that a
+post *resonated in the world* — as calm, framed, world-directed context ("an active thread", "shared
+widely"), not a raw ascending tally on the card — is **informing**, not chrome, and is governed by
+[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) and
+[design-principles L11](./design-principles.md). It lives in editorial/context surfaces (the context
+column, a curator moment), softened toward qualitative language; it is never a per-card leaderboard
+and never a ranking of people. The enemy is the *self-directed score*, not the world's reality.
 
 | Affordance | Icon | Treatment | State notes |
 |---|---|---|---|

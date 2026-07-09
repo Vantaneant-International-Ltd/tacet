@@ -2,9 +2,19 @@
 
 > **Milestone:** Visual System V2 · **Stage:** 4 (Low-fidelity wireframes) · **Fidelity: GREY.**
 > These are structural, not beautiful. They fix *layout, hierarchy, and flow* — where things go and
-> why — before any pixel is polished. Colour, real type, and final spacing come in Stage 6 (Figma).
-> Every screen here traces to the [IA](../information-architecture.md), obeys the
-> [Context Column Law](../responsive.md), and uses components from [components.md](../components.md).
+> why — before any pixel is polished. Colour, real type, and final spacing come in Stage 6 (**Claude
+> Design** — our High-Fidelity tool, replacing Figma). Every screen here traces to the
+> [IA](../information-architecture.md), obeys the revised
+> [Context Column Law](../../06-decisions/ADR-012-the-context-column-law.md) (*your world, never your
+> score* — a living space, not "contextual-or-empty"), and uses components from
+> [components.md](../components.md).
+>
+> **Doctrine note (2026-07-09):** these grey frames predate the doctrine reframing. Where a frame
+> assumes the context column is *empty by default* or that momentum/trending is banned outright, read
+> it against the revised doctrine — the column is a *living* world-directed space, and the open web's
+> real life may be **represented** (framed, relationship-scoped), never scored. See
+> [stage-6-design-direction.md](../stage-6-design-direction.md) and
+> [hifi/today.md](../hifi/today.md).
 
 ---
 
@@ -26,10 +36,10 @@
 PHONE (<768)                         WIDE (≥1200) — three-column canvas
 ┌───────────────────────────┐        ┌────────┬────────────────────┬──────────────┐
 │ ‹≡›   Title        ‹⌕› ◯   │ topbar │ tacet  │      Title         │  Context     │
-├───────────────────────────┤        │        │                    │  (helps you  │
-│                           │        │ ◈ Today│   ┌──────────────┐  │  understand/ │
-│      screen content       │        │ People │   │   content    │  │  continue —  │
-│      (reading measure)    │        │ Discvr │   └──────────────┘  │  or empty)   │
+├───────────────────────────┤        │        │                    │  (your world:│
+│                           │        │ ◈ Today│   ┌──────────────┐  │  people,     │
+│      screen content       │        │ People │   │   content    │  │  momentum,   │
+│      (reading measure)    │        │ Discvr │   └──────────────┘  │  continue)   │
 │                           │        │ Convos │   ┌──────────────┐  │              │
 │                           │        │ Me     │   │   content    │  │              │
 ├───────────────────────────┤        │        │   └──────────────┘  │              │
@@ -62,4 +72,6 @@ Rules encoded in the frame (**canonical — supersedes any individual frame that
 | 08 | [media-states](./08-media-states.md) | Media viewer, Empty states, Loading skeletons, Error, 404, responsive matrix |
 
 Target: **~45 unique screens.** Focus on flow, not beauty. Stage 5 critiques and reduces this set;
-Stage 6 renders the survivors in Figma.
+Stage 6 renders the survivors in **Claude Design** (our High-Fidelity tool, replacing Figma; the
+repository remains the source of truth — see
+[stage-6-design-direction.md](../stage-6-design-direction.md)).

@@ -182,6 +182,19 @@ The supplied references are beautiful and communicate qualities Tacet wants. But
 from mainstream social apps and carry mechanics Tacet's founding principles **prohibit**. As Head
 of Design I extract the feeling and reject the furniture, explicitly:
 
+> **Doctrine-reconciliation note (2026-07-09).** This section is the original Stage-1 filter, and it
+> was too blunt in one direction: it rejected *concepts* (trending, momentum, presence panels,
+> federation reassurance) when only the incumbents' *manipulative implementations* were the problem.
+> The governing line is now **informing vs. manipulating** ([design-principles L11](./design-principles.md),
+> [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+> [ADR-012](../06-decisions/ADR-012-the-context-column-law.md)): representing the open web's real life
+> (people, momentum, active communities) is *informing* and belongs; only *self-directed scores,
+> people-rankings, and anxiety furniture* are cut. Read the "Reject" list below as **cut the
+> manipulation, represent the reality** — see the per-item reconciliation and
+> [stage-6-design-direction.md](./stage-6-design-direction.md). The "your world, never your score"
+> context column ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)) supersedes the
+> "calm context or scoreboard" binary this section drew.
+
 **Adopt (emotional qualities to pursue):**
 - **Depth and layering** — content floats on considered surfaces; elevation tells a spatial story.
 - **Media-first confidence** — large, well-cropped imagery treated as content, not decoration.
@@ -197,35 +210,37 @@ of Design I extract the feeling and reject the furniture, explicitly:
   **But the right column must hold *calm context* (people close to you, a quiet "continue where you
   left off"), never a scoreboard** — see rejects below.
 
-**Reject (mechanics that violate Tacet's laws):**
-- **Public like / comment / repost counts** under every post (`24 · 6 · 7`, `142 · 18 · 23`,
-  `541 · 68 · 102`). Violates *metrics are context not rewards* and *people before posts*. Tacet
-  shows the reply *affordance*, not a competitive tally.
-- **A "Federation status" panel** exposing *"Connected servers 2,418 · Active users 47.3K · Learn
-  how federation works."* This is the **single most serious violation** in any reference: it
-  surfaces protocol/server terminology directly to users, breaking Tacet's cardinal law (*never
-  expose federation, servers, or implementation*). The open social web is felt through *who you can
-  reach*, never through an infrastructure dashboard. **Cut entirely.**
-- **"Trending across the open web" with "12.4K people talking" counts.** Discover is *human
-  recommendation*, explicitly **not algorithmic trending with vanity tallies** (see
-  [`discover.md`](../01-product/discover.md)). A ranked leaderboard of hot topics is the opposite
-  of calm.
-- **Instagram-style story rings** with a coloured urgency halo (and the "Your story" prompt).
-  Violates *no compulsion loops / manufactured FOMO*. "People you care about" can exist without a
-  ring that says *watch me before it disappears*.
-- **An "Activity"/Notifications tab with counts.** Tacet has **Conversations** (correspondence),
-  not a dopamine notifications inbox; presence is a quiet dot, never a red number.
-- **The glowing center-orb nav button** (mobile references). Pretty, but it's spectacle competing
-  for attention — against *calm over noise* and *the interface should disappear behind the
-  content*. Compose stays a quiet, legible affordance.
-- **"+N" follower/stat chrome and vanity number rows** on profiles. Keep identity, drop the
-  scoreboard.
+**Reject the manipulation / represent the reality (per-item, reconciled 2026-07-09):**
+- **Per-card self-directed count rows** (`24 · 6 · 7`, `142 · 18 · 23`) as a standing scoreboard on
+  every post. **Still cut** as a per-card scoreboard. *But* world-directed reception ("an active
+  thread", "shared widely"), framed and softened, may be represented in editorial/context surfaces —
+  it is informing, not a self-score ([ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+- **A live "Federation status" *dashboard*** (*"Connected servers 2,418 · Active users 47.3K"* with a
+  pulsing map, as persistent furniture). **Cut** as a live ticker, and never expose server/instance
+  terminology. *But* a one-time / on-demand **"you're connected to a live open web" reassurance**
+  (educational, human-worded — "Learn how it works") is *informing wonder* and is allowed. The enemy
+  is the persistent metrics panel, not the fact that the open web is large and alive.
+- **"Trending" as a raw ascending leaderboard** ("12.4K people talking" as the headline, ranked hot
+  topics). **Cut** the leaderboard form. *But* **represented momentum** — *what your world is reading /
+  discussing*, relationship-scoped, led by the thing not the number — is Discover-as-neighbourhood-walk
+  and belongs (discover.md; [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+- **Story rings as a streak / urgency halo** ("watch me before it disappears"). **Cut** the FOMO
+  mechanic. *But* "people you care about, and their genuine recent moments" can exist without a
+  disappearing-timer — revisit in a dedicated spec.
+- **An "Activity"/Notifications tab with counts.** **Cut.** Tacet has **Conversations**
+  (correspondence), not a dopamine inbox; presence is a quiet dot, never a red number. (This one is a
+  self-directed anxiety machine — the reject stands in full.)
+- **The glowing center-orb nav button.** **Cut** the spectacle; Compose stays a quiet, legible
+  affordance. (Reject stands.)
+- **"+N" follower/stat chrome and vanity number rows on profiles.** **Cut** the self-directed
+  scoreboard about your own reach. Keep identity. (Reject stands.)
 
-**Net read on the references:** they are a masterclass in *surface craft* — depth, media, type,
-the desktop three-column canvas — wrapped around an *engagement model Tacet exists to reject*. V2
-takes the craft and leaves the casino. The desktop reference in particular proves the layout
-opportunity (three columns) **and** the trap (federation dashboards, trending tallies, story
-rings) in a single frame.
+**Net read on the references (reconciled):** they are a masterclass in *surface craft* — depth, media,
+type, the desktop three-column canvas — *and* in showing the open web's real life. V2 takes the craft
+**and represents the reality**, while cutting the casino: self-directed scores, people-rankings, and
+anxiety furniture. The line is **informing vs. manipulating**, not *rich vs. empty*. The desktop
+reference proves the layout opportunity (three columns) and the world worth showing (people, momentum,
+an alive open web) — with the manipulative framing removed, not the world itself.
 
 This distinction is the single most important design judgement of the milestone: **Tacet can look
 as premium as the references without becoming the product they came from.** If a screen only feels

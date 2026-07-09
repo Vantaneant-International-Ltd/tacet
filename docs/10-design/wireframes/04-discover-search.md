@@ -4,8 +4,10 @@
 > no final type. Read [00-overview.md](./00-overview.md) for conventions (`▓` media, `◯` avatar,
 > `( pill )` chip, `‹icon›`, `···` more, `▁▁▁` skeleton, `·dot·` presence). Every block is a grey
 > block; annotations name the [component](../components.md) and token it becomes in Stage 6.
-> Discover is the **gateway to the wider open web as human recommendation**
-> ([discover.md](../../01-product/discover.md)); Search is a **global overlay, not a pillar**
+> Discover is the **neighbourhood walk** — an *editorial exploration* of the open social web
+> ([discover.md](../../01-product/discover.md), [stage-6-design-direction.md](../stage-6-design-direction.md)):
+> corners worth visiting, people worth meeting, communities that moved, framed by a curator's voice.
+> Not a directory, not a leaderboard. Search is a **global overlay, not a pillar**
 > ([IA §4](../information-architecture.md)). Communities are a **demoted supporting surface**
 > ([communities.md](../../01-product/communities.md)), never the spine.
 
@@ -13,12 +15,16 @@
 
 ## Doctrine banner (governs every frame below)
 
-- **Discover recommends *people and places*, never ranks *content*.** There is **no** algorithmic
-  "Trending" leaderboard, **no** "12.4K talking", **no** vanity tally anywhere. Reject the reference
-  mockups' hot-list outright (discover.md "What it is NOT"; L6).
-- **There is no "Federation status" / server / instance dashboard.** Federation is invisible plumbing
-  like email. Open-web platforms appear as **human places you can be**, never as protocol, software,
-  or infrastructure. (Rejected explicitly in frame 1's annotations.)
+- **Discover is a curated neighbourhood walk, not a hot-list.** It represents the open web's real life
+  — people, places, communities active today, things worth exploring — with a **human editorial
+  hand**, relationship-scoped. What it rejects is the *manipulative* form: a raw ascending
+  leaderboard, "12.4K talking" as a headline, a ranking of people, engagement pressure. Represent the
+  neighbourhood's life; never manufacture a race ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+  [design-principles L11](../design-principles.md)).
+- **No "Federation status" / server / instance *dashboard*.** Federation is invisible plumbing like
+  email. Open-web platforms appear as **human places you can be**, never as protocol, software, or a
+  live-metrics panel. A one-time "you're connected to a live open web" reassurance (educational, on
+  demand) is fine; a persistent server/user ticker is not.
 - **Human words only** — a place is *"where writers gather"*, not *"a WriteFreely instance"*; never
   "Entry", "post", "instance", "server", "ActivityPub" in the UI (L9).
 

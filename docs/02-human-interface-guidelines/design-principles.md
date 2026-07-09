@@ -6,19 +6,27 @@ is a decision already made, not a preference to be re-litigated per feature.
 
 ---
 
-## 1. Calm over dense
+## 1. Calm is clarity, not emptiness
 
-Density is a failure mode, not a sign of value. A screen crammed with content,
-counts, and controls is a screen that has stopped serving the person and started
-serving the metric.
+Calm means the person is unhurried and in control — one clear subject, legible
+hierarchy, nothing fighting for attention. It does **not** mean sparse. Apple,
+Linear, Arc, and Notion are calm *and* intentionally rich; that is the bar. What we
+refuse is not richness but *noise*: a screen crammed to serve the metric rather than
+the person, competing calls to action, throughput-for-its-own-sake. Density is only
+a failure when it stops being clear.
 
-Calm is engineered, not hoped for: generous [whitespace](spacing.md), one clear
-job per screen, no competing calls to action, no surface whose purpose is to
-maximize throughput. If a layout only works by packing more in, the layout is
-wrong. This flows directly from *Calm before addiction* and *People before posts*.
+Calm is engineered, not hoped for: generous [whitespace](spacing.md) as a material
+(not a goal), one clear job per screen, and content that *informs* — including the
+real life of the open social web — presented so the person understands it without
+strain. If a layout only works by packing in noise, the layout is wrong; if it feels
+empty, it is not yet doing its job. This flows from *Calm before addiction* and
+*People before posts*.
 
-**In practice:** default to fewer elements. When in doubt, remove. Let a single
-person, a single conversation, a single moment own the frame.
+**In practice:** clarify before you add, and before you remove. Remove what confuses
+or scores; keep what informs. Let a single person, conversation, or moment own the
+frame — inside a home that still feels alive. *(See the revised doctrine:
+[10-design/design-principles.md](../10-design/design-principles.md) L11 and
+[stage-6-design-direction.md](../10-design/stage-6-design-direction.md).)*
 
 ## 2. People over content chrome
 
@@ -27,15 +35,21 @@ make that literal: people are easier to find than posts, faces are present, name
 are legible, and your standing with someone is never buried beneath engagement
 furniture.
 
-"Content chrome" is everything the attention economy bolts around a post — like
-buttons that beg, share counts, view tallies, reaction rails, "trending" spurs. We
-strip it. Content exists to carry the relationship, so the design serves the
-relationship first. This flows from *People before posts* and *Relationships before
-engagement*.
+"Content chrome" is everything the attention economy bolts around a post to make a
+number about *you* go up — like buttons that beg, a scoreboard of *your* reach,
+reaction rails, a ranking of people. We strip that. But we distinguish it from
+*world-directed context* — representing what your world is reading, which
+conversations are alive, which communities moved — which **informs** and is welcome
+(the line is [informing vs. manipulating](../10-design/design-principles.md), L11;
+[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)). Content
+carries the relationship; the design serves the relationship first. This flows from
+*People before posts* and *Relationships before engagement*.
 
 **In practice:** ask "whose relationship does this serve?" before "how much can we
-show?" No public vanity numbers. (See the [anti-patterns](../00-manifesto/anti-patterns.md)
-on the comparison machine.)
+show?" No **self-directed** vanity numbers (a scoreboard about you, a people-ranking);
+world-directed context, honestly framed, is representation, not chrome. (See the
+[anti-patterns](../00-manifesto/anti-patterns.md) on the comparison machine — still the
+enemy in its self-directed form.)
 
 ## 3. Legible over clever
 

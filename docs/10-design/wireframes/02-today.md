@@ -4,14 +4,26 @@
 > type, no final spacing. These frames fix layout, hierarchy, and flow. ASCII legend, the frozen
 > frame, and all conventions are inherited from the overview and followed exactly: `▓` = media,
 > `◯` = avatar, `[ Button ]`, `( pill )`, `‹ icon ›`, `···` = more/truncation, `▁▁▁` = skeleton,
-> `·dot·` = quiet presence. Today is a **bounded digest that ends**; its context column shows only
-> *"continue where you left off"* or is **empty** ([IA §3](../information-architecture.md),
-> [Context Column Law](../responsive.md#3-the-context-column-is-a-law-not-a-slot)).
+> `·dot·` = quiet presence. Today is a **bounded digest that ends.**
+>
+> **Doctrine-reconciliation note (2026-07-09) — read this against the revised doctrine.** These grey
+> frames predate the reframing. The canonical High-Fidelity plan is now
+> [../hifi/today.md](../hifi/today.md): Today is a **calm editorial homepage** (still bounded, still
+> chronological, never an opaque algorithm) and the wide-tier **context column is a *living* space** —
+> *your world, never your score* — hosting people close to you, continue-where-you-left-off,
+> represented momentum (framed, relationship-scoped), a calm onward door, and quiet open-web
+> reassurance. It is **not** "continue-or-empty." Where a frame below shows the column empty or omits
+> the world's life, prefer the hifi/today.md composition.
 
-Doctrine held on every frame below: **no engagement furniture** — no like / comment / repost / view
-counts, no reaction rail, no "trending" (Content Card §4). Affordance row is **Reply · Share · Save**
-only; **Save** is the private positive/`spark` signal. No story rings. Presence is `·dot·`, never a
-red count. Attribution names a **human place** (`on tacet.social`, a community's warm name), never a
+Doctrine held on every frame below, **as reconciled**: **no *self-directed* engagement furniture** —
+no scoreboard of *your* likes / views, no reaction rail, no ranking of people, no red counts, no
+streaks. That ban stands. **World-directed context is different and now allowed**: represented
+momentum from your world (led by the thing, numbers softened to qualitative/range), shown calmly —
+never a raw ascending tally or a top-N leaderboard ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+[design-principles L11](../design-principles.md)). Affordance row is **Reply · Share · Save** only;
+**Save** is the private positive/`spark` signal. Story rings, if ever used, are your people's genuine
+moments — never a streak. Presence is `·dot·`, never a red count. Attribution names a **human place**
+(`on tacet.social`, a community's warm name, a source badge like *Pixelfed* read as a place), never a
 server, instance, or software string. The word "Entry" is never used — these are *moments*.
 
 ---

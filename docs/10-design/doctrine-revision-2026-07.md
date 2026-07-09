@@ -39,17 +39,21 @@ Full rationale: [stage-6-design-direction.md](./stage-6-design-direction.md).
 
 ## Patch list — documents that still reference the old doctrine or Figma
 
-### A. Old context-column / metrics doctrine to reconcile
+### A. Old context-column / metrics doctrine to reconcile — ✅ RESOLVED 2026-07-09
 
-| File | What to change | Priority |
+All §A items are done. The wireframe ASCII frames are kept as historical structural references; each
+now carries a doctrine-reconciliation banner pointing to the revised law and to
+[hifi/today.md](./hifi/today.md), rather than being redrawn.
+
+| File | Change made | Status |
 |---|---|---|
-| [02-human-interface-guidelines/design-principles.md](../02-human-interface-guidelines/design-principles.md) | If it states "when in doubt remove" / "no metrics" absolutely, add the calm=clarity and informing/manipulating nuance (or cross-reference L11). | High |
-| [wireframes/02-today.md](./wireframes/02-today.md) | Grey frames assume "continue-or-empty" context column and "no trending, ever." Reconcile with the revised law: the context column may host world-directed content; momentum may be *represented* (framed, not tallied). Header doctrine note needs updating. | High |
-| [wireframes/04-discover-search.md](./wireframes/04-discover-search.md) | Reframe Discover as the "neighbourhood walk" (editorial), not a directory. | Medium |
-| [wireframes/00-overview.md](./wireframes/00-overview.md) | "Colour, real type… come in Stage 6 (Figma)" → Claude Design; the "no engagement furniture, ever" blanket needs the self-directed vs world-directed distinction. | Medium |
-| [components.md](./components.md) · Content Card §4 | "No like/comment/repost/view counts, no trending" is stated absolutely. Split: self-directed counts on *your* card = banned; world-directed representation = allowed under framing discipline. | Medium |
-| [design-audit.md](./design-audit.md) | Stage-1 audit predates the reframing; add a forward note that the "reject the casino / D8" list is superseded by the informing/manipulating line (casino out, world's real life *in*). | Medium |
-| [visual-system-v2.md](./visual-system-v2.md) D7/D8 | Update D7 (Context Column Law) and D8 (extract craft, reject casino) to the revised wording. | High |
+| [02-human-interface-guidelines/design-principles.md](../02-human-interface-guidelines/design-principles.md) | Principle 1 → "Calm is clarity, not emptiness"; principle 2 split self-directed vs world-directed; L11 cross-refs added. | ✅ |
+| [wireframes/02-today.md](./wireframes/02-today.md) | Header rewritten: editorial homepage + living context column; self-directed ban kept, world-directed momentum allowed; points to hifi/today.md. | ✅ |
+| [wireframes/04-discover-search.md](./wireframes/04-discover-search.md) | Reframed as the "neighbourhood walk"; doctrine banner distinguishes represented momentum from a leaderboard; federation reassurance vs dashboard. | ✅ |
+| [wireframes/00-overview.md](./wireframes/00-overview.md) | Figma → Claude Design; frozen-frame context note → "your world" (people, momentum, continue); doctrine-reconciliation banner. | ✅ |
+| [components.md](./components.md) · Content Card §4 | Split: per-card self-directed scoreboard banned; world-directed reception, framed, allowed in editorial/context surfaces. | ✅ |
+| [design-audit.md](./design-audit.md) | §6 reconciliation note + per-item "reject the manipulation / represent the reality" rewrite; stage map → Claude Design + Stage 7. | ✅ |
+| [visual-system-v2.md](./visual-system-v2.md) D7/D8 | D7 → "your world, never your score"; D8 → "reject casino, represent the world"; stage map → Claude Design. | ✅ |
 
 ### B. Figma → Claude Design (forward-looking workflow references)
 
