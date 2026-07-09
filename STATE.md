@@ -12,6 +12,29 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Landing → Stage 6 high fidelity, LIVE (2026-07-09).** Rebuilt the public landing at `/`
+  to the canonical handoff (`docs/10-design/hifi/prototypes/`, README authoritative) in three
+  pushed surfaces: (1) hero identity — "The social web. **Finally.**" with a top nav carrying
+  the single gradient "Join the beta"; constellation background rebuilt as a warm→cool ring
+  (magenta/amber left, lavender/blue right) with glowing hubs, framing an open centre
+  (`2e2a6e8`). (2) Alternating light bands — Fragmentation (closed-platform logo cards),
+  Convergence (open-web places orbiting one Tacet home), and a new **Divided** band that
+  **replaces** the old federation panel (which used protocol jargon + raw `@user@instance`
+  handles — a doctrine refusal, now removed); real brand marks via `BrandLogos` (`8218df9`).
+  (3) Dark lamplit-purple CTA band + canonical footer (`309d016`). The loud watermark/marquee
+  `DevWarningOverlay` was replaced by a minimal, non-moving `DevBanner` (landing + Enter).
+  Semantic/landing-scoped tokens only; both themes honoured. **Operator override (recorded):**
+  real platform logos are used, overriding the handoff's neutral-monogram rule. Gates green
+  each surface (typecheck + build + 75 tests).
+  - Deployed `wrangler deploy --config wrangler.local.jsonc`; **Version `a0005de2-5cf5-4d11-93f0-2602e10d41c4`**.
+    Rollback anchor (prior live): `0ec9555a-d8d0-463f-93aa-8984c91c25fe` → `npx wrangler rollback --config wrangler.local.jsonc`.
+  - **Verified live on `https://www.tacet.social`:** `/` 200 (shell references the new build
+    `index-CHGE6xIA.css` / `index-CsHwbP2z.js`), `/api/health` 200 `{"ok":true}`,
+    `/api/openweb/today` & `/people` 200 non-empty; headers intact (CSP, HSTS, `X-Frame-Options: DENY`, nosniff).
+    workers.dev also 200. Apex `tacet.social` still **520** (pre-existing stale-record issue; unchanged by this deploy).
+  - **Remaining (not this session):** the 16 app screens + Onboarding "Your World" from the same
+    Stage 6 handoff are NOT yet implemented — landing only.
+
 - **Production readiness (Cloudflare).** Localhost is now **development only**; the
   production target is **tacet.social** on Cloudflare. Hardened the Worker: security
   headers on API responses + a `client/public/_headers` file for the static/SPA responses
