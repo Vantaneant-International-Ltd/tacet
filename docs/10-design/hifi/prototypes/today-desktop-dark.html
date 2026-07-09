@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tacet — Today · Desktop · Lamplit Dark (reference sketch)</title>
+<!--
+  ⚠ NON-AUTHORITATIVE REFERENCE SKETCH — not the Stage 6 deliverable.
+  Canonical Stage 6 high fidelity is produced in Claude Design, not here. This is a
+  repo-agent sketch of how the revised doctrine reads at desktop dark, built to the V2
+  tokens so the direction can be *seen* ahead of the real Claude Design build. Treat it
+  as a conversation aid, never as the spec. The spec is docs/10-design/hifi/today.md.
+
+  Doctrine it visualises:
+  · ADR-012 — context column is "your world, never your score" (living, not empty-by-default)
+  · ADR-011 — world-directed reception is context (quiet, framed); self-directed scores banned
+  · design-principles L11 — informing, not manipulating
+  · stage-6-design-direction.md — "home" is a product principle, not a visual metaphor;
+    the definitive product for the open social web, where everything comes together.
+  Token values copied from docs/10-design/tokens.md §6.2 (dark).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ─────────────────────────────────────────────────────────────────────────
+     TOKENS — Lamplit Dark (tokens.md §6.2, §2–§10). Names match the design system.
+     ───────────────────────────────────────────────────────────────────────── */
+  :root {
+    /* colour — dark */
+    --color-canvas:#0D0D0D; --color-surface:#161614; --color-surface-raised:#1E1E1B; --color-surface-sunken:#100F0E;
+    --color-hairline:#2A2A27;
+    --color-text-primary:#F5F5F2; --color-text-secondary:#8A8A86; --color-text-tertiary:#83837C;
+    --color-accent:#A88FE6; --color-accent-hover:#BBA6EE; --color-accent-subtle:#221D33; --color-on-accent:#16121F;
+    --color-positive:#6FBE9C; --color-warning:#D6A24E; --color-danger:#E06B63; --color-focus-ring:#A88FE6;
+
+    /* type */
+    --font-sans:"Jost", system-ui, -apple-system, sans-serif;
+    --font-mono:"Space Mono", ui-monospace, SFMono-Regular, monospace;
+    --text-display:2.25rem; --text-title:1.625rem; --text-heading:1.25rem; --text-subheading:1.0625rem;
+    --text-body:1.0625rem; --text-body-sm:.9375rem; --text-label:.875rem; --text-meta:.8125rem; --text-micro:.75rem;
+    --leading-tight:1.15; --leading-snug:1.30; --leading-normal:1.45; --leading-relaxed:1.60;
+    --tracking-tight:-0.02em; --tracking-normal:0; --tracking-wide:0.02em;
+    --measure-reading:42rem;
+
+    /* space / radius / border */
+    --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px; --space-6:32px;
+    --space-7:48px; --space-8:64px; --space-9:96px;
+    --radius-xs:6px; --radius-sm:10px; --radius-md:14px; --radius-lg:20px; --radius-xl:28px; --radius-full:999px;
+    --border-hairline:1px; --border-strong:1.5px;
+    --alpha-hover:.06; --alpha-pressed:.12; --alpha-scrim:.62;
+
+    /* elevation — dark (tokens.md §8) */
+    --elevation-1:0 1px 2px rgba(0,0,0,.30);
+    --elevation-2:0 6px 16px rgba(0,0,0,.40);
+    --elevation-3:0 16px 40px rgba(0,0,0,.55);
+
+    /* motion */
+    --dur-1:120ms; --dur-2:200ms; --dur-3:320ms; --ease-out:cubic-bezier(.22,1,.36,1);
+
+    /* layout */
+    --rail-width:250px; --context-width:320px; --canvas-max:1440px; --gutter:var(--space-6);
+  }
+
+  * { box-sizing:border-box; }
+  html,body { margin:0; }
+  body {
+    background:var(--color-canvas); color:var(--color-text-primary);
+    font-family:var(--font-sans); font-weight:400; font-size:var(--text-body);
+    line-height:var(--leading-relaxed); letter-spacing:var(--tracking-normal);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  ::selection { background:var(--color-accent-subtle); color:var(--color-text-primary); }
+  a { color:inherit; text-decoration:none; }
+  .mono { font-family:var(--font-mono); }
+
+  /* ── The three-column canvas ─────────────────────────────────────────────── */
+  .canvas {
+    display:grid; grid-template-columns:var(--rail-width) minmax(0,var(--measure-reading)) var(--context-width);
+    gap:var(--gutter); justify-content:center; max-width:var(--canvas-max); margin:0 auto;
+    min-height:100vh; padding-inline:var(--space-6);
+  }
+
+  /* ── RAIL ─────────────────────────────────────────────────────────────────
+     Navigation as places, compose as a calm button (never a glowing orb),
+     identity + theme at the foot. Presence is a quiet dot, never a count. */
+  .rail {
+    position:sticky; top:0; align-self:start; height:100vh;
+    display:flex; flex-direction:column; padding:var(--space-6) var(--space-3) var(--space-5);
+  }
+  .brand {
+    display:flex; align-items:center; gap:var(--space-2);
+    font-size:1.5rem; font-weight:500; letter-spacing:var(--tracking-tight);
+    padding:var(--space-2) var(--space-3) var(--space-5);
+  }
+  .brand .mark { width:22px; height:22px; color:var(--color-accent); }
+  .search {
+    display:flex; align-items:center; gap:var(--space-3); width:100%;
+    padding:var(--space-3) var(--space-3); margin-bottom:var(--space-5);
+    color:var(--color-text-secondary); background:var(--color-surface);
+    border:var(--border-hairline) solid var(--color-hairline); border-radius:var(--radius-md);
+    font-size:var(--text-label); cursor:text;
+  }
+  .search .kbd { margin-left:auto; font-family:var(--font-mono); font-size:var(--text-micro);
+    color:var(--color-text-tertiary); border:var(--border-hairline) solid var(--color-hairline);
+    border-radius:var(--radius-xs); padding:1px 6px; }
+  .nav { display:flex; flex-direction:column; gap:var(--space-1); }
+  .nav a {
+    display:flex; align-items:center; gap:var(--space-3);
+    padding:var(--space-3); border-radius:var(--radius-md);
+    color:var(--color-text-secondary); font-size:var(--text-label); font-weight:500;
+    line-height:var(--leading-normal); transition:background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+  }
+  .nav a svg { width:22px; height:22px; flex:none; }
+  .nav a:hover { background:rgba(245,245,242,var(--alpha-hover)); color:var(--color-text-primary); }
+  .nav a.active { background:var(--color-accent-subtle); color:var(--color-accent); }
+  .nav a .presence { margin-left:auto; width:8px; height:8px; border-radius:var(--radius-full);
+    background:var(--color-accent); }
+  .compose {
+    display:flex; align-items:center; justify-content:center; gap:var(--space-2);
+    margin-top:var(--space-5); padding:var(--space-3) var(--space-4);
+    background:var(--color-accent); color:var(--color-on-accent);
+    border:none; border-radius:var(--radius-md); font-family:var(--font-sans);
+    font-size:var(--text-label); font-weight:500; cursor:pointer;
+    transition:background var(--dur-1) var(--ease-out);
+  }
+  .compose:hover { background:var(--color-accent-hover); }
+  .compose svg { width:18px; height:18px; }
+  .rail-foot { margin-top:auto; padding-top:var(--space-5); display:flex; align-items:center; gap:var(--space-3); }
+  .rail-foot .who { min-width:0; }
+  .rail-foot .who .name { font-size:var(--text-label); font-weight:500; }
+  .rail-foot .who .handle { font-family:var(--font-mono); font-size:var(--text-micro); color:var(--color-text-tertiary); }
+  .rail-foot .theme { margin-left:auto; color:var(--color-text-secondary); width:20px; height:20px; cursor:pointer; }
+
+  .avatar { border-radius:var(--radius-full); flex:none; object-fit:cover; background:var(--color-surface-raised); }
+
+  /* ── FEED (centred, fixed 42rem) ─────────────────────────────────────────── */
+  .feed { padding:var(--space-8) 0 var(--space-9); min-width:0; }
+  .masthead { margin-bottom:var(--space-7); }
+  .masthead h1 { margin:0; font-size:var(--text-title); font-weight:500; letter-spacing:var(--tracking-tight);
+    line-height:var(--leading-tight); }
+  .masthead .day { margin:var(--space-2) 0 0; color:var(--color-text-secondary); font-size:var(--text-body-sm); }
+
+  .stream { display:flex; flex-direction:column; gap:var(--space-5); }
+
+  .card {
+    background:var(--color-surface); border:var(--border-hairline) solid var(--color-hairline);
+    border-radius:var(--radius-lg); padding:var(--space-5);
+  }
+  .head { display:flex; align-items:flex-start; gap:var(--space-3); margin-bottom:var(--space-4); }
+  .head .avatar { width:44px; height:44px; }
+  .head .id { min-width:0; flex:1; }
+  .head .id .name { font-size:var(--text-subheading); font-weight:500; line-height:var(--leading-snug); }
+  .head .id .meta { font-family:var(--font-mono); font-size:var(--text-meta); color:var(--color-text-tertiary);
+    margin-top:2px; }
+  .head .more { color:var(--color-text-tertiary); width:20px; height:20px; cursor:pointer; flex:none; }
+  .body { font-size:var(--text-body); line-height:var(--leading-relaxed); color:var(--color-text-primary); }
+  .body p { margin:0 0 var(--space-4); }
+
+  /* media — framed like a plate: editorial crop, radius steps down inside the card */
+  .media { border-radius:var(--radius-md); overflow:hidden; margin:var(--space-4) 0; position:relative;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.35), inset 0 -40px 60px -30px rgba(0,0,0,.5); }
+  .ph { display:block; width:100%; }
+  .ph.photo { aspect-ratio:3/2; }
+  .ph.video { aspect-ratio:16/9; }
+  .ph.square { aspect-ratio:1/1; }
+  .gallery { display:grid; gap:var(--space-1); border-radius:var(--radius-md); overflow:hidden; margin:var(--space-4) 0; }
+  .gallery.two { grid-template-columns:1fr 1fr; }
+  .gallery .ph { border-radius:0; }
+  .caption { font-size:var(--text-meta); color:var(--color-text-secondary); margin-top:calc(-1*var(--space-2)); }
+
+  /* play control on video — single, centred, over a calm scrim */
+  .play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .play .disc { width:56px; height:56px; border-radius:var(--radius-full);
+    background:rgba(0,0,0,var(--alpha-scrim)); display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(2px); }
+  .play .disc svg { width:22px; height:22px; color:#fff; margin-left:3px; }
+  .duration { position:absolute; right:var(--space-3); bottom:var(--space-3);
+    font-family:var(--font-mono); font-size:var(--text-micro); color:#fff;
+    background:rgba(0,0,0,.72); padding:2px 6px; border-radius:var(--radius-xs); }
+
+  /* affordance row — actions only (Reply · Share · Save). NO self-directed scoreboard. */
+  .actions { display:flex; align-items:center; gap:var(--space-5); margin-top:var(--space-4); }
+  .actions button { display:inline-flex; align-items:center; gap:var(--space-2);
+    background:none; border:none; cursor:pointer; padding:0; font-family:var(--font-sans);
+    font-size:var(--text-label); font-weight:500; color:var(--color-text-secondary);
+    transition:color var(--dur-1) var(--ease-out); }
+  .actions button svg { width:20px; height:20px; }
+  .actions button:hover { color:var(--color-text-primary); }
+  .actions .saved { color:var(--color-positive); }
+
+  /* world-directed reception — one quiet line, framed, no icons, no ranking (ADR-011).
+     This is the shipped Moment.counts style: context, never a scoreboard. */
+  .reception { font-family:var(--font-mono); font-size:var(--text-meta); color:var(--color-text-tertiary);
+    margin-top:var(--space-3); }
+
+  /* editorial interlude — clearly labelled, relationship-justified. Not an ad, not injected virality. */
+  .interlude { border:var(--border-hairline) solid var(--color-hairline); border-radius:var(--radius-lg);
+    padding:var(--space-5); background:linear-gradient(180deg,var(--color-surface),var(--color-canvas)); }
+  .eyebrow { font-family:var(--font-mono); font-size:var(--text-micro); letter-spacing:var(--tracking-wide);
+    text-transform:none; color:var(--color-accent); margin-bottom:var(--space-3); display:flex; align-items:center; gap:var(--space-2); }
+  .eyebrow svg { width:14px; height:14px; }
+
+  /* bounded end — the anti-infinite-scroll payoff */
+  .end { text-align:center; padding:var(--space-8) 0 0; }
+  .end .rule { height:1px; background:var(--color-hairline); margin:0 auto var(--space-6); max-width:20rem; }
+  .end .check { width:28px; height:28px; color:var(--color-text-secondary); margin-bottom:var(--space-3); }
+  .end .h { font-size:var(--text-subheading); font-weight:500; color:var(--color-text-secondary); }
+  .end .sub { font-size:var(--text-body-sm); color:var(--color-text-tertiary); max-width:28rem; margin:var(--space-2) auto var(--space-5); }
+  .end .look { display:inline-flex; align-items:center; gap:var(--space-2); padding:var(--space-3) var(--space-5);
+    border:var(--border-hairline) solid var(--color-hairline); border-radius:var(--radius-full);
+    color:var(--color-text-secondary); font-size:var(--text-label); font-weight:500; cursor:pointer; }
+  .end .look:hover { color:var(--color-text-primary); border-color:var(--color-text-tertiary); }
+
+  /* ── CONTEXT COLUMN — "your world, never your score" ───────────────────────
+     Living, world-directed, relationship-derived. Never a scoreboard/dashboard. */
+  .context { padding:var(--space-8) 0 var(--space-9); align-self:start; position:sticky; top:0; }
+  .ctx-block { margin-bottom:var(--space-7); }
+  .ctx-h { font-size:var(--text-heading); font-weight:500; line-height:var(--leading-snug); margin:0 0 var(--space-4); }
+  .ctx-link { display:inline-flex; align-items:center; gap:var(--space-2); margin-top:var(--space-3);
+    color:var(--color-accent-hover); font-size:var(--text-label); font-weight:500; }
+  .ctx-link svg { width:16px; height:16px; }
+
+  .person { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-2) 0; }
+  .person .avatar { width:36px; height:36px; }
+  .person .pmeta { min-width:0; flex:1; }
+  .person .pmeta .n { font-size:var(--text-label); font-weight:500; line-height:1.3; }
+  .person .pmeta .h { font-family:var(--font-mono); font-size:var(--text-micro); color:var(--color-text-tertiary); }
+  .person .when { font-family:var(--font-mono); font-size:var(--text-micro); color:var(--color-text-tertiary); }
+  .person .when.now { color:var(--color-positive); }
+
+  /* continue — the one thing mid-read; quiet inset, hairline only */
+  .continue { display:flex; gap:var(--space-3); padding:var(--space-3); background:var(--color-surface-sunken);
+    border:var(--border-hairline) solid var(--color-hairline); border-radius:var(--radius-md); }
+  .continue .thumb { width:56px; height:56px; border-radius:var(--radius-sm); flex:none; }
+  .continue .c-body { min-width:0; }
+  .continue .c-title { font-size:var(--text-label); font-weight:500; line-height:1.35; }
+  .continue .c-left { font-family:var(--font-mono); font-size:var(--text-micro); color:var(--color-text-tertiary); margin-top:2px; }
+  .resume { margin-top:var(--space-2); background:none; border:none; padding:0; cursor:pointer;
+    color:var(--color-accent-hover); font-family:var(--font-sans); font-size:var(--text-micro); font-weight:500; }
+
+  /* momentum — represented, led by the thing, softened qualitative phrase (never a raw tally) */
+  .moment-item { padding:var(--space-3) 0; border-top:var(--border-hairline) solid var(--color-hairline); }
+  .moment-item:first-of-type { border-top:none; }
+  .moment-item .m-title { font-size:var(--text-body-sm); color:var(--color-text-primary); line-height:var(--leading-snug); }
+  .moment-item .m-note { font-family:var(--font-mono); font-size:var(--text-micro); color:var(--color-text-tertiary); margin-top:2px; }
+
+  /* open-web reassurance — wonder shown quietly, NOT a live ticker/dashboard */
+  .reassure { padding:var(--space-4); border:var(--border-hairline) solid var(--color-hairline);
+    border-radius:var(--radius-md); background:var(--color-surface); }
+  .reassure .dot { width:8px; height:8px; border-radius:var(--radius-full); background:var(--color-positive); display:inline-block; margin-right:var(--space-2); }
+  .reassure .line { font-size:var(--text-body-sm); color:var(--color-text-secondary); }
+
+  /* photographic gradient stand-ins (sketch only — real media is federated imagery) */
+  .p-dusk    { background:linear-gradient(180deg,#3a2f4d 0%,#6b4a63 42%,#c98a63 74%,#f0b487 100%); }
+  .p-night   { background:radial-gradient(120% 80% at 30% 10%,#20304f 0%,#141d33 45%,#0a0e1c 100%); }
+  .p-quay    { background:linear-gradient(160deg,#243447 0%,#3f5a6b 55%,#7d94a1 100%); }
+  .p-forest  { background:linear-gradient(180deg,#1e2b24 0%,#33503f 60%,#6d8a5f 100%); }
+  .p-mount   { background:linear-gradient(180deg,#43354f 0%,#7a5670 40%,#b9736b 68%,#e0a173 100%); }
+  .p-portrait{ background:radial-gradient(90% 70% at 50% 30%,#5b4a63 0%,#3a2f42 60%,#241d2a 100%); }
+</style>
+</head>
+<body>
+  <main class="canvas">
+
+    <!-- ══ RAIL ═══════════════════════════════════════════════════════════════ -->
+    <nav class="rail" aria-label="Primary">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/></svg>
+        tacet
+      </div>
+
+      <div class="search" role="button" tabindex="0" aria-label="Search people, communities, conversations">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        Search
+        <span class="kbd">⌘K</span>
+      </div>
+
+      <div class="nav">
+        <a class="active" href="#" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10.5V19h12v-8.5"/></svg>
+          Today
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 6.2a3.2 3.2 0 0 1 0 5.6M17.5 19a5.5 5.5 0 0 0-2.3-4.5"/></svg>
+          People
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+          Discover
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7 7 0 0 1-7 7H6l-2 2v-9a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7Z"/></svg>
+          Conversations
+          <span class="presence" title="New correspondence"></span>
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+          Me
+        </a>
+      </div>
+
+      <button class="compose">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M14.5 5.5l4 4L8 20l-4 1 1-4z"/></svg>
+        New
+      </button>
+
+      <div class="rail-foot">
+        <div class="avatar p-portrait" style="width:36px;height:36px"></div>
+        <div class="who">
+          <div class="name">Renato Gusani</div>
+          <div class="handle mono">@renato</div>
+        </div>
+        <svg class="theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" title="Theme"><path d="M20 14.5A8 8 0 0 1 9.5 4 7 7 0 1 0 20 14.5Z"/></svg>
+      </div>
+    </nav>
+
+    <!-- ══ FEED (centred, fixed 42rem) ═══════════════════════════════════════ -->
+    <section class="feed" aria-label="Today">
+      <header class="masthead">
+        <h1>Today</h1>
+        <p class="day">A quiet Wednesday evening. Three things worth your attention, then you're done.</p>
+      </header>
+
+      <div class="stream">
+
+        <!-- Moment 1 — text + editorial photo -->
+        <article class="card">
+          <div class="head">
+            <div class="avatar p-mount" style="width:44px;height:44px"></div>
+            <div class="id">
+              <div class="name">Mara Ito</div>
+              <div class="meta">@mara@tacet.social · on tacet.social · 2h</div>
+            </div>
+            <svg class="more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+          </div>
+          <div class="body"><p>Finished the long edit at last. Letting it sit for a day before I read it back with fresh eyes — the light this evening felt like the right note to end on.</p></div>
+          <div class="media"><div class="ph photo p-dusk"></div></div>
+          <p class="caption">Dusk over the old quarter.</p>
+          <div class="reception mono">104 reactions · 12 replies · 5 shared</div>
+          <div class="actions">
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a4 4 0 0 1-4-4V9"/><path d="M3 9h11a5 5 0 0 1 0 10h-3"/><path d="m12 14 3 3-3 3"/></svg>Reply</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/><path d="M6 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-1"/></svg>Share</button>
+            <button class="saved"><svg viewBox="0 0 24 24" fill="var(--color-positive)" stroke="var(--color-positive)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg>Saved</button>
+          </div>
+        </article>
+
+        <!-- Editorial interlude — a conversation worth joining (labelled, relationship-justified) -->
+        <article class="interlude">
+          <div class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7 7 0 0 1-7 7H6l-2 2v-9a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7Z"/></svg>A conversation worth joining</div>
+          <div class="head" style="margin-bottom:var(--space-3)">
+            <div class="avatar p-quay" style="width:44px;height:44px"></div>
+            <div class="id">
+              <div class="name">Chris Hall</div>
+              <div class="meta">@chrish@mastodon.social · from their home at mastodon.social</div>
+            </div>
+          </div>
+          <div class="body"><p style="margin-bottom:var(--space-2)">Thread: what we actually mean when we say we're “building for the open web,” and why the boring parts matter most.</p></div>
+          <div class="reception mono">active now · people you follow are here</div>
+          <div class="actions">
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a4 4 0 0 1-4-4V9"/><path d="M3 9h11a5 5 0 0 1 0 10h-3"/><path d="m12 14 3 3-3 3"/></svg>Reply</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/><path d="M6 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-1"/></svg>Share</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg>Save</button>
+          </div>
+        </article>
+
+        <!-- Moment 2 — photo gallery from Pixelfed (human-place attribution) -->
+        <article class="card">
+          <div class="head">
+            <div class="avatar p-forest" style="width:44px;height:44px"></div>
+            <div class="id">
+              <div class="name">Jonas Vold</div>
+              <div class="meta">@jonas@pixel.town · shared from Pixelfed · 4h</div>
+            </div>
+            <svg class="more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+          </div>
+          <div class="body"><p>Morning walk, before the street woke up. Two frames from the quay.</p></div>
+          <div class="gallery two"><div class="ph square p-quay"></div><div class="ph square p-night"></div></div>
+          <div class="reception mono">58 reactions · 3 replies</div>
+          <div class="actions">
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a4 4 0 0 1-4-4V9"/><path d="M3 9h11a5 5 0 0 1 0 10h-3"/><path d="m12 14 3 3-3 3"/></svg>Reply</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/><path d="M6 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-1"/></svg>Share</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg>Save</button>
+          </div>
+        </article>
+
+        <!-- Moment 3 — video from PeerTube (poster + play, no autoplay) -->
+        <article class="card">
+          <div class="head">
+            <div class="avatar p-night" style="width:44px;height:44px"></div>
+            <div class="id">
+              <div class="name">Free Culture</div>
+              <div class="meta">@freeculture@peertube.social · shared from PeerTube · 6h</div>
+            </div>
+            <svg class="more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+          </div>
+          <div class="body"><p>New documentary — <em>The Internet We Deserve</em>: a quiet look at building a decentralized, human-centered web.</p></div>
+          <div class="media">
+            <div class="ph video p-night"></div>
+            <div class="play"><span class="disc"><svg viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <span class="duration mono">1:24:10</span>
+          </div>
+          <div class="actions">
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a4 4 0 0 1-4-4V9"/><path d="M3 9h11a5 5 0 0 1 0 10h-3"/><path d="m12 14 3 3-3 3"/></svg>Reply</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/><path d="M6 12H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-1"/></svg>Share</button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg>Save</button>
+          </div>
+        </article>
+
+        <!-- Bounded end -->
+        <div class="end">
+          <div class="rule"></div>
+          <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>
+          <div class="h">That's today. You're all caught up.</div>
+          <p class="sub">Nothing more is waiting. The rest of the evening is yours.</p>
+          <a class="look" href="#">Look around Discover
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ CONTEXT COLUMN — "your world, never your score" ═══════════════════ -->
+    <aside class="context" aria-label="Your world">
+
+      <div class="ctx-block">
+        <h2 class="ctx-h">People close to you</h2>
+        <div class="person"><div class="avatar p-quay" style="width:36px;height:36px"></div><div class="pmeta"><div class="n">Alex Rivera</div><div class="h mono">@alex@tacet.social</div></div><span class="when now">around now</span></div>
+        <div class="person"><div class="avatar p-forest" style="width:36px;height:36px"></div><div class="pmeta"><div class="n">Cassie Lin</div><div class="h mono">@cassie@pixelfed.social</div></div><span class="when now">around now</span></div>
+        <div class="person"><div class="avatar p-mount" style="width:36px;height:36px"></div><div class="pmeta"><div class="n">Maya Okonkwo</div><div class="h mono">@maya@mastodon.social</div></div><span class="when">2h</span></div>
+        <div class="person"><div class="avatar p-night" style="width:36px;height:36px"></div><div class="pmeta"><div class="n">Tobi Wren</div><div class="h mono">@tobi@lemmy.ml</div></div><span class="when">yesterday</span></div>
+        <a class="ctx-link" href="#">See your people <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+      </div>
+
+      <div class="ctx-block">
+        <h2 class="ctx-h">Continue where you left off</h2>
+        <div class="continue">
+          <div class="thumb p-dusk"></div>
+          <div class="c-body">
+            <div class="c-title">The slow web, and why it's worth it</div>
+            <div class="c-left mono">6 min left</div>
+            <button class="resume">Resume reading</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-block">
+        <h2 class="ctx-h">Across your world</h2>
+        <div class="moment-item">
+          <div class="m-title">A conversation on <em>designing for calm</em></div>
+          <div class="m-note mono">active now · among people you follow</div>
+        </div>
+        <div class="moment-item">
+          <div class="m-title"><em>The Internet We Deserve</em> — a film</div>
+          <div class="m-note mono">shared widely across the open web</div>
+        </div>
+        <div class="moment-item">
+          <div class="m-title">Indie Makers is busy today</div>
+          <div class="m-note mono">a community you're in</div>
+        </div>
+        <a class="ctx-link" href="#">Look around Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+      </div>
+
+      <div class="ctx-block">
+        <div class="reassure">
+          <div class="line"><span class="dot"></span>You're connected across the open social web.</div>
+          <a class="ctx-link" href="#">Learn how it works <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+</body>
+</html>
