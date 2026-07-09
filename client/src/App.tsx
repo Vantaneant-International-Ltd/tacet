@@ -7,6 +7,7 @@ import { LandingPage } from "./views/landing/LandingPage";
 import { WelcomeWorld } from "./views/welcome/WelcomeWorld";
 import { WelcomeHome } from "./views/welcome/WelcomeHome";
 import { TacetApp, APP_ROUTES } from "./app/TacetApp";
+import { DevBanner } from "./views/landing/DevBanner";
 
 // One navigation model. There is exactly one product flow:
 //
@@ -22,6 +23,18 @@ export function App() {
     refreshUser().catch(() => {});
   }, []);
 
+  // The dev notice is mounted once here so it appears on every page (in-flow, above
+  // the routed surface). Remove this line when the site is stable.
+  return (
+    <>
+      <DevBanner />
+      {route(user, path)}
+    </>
+  );
+}
+
+// The single navigation model, factored out so the DevBanner can wrap every surface.
+function route(user: ReturnType<typeof useUser>, path: string) {
   // The five pillars. Mock-data alpha — walkable with or without a session.
   if (APP_ROUTES.some((r) => path === r || path.startsWith(r + "/"))) return <TacetApp />;
 

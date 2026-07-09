@@ -7,7 +7,6 @@ import { EmailSection } from "./EmailSection";
 import { DividedSection } from "./DividedSection";
 import { ManifestoSection } from "./ManifestoSection";
 import { FinalCTA } from "./FinalCTA";
-import { DevBanner } from "./DevBanner";
 import "./landing.css";
 
 function scrollToId(id: string) {
@@ -27,7 +26,6 @@ export function LandingPage() {
 
   return (
     <div className="lp">
-      <DevBanner />
       <LandingNav onSignIn={goEnter} onJoin={goJoin} />
       <HeroSection
         onJoin={goJoin}
