@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { navigate } from "../../router";
 import { PLATFORMS } from "./types";
 import type { Platform } from "./types";
+import { LandingNav } from "./LandingNav";
 import { HeroSection } from "./HeroSection";
 import { PlatformSelector } from "./PlatformSelector";
 import { FragmentationSection } from "./FragmentationSection";
@@ -50,6 +51,7 @@ export function LandingPage() {
   return (
     <div className="lp">
       <DevWarningOverlay />
+      <LandingNav onSignIn={goEnter} onJoin={goApp} />
       <HeroSection
         onContinue={() => scrollToId("lp-selector")}
         onSignIn={goEnter}

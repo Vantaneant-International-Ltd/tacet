@@ -131,6 +131,20 @@
   border: 1px solid var(--lp-card-brd);
 }
 .lp-btn-ghost:hover { border-color: var(--lp-accent); box-shadow: none; filter: none; }
+/* Light pill — the desktop hero's primary action reads as calm ivory, not neon. */
+.lp-btn-light {
+  background: #f6f4ef;
+  color: #14101f;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.lp-btn-light:hover { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45); }
+/* Compact pill for the nav. */
+.lp-btn-sm {
+  font-size: 0.9rem;
+  padding: 0.55rem 1.2rem;
+  box-shadow: 0 6px 20px rgba(122, 92, 208, 0.3);
+}
+.lp-btn span[aria-hidden] { margin-left: 0.4em; }
 .lp-linkbtn {
   background: none; border: none; cursor: pointer;
   font-family: inherit; color: var(--lp-ink-dim); font-size: 0.95rem;
@@ -160,23 +174,75 @@
   pointer-events: none;
 }
 .lp-hero .lp-inner { position: relative; z-index: 1; }
-.lp-hero-mark {
-  font-size: 0.78rem;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-  color: var(--lp-ink-dim);
-  margin: 0 0 2.4rem;
+.lp-hero-title { margin-bottom: 0.5rem; }
+.lp-hero-lead { margin-top: 1.75rem; }
+/* The lead reads as three calm lines on mobile, one confident line on desktop. */
+@media (min-width: 40rem) {
+  .lp-hero-lead .lp-lead-lines span { display: inline; }
+  .lp-hero-lead .lp-lead-lines span + span { margin-left: 0.4em; }
 }
-.lp-hero-lead { margin-top: 2rem; }
 .lp-scroll-cue {
   position: absolute;
   bottom: 2rem; left: 50%; transform: translateX(-50%);
-  color: var(--lp-ink-faint);
-  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
   animation: lp-float 2.6s ease-in-out infinite;
 }
+/* A small mouse glyph as the scroll invitation. */
+.lp-mouse {
+  display: block;
+  width: 1.4rem; height: 2.2rem;
+  border: 1.5px solid var(--lp-ink-faint);
+  border-radius: 999px;
+  position: relative;
+}
+.lp-mouse::after {
+  content: "";
+  position: absolute; top: 0.4rem; left: 50%;
+  width: 2px; height: 0.45rem; border-radius: 2px;
+  transform: translateX(-50%);
+  background: var(--lp-ink-dim);
+  animation: lp-wheel 2.6s ease-in-out infinite;
+}
 @keyframes lp-float { 0%,100% { transform: translateX(-50%) translateY(0);} 50% { transform: translateX(-50%) translateY(6px);} }
-@media (prefers-reduced-motion: reduce) { .lp-scroll-cue { animation: none; } }
+@keyframes lp-wheel { 0%,100% { opacity: 0.3; transform: translateX(-50%) translateY(0);} 50% { opacity: 1; transform: translateX(-50%) translateY(0.4rem);} }
+@media (prefers-reduced-motion: reduce) {
+  .lp-scroll-cue, .lp-mouse::after { animation: none; }
+}
+
+/* ---- Top nav ---- */
+.lp-nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.25rem, 4vw, 3rem);
+  box-sizing: border-box;
+}
+.lp-nav-brand {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  color: var(--lp-ink); text-decoration: none;
+  font-size: 1.4rem; font-weight: 300; letter-spacing: 0.01em;
+}
+.lp-nav-word { line-height: 1; }
+/* Placeholder sunburst mark — swap for a real logo later. */
+.lp-mark {
+  width: 1.35rem; height: 1.35rem;
+  border-radius: 999px;
+  background:
+    conic-gradient(from 0deg,
+      var(--lp-accent), var(--lp-accent-deep), var(--lp-accent), var(--lp-accent-deep), var(--lp-accent));
+  -webkit-mask: radial-gradient(circle at center, transparent 22%, #000 24%),
+    repeating-conic-gradient(#000 0deg 12deg, transparent 12deg 24deg);
+  mask: radial-gradient(circle at center, transparent 22%, #000 24%),
+    repeating-conic-gradient(#000 0deg 12deg, transparent 12deg 24deg);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.lp-nav-actions { display: flex; align-items: center; gap: 1.1rem; }
+.lp-nav-signin { color: var(--lp-ink); }
+@media (max-width: 30rem) {
+  .lp-nav-signin { display: none; }
+}
 
 /* ---- Platform selector ---- */
 .lp-tiles {
