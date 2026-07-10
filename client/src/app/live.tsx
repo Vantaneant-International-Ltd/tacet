@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Moment, DataMode, Source, MomentCounts, MomentMedia } from "./openweb";
@@ -108,7 +107,6 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
 
 export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
-  const [sparked, setSparked] = useState(false);
   const saved = isSaved(moment.id);
 
   // Opening a post is reading its conversation — the calm in-Tacet reader, not a jump out.
@@ -154,13 +152,9 @@ export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean 
       <PostCounts counts={moment.counts} />
 
       <div className="t-post__actions">
-        <button
-          className={"t-action" + (sparked ? " is-on" : "")}
-          type="button"
-          aria-pressed={sparked}
-          onClick={() => setSparked((s) => !s)}
-        >
-          <Icon name="spark" size={18} /> <span>{sparked ? "Sparked" : "Spark"}</span>
+        {/* Spark isn't wired yet — honestly disabled rather than a button that pretends. */}
+        <button className="t-action is-soon" type="button" disabled title="Coming soon" aria-label="Spark — coming soon">
+          <Icon name="spark" size={18} /> <span>Spark</span>
         </button>
         <button
           className={"t-action" + (saved ? " is-on" : "")}
@@ -176,7 +170,6 @@ export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean 
 }
 
 export function LivePerson({ person }: { person: Person }) {
-  const [following, setFollowing] = useState(false);
   return (
     <div className="t-personrow t-card">
       <Link to={profilePath(person.id)} className="t-personrow__open">
@@ -186,10 +179,8 @@ export function LivePerson({ person }: { person: Person }) {
           {person.bio && <p className="t-personrow__bio">{person.bio}</p>}
         </div>
       </Link>
-      {/* UI-only follow affordance — read-only milestone performs no remote write. */}
-      <Button variant={following ? "secondary" : "primary"} size="sm" onClick={() => setFollowing((f) => !f)}>
-        {following ? "Following" : "Follow"}
-      </Button>
+      {/* Following isn't wired yet (read-only milestone) — honestly disabled, not a fake toggle. */}
+      <Button variant="secondary" size="sm" disabled title="Coming soon">Follow</Button>
     </div>
   );
 }

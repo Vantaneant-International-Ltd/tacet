@@ -383,6 +383,11 @@
 .t-action:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
 .t-action.is-on { color: var(--color-accent); }
 .t-action--end { margin-left: auto; }
+/* Honestly "coming soon": visible but calmly unavailable, never a button that pretends. */
+.t-action.is-soon,
+.t-action:disabled { opacity: 0.45; cursor: default; }
+.t-action.is-soon:hover,
+.t-action:disabled:hover { background: transparent; color: inherit; }
 
 .t-post__img {
   display: block;
