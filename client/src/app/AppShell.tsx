@@ -39,8 +39,6 @@ function ThemeToggle() {
       title={`Switch to ${next} theme`}
       onClick={() => setTheme(next)}
     >
-      <Icon name="sun" size={13} className="t-themesw__ghost t-themesw__ghost--l" />
-      <Icon name="moon" size={13} className="t-themesw__ghost t-themesw__ghost--r" />
       <span className="t-themesw__knob" aria-hidden="true">
         <Icon name={dark ? "moon" : "sun"} size={13} />
       </span>

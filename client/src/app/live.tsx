@@ -127,6 +127,29 @@ function dekOf(m: Moment): string {
   return t.startsWith(m.title) ? t.slice(m.title.length).trimStart() : m.text;
 }
 
+// The composed byline (reference anatomy): avatar · bold name + mono identity line · a
+// right-aligned "Medium · time" pill. Feed sources present as the PUBLICATION (name +
+// favicon + domain) — no @-handle fabrication; persons show their real remote handle.
+function Byline({ moment }: { moment: Moment }) {
+  const isPublication = moment.source.adapter === "feeds";
+  const name = isPublication ? (moment.source.name || moment.author.name) : moment.author.name;
+  const sub = isPublication ? moment.source.id : presentHandle(moment.author.handle);
+  const avatarSrc = isPublication ? (moment.source.iconUrl ?? moment.author.avatarUrl) : moment.author.avatarUrl;
+  const chip = [moment.source.software, relativeTime(moment.createdAt)].filter(Boolean).join(" · ");
+  return (
+    <div className="t-byline">
+      <Link to={profilePath(moment.author.id)} className="t-byline__who">
+        <Avatar name={name} src={avatarSrc} size={38} />
+        <span className="t-byline__id">
+          <span className="t-byline__name">{name}</span>
+          {sub && <span className="t-byline__sub t-mono">{sub}</span>}
+        </span>
+      </Link>
+      {chip && <span className="t-byline__chip t-mono">{chip}</span>}
+    </div>
+  );
+}
+
 export function LiveMoment({ moment, focus, lead = false, feed = false, highlight = false }: { moment: Moment; focus?: boolean; lead?: boolean; feed?: boolean; highlight?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
   const saved = isSaved(moment.id);
@@ -158,16 +181,27 @@ export function LiveMoment({ moment, focus, lead = false, feed = false, highligh
         <div className="t-post__hero" role="button" tabIndex={0} onClick={openConversation}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } }}>
           <img className="t-post__hero-img" src={heroImage.url} alt={heroImage.alt} loading="lazy" />
-          {heroImage.alt && <span className="t-post__hero-cap t-mono">{heroImage.alt}</span>}
+          {/* Reference anatomy: the caption scrim carries the moment's line + author · home. */}
+          <span className="t-post__hero-cap">
+            {heroImage.alt && <span className="t-post__hero-capline">{heroImage.alt}</span>}
+            <span className="t-post__hero-capwho t-mono">{moment.author.name}{moment.source.id.includes(".") ? ` · ${moment.source.id}` : ""}</span>
+          </span>
         </div>
       )}
 
-      <div className="t-post__head">
-        <Link to={profilePath(moment.author.id)} className="t-post__author">
-          <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
-          <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
-        </Link>
-      </div>
+      {variant === "hero" ? (
+        // The hero's identity lives in the caption; keep a compact byline row for profile access.
+        <div className="t-post__head t-post__head--hero"><Byline moment={moment} /></div>
+      ) : feed ? (
+        <div className="t-post__head"><Byline moment={moment} /></div>
+      ) : (
+        <div className="t-post__head">
+          <Link to={profilePath(moment.author.id)} className="t-post__author">
+            <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
+            <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
+          </Link>
+        </div>
+      )}
 
       <div className={focus ? undefined : "t-post__open"} {...bodyProps}>
         {variant === "article" && moment.title ? (

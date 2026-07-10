@@ -15,6 +15,7 @@ export type IconName =
   | "settings"
   | "sun"
   | "moon"
+  | "image"
   | "check"
   | "save"
   | "saved"
@@ -86,6 +87,13 @@ const PATHS: Record<IconName, JSX.Element> = {
     </>
   ),
   moon: <path d="M20 13.5A8 8 0 0 1 10.5 4a7 7 0 1 0 9.5 9.5z" />,
+  image: (
+    <>
+      <rect x="3.5" y="5" width="17" height="14" rx="2.5" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="M4.5 17.5l4.5-4.5 3 3 3.5-3.5 4 4" />
+    </>
+  ),
   check: <path d="M4.5 12.5l5 5 10-11" />,
   save: <path d="M6 4.5h12v15l-6-4-6 4v-15z" />,
   saved: <path d="M6 4.5h12v15l-6-4-6 4v-15z M9 10l2 2 4-4" />,

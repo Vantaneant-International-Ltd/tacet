@@ -122,9 +122,17 @@ function ComposerRow() {
   return (
     <div className="t-composer-row">
       <Avatar name={me.name} size={36} />
-      <button className="t-composer-row__pill" type="button" onClick={open}>What&rsquo;s on your mind?</button>
+      {/* Looks like the reference input; opens the compose preview (readOnly — no inline draft). */}
+      <input
+        className="t-composer-row__input"
+        placeholder="What's on your mind?"
+        readOnly
+        onClick={open}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } }}
+        aria-label="New post"
+      />
       <button className="t-iconbtn t-composer-row__cam" type="button" aria-label="Share a photo" onClick={open}>
-        <Icon name="plus" size={20} />
+        <Icon name="image" size={20} />
       </button>
     </div>
   );

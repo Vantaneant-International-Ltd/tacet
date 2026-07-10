@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tacet — Today (final target, mobile)</title>
+<!-- TODAY MOBILE — END-RESULT MOCK for completion pass v2.1.
+     Fixed top bar + fixed 5-slot tab bar with raised centre New FAB;
+     content scrolls between them. Lens row (For You active, others
+     honestly disabled). Same honest cards/modules as desktop, stacked.
+     View at ~390px width or in a phone. -->
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--font-sans:"Hanken Grotesk",system-ui,sans-serif;--font-mono:"Spline Sans Mono",ui-monospace,monospace}
+:root[data-theme="dark"]{--canvas:#0e0c16;--surface:#161320;--surface-raised:#1d1930;--ink:#f0edf8;--ink-2:#b9b2cf;--ink-3:#8f88a8;--accent:#a893ec;--hairline:rgba(255,255,255,.08);--surface-gradient:linear-gradient(180deg,#1d1930,#161320);--edge-highlight:inset 0 1px 0 rgba(255,255,255,.05);--scrim:linear-gradient(180deg,transparent 30%,rgba(10,9,18,.86));--pill:#241f3a}
+:root[data-theme="light"]{--canvas:#f7f5fb;--surface:#fff;--surface-raised:#fff;--ink:#17151f;--ink-2:#3d3a4a;--ink-3:#6f6b80;--accent:#7657d8;--hairline:rgba(23,21,31,.09);--surface-gradient:linear-gradient(180deg,#fff,#faf8fe);--edge-highlight:inset 0 1px 0 rgba(255,255,255,.85);--scrim:linear-gradient(180deg,transparent 30%,rgba(23,21,31,.72));--pill:#eeeafa}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--canvas);color:var(--ink);max-width:430px;margin:0 auto;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--font-mono)}
+.top{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:30;background:var(--canvas);border-bottom:1px solid var(--hairline)}
+.dev{background:#0d0b16;color:#b9b2cf;font-size:10.5px;text-align:center;padding:6px 10px}
+.bar{display:flex;align-items:center;gap:12px;padding:12px 16px}
+.wordmark{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:500}
+.t-mark{position:relative;width:20px;height:20px}
+.t-mark span{position:absolute;left:50%;top:50%;width:2.5px;height:7px;border-radius:2px;background:var(--accent);transform-origin:50% 10px;transform:translate(-50%,-10px) rotate(var(--a))}
+.bar .sr{margin-left:auto;color:var(--ink-3);opacity:.6}
+.mono-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a893ec,#7657d8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex:none}
+.lens{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto}
+.lens span{flex:none;font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid var(--hairline);color:var(--ink-3)}
+.lens .on{background:var(--pill);color:var(--ink);font-weight:600;border-color:transparent}
+main{padding:132px 16px 110px}
+.overline{font-family:var(--font-mono);font-size:12px;color:var(--ink-3)}
+h1{font-size:30px;letter-spacing:-.02em;margin:8px 0 10px}
+.sublime{font-size:15px;color:var(--ink-2);line-height:1.55}
+.compose{display:flex;align-items:center;gap:10px;background:var(--surface-gradient);box-shadow:var(--edge-highlight);border:1px solid var(--hairline);border-radius:16px;padding:12px 14px;margin:18px 0 6px;color:var(--ink-3);font-size:14.5px}
+.divider{display:flex;align-items:center;gap:12px;margin:28px 0 16px;font-family:var(--font-mono);font-size:12px;color:var(--ink-3)}
+.divider::after{content:"";flex:1;height:1px;background:var(--hairline)}
+.card{background:var(--surface-gradient);box-shadow:var(--edge-highlight);border:1px solid var(--hairline);border-radius:18px;margin-bottom:16px;overflow:hidden}
+.pad{padding:16px}
+.byline{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.byline .who b{font-weight:600}
+.byline .who .mono{font-size:11px;color:var(--ink-3);display:block}
+.byline .chip{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);background:var(--pill);border-radius:999px;padding:4px 9px;white-space:nowrap}
+.card h3{font-size:17.5px;margin:12px 0 6px;line-height:1.3}
+.card p.body{font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.hero .media{position:relative;height:220px;background:url('https://picsum.photos/id/1015/900/520') center/cover}
+.hero .cap{position:absolute;inset:auto 0 0 0;padding:40px 16px 14px;background:var(--scrim);color:#fff}
+.hero .cap h3{margin:0 0 3px;font-size:18px}
+.hero .cap span{font-size:12px;opacity:.85}
+.acts{display:flex;gap:18px;padding:12px 16px;border-top:1px solid var(--hairline);font-size:12.5px;color:var(--ink-3)}
+.acts .soon{opacity:.5}
+.mod{margin:26px 0}
+.mod h5{font-size:15.5px;margin-bottom:12px}
+.prow{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:13.5px}
+.prow .who b{display:block;font-size:13.5px}
+.prow .who .mono{font-size:10.5px;color:var(--ink-3)}
+.prow .when{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)}
+.conn{background:var(--surface);border:1px solid var(--hairline);border-radius:14px;padding:14px;font-size:13.5px}
+.conn .cfoot{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);margin-top:10px;line-height:1.6}
+.crow{display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--hairline)}
+.crow:first-of-type{border-top:0}
+.crow .mono{font-size:11px;color:var(--ink-3)}
+.done{text-align:center;padding:44px 0 10px}
+.done .chk{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+.done h4{font-size:18px;margin-bottom:6px}
+.done p{color:var(--ink-3);font-size:13.5px}
+.tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:30;background:var(--canvas);border-top:1px solid var(--hairline);display:flex;align-items:flex-end;justify-content:space-around;padding:10px 8px calc(12px + env(safe-area-inset-bottom))}
+.tab a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--ink-3);width:60px}
+.tab a.on{color:var(--ink)}
+.tab .dotwrap{position:relative}
+.tab .dot{position:absolute;top:-2px;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.fab{width:54px;height:54px;border-radius:50%;background:linear-gradient(92deg,#8b6ee4,#a988e9);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin-top:-26px;box-shadow:0 10px 24px -8px rgba(139,110,228,.7);border:4px solid var(--canvas)}
+.g16{width:20px;height:20px}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="dev">Read-only preview — nothing here saves yet.</div>
+  <div class="bar"><span class="wordmark"><span class="t-mark" data-mark></span>tacet</span><span class="sr">⌕</span><span class="mono-av">R</span></div>
+  <div class="lens"><span class="on">For You</span><span>Photos</span><span>Writing</span><span>Video</span><span>Conversations</span></div>
+</div>
+
+<main>
+  <div class="overline">Today · Friday, July 10</div>
+  <h1>Good evening, Renato.</h1>
+  <p class="sublime">A quiet Friday, gently busy underneath. Seven things worth your attention, then the evening is yours.</p>
+  <div class="compose"><span class="mono-av">R</span>What's on your mind? <span style="margin-left:auto">📷</span></div>
+
+  <div class="divider">This evening</div>
+
+  <article class="card hero">
+    <div class="media"><div class="cap"><h3>Fog rolling through the headlands</h3><span>Sofia Marsh · pixel.town</span></div></div>
+    <div class="acts"><span class="soon">↩ Reply</span><span>↗ Share</span><span>🔖 Save</span></div>
+  </article>
+
+  <article class="card">
+    <div class="pad">
+      <div class="byline"><span class="mono-av" style="background:linear-gradient(135deg,#8fd0d9,#5aa7c9)">E</span><span class="who"><b>Ethsim2</b><span class="mono">meta.discourse.org</span></span><span class="chip">Forum · 6h</span></div>
+      <h3>Potential silent dropped edits when under race condition</h3>
+      <p class="body">Continuing the discussion from Prevent diffing against a stale snapshot or position — I experienced a dropped edit on request with no trace in /logs…</p>
+    </div>
+    <div class="acts"><span class="soon">↩ Reply</span><span>↗ Share</span><span>🔖 Save</span></div>
+  </article>
+
+  <div class="mod">
+    <h5>People close to you</h5>
+    <div class="prow"><span class="mono-av" style="background:linear-gradient(135deg,#8fd0d9,#5aa7c9)">E</span><span class="who"><b>Ethsim2</b><span class="mono">@Ethsim2@meta.discourse.org</span></span><span class="when">around now</span></div>
+    <div class="prow"><span class="mono-av" style="background:linear-gradient(135deg,#f2a08a,#e87f6b)">M</span><span class="who"><b>Maya Okonkwo</b><span class="mono">@maya@mastodon.social</span></span><span class="when">around now</span></div>
+    <div class="prow"><span class="mono-av">S</span><span class="who"><b>Sofia Marsh</b><span class="mono">@sofia@pixel.town</span></span><span class="when">earlier</span></div>
+  </div>
+
+  <div class="mod conn">
+    <b style="display:flex;align-items:center;gap:7px"><i style="width:6px;height:6px;border-radius:50%;background:var(--accent);font-style:normal"></i>Your home is connected</b>
+    <div style="margin-top:10px">
+      <div class="crow"><span>Mastodon, Pixelfed &amp; more</span><span class="mono">watching 8</span></div>
+      <div class="crow"><span>Blogs, podcasts &amp; video</span><span class="mono">watching 10</span></div>
+      <div class="crow"><span>Bluesky</span><span class="mono">watching 8</span></div>
+      <div class="crow"><span>Nostr</span><span class="mono">watching 6</span></div>
+    </div>
+    <div class="cfoot">32 sources · 7 homes · 144 recent posts · refreshed just now</div>
+  </div>
+
+  <div class="done">
+    <span class="chk">✓</span>
+    <h4>That's today. You're all caught up.</h4>
+    <p>Nothing more is waiting. The rest of the evening is yours.</p>
+  </div>
+</main>
+
+<nav class="tab">
+  <a class="on" href="#"><svg class="g16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg>Today</a>
+  <a href="#"><svg class="g16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.7-3 3-4.5 5.5-4.5s4.8 1.5 5.5 4.5"/></svg>People</a>
+  <a href="#" class="fabwrap"><span class="fab">✎</span></a>
+  <a href="#" class="dotwrap"><svg class="g16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6.5h16v9H9l-5 4z"/></svg><span class="dot"></span>Chats</a>
+  <a href="#"><svg class="g16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19.5c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>Me</a>
+</nav>
+
+<script>
+document.querySelectorAll('[data-mark]').forEach(m=>{for(let i=0;i<10;i++){const s=document.createElement('span');s.style.setProperty('--a',(i*36)+'deg');m.appendChild(s);}});
+</script>
+</body>
+</html>

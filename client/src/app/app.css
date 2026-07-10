@@ -256,26 +256,24 @@
 .t-lens__opt:disabled { opacity: var(--alpha-disabled); cursor: default; }
 @media (min-width: 900px) { .t-lens { display: none; } }
 
-/* Theme toggle — pill + sliding knob + icon swap (operator reference control) */
+/* Theme toggle — pill + sliding knob + icon swap (operator reference geometry: 52×28,
+   21px knob; knob sits LEFT in dark and slides RIGHT in light; no track ghosts) */
 .t-themesw {
   position: relative; flex: none;
-  width: 46px; height: 26px; padding: 0;
+  width: 52px; height: 28px; padding: 0;
   border-radius: var(--radius-full);
   background: var(--color-surface-sunken);
   border: var(--border-hairline) solid var(--color-hairline);
   cursor: pointer;
 }
-.t-themesw__ghost { position: absolute; top: 50%; transform: translateY(-50%); color: var(--color-text-tertiary); pointer-events: none; }
-.t-themesw__ghost--l { left: 6px; }
-.t-themesw__ghost--r { right: 6px; }
 .t-themesw__knob {
-  position: absolute; top: 2px; left: 2px;
-  width: 20px; height: 20px; border-radius: var(--radius-full);
+  position: absolute; top: 2.5px; left: 3px;
+  width: 21px; height: 21px; border-radius: var(--radius-full);
   background: var(--color-surface-raised); box-shadow: var(--elevation-1);
   display: grid; place-items: center; color: var(--color-accent);
   transition: transform var(--dur-2) var(--ease-out);
 }
-.t-themesw.is-dark .t-themesw__knob { transform: translateX(20px); }
+.t-themesw:not(.is-dark) .t-themesw__knob { transform: translateX(23px); }
 
 /* Inline composer entry row (opens the not-yet-publishing preview) */
 .t-composer-row {
@@ -284,11 +282,12 @@
   border: var(--border-hairline) solid color-mix(in srgb, var(--color-hairline) 60%, transparent);
   border-radius: var(--radius-lg); box-shadow: var(--elevation-1), var(--edge-highlight);
 }
-.t-composer-row__pill {
-  flex: 1; text-align: left; padding: var(--space-2) var(--space-4);
-  background: var(--color-surface-sunken); border: var(--border-hairline) solid var(--color-hairline);
-  border-radius: var(--radius-full); color: var(--color-text-tertiary); font-size: var(--text-body-sm); cursor: text;
+.t-composer-row__input {
+  flex: 1; min-width: 0; padding: var(--space-2) 0;
+  background: transparent; border: 0; outline: 0;
+  color: var(--color-text-primary); font: inherit; font-size: var(--text-body-sm); cursor: text;
 }
+.t-composer-row__input::placeholder { color: var(--color-text-tertiary); }
 .t-composer-row__cam { color: var(--color-text-secondary); }
 
 /* Editorial section divider ("This evening" / "Earlier") */
@@ -374,10 +373,12 @@
 .t-post__hero-img { width: 100%; height: 100%; object-fit: cover; display: block; box-shadow: var(--media-vignette); }
 .t-post__hero-cap {
   position: absolute; left: 0; right: 0; bottom: 0;
-  padding: var(--space-6) var(--space-5) var(--space-4);
+  display: flex; flex-direction: column; gap: 3px;
+  padding: var(--space-7) var(--space-5) var(--space-4);
   background: var(--scrim-caption); color: var(--on-media); text-shadow: var(--media-shadow);
-  font-size: var(--text-micro);
 }
+.t-post__hero-capline { font-size: var(--text-subheading); font-weight: 500; line-height: var(--leading-snug); }
+.t-post__hero-capwho { font-size: var(--text-micro); opacity: 0.85; }
 .t-post--hero .t-post__head { padding: var(--space-5) var(--space-5) 0; }
 .t-post--hero .t-post__open { padding: 0 var(--space-5); }
 .t-post--hero .t-post__actions { padding: var(--space-4) var(--space-5) var(--space-5); }
@@ -391,6 +392,23 @@
 .t-post__dek { overflow-wrap: anywhere; word-break: break-word; }
 /* quiet — unboxed, type carries it (no frame) */
 .t-feed .t-post--quiet { background: transparent; border: 0; box-shadow: none; padding: var(--space-2) var(--space-5); }
+
+/* Composed byline (reference anatomy): avatar · bold name + mono line · right pill chip */
+.t-byline { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-width: 0; }
+.t-byline__who { display: flex; align-items: center; gap: var(--space-3); min-width: 0; flex: 1; }
+.t-byline__who:hover .t-byline__name { color: var(--color-accent); }
+.t-byline__id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.t-byline__name { font-size: var(--text-label); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-byline__sub { font-size: var(--text-micro); color: var(--color-text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-byline__chip {
+  flex: none; display: inline-flex; align-items: center; gap: var(--space-1);
+  font-size: var(--text-micro); color: var(--color-text-tertiary);
+  background: var(--color-surface-sunken); border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+}
+/* Feed acts row sits on a top hairline (reference) */
+.t-feed .t-post__actions { border-top: var(--border-hairline) solid var(--color-hairline); padding-top: var(--space-3); margin-top: var(--space-4); }
+.t-post__head--hero { padding-top: var(--space-4); }
 /* highlight — "From your world": accent-tinted, honestly labelled (no invented curator) */
 .t-feed .t-post--highlight {
   background: linear-gradient(180deg, color-mix(in srgb, var(--color-accent-subtle) 55%, var(--color-surface)) 0%, var(--color-surface) 100%);
