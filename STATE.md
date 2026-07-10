@@ -16,8 +16,8 @@ publishing (writing back to the open web) is the next track, not yet built.
 ## Live
 
 - **Deployed** on `tacet.social` (apex via a Worker route; `www` → 301 → apex; workers.dev
-  fallback). Current version `e5626af7-f3d0-440e-8f66-161f767e78dd`. Rollback anchor
-  `8fedc604` → `npx wrangler rollback --config wrangler.local.jsonc`.
+  fallback). Current version `4b76deae-2624-43cc-a9d2-e42989b6a81f`. Rollback anchor
+  `e5626af7` → `npx wrangler rollback --config wrangler.local.jsonc`.
 - **Today reads the open web live** through four source adapters behind one normalization
   contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md), `src/sources/`):
   - **ActivityPub** — read live per request through the untouched `src/openweb/` reader.
@@ -28,7 +28,11 @@ publishing (writing back to the open web) is the next track, not yet built.
   security headers (CSP, HSTS, `X-Frame-Options: DENY`, nosniff) + `Cache-Control: no-store`
   on `/api/*`. Deploy config is the git-ignored `wrangler.local.jsonc`; tracked
   `wrangler.jsonc` carries placeholders only.
-- **Tests:** 116 passing (`npm test`, Workers pool + local D1). Gate is
+- **Connectivity panel** — "Your home is connected" on the Me screen: a live, world-directed
+  module (`GET /api/openweb/connectivity`) showing the four source families by product name,
+  how many sources this home watches, homes seen, recent posts gathered, and last-refresh.
+  Real adapter/registry state, never hardcoded (ADR-011/012 — no personal analytics, no red).
+- **Tests:** 118 passing (`npm test`, Workers pool + local D1). Gate is
   `npm run typecheck && npm run build && npm test`.
 
 ## Partial / mock
@@ -36,8 +40,11 @@ publishing (writing back to the open web) is the next track, not yet built.
 - **Today** and **People** read live; **Discover** renders sample suggestions (honestly
   labelled — not yet wired to the live reader); **Conversations** reads live threads; **Me**
   is real local-first data (never federated).
-- Interactive affordances **Spark / Follow / Reply** are UI-only in this read-only milestone.
+- **Every interactive control works or is honestly disabled.** Spark / Follow / Reply are
+  "coming soon" (calmly disabled) in this read-only milestone; Save is real. No dead buttons.
 - The composer is an honest **preview** — publishing isn't live, and the copy says so.
+- **Stage 7 (template conformance) is in progress** — see `docs/10-design/hifi/specs/`. Landing
+  + Onboarding are EXCLUDED BY OPERATOR from Stage 7 and ship as-is.
 
 ## Product model (frozen)
 
@@ -82,7 +89,7 @@ product.
 
 Verified correct this session — the next session may cite these without re-checking:
 
-- **Gate green:** typecheck + build + 116 tests pass.
+- **Gate green:** typecheck + build + 118 tests pass.
 - **Live:** `tacet.social` landing, `/welcome/world`, `/welcome/home`, `/today`, `/enter`
   all 200; `/api/health` 200; `www` → 301 → apex; security headers intact.
 - **Four sources live** on `/today` (`mode:live`, 20 items — ActivityPub + feeds + Bluesky +
@@ -98,4 +105,4 @@ Verified correct this session — the next session may cite these without re-che
 - **Type system unified:** app + landing both render in **Hanken Grotesk + Spline Sans
   Mono** (verified in the live CSS); the legacy `client/src/legacy/` tree is gone; docs
   folders tidied (`11-decisions`, merged `01-product`).
-- **Deployed version `e5626af7`** matches the current `main` build.
+- **Deployed version `4b76deae`** matches the current `main` build.

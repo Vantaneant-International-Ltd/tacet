@@ -29,6 +29,21 @@
   padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
 }
 
+/* The three-column canvas: centre reading column + right context column (handoff spec).
+   Mobile: single column, context stacks below. Desktop (≥900px): centre + 320px context. */
+.t-canvas { display: flex; flex-direction: column; gap: var(--space-6); }
+.t-canvas__context { display: flex; flex-direction: column; gap: var(--space-5); }
+@media (min-width: 900px) {
+  .t-canvas {
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    gap: var(--space-7);
+  }
+  .t-canvas__main { flex: 1 1 var(--measure-reading); max-width: var(--measure-reading); min-width: 0; }
+  .t-canvas__context { flex: 0 0 320px; width: 320px; position: sticky; top: var(--space-6); }
+}
+
 /* ---------- Mobile bottom tab bar ---------- */
 .t-tabbar {
   position: fixed;

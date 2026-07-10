@@ -7,6 +7,8 @@ import { useSavedCount } from "../me";
 import { useHint } from "../onboarding/hints";
 import { Hint } from "../onboarding/Hint";
 import { navigate } from "../../router";
+import { Surface } from "../Surface";
+import { ConnectivityPanel } from "../ConnectivityPanel";
 
 // One gentle line that teaches Save through use, then the quiet reveal that a saved post
 // is now yours. Each shows once and never returns.
@@ -35,6 +37,7 @@ export function Today() {
   const state = useToday();
 
   return (
+    <Surface context={<ConnectivityPanel />}>
     <div className="t-screen t-screen--reading">
       <header className="t-today__head">
         <h1 className="t-today__greeting">{today.greeting}</h1>
@@ -75,5 +78,6 @@ export function Today() {
         </>
       )}
     </div>
+    </Surface>
   );
 }
