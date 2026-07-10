@@ -9,6 +9,7 @@ import type { SourceAdapter } from "./contract";
 import { ActivityPubAdapter } from "./activitypub/adapter";
 import { FeedsAdapter } from "./feeds/adapter";
 import { AtprotoAdapter } from "./atproto/adapter";
+import { NostrAdapter } from "./nostr/adapter";
 import type { OpenWebConfig } from "../openweb";
 
 export interface SourcesConfig extends OpenWebConfig {
@@ -21,8 +22,7 @@ export function allAdapters(cfg: SourcesConfig = {}): SourceAdapter[] {
 }
 
 // The adapters the cron refresh collects into D1. ActivityPub is deliberately NOT here —
-// it is read live per request so its existing behaviour is never disturbed. Nostr is added
-// by its stage.
+// it is read live per request so its existing behaviour is never disturbed.
 export function collectorAdapters(_cfg: SourcesConfig = {}): SourceAdapter[] {
-  return [new FeedsAdapter(), new AtprotoAdapter()];
+  return [new FeedsAdapter(), new AtprotoAdapter(), new NostrAdapter()];
 }
