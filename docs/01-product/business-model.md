@@ -52,7 +52,9 @@ can be held to them.
 
 Not a trial. Not a teaser that becomes unusable in a month. The free account gives you:
 
-- reading the open web,
+- reading the open web — live across ActivityPub (Mastodon, Pixelfed, and the rest),
+  RSS/Atom/JSON feeds, AT Protocol (Bluesky), and Nostr, all in one place (see
+  [what Tacet reads today](../../README.md#what-tacet-reads-today));
 - a home,
 - a handle,
 - fair limits.

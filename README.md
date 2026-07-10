@@ -16,8 +16,8 @@ Powered by open protocols. Designed as one coherent product.
 > Open before closed.
 
 > ⚠️ **Early development — not ready for production use.** Tacet is a work in
-> progress. Much of the app currently runs on mock data. Expect rough edges, moving
-> parts, and breaking changes. See [Current status](#current-status).
+> progress. Today reads the open web live; some secondary surfaces still run on mock data.
+> Expect rough edges, moving parts, and breaking changes. See [Current status](#current-status).
 
 ---
 
@@ -176,10 +176,14 @@ Tacet is **early and pre-production.**
 
 - ✅ The five-pillar UI (Today / People / Discover / Conversations / Me), a landing
   page, sign-in, and a light/dark design system — built and running.
-- 🧪 The app currently renders **mock data**. Reading live data from the open social
-  web through the adapter layer is the next milestone.
-- 🚧 No federation, messaging, notifications, or realtime yet — these are documented
-  as direction, not shipped.
+- ✅ **Reading the open web is live.** Today renders real public content from four source
+  families — ActivityPub, RSS/Atom/JSON Feed, AT Protocol (Bluesky), and Nostr — merged
+  through one contract ([ADR-017](docs/06-decisions/ADR-017-source-adapters.md)). See
+  [What Tacet reads today](#what-tacet-reads-today).
+- 🧪 Some secondary surfaces still render **mock data** while they are wired to the live
+  reader; Today is live.
+- 🚧 **Writing** to the open web (compose/publish), messaging, notifications, and realtime
+  are not shipped yet — documented as direction. Reading is live; publishing is next.
 - 🗄️ A legacy "rooms" product from an earlier phase is quarantined in
   `client/src/legacy/` (dormant, not shipped).
 
@@ -188,9 +192,9 @@ detailed picture.
 
 ## Roadmap
 
-- **Now → next:** read-only open social web — Today and People reading live public
-  data through the adapter, so Tacet feels alive on day one.
-- **Then:** compose/publish, conversations, richer discovery.
+- **Done:** read-only open social web — Today reads live public content across ActivityPub,
+  RSS/Atom/JSON Feed, AT Protocol, and Nostr through one contract.
+- **Now → next:** compose/publish, richer conversations and discovery.
 - **Later:** deeper (write) federation, portability you can feel, native surfaces.
 
 Details in [docs/08-roadmap/](docs/08-roadmap/).

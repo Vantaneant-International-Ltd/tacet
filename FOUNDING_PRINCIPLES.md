@@ -75,6 +75,11 @@ social product first, and let it reach outward.
 The answer must always be **yes**. If a feature only makes sense as "a Mastodon
 thing," it is in the wrong layer.
 
+> *Realized by [ADR-017](docs/06-decisions/ADR-017-source-adapters.md) (2026-07): the read side
+> now runs **four** adapters — ActivityPub, RSS/Atom/JSON Feed, AT Protocol, and Nostr — behind
+> one contract. The adapter test is no longer hypothetical; the product already reads several
+> protocols and is unchanged when one is added or removed.*
+
 **In the interface, the protocol is invisible.** Never expose protocol terminology
 unless someone deliberately goes looking for it. It is never "a Mastodon post" — it
 is *a post*. Never "a remote account" — *a person*. Never "the federated timeline" —

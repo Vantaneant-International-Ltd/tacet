@@ -12,6 +12,18 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Adapter documentation pass (2026-07-10) — docs only.** README gained a "What Tacet reads
+  today" section (Source | Covers | Status table for the four live families + closed-platforms-
+  out + reading-live/publishing-next + seeds transparency). Reconciled every place that still
+  called multi-network reading "future": README status/roadmap now say reading is live; the
+  top warning softened; `docs/05-federation/README.md` marks the replaceable-adapter law
+  *realized and generalized* (AP is one of four adapters); `docs/06-engineering/` adapter +
+  folder-structure pages reference ADR-017 and the `src/openweb/` + `src/sources/` layout, and
+  distinguish built **read** from unbuilt **write** federation; `FOUNDING_PRINCIPLES.md` got a
+  one-line "realized by ADR-017" cross-ref (principle untouched); `business-model.md` free tier
+  enumerates the four source families. No "coming soon" for live things, no "live" for the write
+  track. Gate green (typecheck + build + 109 tests).
+
 - **Open-web source adapters — FULL READ COVERAGE, LIVE (2026-07-10).** Deploy version
   **`184cc804-96d4-44f2-88b5-924aba3ec7d8`** (rollback anchor: prior live
   `53c71bec-ea7d-4d7d-b3ce-da4e45164406` → `npx wrangler rollback --config wrangler.local.jsonc`).

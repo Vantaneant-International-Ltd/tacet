@@ -11,6 +11,14 @@
 > always be yes — because the product lives above the adapter. See the
 > [pillar + adapter law in FOUNDING_PRINCIPLES](../../FOUNDING_PRINCIPLES.md).
 
+> **Status (2026-07): the replaceable-adapter law is now realized, and generalized.**
+> ActivityPub is no longer Tacet's *only* adapter — it is **one of four** behind a single
+> normalization contract ([ADR-017](../06-decisions/ADR-017-source-adapters.md)): ActivityPub,
+> RSS/Atom/JSON Feed, AT Protocol (Bluesky), and Nostr all read live into Today, each emitting
+> the same domain shape. This section is still the right place for the *meaning* of federation;
+> just read "ActivityPub adapter" as "the first and richest of several adapters." The doctrine is
+> unchanged — the product lives above the adapter — and now four adapters prove it.
+
 **Tacet is your home on the open social web.** Federation is how one identity you own reaches people who live on many different servers — the same way email lets one account reach the whole world. This is the load-bearing idea of the whole section: **ActivityPub is infrastructure, not the product.** A person should never need to understand ActivityPub, "instances," or "the Fediverse" to use Tacet, any more than they need to understand SMTP to send an email. You just email `anna@gmail.com` from `you@fastmail.com` and it works; you just follow `@anna@pixelfed.social` from `@you@tacet.social` and it works. We are honest about the edges of this: Tacet is the best home for the *open* social web — the ActivityPub-compatible platforms like Mastodon, Pixelfed, PeerTube, WriteFreely and Friendica. We do not pretend to reach inside closed platforms that keep their doors locked. Federation, done right, disappears. What's left is people.
 
 ## In this section

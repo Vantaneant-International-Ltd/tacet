@@ -41,14 +41,17 @@ Today the repo is a **single-package monorepo-in-waiting**, not the structure ab
 
 ```
 src/                 # the Cloudflare Worker (Hono)
-  index.ts           # app wiring, /api/* mount, SPA fallback
+  index.ts           # app wiring, /api/* mount, SPA fallback, scheduled() cron
   types.ts           # Env bindings + SessionUser
-  routes/            # auth, rooms, posts, invites, public, collections
+  routes/            # auth, rooms, posts, invites, public, collections, openweb, me
+  openweb/           # the generic ActivityPub READ reader (parse → normalize → domain)
+  sources/           # the read-adapter contract + 4 adapters (ADR-017):
+                     #   activitypub · feeds · atproto · nostr, merged into Today
+  me/                # local-first "Me" (profile, saved, collections) repositories
   lib/               # ulid, passphrase, session, images, turnstile, acks
 client/
   src/               # Vite + React + TS SPA
-    views/           # Feed, Room, Timeline, Grid, You, Discover, Compose, …
-migrations/          # D1 SQL, 0001–0010
+migrations/          # D1 SQL, 0001–0014 (0014 = source registry + item store)
 wrangler.jsonc       # Worker + D1 + R2 bindings
 package.json         # one package, root scripts
 ```
@@ -57,7 +60,12 @@ package.json         # one package, root scripts
 
 - **No `apps/` or `packages/`.** It is one package with two source roots (`src/`, `client/`). That is fine for Phase 1 and deliberately simple.
 - **No `packages/domain`.** Domain logic currently lives *inside* route handlers (e.g. `src/routes/posts.ts` shapes posts and folds in acks/reactions/keeps inline). The domain model of [domain-model.md](domain-model.md) is implicit, not extracted. This is the first refactor to earn its keep.
-- **No `packages/federation`.** There is **no federation code at all** yet — no inbox, no outbox, no `Activity` types. The adapter is documented ([ActivityPub adapter](activitypub-adapter.md)) but unbuilt.
+- **Read adapters are built; write federation is not.** The **read** side ships in `src/openweb/`
+  (the generic ActivityPub reader) and `src/sources/` (the shared contract + four adapters —
+  ActivityPub, RSS/Atom/JSON Feed, AT Protocol, Nostr — behind [ADR-017](../06-decisions/ADR-017-source-adapters.md)),
+  merged into Today. What's still unbuilt is **write** federation: no inbox, no outbox, no `Activity`
+  types. That target lives in [ActivityPub adapter](activitypub-adapter.md); a future `packages/federation`
+  would house it.
 - **`database` is `migrations/` + inline SQL.** Repositories don't exist; handlers write SQL directly against D1. `packages/database` would consolidate this.
 - **`api` and `web` already exist in spirit** as `src/` and `client/` — the cleanest future split. `apps/mobile` and `apps/workers` are entirely future.
 

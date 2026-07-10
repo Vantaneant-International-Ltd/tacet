@@ -1,6 +1,15 @@
 # ActivityPub adapter
 
-Federation is wiring. This file describes that wiring; the *meaning* lives in [the federation section](../05-federation/README.md), and the load-bearing idea is [ActivityPub as infrastructure](../05-federation/activitypub-as-infrastructure.md): **the protocol is like email — the person never sees it.** No federation code exists in the repo yet; this is the design we build toward, isolated in `packages/federation` (see [folder structure](folder-structure.md)).
+Federation is wiring. This file describes that wiring; the *meaning* lives in [the federation section](../05-federation/README.md), and the load-bearing idea is [ActivityPub as infrastructure](../05-federation/activitypub-as-infrastructure.md): **the protocol is like email — the person never sees it.**
+
+> **Status (2026-07).** The **read** side is built and live. The generic ActivityPub reader
+> ships in `src/openweb/` and is mapped onto the shared source-adapter contract in
+> `src/sources/activitypub/` — one of four read adapters (ActivityPub, RSS/Atom/JSON Feed,
+> AT Protocol, Nostr) behind [ADR-017](../06-decisions/ADR-017-source-adapters.md). This page
+> describes the **write** side (publishing: actor documents, inbox/outbox, Activity
+> translation), which is still the design we build toward — no write-federation code exists in
+> the repo yet. Read below as the write-adapter target, isolated in `packages/federation` (see
+> [folder structure](folder-structure.md)).
 
 ## The one rule
 
