@@ -43,7 +43,7 @@ publishing (writing back to the open web) is the next track, not yet built.
 - **Every interactive control works or is honestly disabled.** Spark / Follow / Reply are
   "coming soon" (calmly disabled) in this read-only milestone; Save is real. No dead buttons.
 - The composer is an honest **preview** — publishing isn't live, and the copy says so.
-- **Stage 7 (template conformance):** **Today is CONFORMED** to its template (masthead, editorial card variants, section dividers, bounded end, rail search+handle, mobile top/tab bar + lens, tokens) — remaining inside Today: the context-column editorial modules beyond the connectivity panel (much of the template there is fabricated sample data; honest real-data versions pending). The 3-column canvas is the opt-in `Surface`. Other 7 in-scope surfaces are specced in `docs/10-design/hifi/specs/`. Landing
+- **Stage 7 (template conformance):** **Today is CONFORMED (v2)** to its template + operator reference: masthead (real count sub-line + real home domains), inline composer row, editorial card variants + highlight ("From your world") + triptych + composed quiet bylines + monogram fallbacks, section dividers, bounded end; the full left rail (Search + @handle + pill/knob theme toggle) and a locked 3-column canvas where only the centre scrolls (rail + context fixed with internal overflow); a real context column (People close to you with remote handles + honest presence, Continue with no time-left, Across your world = real titled items, Busy today, Connectivity); mobile top/tab bar + lens. All modules real-or-hidden. Other 7 surfaces specced in `docs/10-design/hifi/specs/`. Landing
   + Onboarding are EXCLUDED BY OPERATOR from Stage 7 and ship as-is.
 
 ## Product model (frozen)
@@ -105,4 +105,4 @@ Verified correct this session — the next session may cite these without re-che
 - **Type system unified:** app + landing both render in **Hanken Grotesk + Spline Sans
   Mono** (verified in the live CSS); the legacy `client/src/legacy/` tree is gone; docs
   folders tidied (`11-decisions`, merged `01-product`).
-- **Deployed version `0eee89f4`** matches the current `main` build.
+- **Deployed version `0de9f69a`** matches the current `main` build.

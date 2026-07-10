@@ -61,7 +61,14 @@ modules the app did not yet have. That canvas is now shipped as an opt-in `Surfa
 (`client/src/app/Surface.tsx`): centre + right context column on desktop, stacking calmly on
 mobile; surfaces that pass no context render unchanged (zero regression).
 
-**Conformed:** **Today is CONFORMED to its template** (2026-07-10) — the editorial masthead
+**Conformed:** **Today is CONFORMED v2** (2026-07-10) — completion pass added the real
+context column (People close to you with remote handles + honest presence; Continue with a
+"Continue reading" affordance and *no* time-left; "Across your world" = real titled items;
+"Busy today"; Connectivity), the "From your world" highlight moments, the inline composer
+row, the pill/knob theme toggle, the locked scroll architecture (only the centre scrolls),
+avatar monogram fallback, quiet links, and the triptych. All real-or-hidden.
+
+**Conformed v1:** **Today** (2026-07-10) — the editorial masthead
 (real date-line / time-of-day greeting / source cluster from live authors+homes), card
 variants derived from real data (hero / article / video / quiet / default), section dividers
 by recency, the bounded end, the desktop rail (Search entry + `@renato` handle), the mobile
