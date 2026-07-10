@@ -65,6 +65,16 @@ describe("Me — profile", () => {
     expect(w.name).toBe("VNTA");
   });
 
+  it("sanitizes a local handle so it cannot impersonate a federated address (CRIT-2)", async () => {
+    const cookie = await newMe();
+    // A user cannot claim "@anna@mastodon.social" as a local handle — the domain is stripped
+    // so the local profile can't masquerade as a real open-web account.
+    const upd = await req("/api/me/profile", { method: "PATCH", cookie, body: { handle: "@anna@mastodon.social" } });
+    const p = ((await upd.json()) as any).profile;
+    expect(p.handle).toBe("anna");
+    expect(p.handle).not.toContain("@");
+  });
+
   it("keeps profile and saved data isolated per device (workspace scope)", async () => {
     const a = await newMe();
     const b = await newMe();

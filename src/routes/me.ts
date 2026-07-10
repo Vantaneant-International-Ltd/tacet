@@ -15,6 +15,16 @@ function str(x: unknown): string | undefined {
   return typeof x === "string" ? x : undefined;
 }
 
+// A local handle is a bare username — NEVER a federated address. We sanitize so a user
+// cannot make their local profile impersonate a real open-web account: drop any leading
+// "@" and everything from the first "@" onward, so "@anna@mastodon.social" → "anna".
+// (The public preview renders the same ProfileView as real remote people; this keeps a
+// local handle from masquerading as one. See src/me/profile.ts — not a federation identity.)
+function localHandle(v: string | undefined): string | undefined {
+  if (v === undefined) return undefined;
+  return v.trim().replace(/^@+/, "").split("@")[0].trim();
+}
+
 function num(x: unknown): number | undefined {
   return typeof x === "number" && Number.isFinite(x) ? x : undefined;
 }
@@ -78,7 +88,7 @@ meRoutes.patch("/profile", async (c) => {
   const b = await json(c);
   const updated = await repo.updateProfile(c.env.DB, p.id, {
     displayName: str(b.displayName),
-    handle: str(b.handle)?.replace(/^@/, ""),
+    handle: localHandle(str(b.handle)),
     bio: str(b.bio),
     website: str(b.website),
     location: str(b.location),
