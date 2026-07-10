@@ -46,7 +46,14 @@
     gap: var(--space-7);
   }
   .t-canvas__main { flex: 1 1 var(--measure-reading); max-width: var(--measure-reading); min-width: 0; }
-  .t-canvas__context { flex: 0 0 320px; width: 320px; position: sticky; top: var(--space-6); }
+  /* Context column is fixed at viewport height with its own internal scroll; only the centre
+     feed scrolls with the page (template scroll architecture). */
+  .t-canvas__context {
+    flex: 0 0 var(--context-width); width: var(--context-width);
+    position: sticky; top: var(--devbar-h, 0px);
+    height: calc(100vh - var(--devbar-h, 0px)); overflow-y: auto;
+    padding: var(--space-8) 0 var(--space-9);
+  }
 }
 
 /* ---------- Mobile bottom tab bar ---------- */
@@ -117,6 +124,7 @@
     top: var(--devbar-h, 0px);
     align-self: start;
     height: calc(100vh - var(--devbar-h, 0px));
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
@@ -182,9 +190,12 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-hairline);
+    padding-top: var(--space-5);
+    border-top: var(--border-hairline) solid color-mix(in srgb, var(--color-hairline) 60%, transparent);
   }
+  /* Theme toggle in the identity block — 44×44, hover surface-sunken (template) */
+  .t-rail__foot .t-iconbtn { width: 44px; height: 44px; flex: none; border-radius: var(--radius-md); }
+  .t-rail__foot .t-iconbtn:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
   .t-rail__me { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
   .t-rail__me-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
   .t-rail__me-name { font-weight: 500; font-size: var(--text-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
