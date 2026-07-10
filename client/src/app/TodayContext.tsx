@@ -11,9 +11,20 @@ import type { RecentView } from "./me";
 // renders REAL data derived from today's merged feed (or your own local history), or renders
 // NOTHING when its data is empty. No presence claims, no fabricated curators, no scoreboards.
 
-function recencyLabel(iso: string): string {
-  const rt = relativeTime(iso);
-  return rt === "now" ? "posted just now" : `posted ${rt} ago`;
+// Honest presence from real recency: within ~an hour → "around now" (dot); today → "earlier";
+// the previous day → "yesterday"; older → relative time. Never a fabricated "is here".
+function presence(iso: string): { label: string; dot: boolean } {
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return { label: "", dot: false };
+  const mins = (Date.now() - t) / 60000;
+  if (mins < 60) return { label: "around now", dot: true };
+  const d = new Date(t);
+  const now = new Date();
+  if (d.toDateString() === now.toDateString()) return { label: "earlier", dot: false };
+  const y = new Date(now);
+  y.setDate(now.getDate() - 1);
+  if (d.toDateString() === y.toDateString()) return { label: "yesterday", dot: false };
+  return { label: relativeTime(iso), dot: false };
 }
 
 // People whose posts you're seeing most in today's feed — closeness by presence in your world,
@@ -33,14 +44,10 @@ function peopleClose(moments: Moment[]): { person: Person; latest: string }[] {
     .map(({ person, latest }) => ({ person, latest }));
 }
 
-// Which networks contributed to today — a real source-variety snapshot (human labels).
-function networksToday(moments: Moment[]): { label: string; count: number }[] {
-  const by = new Map<string, number>();
-  for (const m of moments) {
-    const n = m.source.software || m.source.name;
-    if (n) by.set(n, (by.get(n) ?? 0) + 1);
-  }
-  return [...by.entries()].map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+// Real notable pieces from today — titled work (articles, videos, long-form) surfacing in the
+// merged feed. Real titles only; no invented "work titles". Empty → the module hides.
+function notableToday(moments: Moment[]): Moment[] {
+  return moments.filter((m) => m.title && m.title.trim().length > 0).slice(0, 3);
 }
 
 // The homes carrying the most today, by post count — world-directed, never a leaderboard of people.
@@ -65,7 +72,7 @@ export function TodayContext({ moments }: { moments: Moment[] }) {
   }, []);
 
   const people = peopleClose(moments);
-  const nets = networksToday(moments);
+  const notable = notableToday(moments);
   const homes = homesToday(moments);
   const cont = (recent ?? []).slice(0, 3);
 
@@ -75,18 +82,23 @@ export function TodayContext({ moments }: { moments: Moment[] }) {
         <section className="t-ctx">
           <h2 className="t-ctx__title">People close to you</h2>
           <ul className="t-ctx__list">
-            {people.map(({ person, latest }) => (
-              <li key={person.id} className="t-ctx__person">
-                <Link to={profilePath(person.id)} className="t-ctx__personlink">
-                  <Avatar name={person.name} src={person.avatarUrl} size={36} />
-                  <span className="t-ctx__pbody">
-                    <span className="t-ctx__pname">{person.name}</span>
-                    <span className="t-ctx__pmeta t-mono">{person.source.name || person.handle}</span>
+            {people.map(({ person, latest }) => {
+              const p = presence(latest);
+              return (
+                <li key={person.id} className="t-ctx__person">
+                  <Link to={profilePath(person.id)} className="t-ctx__personlink">
+                    <Avatar name={person.name} src={person.avatarUrl} size={36} />
+                    <span className="t-ctx__pbody">
+                      <span className="t-ctx__pname">{person.name}</span>
+                      <span className="t-ctx__pmeta t-mono">{person.handle}</span>
+                    </span>
+                  </Link>
+                  <span className="t-ctx__prec t-mono">
+                    {p.dot && <span className="t-ctx__dot" aria-hidden="true" />}{p.label}
                   </span>
-                </Link>
-                <span className="t-ctx__prec t-mono">{recencyLabel(latest)}</span>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
           <Link to="/people" className="t-ctx__more">See your people <span aria-hidden="true">→</span></Link>
         </section>
@@ -101,25 +113,28 @@ export function TodayContext({ moments }: { moments: Moment[] }) {
                 onClick={() => navigate(conversationPath(r.remoteId))}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(conversationPath(r.remoteId)); } }}>
                 <span className="t-ctx__ctext">{r.text || r.authorName}</span>
-                <span className="t-ctx__cmeta t-mono">{r.authorName} · viewed {relativeTime(r.viewedAt)}</span>
+                {r.sourceId && <span className="t-ctx__cmeta t-mono">{r.sourceId}</span>}
+                <span className="t-ctx__cresume">Continue reading <span aria-hidden="true">→</span></span>
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      {nets.length > 0 && (
+      {notable.length > 0 && (
         <section className="t-ctx">
           <h2 className="t-ctx__title">Across your world</h2>
-          <ul className="t-ctx__chips">
-            {nets.map((n) => (
-              <li key={n.label} className="t-ctx__chip">
-                <span className="t-ctx__chiplabel">{n.label}</span>
-                <span className="t-ctx__chipn t-mono">{n.count}</span>
+          <ul className="t-ctx__list">
+            {notable.map((m) => (
+              <li key={m.id} className="t-ctx__item" role="button" tabIndex={0}
+                onClick={() => navigate(conversationPath(m.id))}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(conversationPath(m.id)); } }}>
+                <span className="t-ctx__iname"><em>{m.title}</em></span>
+                <span className="t-ctx__imeta t-mono">{m.source.id} · {relativeTime(m.createdAt)}</span>
               </li>
             ))}
           </ul>
-          <p className="t-ctx__note">Today reached you across {nets.length} {nets.length === 1 ? "network" : "networks"} of the open web.</p>
+          <Link to="/discover" className="t-ctx__more">Look around Discover <span aria-hidden="true">→</span></Link>
         </section>
       )}
 

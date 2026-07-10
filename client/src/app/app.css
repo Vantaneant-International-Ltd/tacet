@@ -603,6 +603,13 @@ video.t-media-item { cursor: default; }
 .t-ctx__home:last-child { border-bottom: 0; }
 .t-ctx__hname { font-size: var(--text-body-sm); color: var(--color-text-primary); }
 .t-ctx__hn { font-size: var(--text-micro); color: var(--color-text-tertiary); white-space: nowrap; }
+.t-ctx__dot { display: inline-block; width: var(--dot-presence); height: var(--dot-presence); border-radius: var(--radius-full); background: var(--color-accent); box-shadow: 0 0 8px var(--color-accent); margin-right: var(--space-1); vertical-align: middle; }
+.t-ctx__cresume { font-size: var(--text-micro); font-weight: 500; color: var(--color-accent-hover); margin-top: 2px; }
+.t-ctx__item { display: flex; flex-direction: column; gap: 2px; padding: var(--space-2) 0; border-bottom: var(--border-hairline) solid var(--color-hairline); cursor: pointer; }
+.t-ctx__item:last-child { border-bottom: 0; }
+.t-ctx__item:hover .t-ctx__iname { color: var(--color-accent); }
+.t-ctx__iname { font-size: var(--text-body-sm); color: var(--color-text-primary); overflow-wrap: anywhere; }
+.t-ctx__imeta { font-size: var(--text-micro); color: var(--color-text-tertiary); }
 
 /* Connectivity module — "Your home is connected" (world-directed, calm, no red) */
 .t-connect { padding: var(--space-5); }

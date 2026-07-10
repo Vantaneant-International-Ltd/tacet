@@ -30,17 +30,31 @@ function uniqueBy<T>(items: T[], key: (t: T) => string): T[] {
 
 // The editorial masthead: overline date-line, greeting, calm sub-line, and a source cluster
 // built from the REAL authors + homes in today's data (avatars + a mono provenance caption).
+const NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+function numberWord(n: number): string {
+  return n < NUMBER_WORDS.length ? NUMBER_WORDS[n] : String(n);
+}
+
 function TodayMasthead({ moments }: { moments: Moment[] }) {
   const now = new Date();
+  const weekday = now.toLocaleDateString(undefined, { weekday: "long" });
+  const part = partOfDay(now.getHours());
   const dateLine = `Today · ${now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}`;
-  const greeting = `Good ${partOfDay(now.getHours())}${me.name ? `, ${me.name}` : ""}.`;
+  const greeting = `Good ${part}${me.name ? `, ${me.name}` : ""}.`;
   const authors = uniqueBy(moments.map((m) => m.author), (a) => a.id).slice(0, 5);
-  const homes = uniqueBy(moments.map((m) => m.source), (s) => s.id).map((s) => s.name || s.id).slice(0, 5);
+  // Home DOMAINS contributing today (source.id = the host), never adapter/product names.
+  const homes = uniqueBy(moments.map((m) => m.source), (s) => s.id).map((s) => s.id).filter(Boolean).slice(0, 5);
+  // Sub-line follows the spec pattern with the REAL digest count.
+  const n = moments.length;
+  const subline =
+    n > 0
+      ? `A quiet ${weekday}, gently busy underneath. ${numberWord(n).charAt(0).toUpperCase() + numberWord(n).slice(1)} ${n === 1 ? "thing" : "things"} worth your attention, then the ${part} is yours.`
+      : today.line;
   return (
     <header className="t-today__head">
       <p className="t-today__overline t-mono">{dateLine}</p>
       <h1 className="t-today__greeting">{greeting}</h1>
-      <p className="t-today__line">{today.line}</p>
+      <p className="t-today__line">{subline}</p>
       {authors.length > 0 && (
         <div className="t-today__sources">
           <div className="t-avstack" aria-hidden="true">
