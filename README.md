@@ -42,6 +42,33 @@ the open social web — an implementation detail at the edge, never the product 
 > Open protocols. Closed silos. Beautiful products.
 > Users deserve all three. Tacet exists to prove they can coexist.
 
+## What Tacet reads today
+
+Tacet reads the open social web **live**, through source adapters behind one normalization
+contract ([ADR-017](docs/06-decisions/ADR-017-source-adapters.md) — the work was scoped
+informally as "ADR-013," but that number was already taken). Every source is normalized to
+the same shape, so Today interleaves them calmly and the product never exposes a protocol.
+
+| Source | Covers | Status |
+|---|---|---|
+| **ActivityPub** | Mastodon, Pixelfed, PeerTube, Lemmy, Friendica, Misskey, WriteFreely, BookWyrm, AP-enabled WordPress and Ghost blogs, and Threads accounts that have enabled fediverse sharing | Live |
+| **RSS / Atom / JSON Feed** | Blogs, news sites, podcasts, YouTube channels, public Reddit, GitHub, and Discourse feeds | Live |
+| **AT Protocol** | Bluesky (public read, no login required) | Live |
+| **Nostr** | Public relays, read-only | Live |
+
+**Closed platforms stay out.** Instagram, TikTok, X, LinkedIn, and Facebook provide no read
+APIs and are permanently out of scope as sources — they appear in the product only as
+orientation (naming the fragmentation problem), never as something we read.
+
+**Reading is live; publishing is next.** Everything above is read-only today. Writing back to
+the open web — composing and publishing from your home — is the next track, not yet shipped
+(see the [publishing philosophy](docs/09-product/publishing-philosophy.md)).
+
+**Where the first content comes from.** Initial content is drawn from small, editorially
+chosen seed lists (`src/sources/*/seeds.json`) — deliberately calm, quality-first, and
+publicly visible in this repo, so you can see exactly what we point at. Letting people choose
+their own sources is part of the product direction, not the current default.
+
 ## Product philosophy
 
 Tacet is built on five commitments and organized around five permanent pillars.
