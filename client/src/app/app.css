@@ -245,6 +245,20 @@
 .t-lens__opt:disabled { opacity: var(--alpha-disabled); cursor: default; }
 @media (min-width: 900px) { .t-lens { display: none; } }
 
+/* Inline composer entry row (opens the not-yet-publishing preview) */
+.t-composer-row {
+  display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4);
+  background: var(--surface-gradient);
+  border: var(--border-hairline) solid color-mix(in srgb, var(--color-hairline) 60%, transparent);
+  border-radius: var(--radius-lg); box-shadow: var(--elevation-1), var(--edge-highlight);
+}
+.t-composer-row__pill {
+  flex: 1; text-align: left; padding: var(--space-2) var(--space-4);
+  background: var(--color-surface-sunken); border: var(--border-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-full); color: var(--color-text-tertiary); font-size: var(--text-body-sm); cursor: text;
+}
+.t-composer-row__cam { color: var(--color-text-secondary); }
+
 /* Editorial section divider ("This evening" / "Earlier") */
 .t-divider { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-2) 0; }
 .t-divider__label { font-size: var(--text-micro); font-weight: 500; letter-spacing: var(--tracking-wide); color: var(--color-text-tertiary); }

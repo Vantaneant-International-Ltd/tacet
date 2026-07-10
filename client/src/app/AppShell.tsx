@@ -55,6 +55,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Close the composer on route change.
   useEffect(() => setComposing(false), [path]);
 
+  // Any surface can open the compose preview by dispatching a "tacet:compose" event (the
+  // inline composer row on Today uses this) — no publish plumbing, just the existing overlay.
+  useEffect(() => {
+    const open = () => setComposing(true);
+    window.addEventListener("tacet:compose", open);
+    return () => window.removeEventListener("tacet:compose", open);
+  }, []);
+
   return (
     <div className="t-app">
       {/* Desktop side rail */}

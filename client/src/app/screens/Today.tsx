@@ -97,6 +97,21 @@ function TodayLens() {
   );
 }
 
+// The calm inline composer entry. Opens the existing compose overlay (an honest
+// not-yet-publishing preview) via the shell's compose event — no new publish plumbing.
+function ComposerRow() {
+  const open = () => window.dispatchEvent(new CustomEvent("tacet:compose"));
+  return (
+    <div className="t-composer-row">
+      <Avatar name={me.name} size={36} />
+      <button className="t-composer-row__pill" type="button" onClick={open}>What&rsquo;s on your mind?</button>
+      <button className="t-iconbtn t-composer-row__cam" type="button" aria-label="Share a photo" onClick={open}>
+        <Icon name="plus" size={20} />
+      </button>
+    </div>
+  );
+}
+
 // A labelled hairline divider between editorial groups.
 function FeedDivider({ label }: { label: string }) {
   return (
@@ -128,6 +143,7 @@ function TodayFeed({ moments }: { moments: Moment[] }) {
   );
   return (
     <div className="t-feed">
+      <ComposerRow />
       {recent.length > 0 && <FeedDivider label={`This ${partOfDay(now.getHours())}`} />}
       {recent.map(card)}
       {earlier.length > 0 && <FeedDivider label="Earlier" />}
