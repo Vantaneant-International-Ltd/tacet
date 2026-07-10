@@ -35,6 +35,19 @@ function ThemeToggle() {
   );
 }
 
+function TabLink({ to, label, icon, path, dot }: { to: string; label: string; icon: IconName; path: string; dot?: boolean }) {
+  const active = isActive(path, to);
+  return (
+    <Link to={to} className={"t-tab" + (active ? " is-active" : "")} aria-label={label} aria-current={active ? "page" : undefined}>
+      <span className="t-tab__icon">
+        <Icon name={icon} size={22} />
+        {dot && <span className="t-tab__dot" aria-hidden="true" title="New correspondence" />}
+      </span>
+      <span>{label}</span>
+    </Link>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const path = usePath();
   const [composing, setComposing] = useState(false);
@@ -89,39 +102,36 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      {/* Mobile top bar */}
+      {/* Mobile top bar — solid surface + hairline (no glass); Search + Me avatar trailing */}
       <header className="t-topbar">
         <Link to="/today" className="t-topbar__brand" aria-label="Tacet home">
           <TacetMark className="t-mark t-mark--sm" />
           <span>tacet</span>
         </Link>
         <div className="t-topbar__actions">
+          {/* Search isn't built yet — present but honestly disabled. */}
+          <button className="t-iconbtn t-topbar__search" aria-disabled="true" title="Search — coming soon" aria-label="Search">
+            <Icon name="search" size={20} />
+          </button>
           <ThemeToggle />
+          <Link to="/me" className="t-topbar__me" aria-label="Me">
+            <Avatar name={me.name} size={32} />
+          </Link>
         </div>
       </header>
 
       <main className="t-main">{children}</main>
 
-      {/* Mobile bottom tab bar */}
+      {/* Mobile tab bar — 5 slots, centre is the raised New FAB; Me lives in the top bar */}
       <nav className="t-tabbar" aria-label="Primary">
-        {NAV.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={"t-tab" + (isActive(path, item.to) ? " is-active" : "")}
-            aria-label={item.label}
-            aria-current={isActive(path, item.to) ? "page" : undefined}
-          >
-            <Icon name={item.icon} size={24} />
-            <span>{item.label}</span>
-          </Link>
-        ))}
+        <TabLink to="/today" label="Today" icon="today" path={path} />
+        <TabLink to="/people" label="People" icon="people" path={path} />
+        <button className="t-tabfab" aria-label="New" onClick={() => setComposing(true)}>
+          <Icon name="compose" size={24} />
+        </button>
+        <TabLink to="/discover" label="Discover" icon="discover" path={path} />
+        <TabLink to="/conversations" label="Chats" icon="conversations" path={path} dot />
       </nav>
-
-      {/* Floating compose on mobile */}
-      <button className="t-fab" aria-label="Compose" onClick={() => setComposing(true)}>
-        <Icon name="compose" size={24} />
-      </button>
 
       {composing && <ComposeSheet onClose={() => setComposing(false)} onPost={() => navigate("/today")} />}
     </div>
