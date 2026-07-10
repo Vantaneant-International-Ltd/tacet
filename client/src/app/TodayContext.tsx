@@ -87,15 +87,16 @@ function notableToday(moments: Moment[]): Moment[] {
   return moments.filter((m) => m.title && m.title.trim().length > 0).slice(0, 3);
 }
 
-// The homes carrying the most today, by post count — world-directed, never a leaderboard of people.
+// The homes carrying the most today, by post count — world-directed, never a leaderboard of
+// people. Homes are DOMAINS; a domainless network id (e.g. Nostr) is not a community/home.
 function homesToday(moments: Moment[]): { name: string; count: number }[] {
   const by = new Map<string, { name: string; count: number }>();
   for (const m of moments) {
     const id = m.source.id;
-    if (!id) continue;
+    if (!id || !id.includes(".")) continue;
     const e = by.get(id);
     if (e) e.count++;
-    else by.set(id, { name: m.source.name || id, count: 1 });
+    else by.set(id, { name: id, count: 1 });
   }
   return [...by.values()].filter((h) => h.count > 1).sort((a, b) => b.count - a.count).slice(0, 3);
 }
