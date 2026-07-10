@@ -122,7 +122,6 @@ client/              React + TypeScript single-page app (the product UI).
   src/design/          Design system: theme tokens (light + dark), primitives, icons.
   src/app/             The five pillars + app shell (Today reads live; some surfaces on mock data).
   src/views/           Landing page and sign-in.
-  src/legacy/          The old "rooms" product — quarantined and dormant (not shipped).
 
 src/                 Cloudflare Worker (Hono API, TypeScript).
 migrations/          Cloudflare D1 (SQLite) schema, append-only.
@@ -188,8 +187,6 @@ Tacet is **early and pre-production.**
   reader; Today is live.
 - 🚧 **Writing** to the open web (compose/publish), messaging, notifications, and realtime
   are not shipped yet — documented as direction. Reading is live; publishing is next.
-- 🗄️ A legacy "rooms" product from an earlier phase is quarantined in
-  `client/src/legacy/` (dormant, not shipped).
 
 See [`PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md) and [`STATE.md`](STATE.md) for the
 detailed picture.

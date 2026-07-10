@@ -13,8 +13,8 @@ import { DevBanner } from "./views/landing/DevBanner";
 //
 //   Landing (/)  →  Auth (/enter)  →  App Shell  →  Today · People · Discover · Conversations · Me
 //
-// The old "rooms" product is quarantined and dormant (client/src/legacy/), not
-// routed here. Legacy/public deep-links fall through to a gentle redirect.
+// The old "rooms" product has been removed from the client; any old/public deep-links
+// (e.g. /rooms, /@name) fall through to a gentle redirect into the one product model.
 export function App() {
   const user = useUser();
   const path = usePath();
@@ -60,8 +60,8 @@ function route(user: ReturnType<typeof useUser>, path: string) {
     return <Redirect to="/" />;
   }
 
-  // Signed in: home is Today. Anything unrecognised (incl. dormant legacy URLs
-  // like /rooms, /@name) resolves into the one product model.
+  // Signed in: home is Today. Anything unrecognised (incl. old URLs like
+  // /rooms, /@name) resolves into the one product model.
   return <Redirect to="/today" />;
 }
 
