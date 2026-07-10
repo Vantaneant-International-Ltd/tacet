@@ -13,6 +13,10 @@ export function Discover() {
         subtitle="A door to the wider open social web. No trending, no algorithm — just people worth knowing."
       />
 
+      <p className="t-sourcenote t-sourcenote--muted">
+        Sample suggestions — Discover isn&rsquo;t reading live yet.
+      </p>
+
       <div className="t-search">
         <Icon name="search" size={19} />
         <input

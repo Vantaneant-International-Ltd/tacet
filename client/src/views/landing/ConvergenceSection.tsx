@@ -30,7 +30,7 @@ export function ConvergenceSection() {
         <div className="lp-band-copy">
           <h2 className="lp-h2">Tacet brings it all together.</h2>
           <p className="lp-band-sub">
-            One identity. One inbox. One place.{" "}
+            One identity. One feed. One place.{" "}
             <span className="lp-accent-word">The open social web.</span>
           </p>
         </div>

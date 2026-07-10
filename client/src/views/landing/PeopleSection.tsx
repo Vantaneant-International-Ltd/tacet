@@ -33,7 +33,7 @@ const TODAY = [
 
 const FEATURES = [
   { icon: "person", title: "One identity", sub: "One you." },
-  { icon: "inbox", title: "One inbox", sub: "Everything in one place." },
+  { icon: "inbox", title: "One feed", sub: "Everything in one place." },
   { icon: "people", title: "All your people", sub: "From everywhere they choose to be." },
 ];
 

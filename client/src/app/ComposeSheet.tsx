@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar, Button, IconButton, Chip } from "../design/primitives";
 import { me } from "./mock";
 
-// A calm, non-persistent composer overlay. Opens on demand, focuses the text, closes
-// on Escape or backdrop. Honest about reach: what you write here goes to the open web.
+// A calm composer PREVIEW. Publishing to the open web isn't live yet, so this shows the
+// future compose surface without any write path — the "Post" button is deliberately inert
+// and the copy says so. (Reading is live today; publishing is the next track.)
 export function ComposeSheet({ onClose, onPost }: { onClose: () => void; onPost: () => void }) {
   const [text, setText] = useState("");
   const areaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -33,7 +34,7 @@ export function ComposeSheet({ onClose, onPost }: { onClose: () => void; onPost:
         <header className="t-sheet__head">
           <IconButton name="close" label="Close composer" onClick={onClose} />
           <span className="t-sheet__title">New post</span>
-          <Button variant="primary" size="sm" disabled={!text.trim()} onClick={onPost}>
+          <Button variant="primary" size="sm" disabled onClick={onPost}>
             Post
           </Button>
         </header>
@@ -55,7 +56,7 @@ export function ComposeSheet({ onClose, onPost }: { onClose: () => void; onPost:
             <IconButton name="plus" label="Add photo" />
             <IconButton name="globe" label="Audience" />
           </div>
-          <Chip icon="globe" tone="open">Shares to the open web</Chip>
+          <Chip icon="globe" tone="neutral">Publishing isn&rsquo;t live yet — this is a preview</Chip>
         </footer>
       </div>
     </div>

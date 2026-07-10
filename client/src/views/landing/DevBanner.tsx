@@ -15,7 +15,7 @@ export function DevBanner() {
       <div className="devbar" role="status">
         <span className="devbar-dot" aria-hidden="true" />
         {isApp
-          ? "Read-only preview — live data from the open social web (ActivityPub). Nothing here saves yet."
+          ? "Read-only preview — live posts from the open social web. Nothing here saves yet."
           : "Developer preview — breaking changes. Nothing here is final."}
       </div>
     </>

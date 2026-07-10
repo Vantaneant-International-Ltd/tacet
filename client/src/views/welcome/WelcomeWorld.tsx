@@ -159,7 +159,7 @@ export function WelcomeWorld() {
           <div className="wz-band-copy">
             <h2 className="wz-band-title">Tacet brings the open web together.</h2>
             <ul className="wz-checks">
-              {["One identity", "One inbox", "One place", "The open social web"].map((t) => (
+              {["One identity", "One feed", "One place", "The open social web"].map((t) => (
                 <li key={t}><span className="wz-tick" aria-hidden="true">✓</span>{t}</li>
               ))}
             </ul>
