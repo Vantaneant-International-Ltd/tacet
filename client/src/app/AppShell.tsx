@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { usePath, navigate, Link } from "../router";
 import { Icon } from "../design/icons";
 import type { IconName } from "../design/icons";
-import { IconButton, Button, Avatar } from "../design/primitives";
+import { Button, Avatar } from "../design/primitives";
 import { useResolvedTheme, setTheme } from "../design/theme";
 import { me } from "./mock";
 import { ComposeSheet } from "./ComposeSheet";
@@ -23,15 +23,28 @@ function isActive(path: string, to: string) {
   return path === to || path.startsWith(to + "/");
 }
 
+// The theme toggle — a pill with a sliding knob whose icon swaps with the theme (per the
+// operator's approved reference control). Instant under reduced-motion (global rule).
 function ThemeToggle() {
   const resolved = useResolvedTheme();
-  const next = resolved === "dark" ? "light" : "dark";
+  const dark = resolved === "dark";
+  const next = dark ? "light" : "dark";
   return (
-    <IconButton
-      name={resolved === "dark" ? "sun" : "moon"}
-      label={`Switch to ${next} theme`}
+    <button
+      type="button"
+      className={"t-themesw" + (dark ? " is-dark" : "")}
+      role="switch"
+      aria-checked={dark}
+      aria-label={`Switch to ${next} theme`}
+      title={`Switch to ${next} theme`}
       onClick={() => setTheme(next)}
-    />
+    >
+      <Icon name="sun" size={13} className="t-themesw__ghost t-themesw__ghost--l" />
+      <Icon name="moon" size={13} className="t-themesw__ghost t-themesw__ghost--r" />
+      <span className="t-themesw__knob" aria-hidden="true">
+        <Icon name={dark ? "moon" : "sun"} size={13} />
+      </span>
+    </button>
   );
 }
 

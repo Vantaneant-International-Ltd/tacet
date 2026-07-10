@@ -256,6 +256,27 @@
 .t-lens__opt:disabled { opacity: var(--alpha-disabled); cursor: default; }
 @media (min-width: 900px) { .t-lens { display: none; } }
 
+/* Theme toggle — pill + sliding knob + icon swap (operator reference control) */
+.t-themesw {
+  position: relative; flex: none;
+  width: 46px; height: 26px; padding: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  border: var(--border-hairline) solid var(--color-hairline);
+  cursor: pointer;
+}
+.t-themesw__ghost { position: absolute; top: 50%; transform: translateY(-50%); color: var(--color-text-tertiary); pointer-events: none; }
+.t-themesw__ghost--l { left: 6px; }
+.t-themesw__ghost--r { right: 6px; }
+.t-themesw__knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; border-radius: var(--radius-full);
+  background: var(--color-surface-raised); box-shadow: var(--elevation-1);
+  display: grid; place-items: center; color: var(--color-accent);
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.t-themesw.is-dark .t-themesw__knob { transform: translateX(20px); }
+
 /* Inline composer entry row (opens the not-yet-publishing preview) */
 .t-composer-row {
   display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4);
