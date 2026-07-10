@@ -3,69 +3,93 @@
 Surface: a remote person's profile, read inside Tacet (route `/p/:actor`, `Profile.tsx`).
 Templates: `docs/10-design/hifi/handoff/Remote Profile Desktop.html`, `Remote Profile Mobile.html`.
 Impl to conform: `client/src/app/screens/Profile.tsx`, `client/src/app/ProfileView.tsx` (shared header/About).
+Shared card: `client/src/app/live.tsx` (`LiveMoment`, `SourceBadge`). Shell: `client/src/app/AppShell.tsx`.
 
 Scope note (FENCED): this surface is **visual only**. Live hydration/sync of a remote
 profile is fenced to session 3. Render whatever cached data we have plus a calm
 "the full profile loads as Tacet syncs" state. **Never** show an error box on this
-surface — the "couldn't open this profile" empty state is removed (see Gap 12).
+surface — the current `EmptyState "Couldn't open this profile"` is removed (Gap 12).
 
 Type system is LOCKED to Hanken Grotesk + Spline Sans Mono. The template's `Jost` /
-`Space Mono` `--font-sans` / `--font-mono` are ignored on purpose. All other template
-`--color-*`, `--space-*`, `--radius-*`, `--text-*`, `--dur-*`, `--ease-*` token names
-are the same names already in `theme.css` — map to them 1:1.
+`Space Mono` are ignored on purpose; `--font-sans` / `--font-mono` already resolve to
+the locked pair in `theme.css`.
+
+> **Token reality (corrected).** Many `--*` names used inline in the template are **NOT
+> defined** anywhere in `client/src/design/*` or `app.css`. The template's design-system
+> variables must be either **added to `theme.css` as semantic tokens (W3)** or **mapped to
+> the nearest existing token**. See §4 for the exact split of *exists* vs *missing*. Do
+> **not** assume 1:1 name parity — most of the effect/typography/layout tokens are absent
+> today and several are only referenced via inline `var(--x, fallback)` in `app.css`.
 
 ---
 
 ## 1. Desktop layout — the 3-column canvas
 
 The template is a **three-column** page. The current app shell (`AppShell.tsx` /
-`app.css` `.t-app`) is only **two** columns (`grid-template-columns: 250px 1fr`) and has
+`app.css` `.t-app`, `grid-template-columns: 250px 1fr`) is only **two** columns and has
 no right context column. This surface introduces the third column.
 
 ```
 ┌─────────────┬──────────────────────────────┬────────────────────┐
 │ LEFT RAIL   │ CENTRE FEED                  │ CONTEXT COLUMN     │
-│ 250px       │ ~42rem (--measure-reading)   │ 320px              │
+│ 250px       │ minmax(0, 42rem)             │ 320px              │
 │ (AppShell)  │ profile header + moments     │ About this person  │
 └─────────────┴──────────────────────────────┴────────────────────┘
 ```
 
-- Column widths (from template `:root`): `--rail-width: 250px`,
-  `--feed-measure: var(--measure-reading)` (= 42rem), `--context-width: 320px`.
-- **Left rail** = the existing `AppShell` `.t-rail`. Unchanged by this surface EXCEPT
-  the rail already carries brand, Search affordance, the five nav pillars (Today,
-  People, Discover, Conversations, Me), the accent **New** button, the me-footer
-  (avatar + name) and theme toggle. The Search control in the rail is the template's
-  `⌘K` "Search people, communities, conversations" box — out of scope here, do not add
-  it as part of this surface (it belongs to a shell pass).
-- **Centre feed** (`--measure-reading`, 42rem): the profile header, then a
-  "Recent moments" section of post cards, then the "Visit their home" footer.
-- **Context column** (320px, right): a single `About this person` `<aside>` holding
-  three quiet modules (About / You both follow / Their communities) plus the
-  cross-web note. Sticky-ish, top-aligned, hairline-separated cards.
+Structural truth from the template:
 
-The context column only appears at desktop width. Below the desktop breakpoint the
-context column content is **dropped** entirely on mobile (the mobile template shows
-none of it) — do not stack it under the feed.
+- Outermost container is a **flex row** whose `min-width` is
+  `calc(var(--rail-width) + var(--measure-reading) + var(--context-width) + 2*--gutter + 2*--space-6)`.
+- **Left rail** = `<nav aria-label="Primary">`, `position:sticky; top:0; height:100vh;
+  flex:none; width:var(--rail-width)` (250px), with a `linear-gradient` surface→canvas
+  background and a right hairline. It carries: brand **"tacet"** (with a soft accent glow
+  behind), a **Search** control (`⌘K`, "Search people, communities, conversations"), the
+  five pillars **Today · People · Discover · Conversations · Me** (desktop rail says
+  **"Conversations"**, not "Chats"), a compose action, and a me-footer. **The rail is the
+  existing `AppShell` `.t-rail` and is out of scope for this surface** — do not re-build it,
+  and do not add the `⌘K` Search box here (that is a shell pass, Gap 13).
+- **Centre feed** — `<main>` is itself a **2-col grid**:
+  `grid-template-columns: minmax(0, var(--measure-reading)) var(--context-width);
+  gap: var(--gutter); justify-content:center; padding:0 var(--space-6)`. Column 1 is the
+  profile `<section aria-label="Jonas Vold">` (header → Recent moments → home footer),
+  `padding:var(--space-8) 0 var(--space-9)`.
+- **Context column** — column 2 of that grid: a single `<aside aria-label="About this
+  person">`, `align-self:start`, left-separated by a hairline
+  (`border-left:var(--border-hairline) solid color-mix(in srgb, var(--color-hairline) 70%, transparent)`),
+  `padding:var(--space-8) 0 var(--space-9) var(--space-6)`. Holds four modules (About /
+  You both follow / Their communities / cross-web note).
+
+The context column exists only at desktop width. On mobile the aside content is **dropped
+entirely** (the mobile template renders none of it) — do **not** stack it under the feed.
 
 ---
 
 ## 2. Mobile layout — top bar + tab bar
 
-- **Top bar** (`.t-topbar`, solid `--color-surface` + `--color-hairline` bottom
-  hairline, **no glass/blur**): a **Back** button (`aria-label="Back"`, chevron-left
-  icon) on the left, then the person's name **"Jonas Vold"** as the centred title.
-  This is profile-specific: the shell's default top bar is brand-only. On a remote
-  profile the top bar shows Back + the person's name.
-- **Tab bar** (`.t-tabbar`, bottom): five pillars, but the mobile template labels the
-  fourth **"Chats"** (not "Conversations") and the order is Today · People · [New FAB] ·
-  Discover · Chats — the compose FAB (`aria-label="New"`, accent gradient) sits in the
-  **centre** of the tab bar between People and Discover, not floating bottom-right.
-  NOTE: the current shell uses a separate floating `.t-fab` and a 5-item tab bar
-  labelled "Conversations". Reconciling the tab bar is a shell-wide change; for THIS
-  surface, do not regress the shell — see Gap 13 (flag, do not silently diverge).
-- Feed content is the same header → moments → home-footer stack, full-bleed to the
-  reading measure, no context column.
+- **Top bar** — `<header>`, `position:sticky; top:0; z-index:var(--z-content);
+  height:var(--topbar-height)`, background
+  `color-mix(in srgb, var(--color-surface) 92%, var(--color-canvas))` (**solid, no
+  glass/blur**), bottom `--color-hairline` hairline. Contents, left-aligned:
+  a **Back** button (`aria-label="Back"`, 44×44, chevron-left `[icon]`, ghost — `background:none`,
+  `color:var(--color-text-secondary)`, hover `surface-sunken`), then the person's name
+  **"Jonas Vold"** as a plain `<span>` title at `--text-subheading`, weight 500.
+  This is profile-specific: the shell default top bar is brand-only. The title is
+  **left-aligned next to Back**, not centred.
+- **Tab bar** — `<nav aria-label="Primary">`, `position:sticky; bottom:0;
+  z-index:var(--z-nav); height:var(--tabbar-height); display:grid;
+  grid-template-columns:repeat(5,1fr)`. Order is **Today · People · [New FAB] · Discover ·
+  Chats**. Each pillar is a column-flex link, icon + `--text-micro` label, weight 500.
+  The **New** compose control is a centre-column FAB: `<button aria-label="New">`,
+  `width/height:var(--fab-size)`, `margin-top:calc(-1 * var(--space-5))` (lifted above the
+  bar), accent gradient
+  (`linear-gradient(180deg, var(--color-accent-hover) 0%, var(--color-accent) 100%)`),
+  `box-shadow:var(--glow-accent), var(--elevation-2)`. The mobile template labels the 5th
+  pillar **"Chats"** (not "Conversations").
+  NOTE: the current shell uses a 5-item tab bar labelled **"Conversations"** with a
+  **separate floating `.t-fab`** bottom-right. Reconciling label + FAB placement is a
+  shell-wide change — for THIS surface do **not** regress the shell (Gap 13, flag only).
+- Feed content = header → Recent moments → home footer, at the reading measure, no aside.
 
 ---
 
@@ -73,247 +97,336 @@ none of it) — do not stack it under the feed.
 
 ### Centre feed (desktop + mobile)
 
-1. **Profile header** (`<section aria-label="Jonas Vold">`)
-   - **Banner** — full-width image, `--ratio-banner` (3 / 1), `role="img"`
-     `aria-label="Banner — the quay at dawn"`. Rounded top corners (`--radius-lg`),
-     media vignette. When no banner exists, collapse (header still valid).
-   - **Action row** (top-right, overlapping banner bottom): two buttons —
-     - **Message** — ghost/quiet button: `background:none; color:var(--color-text-secondary);
+1. **Profile header** — `<section aria-label="Jonas Vold">`
+   - **Banner** — `<div role="img" aria-label="Banner — the quay at dawn">`,
+     `aspect-ratio:var(--ratio-banner)` (3/1), desktop `border-radius:var(--radius-lg)`,
+     `box-shadow:var(--media-vignette), var(--elevation-1)`. (Mobile banner is full-bleed:
+     no radius, same ratio + vignette.) When no banner exists, collapse gracefully.
+   - **Avatar + action row** — a flex row overlapping the banner bottom
+     (`margin-top:calc(-1 * var(--space-6))` desktop / `--space-5` mobile). Avatar is
+     **96px** desktop / **80px** mobile, `--radius-full`, ring
+     `box-shadow:0 0 0 4px var(--color-canvas), var(--elevation-2)`. A spacer (`flex:1`)
+     pushes the two action buttons to the right:
+     - **Message** — ghost pill: `background:none; color:var(--color-text-secondary);
        border:none; border-radius:var(--radius-full); font-size:var(--text-label);
-       font-weight:500; padding:var(--space-2) var(--space-4)`. **Dead in template →
-       must be honestly disabled** (`disabled`, `title="Coming soon"`,
+       font-weight:500; padding:var(--space-2) var(--space-4)`; hover
+       `color:var(--color-text-primary); background:var(--color-surface-sunken)`.
+       **Dead in template → honestly disabled** (`disabled`, `title="Coming soon"`,
        `aria-label="Message — coming soon"`).
-     - **Follow** — accent button: `background:linear-gradient(180deg,
+     - **Follow** — accent pill: `background:linear-gradient(180deg,
        var(--color-accent-hover) 0%, var(--color-accent) 100%);
        color:var(--color-on-accent); border-radius:var(--radius-full);
-       box-shadow:var(--glow-accent); padding:var(--space-2) var(--space-5)`. Following
-       is **not wired** (read-only milestone, same as `LivePerson`'s Follow) → **honestly
-       disabled** (`disabled`, `title="Coming soon"`).
-   - **Avatar** — 88px, ring, overlapping the banner bottom edge (existing
-     `.t-phead__top--banner` margin + canvas ring already do this).
-   - **Name** — `<h1>` **"Jonas Vold"**, `--text-title`, weight 500.
-   - **Source badge** — inline `[Pixelfed]` glyph + product name. Reuse `SourceBadge`
-     from `live.tsx`. Product name only ("Pixelfed"), never a protocol word (W5).
-   - **Handle + home line** — `--text-meta`/`--font-mono` handle followed by a plain
-     home phrase: desktop **"@jonas@pixel.town · lives at pixel.town, a home for
-     photographers"**; mobile shortens to **"@jonas@pixel.town · lives at pixel.town"**.
-     The handle is monospace; the "lives at …" clause is sans, secondary colour.
-   - **Bio** — desktop **"Street and harbour photography, one roll a month. Prints
-     sometimes. The quay, mostly."**; mobile drops the "Prints sometimes." sentence.
-     `.t-phead__bio`, `--text-body`, secondary.
-   - NOTE the template header shows **no follower/following/post counts and no
-     joined/website/location fact row** in the centre column. Those live in the
-     context-column "About" module on desktop. Keep the header calm (ADR-012, "your
-     world, never your score").
+       box-shadow:var(--glow-accent); padding:var(--space-2) var(--space-5)`; hover
+       `filter:brightness(1.06)`. Following is **not wired** (read-only milestone; same as
+       `LivePerson`'s Follow) → **honestly disabled** (`disabled`, `title="Coming soon"`).
+   - **Name row** — flex, gap `--space-3` (desktop) / `--space-2` (mobile), `flex-wrap`:
+     - `<h1>` **"Jonas Vold"**, `font-size:var(--text-title)`, weight 500,
+       `letter-spacing:var(--tracking-tight)`, `line-height:var(--leading-tight)`.
+     - **Source chip** — inline `<span>`: small glyph + product name **"Pixelfed"**.
+       `background:var(--color-surface-sunken)`, hairline border,
+       `border-radius:var(--radius-sm)`, `font-size:var(--text-micro)`, weight 500,
+       `letter-spacing:var(--tracking-wide)`, `color:var(--color-text-tertiary)`. Reuse
+       `SourceBadge`; product name only, never a protocol word (W5).
+   - **Handle + home line** — `<div>`, `font-family:var(--font-mono)`,
+     `color:var(--color-text-tertiary)`, `margin-top:var(--space-2)`. **Desktop** size
+     `--text-meta`: **"@jonas@pixel.town · lives at pixel.town, a home for
+     photographers"**. **Mobile** size `--text-micro`, shortened: **"@jonas@pixel.town ·
+     lives at pixel.town"**. (In the template the whole line is one mono string; when
+     splitting, keep the `@handle` mono and the "lives at …" clause may stay mono too, per
+     template — do not force a sans/secondary split.)
+   - **Bio** — `<p>`, `margin-top:var(--space-3)`, `color:var(--color-text-secondary)`,
+     `font-size:var(--text-body-sm)`, `line-height:var(--leading-relaxed)`; desktop
+     `max-width:36rem`. **Desktop:** "Street and harbour photography, one roll a month.
+     Prints sometimes. The quay, mostly." **Mobile drops "Prints sometimes.":** "Street
+     and harbour photography, one roll a month. The quay, mostly."
+   - The template header shows **no follower/following/post counts and no
+     joined/website/location fact row** in the centre column. Those quiet facts live in the
+     context-column "About Jonas" module (desktop) and are simply absent on mobile. Keep the
+     header calm (ADR-012, "your world, never your score").
 
-2. **Recent moments** (`<h2>` **"Recent moments"**, then `<article>` cards)
-   - Section heading **"Recent moments"** (not "Posts", not a tab). `--text-heading`.
-   - **Moment card 1** — a 3-up photo row (`role="img"` each:
-     "The quay at first light" / "A dark street, one window lit" / "Moss on the
-     harbour wall"), caption **"Morning walk, before the street woke up. Three frames
-     from the quay."** (mobile: **"Morning walk, before the street woke up."**), then a
-     quiet meta line **"Photos · 4:40 pm"**.
-   - **Moment card 2** — single photo ("Harbour in fog"), caption **"Fog holds the
-     harbour until nine."** (mobile drops caption), meta **"Photo · Monday"**.
-   - Cards are the calm editorial post card — reuse `LiveMoment` from `live.tsx` so a
-     remote person's posts look identical to Today's feed. Media grid = existing
-     `.t-media-grid` (1/2/3/4 variants); meta line = "Photo(s) · <time>".
-   - The template moment cards show **no Spark/Save action row and no source badge**
-     per card (author is implicit — it's their profile). Prefer a profile-context
-     variant of the card that hides the per-card author link + action row. If reusing
-     `LiveMoment` wholesale, its Spark (disabled) + Save actions are acceptable as an
-     honest superset, but the author `Link`/`SourceBadge` in each card head is
-     redundant on a profile and should be suppressed (see Gap 6).
+2. **Recent moments** — a **labelled hairline rule**, then `<article>` cards
+   - The section marker is **NOT an `<h2>` heading**. It is a small inline label + a
+     hairline rule: a flex row of `<span>` **"Recent moments"** (`font-size:var(--text-micro)`,
+     weight 500, `letter-spacing:var(--tracking-wide)`, `color:var(--color-text-tertiary)`)
+     followed by `<span aria-hidden="true">` that is a `flex:1` hairline
+     (`height:var(--border-hairline); background:color-mix(in srgb, var(--color-hairline) 60%, transparent)`).
+     The moment stack is `display:flex; flex-direction:column; gap:var(--space-6)` (desktop)
+     / `--space-4` (mobile).
+   - **Moment card 1** — a photo card. Media is a 3-up mosaic:
+     `display:grid; grid-template-columns:1.6fr 1fr; grid-template-rows:1fr 1fr;
+     gap:var(--space-1)`, one tall image spanning both rows + two square images
+     (`aspect-ratio:var(--ratio-square)`). `role="img"` per tile: "The quay at first
+     light" / "A dark street, one window lit" / "Moss on the harbour wall". Below, in a
+     `padding:var(--space-5)` (desktop) / `--space-4` (mobile) body: caption `<p>`
+     `font-size:var(--text-body)`, `line-height:var(--leading-relaxed)` — desktop **"Morning
+     walk, before the street woke up. Three frames from the quay."**, mobile **"Morning
+     walk, before the street woke up."** — then a mono meta line
+     `font-family:var(--font-mono); font-size:var(--text-meta);
+     color:var(--color-text-tertiary)` reading **"Photos · 4:40 pm"**.
+   - **Moment card 2** — a single photo. `role="img" aria-label="Harbour in fog"`,
+     `aspect-ratio:var(--ratio-photo)`, `box-shadow:var(--media-vignette)`. **Desktop
+     only:** a caption scrim overlaid at the bottom of the photo
+     (`background:var(--scrim-caption)`, mono text `color:var(--on-media)`,
+     `text-shadow:var(--media-shadow)`) reading **"Fog holds the harbour until nine."**.
+     **Mobile omits the scrim caption** — the photo carries no overlaid text. Below, in the
+     body: mono meta line **"Photo · Monday"** (no caption on mobile).
+   - **Card chrome** (both cards): `background:var(--surface-gradient)`, border
+     `var(--border-hairline) solid color-mix(in srgb, var(--color-hairline) 60%, transparent)`,
+     `border-radius:var(--radius-lg)`, `box-shadow:var(--elevation-1), var(--edge-highlight)`,
+     `overflow:hidden`.
+   - The template moment cards show **no per-card author link, no per-card source badge, and
+     no Spark/Save action row** — author is implicit (it is this person's profile) and the
+     meta is media-kind + friendly time, not the handle+relative-time `Identity` line. See
+     Gap 6.
 
 3. **Home footer** (end of feed)
-   - Quiet line: desktop **"Older moments live at their home on pixel.town."**;
-     mobile same.
-   - Link **"Visit their home"** → the person's canonical home URL
-     (`person.url`), opens in a new tab (`target="_blank" rel="noreferrer noopener"`).
-     Style: `color:var(--color-accent-hover); font-size:var(--text-label);
-     font-weight:500; gap:var(--space-2)` with a trailing external-link glyph.
-   - This is the honest boundary: Tacet shows recent cached moments, the full archive
-     lives at the source. It doubles as the FENCED "full profile loads as Tacet syncs"
-     framing — see §5.
+   - Centred block (`text-align:center; padding:var(--space-6) 0 0` desktop / `--space-4`
+     mobile):
+     - Quiet line `<div>` `font-size:var(--text-body-sm); color:var(--color-text-tertiary)`:
+       **"Older moments live at their home on pixel.town."** (desktop and mobile).
+     - Link **"Visit their home"** → the person's canonical home URL (`person.url`), opens
+       in a new tab (`target="_blank" rel="noreferrer noopener"`), with a trailing
+       external-link glyph. Style: `display:inline-flex; align-items:center;
+       gap:var(--space-2); margin-top:var(--space-3); color:var(--color-accent-hover);
+       font-size:var(--text-label); font-weight:500`.
+   - This is the honest boundary: Tacet shows recent cached moments; the full archive lives
+     at the source. It doubles as the FENCED "full profile loads as Tacet syncs" framing (§5).
 
 ### Context column (desktop only) — `<aside aria-label="About this person">`
 
-Three quiet modules, each a hairline-separated card, in order:
+Four modules, each a block with `margin-bottom:var(--space-7)` (last is a card), in order:
 
-4. **About <FirstName>** — `<h2>` **"About Jonas"**, then prose:
-   **"Lives at pixel.town — a small, careful photography community on the open web.
-   Posting since 2023."** ("pixel.town" is emphasised/accent). This is where the home,
+4. **About &lt;FirstName&gt;** — `<h2>` **"About Jonas"** (`font-size:var(--text-heading)`,
+   weight 500, `line-height:var(--leading-snug)`, `margin:0 0 var(--space-4)`), then `<p>`
+   `font-size:var(--text-body-sm); line-height:var(--leading-relaxed);
+   color:var(--color-text-secondary)`: **"Lives at pixel.town — a small, careful photography
+   community on the open web. Posting since 2023."** ("pixel.town" is a mono inline span,
+   `font-family:var(--font-mono); font-size:var(--text-meta)`). This is where home,
    community description and "since" live — the calm equivalent of the header fact row.
 
-5. **You both follow** — `<h2>` **"You both follow"**, value **"Mara, Alex and Tobi"**.
-   This is relational context (shared follows), never a follower count. **Data is not
-   wired** (no mutuals source in `openweb.ts`) → this module must be **omitted when we
-   have no mutuals data**, or rendered as a static, clearly-sample line. Do NOT
-   fabricate mutuals against a real person. Prefer: render only when the profile
-   payload actually carries mutuals; otherwise drop the module (calm absence, not an
-   empty box).
+5. **You both follow** — `<h2>` **"You both follow"** (same h2 style), then a flex row: an
+   overlapping trio of 28px avatar circles (`margin-left:var(--overlap-avatar)`, each ringed
+   `0 0 0 2px var(--color-canvas)`) + `<span>` **"Mara, Alex and Tobi"**
+   (`font-size:var(--text-body-sm); color:var(--color-text-secondary)`). This is relational
+   context (shared follows), never a follower count. **Data is not wired** (no mutuals source
+   in `openweb.ts` `Person`) → **omit this whole module when there is no mutuals payload**.
+   Do NOT fabricate mutuals against a real person (W1). Prefer: render only when the profile
+   payload actually carries mutuals; otherwise drop the module (calm absence, not an empty box).
 
-6. **Their communities** — `<h2>` **"Their communities"**, item **"Slow Photography"**
-   with sub-line **"a community on pixel.town"**. Same rule: render only from real
-   payload data; otherwise omit.
+6. **Their communities** — `<h2>` **"Their communities"** (same h2 style), then a row: a
+   36px avatar circle + a two-line body — `<div>` **"Slow Photography"**
+   (`font-size:var(--text-label); font-weight:500; line-height:var(--leading-snug)`) over
+   `<div>` **"a community on pixel.town"** (mono, `font-size:var(--text-micro);
+   color:var(--color-text-tertiary)`). Same rule: **render only from real payload data;
+   otherwise omit** the module. `Person` has no communities field today → omit until wired.
 
-7. **Cross-web note** (bottom of aside):
-   line **"You're connected across the open social web."** + link **"Learn how it
-   works"** (→ the same explainer the app uses elsewhere; if none exists, honestly
-   disable or point at the existing help/about surface). `--text-meta`, tertiary.
+7. **Cross-web note** (bottom of aside) — a soft accent card:
+   `padding:var(--space-5); background:linear-gradient(160deg, color-mix(in srgb,
+   var(--color-accent-subtle) 80%, var(--color-surface)) 0%, var(--color-surface) 75%);
+   border:var(--border-hairline) solid color-mix(in srgb, var(--color-accent) 16%,
+   var(--color-hairline)); border-radius:var(--radius-lg); box-shadow:var(--elevation-1),
+   var(--edge-highlight)`. Contents:
+   - Line `<div>` `font-size:var(--text-body-sm); color:var(--color-text-secondary)`: a
+     small positive presence dot (`width/height:var(--dot-presence); --radius-full;
+     background:var(--color-positive)`; glow) + **"You're connected across the open social
+     web."**
+   - Link **"Learn how it works"** (accent, `--text-label`, weight 500, trailing glyph) →
+     the existing explainer/help surface if one exists; **if none exists, honestly disable**
+     it (do not invent a page). W1.
 
 ---
 
-## 4. Semantic tokens used (map template → `theme.css`, same names)
+## 4. Semantic tokens — EXISTS vs MISSING (map or add per W3)
 
-- Canvas / surface: `--color-canvas`, `--color-surface`, `--color-surface-raised`,
-  `--color-surface-sunken`, `--color-hairline`.
-- Text: `--color-text-primary` (name), `--color-text-secondary` (bio, Message btn,
-  home line), `--color-text-tertiary` (handle, meta, cross-web note).
-- Accent: `--color-accent` / `--color-accent-hover` (Follow gradient, "Visit their
-  home", "pixel.town" emphasis), `--color-on-accent` (Follow label),
-  `--color-accent-subtle`.
-- Type: `--text-title` (name h1), `--text-heading` (Recent moments / aside h2s),
-  `--text-body` (bio, About prose), `--text-body-sm`, `--text-label` (buttons, links),
-  `--text-meta` (handle, "Photos · 4:40 pm"), mono via `--font-mono` for handle only.
-- Radius: `--radius-lg` (banner top), `--radius-md` (media, cards), `--radius-full`
-  (Message/Follow pills).
-- Spacing: `--space-2`…`--space-6` per template inline styles above.
-- Ratio: `--ratio-banner` (3/1) for the banner, existing gallery/media ratios for
-  moment photos.
-- Effects: `--glow-accent` (Follow shadow), `--media-vignette` / `--scrim-media` on
-  banner + photos, `--elevation-1` on cards.
-- Motion: `--dur-1` + `--ease-out` on button hover; all reveals must honour
-  `prefers-reduced-motion` (W4 — already handled globally in `theme.css`).
+**Already defined in `theme.css` — use directly (verified present):**
+`--font-sans`, `--font-mono`; type `--text-title`, `--text-subheading`, `--text-heading`,
+`--text-body`, `--text-body-sm`, `--text-label`, `--text-meta`, `--text-micro`; spacing
+`--space-0`…`--space-9`; `--measure-reading` (42rem); radius `--radius-xs/sm/md/lg/full`;
+colour `--color-canvas`, `--color-surface`, `--color-surface-raised`,
+`--color-surface-sunken`, `--color-hairline`, `--color-text-primary/secondary/tertiary`,
+`--color-accent`, `--color-accent-hover`, `--color-accent-subtle`, `--color-on-accent`,
+`--color-positive`, `--color-focus-ring`; `--elevation-1/2/3`; motion `--dur-1`,
+`--ease-out`.
 
-No new tokens are required. The template introduces layout vars `--rail-width`,
-`--feed-measure`, `--context-width` — express these with the existing
-`--measure-reading` and literals `250px` / `320px` in the grid rule; they need not
-become theme tokens.
+**NOT defined anywhere in `client/src/design/*` or `app.css` — the template relies on these
+but they are missing today. Each must be ADDED to `theme.css` as a semantic token (W3), or
+mapped to the nearest existing token. `app.css` currently references some only via inline
+`var(--x, fallback)` (e.g. `--glow-accent`, `--border-hairline`, `--leading-relaxed`),
+which silently no-ops.** Grouped:
+
+- **Layout vars:** `--rail-width` (=250px), `--context-width` (=320px), `--gutter`
+  (feed↔aside gap), `--topbar-height`, `--tabbar-height`, `--fab-size`. These can be plain
+  literals in the grid/shell rules rather than global tokens, but `--gutter`,
+  `--topbar-height`, `--tabbar-height`, `--fab-size` should be defined once (shell pass).
+- **Ratios:** `--ratio-banner` (3/1), `--ratio-square` (1/1), `--ratio-photo` (≈4/3 or the
+  chosen photo ratio). Add to `theme.css`.
+- **Typographic detail:** `--tracking-tight`, `--tracking-wide`, `--leading-tight`,
+  `--leading-snug`, `--leading-normal`, `--leading-relaxed`. Add these (the design-system
+  docs define the scale; theme.css currently omits them and code hard-codes `line-height`
+  values like `1.55`).
+- **Surface/effect:** `--surface-gradient` (card fill), `--edge-highlight` (card top
+  highlight), `--media-vignette` (banner/photo inner shadow), `--scrim-caption` (photo
+  caption scrim), `--on-media` (text on media), `--media-shadow` (text shadow on media),
+  `--glow-accent` (accent button/FAB glow). Add to `theme.css` as semantic tokens.
+- **Micro:** `--overlap-avatar` (negative margin for stacked avatars), `--dot-presence`
+  (presence-dot size), `--border-hairline` (hairline width, e.g. 1px), `--z-content`,
+  `--z-nav` (z-index scale). Add to `theme.css`.
+
+> The prior version of this spec claimed "No new tokens are required" and "the same names
+> already in theme.css — map 1:1". **That is incorrect** and is superseded by this section:
+> the effect, ratio, tracking/leading, and several layout tokens are genuinely absent and
+> must be added (W3, no raw hex/inline magic values in components) or mapped.
 
 ---
 
 ## 5. FENCED / honest states (this surface renders, never errors)
 
-- **Cached / partial** (default, session-2): render header + whatever cached moments
-  exist. Below the moments, in place of a hard "loaded" claim, keep the honest home
-  footer ("Older moments live at their home on …" + "Visit their home"). If the
-  profile is only partially present, show a single calm line:
-  **"The full profile loads as Tacet syncs."** (secondary text, no icon, no red,
-  no spinner). This replaces both the current `Loading` spinner text and the error
-  empty state on this surface.
-- **No moments yet cached** — a calm empty note, not an error:
-  **"No recent moments cached yet — the full profile loads as Tacet syncs."** Reuse
-  `.t-caughtup`-style calm block, positive/neutral tone, never `EmptyState icon="people"
-  title="Couldn't open this profile"`.
-- **Never** an error box on this surface (fetch failure → fall back to the calm sync
-  line, not "This person's home couldn't be reached").
+- **Cached / partial** (default, session-2): render header + whatever cached moments exist,
+  then the honest home footer. If the profile is only partially present, show a single calm
+  line **"The full profile loads as Tacet syncs."** (`--color-text-secondary`, no icon, no
+  red, no spinner). This replaces the current `Loading label="Opening profile"` spinner
+  text on this surface.
+- **No moments yet cached** — a calm note, not an error:
+  **"No recent moments cached yet — the full profile loads as Tacet syncs."** Use a
+  `.t-caughtup`-style calm block (neutral tone), never `EmptyState icon="today" title="No
+  public posts to show"`.
+- **Never an error box** — fetch failure falls back to the calm sync line, never
+  `EmptyState icon="people" title="Couldn't open this profile"` (that block is removed here).
 
 ---
 
 ## 6. Interaction behaviors + honestly-disabled controls
 
-- **Message** — disabled, "Coming soon" (dead in template).
-- **Follow** — disabled, "Coming soon" (read-only milestone; consistent with
+- **Message** — disabled, `title="Coming soon"`, `aria-label="Message — coming soon"` (dead
+  in template).
+- **Follow** — disabled, `title="Coming soon"` (read-only milestone; consistent with
   `LivePerson`'s disabled Follow).
-- **Visit their home** — live external link to `person.url`, new tab.
-- **Back** (mobile top bar) — `history.back()` when possible, else `navigate("/people")`
+- **Visit their home** — live external link to `person.url`, new tab
+  (`target="_blank" rel="noreferrer noopener"`).
+- **Back** (mobile top bar) — `history.length > 1 ? history.back() : navigate("/people")`
   (matches existing `.t-profileback` behaviour).
-- **Per-moment Save** — if `LiveMoment` is reused, Save stays live (it works today);
-  Spark stays disabled "Coming soon". These are an honest superset over the template's
-  bare cards and are acceptable.
-- **"Learn how it works"** — link to the existing explainer if one exists; otherwise
-  disable honestly. Do not invent a page.
-- **"You both follow" / "Their communities"** — data-gated: render only from real
-  payload, otherwise omit the whole module (no fabricated relationships).
-- All controls: AA contrast, visible `:focus-visible` ring (global), reduced-motion
-  static.
+- **Per-moment cards** — no Spark/Save row per template (author implicit). If, for engineering
+  reasons, `LiveMoment` is reused, Save stays live and Spark stays disabled "Coming soon" as
+  an honest superset — but prefer the profile-context variant that hides the action row and
+  author link (Gap 6).
+- **"Learn how it works"** — link to the existing explainer if one exists; otherwise honestly
+  disable. Do not invent a page.
+- **"You both follow" / "Their communities"** — data-gated: render only from real payload,
+  otherwise omit the whole module (no fabricated relationships).
+- All controls: AA contrast (W4), visible `:focus-visible` ring (global in theme.css),
+  reduced-motion static (global). The template's `style-hover`/`style-focus` map to CSS
+  `:hover`/`:focus-visible`.
 
 ---
 
 ## 7. Whitelist compliance
 
-- **W1 (honesty):** error state removed in favour of calm sync line; Message/Follow
-  honestly disabled; mutuals/communities modules data-gated not faked; home footer keeps
-  the true "full archive lives at their home" boundary.
-- **W3:** semantic tokens only (§4); no raw hex.
+- **W1 (honesty):** error/empty "Couldn't open this profile" removed for the calm sync line;
+  Message + Follow honestly disabled; mutuals/communities modules data-gated, not faked; home
+  footer keeps the true "full archive lives at their home" boundary; "Learn how it works"
+  disabled if no explainer exists.
+- **W3:** semantic tokens only — the missing tokens in §4 are **added to `theme.css`** (or
+  mapped), never inlined as raw hex/magic values in components.
 - **W4:** reduced-motion static, AA contrast.
-- **W5:** product name "Pixelfed"/"pixel.town" fine; no protocol words in UI copy.
+- **W5:** product names "Pixelfed" / "pixel.town" are fine; no protocol words in UI copy.
 
 ---
 
 ## 8. GAP LIST — concrete edits to conform current impl
 
-1. **Add the third (context) column.** Current shell is 2-col (`app.css` `.t-app`
-   `grid-template-columns: 250px 1fr`). This surface needs a right context column at
-   desktop width (320px). Introduce a per-surface layout that renders an
-   `<aside aria-label="About this person">` in a 3-col grid
-   (`250px minmax(0, 42rem) 320px` centred), collapsing to the 2-col shell + no aside
-   below desktop. (Layout is currently entirely missing.)
+Ordered by impact.
 
-2. **Remove the tab strip.** `Profile.tsx` renders `.t-tabs` with Posts/Media/About
-   pills and `useState<Section>`. The template has **no tabs** — it shows a single
-   "Recent moments" list inline and moves About into the context column. Delete the tab
-   state, `.t-tabs`, the `Media` gallery view, and the in-feed `About` render.
+1. **Add the missing design tokens (BLOCKING, do first).** §4's "MISSING" set
+   (`--ratio-banner`, `--ratio-square`, `--ratio-photo`, `--surface-gradient`,
+   `--edge-highlight`, `--media-vignette`, `--scrim-caption`, `--on-media`, `--media-shadow`,
+   `--glow-accent`, `--tracking-tight/wide`, `--leading-tight/snug/normal/relaxed`,
+   `--overlap-avatar`, `--dot-presence`, `--border-hairline`, `--z-content`, `--z-nav`, plus
+   layout `--gutter`, `--context-width`, `--rail-width`, `--fab-size`, `--topbar-height`,
+   `--tabbar-height`) is **not defined** today. Add them to `theme.css` (light + dark peers
+   where colour-bearing) before styling this surface — otherwise the template's card/banner
+   fills, vignettes and accent glow silently collapse. (This corrects the earlier claim that
+   no new tokens were needed.)
 
-3. **Rename the moments section to "Recent moments"** with an `<h2>` heading
-   (`--text-heading`), replacing the tab-driven "Posts" list. Cap to the recent set
-   (template shows 2 cards) and follow with the home footer, not an infinite feed.
+2. **Add the third (context) column.** `Profile.tsx` currently renders a single
+   `.t-screen--reading` centre column. Introduce a per-surface layout: `<main>` becomes a
+   2-col grid `minmax(0, var(--measure-reading)) var(--context-width)` (gap `--gutter`,
+   `justify-content:center`), with the profile `<section>` in col 1 and
+   `<aside aria-label="About this person">` in col 2. Collapse to single-column (no aside)
+   below the desktop breakpoint. Do not modify the shell rail; the rail stays the shell's
+   `.t-rail`.
 
-4. **Add the header action row (Message + Follow), both honestly disabled.** Current
-   `ProfileHeader` (`ProfileView.tsx`) has only a "View original" text link. Add the two
-   pill buttons per §3.1 (Message = ghost disabled, Follow = accent gradient disabled),
-   positioned top-right overlapping the banner. Keep "View original" behaviour by folding
-   it into the "Visit their home" footer instead (see Gap 8) to avoid duplicate exits.
+3. **Remove the tab strip.** `Profile.tsx` renders `.t-tabs` with Posts/Media/About pills +
+   `useState<Section>`. The template has **no tabs** — one inline "Recent moments" list, with
+   About moved to the aside. Delete the tab state, `.t-tabs`, the `Media` gallery view, and
+   the in-feed `About` render.
 
-5. **Move header meta into the context column.** Current `ProfileHeader` renders
-   follower/following/post **counts** and a website/location/joined **fact row**
-   (`.t-phead__meta`). The template header shows none of these; they belong in the
-   context-column "About Jonas" module. Suppress `.t-phead__counts` and
-   `.t-phead__facts` on this surface (keep the module for the shared component's other
-   uses, but hide on remote profile) and render the home/"since" prose in the aside.
+4. **Replace the "Posts" list with a labelled "Recent moments" rule.** Not an `<h2>` heading:
+   a small `--text-micro` uppercase-tracking label + a `flex:1` hairline rule (§3.2). Cap to
+   the recent set (template shows 2 cards) and follow with the home footer — not an infinite
+   feed.
 
-6. **Profile-context moment cards.** Reusing `LiveMoment` renders a per-card author
-   `Link` + `SourceBadge` in the head — redundant on a profile (every card is this
-   person). Add a `context="profile"` prop (or a `hideAuthor`/`hideActions` variant) that
-   suppresses the author link and, per template, the Spark/Save action row on this
-   surface. Keep the media grid, caption and the "Photos · <time>" meta line.
+5. **Add the header action row (Message + Follow), both honestly disabled.** Current
+   `ProfileHeader` (`ProfileView.tsx`) has only a "View original" text link. Add the two pill
+   buttons per §3.1 (Message = ghost disabled; Follow = accent gradient disabled), in a flex
+   row that overlaps the banner bottom, right-aligned via a `flex:1` spacer next to the
+   avatar. Fold the old "View original" exit into the "Visit their home" footer (Gap 8) to
+   avoid duplicate exits.
 
-7. **Add the "Recent moments" meta line format.** Template meta reads
-   **"Photos · 4:40 pm"** / **"Photo · Monday"** (media-kind + friendly time), not the
-   handle+relative-time `Identity` line. Add a compact meta line under each profile
-   moment: `<media kind label> · <time>`.
+6. **Suppress header counts + fact row on this surface.** `ProfileHeader` renders
+   follower/following/post **counts** (`.t-phead__counts`) and a website/location/joined
+   **fact row** (`.t-phead__facts`, `.t-phead__meta`). The template header shows none of
+   these. Hide them on the remote-profile surface (keep the shared component's other uses
+   intact) and render the home/"since" prose in the aside "About Jonas" module instead.
 
-8. **Add the home footer.** New element after the moments: line "Older moments live at
-   their home on <home>." + accent link "Visit their home" → `person.url` (new tab).
-   This replaces the header's "View original" as the single, honest exit.
+7. **Profile-context moment cards.** Reusing `LiveMoment` renders a per-card author `Link` +
+   `SourceBadge` head and a Spark/Save action row — all redundant/absent per template. Add a
+   `context="profile"` variant (or `hideAuthor` + `hideActions` props) that suppresses the
+   author link, the source badge, and the action row. Keep the media grid and swap the
+   `Identity` (handle · relative time) line for the media-kind meta line below (Gap 8a).
 
-9. **Add the context-column modules** ("About Jonas", "You both follow",
-   "Their communities", cross-web note) per §3.4–7, each hairline-separated, data-gated
-   (render mutuals/communities only from real payload; otherwise omit).
+8. **Add the media-kind meta line.** Under each profile moment, render a mono
+   `--text-meta`/`--color-text-tertiary` line of the form **"&lt;Photo|Photos|Video&gt; ·
+   &lt;friendly time&gt;"** ("Photos · 4:40 pm", "Photo · Monday") — not the `Identity`
+   line. Friendly time = clock time for today, weekday for this week, else date.
 
-10. **Mobile top bar shows Back + person name.** Current mobile top bar
-    (`AppShell.t-topbar`) is brand-only. On a remote profile the top bar must show the
-    Back control + the person's name as title. Since the shell top bar is global, either
-    (a) let the profile screen render its own in-content sticky top bar for mobile, or
-    (b) add a shell slot for a per-route title. Prefer (a) to avoid shell churn; keep the
-    existing `.t-profileback` for the back affordance and add the name as a centred
-    title on mobile.
+9. **Add the home footer.** New centred block after the moments: line **"Older moments live
+   at their home on &lt;home&gt;."** + accent link **"Visit their home"** → `person.url`
+   (new tab, trailing external glyph). This is the single, honest exit — it replaces the
+   header's "View original".
 
-11. **Banner treatment.** Ensure the banner uses `--ratio-banner` (3/1) with
-    `--radius-lg` top and `--media-vignette`; current `.t-phead__banner` should be
-    verified against these values (fixed height today, not ratio-based).
+10. **Add the context-column modules** ("About Jonas" prose, "You both follow", "Their
+    communities", cross-web note) per §3.4–7. **Data-gate** mutuals + communities: `Person`
+    in `openweb.ts` has no `mutuals`/`communities` fields, so render those two modules only
+    when a real payload carries them; otherwise **omit** (calm absence). "About Jonas" +
+    cross-web note render from existing `source`/home data; "Learn how it works" honestly
+    disabled if no explainer route exists.
 
-12. **Remove the error/empty "Couldn't open this profile".** Replace with the calm
-    FENCED sync states in §5 ("The full profile loads as Tacet syncs." /
-    "No recent moments cached yet — …"). Never render `EmptyState title="Couldn't open
-    this profile"` on this surface.
+11. **Mobile top bar = Back + person name.** The shell `.t-topbar` is brand-only. On a remote
+    profile, mobile must show Back + the person's name (`--text-subheading`, weight 500,
+    left-aligned next to Back). Prefer letting the profile screen render its own in-content
+    sticky top bar for mobile (option a) over adding a shell title slot, to avoid shell churn;
+    reuse the existing `.t-profileback` back affordance behaviour.
 
-13. **Tab-bar label + compose FAB (mobile) — FLAG, do not silently diverge.** Template
-    labels the 4th pillar "Chats" and centres the New FAB inside the tab bar; the current
-    shell says "Conversations" and floats a separate `.t-fab`. This is a shell-wide
-    decision, not a remote-profile-local one. Record the delta; do not change the global
-    shell as part of this surface unless the shell pass adopts it.
+12. **Banner uses the ratio, not a fixed height.** `.t-phead__banner` is `height:8.5rem`
+    today. Change to `aspect-ratio:var(--ratio-banner)` (3/1) with `--radius-lg` top (desktop;
+    full-bleed square on mobile) and `--media-vignette`. Avatar is 96px desktop / 80px
+    mobile with the `0 0 0 4px var(--color-canvas), var(--elevation-2)` ring.
 
-14. **Fonts:** confirm the surface inherits `--font-sans: Hanken Grotesk` /
-    `--font-mono: Spline Sans Mono` (LOCKED). Ignore the template's Jost / Space Mono.
+13. **Remove the error/empty states here.** Replace `Loading label="Opening profile"`,
+    `EmptyState "Couldn't open this profile"`, and the empty "No public posts" block with
+    the calm FENCED states in §5. Never render an error box on this surface.
+
+14. **Copy-diff desktop vs mobile (must differ):** mobile drops the bio sentence "Prints
+    sometimes.", shortens the handle line to "@jonas@pixel.town · lives at pixel.town",
+    shortens card-1 caption to "Morning walk, before the street woke up.", **omits card-2's
+    scrim caption "Fog holds the harbour until nine."**, and drops the entire context column.
+    Handle line is `--text-meta` on desktop, `--text-micro` on mobile.
+
+15. **FLAG (do not silently diverge) — tab-bar label + compose FAB.** Template labels the 5th
+    mobile pillar **"Chats"** and centres the New FAB inside the tab bar (`margin-top:-space-5`);
+    the current shell says **"Conversations"** and floats a separate `.t-fab` bottom-right.
+    This is a shell-wide decision, not remote-profile-local. Record the delta; do **not**
+    change the global shell as part of this surface unless the shell pass adopts it.
+
+16. **Fonts stay LOCKED.** Confirm the surface inherits `--font-sans: Hanken Grotesk` /
+    `--font-mono: Spline Sans Mono`. Ignore the template's Jost / Space Mono `@font-face`.

@@ -16,8 +16,8 @@ publishing (writing back to the open web) is the next track, not yet built.
 ## Live
 
 - **Deployed** on `tacet.social` (apex via a Worker route; `www` → 301 → apex; workers.dev
-  fallback). Current version `4b76deae-2624-43cc-a9d2-e42989b6a81f`. Rollback anchor
-  `e5626af7` → `npx wrangler rollback --config wrangler.local.jsonc`.
+  fallback). Current version `f0139d18-ce6f-4cb9-9c46-41ad0ade94eb`. Rollback anchor
+  `4b76deae` → `npx wrangler rollback --config wrangler.local.jsonc`.
 - **Today reads the open web live** through four source adapters behind one normalization
   contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md), `src/sources/`):
   - **ActivityPub** — read live per request through the untouched `src/openweb/` reader.
@@ -43,7 +43,7 @@ publishing (writing back to the open web) is the next track, not yet built.
 - **Every interactive control works or is honestly disabled.** Spark / Follow / Reply are
   "coming soon" (calmly disabled) in this read-only milestone; Save is real. No dead buttons.
 - The composer is an honest **preview** — publishing isn't live, and the copy says so.
-- **Stage 7 (template conformance) is in progress** — see `docs/10-design/hifi/specs/`. Landing
+- **Stage 7 (template conformance) in progress:** the 3-column canvas is built (opt-in `Surface`); Today has a context column hosting the connectivity panel; all 8 in-scope surfaces are specced in `docs/10-design/hifi/specs/`. Landing
   + Onboarding are EXCLUDED BY OPERATOR from Stage 7 and ship as-is.
 
 ## Product model (frozen)
@@ -105,4 +105,4 @@ Verified correct this session — the next session may cite these without re-che
 - **Type system unified:** app + landing both render in **Hanken Grotesk + Spline Sans
   Mono** (verified in the live CSS); the legacy `client/src/legacy/` tree is gone; docs
   folders tidied (`11-decisions`, merged `01-product`).
-- **Deployed version `4b76deae`** matches the current `main` build.
+- **Deployed version `f0139d18`** matches the current `main` build.

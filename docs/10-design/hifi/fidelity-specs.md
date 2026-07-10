@@ -40,3 +40,34 @@ right-aligned caption.
 ## 7. Final CTA + footer — dark gradient band, gradient pill, footer link row + copyright.
 ## 8. Welcome step 2 — stepper, icon-tile card grid + check circles, Other, lock privacy
 line, dark Continue, two summary bands (W2 icons), "Your home on the open social web."
+
+---
+
+# Stage 7 — Template conformance (2026-07-10)
+
+Per-surface fidelity specs (Desktop + Mobile) live in
+[`docs/10-design/hifi/specs/`](specs/) — one concrete file per surface, each with the
+layout, modules-in-order, exact copy, tokens, behaviors, and a GAP LIST vs the current
+React implementation:
+
+- [`specs/today.md`](specs/today.md) · [`specs/people.md`](specs/people.md) ·
+  [`specs/conversations.md`](specs/conversations.md) · [`specs/me.md`](specs/me.md) ·
+  [`specs/saved.md`](specs/saved.md) · [`specs/compose.md`](specs/compose.md) ·
+  [`specs/remote-profile.md`](specs/remote-profile.md) · [`specs/discover.md`](specs/discover.md)
+
+**Key finding:** every surface is **large** — they are built on a **three-column desktop
+canvas** (rail 250px + centre ~42rem + context column 320px) plus per-surface context-column
+modules the app did not yet have. That canvas is now shipped as an opt-in `Surface` layout
+(`client/src/app/Surface.tsx`): centre + right context column on desktop, stacking calmly on
+mobile; surfaces that pass no context render unchanged (zero regression).
+
+**Conformed this session:** Today's **context column** (surface 1, partial) now hosts the
+connectivity panel — its world-directed home. The full per-surface conformance (masthead
+eyebrows, editorial section groups, per-surface context modules, the "no score" footers,
+Moments feed, workspace switcher, etc.) is specced and ready to implement surface-by-surface.
+
+**Whitelist honored throughout:** W1 honest wording kept over template over-claims
+(composer preview, "sample suggestions" on Discover, local-not-federated Me handle, no
+audience meta the product can't back); W3 tokens only (specs list any token gaps — none
+blocking); W4 reduced-motion + AA; W5 no protocol words. Landing + Onboarding **excluded by
+operator** (not implemented or compared).
