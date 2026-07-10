@@ -74,6 +74,37 @@ function TodayNudges() {
   return null;
 }
 
+// A labelled hairline divider between editorial groups.
+function FeedDivider({ label }: { label: string }) {
+  return (
+    <div className="t-divider" role="separator" aria-label={label}>
+      <span className="t-divider__label t-mono">{label}</span>
+      <span className="t-divider__rule" aria-hidden="true" />
+    </div>
+  );
+}
+
+// The feed, grouped by real recency into "This <part of day>" (today) and "Earlier". The very
+// first moment is the lead (hero). Dividers only appear for non-empty groups. Real data only.
+function TodayFeed({ moments }: { moments: Moment[] }) {
+  const now = new Date();
+  const isToday = (iso: string) => {
+    const d = new Date(iso);
+    return !Number.isNaN(d.getTime()) && d.toDateString() === now.toDateString();
+  };
+  const recent = moments.filter((m) => isToday(m.createdAt));
+  const earlier = moments.filter((m) => !isToday(m.createdAt));
+  const leadId = moments[0]?.id;
+  return (
+    <div className="t-feed">
+      {recent.length > 0 && <FeedDivider label={`This ${partOfDay(now.getHours())}`} />}
+      {recent.map((m) => <LiveMoment key={m.id} moment={m} feed lead={m.id === leadId} />)}
+      {earlier.length > 0 && <FeedDivider label="Earlier" />}
+      {earlier.map((m) => <LiveMoment key={m.id} moment={m} feed lead={m.id === leadId} />)}
+    </div>
+  );
+}
+
 // The calm entry point, now reading real public content from the open social web
 // through the adapter. Finite, curated-feeling, and honest about its source. If the
 // open web can't be reached, it degrades to sample content (clearly labelled) rather
@@ -106,15 +137,15 @@ export function Today() {
             </EmptyState>
           ) : (
             <>
-              <div className="t-feed">
-                {state.result.data.map((m, i) => (
-                  <LiveMoment key={m.id} moment={m} feed lead={i === 0} />
-                ))}
-              </div>
+              <TodayFeed moments={state.result.data} />
               <div className="t-caughtup">
-                <Icon name="check" size={22} />
-                <p className="t-caughtup__title">You’re all caught up</p>
-                <p className="t-caughtup__body">That’s everything for now. The rest of the day is yours.</p>
+                <span className="t-caughtup__rule" aria-hidden="true" />
+                <Icon name="check" size={28} />
+                <p className="t-caughtup__title">That’s today. You’re all caught up.</p>
+                <p className="t-caughtup__body">Nothing more is waiting. The rest of the evening is yours.</p>
+                <button className="t-caughtup__cta" type="button" onClick={() => navigate("/discover")}>
+                  Look around Discover <span aria-hidden="true">→</span>
+                </button>
               </div>
             </>
           )}
