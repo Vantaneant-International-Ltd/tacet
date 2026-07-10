@@ -11,7 +11,7 @@ High-fidelity Stage 6 designs for **Tacet — your home on the open social web**
 > (included here), which are proposed token/spec additions to land back in the repo.
 
 ## About the Design Files
-The files in `screens standalone/` are **design references created in HTML** — self-contained prototypes showing intended look and behavior, not production code to copy. The task is to **recreate these designs in the tacet codebase's existing environment** — a React + Vite client (`client/src/`, styles in `client/src/styles.css`, theme vars in `client/src/design/theme.css`, icons in `client/src/design/icons.tsx`) — using its established patterns. Each HTML file opens directly in a browser and works offline; use them side-by-side with the running app.
+The `*.html` files in this folder are **design references created in HTML** — self-contained prototypes showing intended look and behavior, not production code to copy. The task is to **recreate these designs in the tacet codebase's existing environment** — a React + Vite client (`client/src/`, styles in `client/src/styles.css`, theme vars in `client/src/design/theme.css`, icons in `client/src/design/icons.tsx`) — using its established patterns. Each HTML file opens directly in a browser and works offline; use them side-by-side with the running app.
 
 ## Fidelity
 **High-fidelity.** Colors, typography, spacing, radii, and shadows are final and are expressed **exclusively through the semantic CSS custom properties** defined in each file's `<style>` block (`:root` = dark "lamplit near-black" default; `[data-theme="light"]` = warm ivory). Recreate pixel-perfectly, but bind to token *names*, never raw values (repo law: no raw values in components).
@@ -75,5 +75,10 @@ No infinite scroll · no autoplay · no red badges or numeric unread counts · n
 - **Fonts:** Jost + Space Mono (Google Fonts); already referenced in the repo sketch.
 
 ## Files
-- `screens standalone/*.html` — the 19 self-contained design references (16 app screens + Landing Desktop/Mobile + Onboarding; open directly in a browser; dark/light toggle in the rail on desktop app screens).
+- `*.html` (this folder) — the 19 self-contained design references (16 app screens + Landing Desktop/Mobile + Onboarding; open directly in a browser; dark/light toggle in the rail on desktop app screens).
 - `stage-6-delta-log.md` — every decision tokens.md doesn't cover (items 1–49); these are proposed repo additions, not local one-offs. Reconcile with `docs/10-design/wireframes/` at Stage 7 (item 49).
+
+> **Note on the source reference mockups.** The operator-supplied pixel reference(s) the
+> delta log cites ("the reference mockup/sketch") were reviewed live and **intentionally not
+> vendored** — the delta log is the durable record of what was adopted and what was refused.
+> There is no `reference/` folder here, and it is not expected to be recreated.

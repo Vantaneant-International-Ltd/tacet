@@ -2,9 +2,8 @@
 
 > **Status: CANONICAL.** Delivered directly by the operator (chat, 2026-07-09) as the
 > authoritative visual target for the public landing at `/`. Supersedes the earlier
-> dark-only landing. The non-authoritative Today sketch under
-> [`../prototypes/today-desktop-dark.html`](../prototypes/today-desktop-dark.html) is a
-> different surface and remains a sketch, not handoff.
+> dark-only landing. (The earlier non-authoritative dark Today sketch was a different
+> surface and was not carried into this handoff.)
 >
 > Repo law still wins on conflict: [`../../tokens.md`](../../tokens.md),
 > [`../../design-principles.md`](../../design-principles.md), the doctrine refusals, and

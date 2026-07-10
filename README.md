@@ -120,7 +120,7 @@ docs/                Product, design, and engineering documentation (start here)
 
 client/              React + TypeScript single-page app (the product UI).
   src/design/          Design system: theme tokens (light + dark), primitives, icons.
-  src/app/             The five pillars + app shell (currently on mock data).
+  src/app/             The five pillars + app shell (Today reads live; some surfaces on mock data).
   src/views/           Landing page and sign-in.
   src/legacy/          The old "rooms" product — quarantined and dormant (not shipped).
 
@@ -142,6 +142,9 @@ DEPLOY.md                Self-hosting guide (optional; deploy to your own accoun
 - **[docs/03-design-system/](docs/03-design-system/)** — the visual source of truth.
 - **[docs/05-federation/](docs/05-federation/)** — federation as an implementation
   detail (the product would still make sense if the protocol were replaced).
+- **[docs/06-decisions/](docs/06-decisions/)** — the architecture decision records (ADRs).
+- **[docs/06-engineering/](docs/06-engineering/)** — architecture, domain model, adapters, and the [2026-07 audit](docs/06-engineering/AUDIT-2026-07.md).
+- **[docs/09-product/publishing-philosophy.md](docs/09-product/publishing-philosophy.md)** — the write-side "publishing is distribution" doctrine.
 - **[FOUNDING_PRINCIPLES.md](FOUNDING_PRINCIPLES.md)** / **[PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md)** — the one-page canon.
 
 ## Development setup
@@ -155,8 +158,9 @@ npm run migrate      # apply D1 migrations to a simulated local database
 npm run dev          # build the SPA + run the Worker at http://localhost:8787
 ```
 
-The five-pillar app runs on mock data and is walkable without signing in — open
-**http://localhost:8787/today**. Toggle light/dark from the app.
+The five-pillar app is walkable without signing in — open
+**http://localhost:8787/today**. Today reads the open web live; some secondary surfaces
+still use mock data. Toggle light/dark from the app.
 
 Checks:
 

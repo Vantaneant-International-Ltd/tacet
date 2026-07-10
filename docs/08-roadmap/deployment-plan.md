@@ -1,10 +1,11 @@
 # Deployment & Domain Migration Plan (tacet.social → Cloudflare)
 
-> **Status: PLAN ONLY. Do not execute yet.** This plan is prepared for after the
-> read-only Today + People milestone is confirmed working locally. Do **not** change
-> nameservers or deploy production without explicit final confirmation. Nothing here
-> creates duplicate infrastructure — it reuses the existing Cloudflare account, D1,
-> and R2 wherever possible.
+> **Status: EXECUTED — kept as a historical record (2026-07).** This plan was carried out.
+> Tacet is live on `tacet.social` (see [STATE.md](../../STATE.md) and
+> [ADR-017](../06-decisions/ADR-017-source-adapters.md)), on the existing Cloudflare account
+> (Option A — reuse), with D1 migrations 0001–0014 applied and a 15-min refresh cron. The
+> "do not execute / decision needed / confirmation gate" language below is left intact for
+> the record but is no longer pending — read it in past tense.
 
 Current facts:
 - Domain **tacet.social** is registered/DNS-hosted at **Blacknight**.
@@ -94,7 +95,8 @@ Mirror everything currently at Blacknight, plus the app:
 - TLS is automatic (Cloudflare Universal SSL). Verify HTTPS after propagation.
 
 ## 8. D1 remote migrations (reuse existing DB)
-- The existing `tacet` D1 already has migrations 0001–0010 applied. Apply any new ones:
+- The `tacet` D1 has migrations 0001–0014 applied (through `0014_sources.sql`, the source
+  registry + item store the live collectors depend on). Apply any new ones:
   ```sh
   npx wrangler d1 migrations apply tacet --remote --config wrangler.local.jsonc
   ```
