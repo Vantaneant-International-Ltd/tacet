@@ -24,7 +24,7 @@ publishing (writing back to the open web) is the next track, not yet built.
   - **RSS/Atom/JSON Feed**, **AT Protocol (Bluesky)**, **Nostr** — cron-collected (15 min) +
     lazy-on-read into a D1 store, merged with AP and interleaved calmly (recency + source
     variety, no engagement). Protocol words never reach UI labels.
-- **Infra:** D1 `tacet` migrations 0001–0014 applied (remote = disk); R2 `tacet-images`;
+- **Infra:** D1 `tacet` migrations 0001–0015 applied (remote = disk); R2 `tacet-images`;
   security headers (CSP, HSTS, `X-Frame-Options: DENY`, nosniff) + `Cache-Control: no-store`
   on `/api/*`. Deploy config is the git-ignored `wrangler.local.jsonc`; tracked
   `wrangler.jsonc` carries placeholders only.
@@ -43,7 +43,7 @@ publishing (writing back to the open web) is the next track, not yet built.
 - **Every interactive control works or is honestly disabled.** Spark / Follow / Reply are
   "coming soon" (calmly disabled) in this read-only milestone; Save is real. No dead buttons.
 - The composer is an honest **preview** — publishing isn't live, and the copy says so.
-- **Stage 7 (template conformance):** **Today is CONFORMED (v2)** to its template + operator reference: masthead (real count sub-line + real home domains), inline composer row, editorial card variants + highlight ("From your world") + triptych + composed quiet bylines + monogram fallbacks, section dividers, bounded end; the full left rail (Search + @handle + pill/knob theme toggle) and a locked 3-column canvas where only the centre scrolls (rail + context fixed with internal overflow); a real context column (People close to you with remote handles + honest presence, Continue with no time-left, Across your world = real titled items, Busy today, Connectivity); mobile top/tab bar + lens. All modules real-or-hidden. Other 7 surfaces specced in `docs/10-design/hifi/specs/`. Landing
+- **Stage 7 (template conformance):** **Today is CONFORMED (v2.2)** to its template + operator reference: masthead (real count sub-line + real home domains), inline composer row, editorial card variants + highlight ("From your world") + triptych + composed quiet bylines + monogram fallbacks, section dividers, bounded end; the full left rail (Search + @handle + pill/knob theme toggle) and a locked 3-column canvas where only the centre scrolls (rail + context fixed with internal overflow); a real context column (People close to you with remote handles + honest presence, Continue with no time-left, Across your world = real titled items, Busy today, Connectivity); mobile top/tab bar + lens. All modules real-or-hidden. Other 7 surfaces specced in `docs/10-design/hifi/specs/`. Landing
   + Onboarding are EXCLUDED BY OPERATOR from Stage 7 and ship as-is.
 
 ## Product model (frozen)
@@ -94,7 +94,7 @@ Verified correct this session — the next session may cite these without re-che
   all 200; `/api/health` 200; `www` → 301 → apex; security headers intact.
 - **Four sources live** on `/today` (`mode:live`, 20 items — ActivityPub + feeds + Bluesky +
   Nostr) with human labels only; **zero protocol words in UI labels** (guarded by test).
-- **Migrations:** remote D1 = disk (0001–0014); no pending migrations.
+- **Migrations:** remote D1 = disk (0001–0015); no pending migrations.
 - **D1 diagnostics bounded:** `source_items` pruned to 30 days; `source_state` is a small
   fixed key set; refresh is single-flight (25 s per-adapter budget) — all test-pinned.
 - **Honesty:** no capability the UI claims is unbuilt — composer is a labelled preview,
@@ -105,4 +105,4 @@ Verified correct this session — the next session may cite these without re-che
 - **Type system unified:** app + landing both render in **Hanken Grotesk + Spline Sans
   Mono** (verified in the live CSS); the legacy `client/src/legacy/` tree is gone; docs
   folders tidied (`11-decisions`, merged `01-product`).
-- **Deployed version `0de9f69a`** matches the current `main` build.
+- **Deployed version `748898d3`** matches the current `main` build.

@@ -61,7 +61,19 @@ modules the app did not yet have. That canvas is now shipped as an opt-in `Surfa
 (`client/src/app/Surface.tsx`): centre + right context column on desktop, stacking calmly on
 mobile; surfaces that pass no context render unchanged (zero regression).
 
-**Conformed:** **Today is CONFORMED v2** (2026-07-10) — completion pass added the real
+**Conformed:** **Today is CONFORMED v2.2** (2026-07-10) — the data-honesty pass, against the
+operator-approved end-state references (now vendored at `handoff/reference/`): People close
+to you is persons-only (feed publications never render; ≥2 or hidden); Continue is
+exclusively recently-viewed/reading-later rows with REAL titles (migration 0015), excluding
+today's digest, max 2; nostr:/bech32 tokens stripped from rendered text and NIP-05
+`_@domain` displays as `@domain` (adapter + render sanitation); the masthead cluster is home
+domains only; Communities active today (spec title) lists domain homes only, ≥2 or hidden,
+additive to the connectivity panel; bylines composed per reference (bold name + mono line +
+"Medium · time" pill; publications show name + favicon + domain, no @-fabrication); hero
+caption carries line + author·home; acts on a hairline; composer is an input with the media
+glyph; toggle at reference geometry.
+
+**Conformed v2:** (2026-07-10) — completion pass added the real
 context column (People close to you with remote handles + honest presence; Continue with a
 "Continue reading" affordance and *no* time-left; "Across your world" = real titled items;
 "Busy today"; Connectivity), the "From your world" highlight moments, the inline composer
