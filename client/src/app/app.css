@@ -1,7 +1,7 @@
 /* App layout + screen styles. Tokens only. Mobile-first; the desktop rail appears at
    the wide breakpoint. See docs/03-design-system and 02-human-interface-guidelines. */
 
-.t-app { min-height: 100vh; }
+.t-app { min-height: 100vh; background-image: var(--glow-ambient); background-repeat: no-repeat; background-attachment: fixed; }
 
 /* ---------- Desktop side rail (hidden on mobile) ---------- */
 .t-rail { display: none; }
@@ -179,9 +179,27 @@
 @keyframes t-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Today ---------- */
-.t-today__head { margin-bottom: var(--space-6); }
-.t-today__greeting { font-size: var(--text-title); font-weight: 500; letter-spacing: -0.015em; margin: 0; }
-.t-today__line { font-size: var(--text-body); color: var(--color-text-secondary); margin: var(--space-2) 0 0; }
+.t-today__head { margin-bottom: var(--space-7); }
+.t-today__overline {
+  font-size: var(--text-micro); font-weight: 500; letter-spacing: var(--tracking-wide);
+  color: var(--color-text-tertiary); margin: 0;
+}
+.t-today__greeting {
+  font-size: var(--text-title); font-weight: 400; letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight); margin: var(--space-3) 0 0;
+}
+.t-today__line {
+  font-size: var(--text-body-sm); color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed); margin: var(--space-3) 0 0; max-width: 34rem;
+}
+.t-today__sources { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-5); flex-wrap: wrap; }
+.t-avstack { display: flex; }
+.t-avstack__item { display: inline-flex; border-radius: var(--radius-full); box-shadow: 0 0 0 2px var(--color-canvas); }
+.t-avstack__item + .t-avstack__item { margin-left: var(--overlap-avatar); }
+.t-today__srccap { font-size: var(--text-micro); color: var(--color-text-tertiary); }
+@media (min-width: 900px) {
+  .t-today__greeting { font-size: var(--text-display); }
+}
 
 .t-feed { display: flex; flex-direction: column; gap: var(--space-5); }
 
