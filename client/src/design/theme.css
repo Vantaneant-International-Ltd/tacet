@@ -91,6 +91,49 @@
   --elevation-2: 0 4px 12px rgba(35, 32, 28, 0.07), 0 2px 4px rgba(35, 32, 28, 0.05);
   --elevation-3: 0 12px 32px rgba(35, 32, 28, 0.12), 0 4px 8px rgba(35, 32, 28, 0.06);
 
+  /* ---- Layout — the three-column canvas (tokens.md §10) ---- */
+  --rail-width: 250px;
+  --context-width: 320px;
+  --feed-measure: var(--measure-reading);
+  --gutter: var(--space-6);
+  --canvas-max: 1440px;
+  --topbar-height: 56px;
+  --tabbar-height: 72px;
+  --fab-size: 56px;
+
+  /* Breakpoints (documentation; @media rules use the literal px value). */
+  --bp-sm: 520px; --bp-md: 768px; --bp-lg: 900px; --bp-xl: 1200px; --bp-2xl: 1600px;
+
+  /* z-index scale. */
+  --z-base: 0; --z-content: 20; --z-nav: 30; --z-fab: 31; --z-sheet: 40; --z-modal: 50; --z-toast: 60;
+
+  /* ---- Line-height + letter-spacing (tokens.md §2.3–§2.4) ---- */
+  --leading-tight: 1.15; --leading-snug: 1.30; --leading-normal: 1.45; --leading-relaxed: 1.60;
+  --tracking-tight: -0.02em; --tracking-normal: 0; --tracking-wide: 0.02em;
+
+  /* ---- Border / icon / alpha (tokens.md §5) ---- */
+  --border-hairline: 1px;
+  --border-strong: 1.5px;
+  --icon-inline: 1em; --icon-sm: 18px; --icon-md: 22px; --icon-lg: 28px;
+  --alpha-disabled: 0.40; --alpha-hover: 0.06; --alpha-pressed: 0.12; --alpha-scrim: 0.62;
+
+  /* ---- Media / scrim / presence (tokens.md §7 — theme-independent) ---- */
+  --scrim-media: color-mix(in srgb, #000 62%, transparent);
+  --scrim-media-strong: color-mix(in srgb, #000 72%, transparent);
+  --scrim-caption: linear-gradient(to top, color-mix(in srgb, #000 72%, transparent), transparent 60%);
+  --on-media: #ffffff;
+  --media-shadow: 0 1px 3px color-mix(in srgb, #000 45%, transparent);
+  --dot-presence: 8px;
+  --overlap-avatar: -8px;
+  --ratio-square: 1 / 1; --ratio-photo: 3 / 2; --ratio-video: 16 / 9; --ratio-portrait: 4 / 5; --ratio-banner: 3 / 1;
+
+  /* ---- Atmosphere (Stage-6, ADR-016) — LIGHT values; dark re-tunes in the dark blocks ---- */
+  --glow-ambient: radial-gradient(90rem 56rem at 16% -12%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 62%), radial-gradient(64rem 44rem at 88% -16%, color-mix(in srgb, var(--color-accent) 4%, transparent), transparent 65%);
+  --surface-gradient: linear-gradient(180deg, var(--color-surface-raised) 0%, var(--color-surface) 100%);
+  --edge-highlight: inset 0 1px 0 color-mix(in srgb, #ffffff 80%, transparent);
+  --glow-accent: 0 8px 28px color-mix(in srgb, var(--color-accent) 18%, transparent);
+  --media-vignette: inset 0 -56px 72px -44px color-mix(in srgb, #000 22%, transparent), inset 0 0 0 1px color-mix(in srgb, #ffffff 20%, transparent);
+
   color-scheme: light;
 }
 
@@ -118,6 +161,13 @@
     --elevation-2: 0 6px 16px rgba(0, 0, 0, 0.4);
     --elevation-3: 0 16px 40px rgba(0, 0, 0, 0.55);
 
+    /* Atmosphere — dark re-tunes */
+    --glow-ambient: radial-gradient(90rem 56rem at 16% -12%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 62%), radial-gradient(64rem 44rem at 88% -16%, color-mix(in srgb, var(--color-accent) 5%, transparent), transparent 65%);
+    --surface-gradient: linear-gradient(180deg, color-mix(in srgb, var(--color-surface-raised) 70%, var(--color-surface)) 0%, var(--color-surface) 100%);
+    --edge-highlight: inset 0 1px 0 color-mix(in srgb, #ffffff 5%, transparent);
+    --glow-accent: 0 8px 28px color-mix(in srgb, var(--color-accent) 32%, transparent);
+    --media-vignette: inset 0 -64px 84px -44px color-mix(in srgb, #000 40%, transparent), inset 0 0 0 1px color-mix(in srgb, #ffffff 4%, transparent);
+
     color-scheme: dark;
   }
 }
@@ -144,6 +194,13 @@
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
   --elevation-2: 0 6px 16px rgba(0, 0, 0, 0.4);
   --elevation-3: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  /* Atmosphere — dark re-tunes */
+  --glow-ambient: radial-gradient(90rem 56rem at 16% -12%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 62%), radial-gradient(64rem 44rem at 88% -16%, color-mix(in srgb, var(--color-accent) 5%, transparent), transparent 65%);
+  --surface-gradient: linear-gradient(180deg, color-mix(in srgb, var(--color-surface-raised) 70%, var(--color-surface)) 0%, var(--color-surface) 100%);
+  --edge-highlight: inset 0 1px 0 color-mix(in srgb, #ffffff 5%, transparent);
+  --glow-accent: 0 8px 28px color-mix(in srgb, var(--color-accent) 32%, transparent);
+  --media-vignette: inset 0 -64px 84px -44px color-mix(in srgb, #000 40%, transparent), inset 0 0 0 1px color-mix(in srgb, #ffffff 4%, transparent);
 
   color-scheme: dark;
 }

@@ -220,6 +220,23 @@ Kills the hardcoded media overlays the audit found (`rgba(255,255,255,.92)`, `#0
 Shadows are warm-tinted toward text hue in light, deep in dark. In light mode, **depth also comes
 from surface steps** (canvas → surface → surface-raised), not shadow alone (audit §3.5).
 
+### 8.1 Atmosphere tokens **[V2+ — Stage-6, ADR-016]** — implemented in `theme.css`
+
+The calm "lamplit" atmosphere: an ambient accent wash on the canvas, a soft surface gradient on
+cards, a 1px inner top highlight, an accent glow on the primary action, and a media vignette.
+Both themes are tuned so text/AA is never harmed. (Values live in `client/src/design/theme.css`;
+LIGHT in `:root`, dark re-tunes in the dark blocks.)
+
+```css
+/* light */
+--glow-ambient:     radial washes of --color-accent at 7% / 4%, top-left + top-right;
+--surface-gradient: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+--edge-highlight:   inset 0 1px 0 color-mix(in srgb, #fff 80%, transparent);
+--glow-accent:      0 8px 28px color-mix(in srgb, var(--color-accent) 18%, transparent);
+--media-vignette:   inset bottom scrim (#000 22%) + inset 1px ring (#fff 20%);
+/* dark (remapped): accent 8%/5%; raised→surface at 70%; #fff 5%; accent 32%; #000 40% + #fff 4% */
+```
+
 ---
 
 ## 9. Motion tokens **[V1]** — now actually used in V2
