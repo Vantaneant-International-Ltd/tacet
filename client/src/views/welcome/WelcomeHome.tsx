@@ -49,6 +49,9 @@ export function WelcomeHome() {
               things you love. Let&rsquo;s make it yours — it takes a minute.
             </p>
             <div className="wz-actions wz-actions--center">
+              <button className="wz-btn wz-btn-ghost" onClick={() => navigate("/welcome/world")}>
+                <span aria-hidden="true">&larr;</span> Back
+              </button>
               <button className="wz-btn wz-btn-primary" onClick={() => setSub("create")}>
                 Begin
               </button>
@@ -87,6 +90,9 @@ export function WelcomeHome() {
               </div>
             </div>
             <div className="wz-actions wz-actions--center">
+              <button className="wz-btn wz-btn-ghost" onClick={() => setSub("greet")}>
+                <span aria-hidden="true">&larr;</span> Back
+              </button>
               <button className="wz-btn wz-btn-primary" onClick={finish} disabled={saving}>
                 {saving ? "…" : "Enter Tacet"}
               </button>
