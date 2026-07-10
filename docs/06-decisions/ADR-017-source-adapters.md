@@ -5,7 +5,8 @@
 > the next free number. Code and docs refer to it as **ADR-017**.
 
 ## Status
-Accepted (2026-07). Implemented in `src/sources/`.
+Accepted (2026-07). Implemented in `src/sources/` and **shipped live on 2026-07-10** —
+ActivityPub, RSS/Atom/JSON Feed, AT Protocol (Bluesky), and Nostr all merge into `/today`.
 
 ## Context
 Tacet is a home for the *whole* open social web, not one protocol. ADR-007 already settled

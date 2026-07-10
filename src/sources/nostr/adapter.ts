@@ -92,9 +92,11 @@ function extractMedia(text: string): NormalizedPost["media"] {
 // never rejects for a slow/rude relay (it just yields fewer events).
 async function fetchWindow(relayUrl: string, filters: unknown[], timeoutMs: number): Promise<NostrEvent[]> {
   const httpUrl = relayUrl.replace(/^ws:/i, "http:").replace(/^wss:/i, "https:");
-  const resp = await fetch(httpUrl, { headers: { Upgrade: "websocket" } });
+  // Bound the UPGRADE handshake itself — without this, a stalled relay connection hangs the
+  // whole refresh (the collect window's timer only starts after the socket opens).
+  const resp = await fetch(httpUrl, { headers: { Upgrade: "websocket" }, signal: AbortSignal.timeout(timeoutMs) });
   const ws = resp.webSocket;
-  if (!ws) throw new Error("relay did not upgrade to websocket");
+  if (!ws) throw new Error(`relay did not upgrade (status ${resp.status})`);
   ws.accept();
   const events: NostrEvent[] = [];
   const sub = "t";
@@ -108,9 +110,10 @@ async function fetchWindow(relayUrl: string, filters: unknown[], timeoutMs: numb
     };
     const timer = setTimeout(finish, timeoutMs);
     ws.addEventListener("message", (ev: MessageEvent) => {
-      if (typeof ev.data !== "string") return;
       try {
-        const msg = JSON.parse(ev.data);
+        const raw = typeof ev.data === "string" ? ev.data : ev.data instanceof ArrayBuffer ? new TextDecoder().decode(ev.data) : "";
+        if (!raw) return;
+        const msg = JSON.parse(raw);
         if (!Array.isArray(msg)) return;
         if (msg[0] === "EVENT" && msg[1] === sub && msg[2]) events.push(msg[2] as NostrEvent);
         else if (msg[0] === "EOSE") { clearTimeout(timer); finish(); }
@@ -139,8 +142,11 @@ export class NostrAdapter implements SourceAdapter<NostrRaw> {
 
     const settled = await Promise.allSettled(RELAYS.map((r) => fetchWindow(r, filters, WINDOW_MS)));
     const all: NostrEvent[] = [];
-    for (const s of settled) if (s.status === "fulfilled") all.push(...s.value);
-    // (rejections are intentionally swallowed here — a bad relay must never block the cycle)
+    settled.forEach((s, i) => {
+      if (s.status === "fulfilled") all.push(...s.value);
+      // A bad relay must never block the cycle — skip it, but surface why in the logs.
+      else console.warn(`[nostr] relay ${RELAYS[i]} skipped: ${s.reason instanceof Error ? s.reason.message : String(s.reason)}`);
+    });
 
     // Dedup identical events across relays by id.
     const byId = new Map<string, NostrEvent>();

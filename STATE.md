@@ -12,6 +12,47 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Open-web source adapters — FULL READ COVERAGE, LIVE (2026-07-10).** Deploy version
+  **`184cc804-96d4-44f2-88b5-924aba3ec7d8`** (rollback anchor: prior live
+  `53c71bec-ea7d-4d7d-b3ce-da4e45164406` → `npx wrangler rollback --config wrangler.local.jsonc`).
+  ADR-017 (`docs/06-decisions/ADR-017-source-adapters.md`; numbered 017 because 013 was taken).
+  Today now renders content from **every major open network** through one normalization
+  contract (`src/sources/`): **ActivityPub** (live, untouched reader mapped onto the contract),
+  **RSS/Atom/JSON Feed** (`src/sources/feeds/`), **AT Protocol / Bluesky** (`src/sources/atproto/`),
+  and **Nostr** (`src/sources/nostr/`). One schema (the product's Moment); protocol language never
+  crosses the boundary (UI gets human labels only — "Mastodon", "Bluesky", "Nostr", publication
+  names); dedup by canonical URL; UTC timestamps.
+  - **Architecture:** ActivityPub is read live per request (existing path never disturbed);
+    feeds/Bluesky/Nostr are **collectors** refreshed by a **15-min cron** (in the git-ignored
+    deploy config; tracked `wrangler.jsonc` untouched) + a lazy lock-guarded refresh on `/today`
+    read, into a shared D1 store (`migration 0014`: `feeds` registry + `source_items` + `source_state`).
+    `/api/openweb/today` merges all four and interleaves calmly — recency + source variety, no
+    engagement (ADR-011/012). Today still ENDS (20 items); no infinite scroll.
+  - **UI:** every card carries a source label + favicon; podcasts get an `<audio>` player and
+    videos a poster — controls, preload none, **no autoplay**. `MomentMedia` gained `audio` + `poster`.
+  - **Nostr specifics:** read-only over 4 public relays (`relays.json`) in short-lived WS windows
+    (Workers can't hold a cron subscription); kind-1 notes + kind-0 profiles for 6 seed npubs
+    (`seeds.json`); **Schnorr signature verification** (`@noble/curves`); cross-relay dedup;
+    dependency-free bech32. A misbehaving relay is skipped + logged, never blocks the cycle.
+  - **Ship debugging (folded in):** the WS **upgrade fetch had no timeout**, so a stalled relay
+    hung the whole refresh (feeds/atproto persisted, Nostr wrote 0, report never written). Fixed
+    with an upgrade-handshake `AbortSignal.timeout` + a 25s per-adapter budget in the refresh, plus
+    durable diagnostics (last refresh report persisted to `source_state`, adapter/relay errors
+    logged). Also hardened the WS message handler for binary frames.
+  - **Verified live on `https://tacet.social/today`** (cache-busted): `mode:live`, 20 items,
+    **all four sources present** — feeds 6, Bluesky 8, Nostr 3, ActivityPub 3 — with human labels
+    (Forum/Bluesky/Nostr/Blog/Podcast/Mastodon) and favicons; `/api/health` 200; CSP/HSTS/
+    `X-Frame-Options: DENY`/nosniff intact; zero protocol words in UI labels (the only "ActivityPub"/
+    "RSS" strings are inside real post/profile text, which we don't censor). D1 store held
+    atproto 56 / feeds 20 / nostr 40 at verification.
+  - **New deps:** `fast-xml-parser` (feeds), `@noble/curves` (Nostr sig verify) — pure-JS,
+    Workers-compatible; worker bundles ~100 KiB gz. **Closed platforms** (IG/TikTok/X/LinkedIn/
+    Facebook) permanently out of scope as sources — no read APIs; picker orientation only.
+    threads.net verified reachable; federating Threads accounts read via the AP adapter.
+  - **Deferred (not blocking):** feed OpenGraph enrichment is bounded to ~6/refresh (logged);
+    Bluesky video renders as a thumbnail still (HLS needs a player dep) and links out; a
+    `source_items` retention prune keeps 30 days. Follow-up: user-chosen sources (product direction).
+
 - **Business model documented (2026-07-10) — docs only, no billing code.** New
   [`docs/01-product/business-model.md`](docs/01-product/business-model.md) (canonical
   01-product product area; 09-product holds only the publishing-philosophy doc) is the
