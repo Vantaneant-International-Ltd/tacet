@@ -16,8 +16,8 @@ publishing (writing back to the open web) is the next track, not yet built.
 ## Live
 
 - **Deployed** on `tacet.social` (apex via a Worker route; `www` → 301 → apex; workers.dev
-  fallback). Current version `8fedc604-449f-49ae-b1df-baf5daf9f04f`. Rollback anchor
-  `184cc804` → `npx wrangler rollback --config wrangler.local.jsonc`.
+  fallback). Current version `e5626af7-f3d0-440e-8f66-161f767e78dd`. Rollback anchor
+  `8fedc604` → `npx wrangler rollback --config wrangler.local.jsonc`.
 - **Today reads the open web live** through four source adapters behind one normalization
   contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md), `src/sources/`):
   - **ActivityPub** — read live per request through the untouched `src/openweb/` reader.
@@ -95,4 +95,7 @@ Verified correct this session — the next session may cite these without re-che
   can't impersonate a federated address (test-pinned).
 - **Doctrine intact:** FOUNDING_PRINCIPLES and the manifesto were only cross-referenced,
   never weakened (audit A6-7).
-- **Deployed version `8fedc604`** matches the current `main` build.
+- **Type system unified:** app + landing both render in **Hanken Grotesk + Spline Sans
+  Mono** (verified in the live CSS); the legacy `client/src/legacy/` tree is gone; docs
+  folders tidied (`11-decisions`, merged `01-product`).
+- **Deployed version `e5626af7`** matches the current `main` build.
