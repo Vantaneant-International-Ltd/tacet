@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { canonicalUrl, dedupeKey, dedupePosts, calmInterleave, type NormalizedPost } from "../src/sources/contract";
 import { ActivityPubAdapter } from "../src/sources/activitypub/adapter";
 import { mergeTodayResult } from "../src/sources/today";
+import { mockMoments, mockPeople } from "../src/openweb/mock";
 import type { AdapterResult, Moment, Person } from "../src/openweb/types";
 
 // Pure contract tests — no network. The adapters' live fetches are exercised against real
@@ -134,5 +135,27 @@ describe("Today merge + calm interleave", () => {
     const mock = apResult("mock", [post("https://sample/x")]);
     const merged = mergeTodayResult(mock, [], 20);
     expect(merged).toBe(mock); // untouched
+  });
+
+  // A8-5a — the honesty invariant, applied to the ACTUAL merged Today payload and to the
+  // sample content, not just per-adapter. UI-facing label fields must never carry protocol
+  // words (product names like Mastodon/Bluesky/Nostr are fine).
+  it("never leaks protocol words into merged Today label fields, nor into the mock fallback", () => {
+    const PROTOCOL = /ActivityPub|ActivityStreams|AT-URI|AT Protocol|\brelay\b|federat|fediverse|\binstance\b|\bRSS\b|Atom feed|JSON Feed|schnorr|secp256k1/i;
+    const labelBlob = (m: Moment) => `${m.source.name} ${m.source.software ?? ""} ${m.author.name} ${m.author.handle} ${m.author.source.name} ${m.author.source.software ?? ""}`;
+
+    const feeds = at("2026-07-09T10:00:00Z", "feeds", 1);
+    feeds.source.software = "Blog";
+    const bsky = at("2026-07-09T09:59:00Z", "atproto", 1);
+    bsky.source.software = "Bluesky";
+    const nostr = at("2026-07-09T09:58:00Z", "nostr", 1);
+    nostr.source.software = "Nostr";
+    const ap = post("https://mastodon.social/@a/1");
+    ap.source.software = "Mastodon";
+    const merged = mergeTodayResult(apResult("live", [ap]), [feeds, bsky, nostr], 20);
+    for (const m of merged.data) expect(labelBlob(m), labelBlob(m)).not.toMatch(PROTOCOL);
+
+    for (const m of mockMoments) expect(labelBlob(m), labelBlob(m)).not.toMatch(PROTOCOL);
+    for (const p of mockPeople) expect(`${p.source.name} ${p.source.software ?? ""} ${p.name} ${p.handle}`).not.toMatch(PROTOCOL);
   });
 });
