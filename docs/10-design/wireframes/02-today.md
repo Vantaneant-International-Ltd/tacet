@@ -19,7 +19,7 @@ Doctrine held on every frame below, **as reconciled**: **no *self-directed* enga
 no scoreboard of *your* likes / views, no reaction rail, no ranking of people, no red counts, no
 streaks. That ban stands. **World-directed context is different and now allowed**: represented
 momentum from your world (led by the thing, numbers softened to qualitative/range), shown calmly —
-never a raw ascending tally or a top-N leaderboard ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+never a raw ascending tally or a top-N leaderboard ([ADR-011](../../11-decisions/ADR-011-metrics-are-context-not-rewards.md),
 [design-principles L11](../design-principles.md)). Affordance row is **Reply · Share · Save** only;
 **Save** is the private positive/`spark` signal. Story rings, if ever used, are your people's genuine
 moments — never a streak. Presence is `·dot·`, never a red count. Attribution names a **human place**

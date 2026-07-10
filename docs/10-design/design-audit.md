@@ -16,7 +16,7 @@ This audit is grounded in three sources, not impressions:
 
 1. **The product doctrine** — the manifesto, product docs, Human Interface Guidelines, the
    existing Design System docs (`03-design-system/*`), the brand voice, and the
-   [Publishing Philosophy](../09-product/publishing-philosophy.md).
+   [Publishing Philosophy](../01-product/publishing-philosophy.md).
 2. **The V1 implementation as it actually ships** — the real tokens in
    [`client/src/design/theme.css`](../../client/src/design/theme.css), the primitives in
    `client/src/design/primitives.tsx`, the icon set in `client/src/design/icons.tsx`, and
@@ -186,13 +186,13 @@ of Design I extract the feeling and reject the furniture, explicitly:
 > was too blunt in one direction: it rejected *concepts* (trending, momentum, presence panels,
 > federation reassurance) when only the incumbents' *manipulative implementations* were the problem.
 > The governing line is now **informing vs. manipulating** ([design-principles L11](./design-principles.md),
-> [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
-> [ADR-012](../06-decisions/ADR-012-the-context-column-law.md)): representing the open web's real life
+> [ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md),
+> [ADR-012](../11-decisions/ADR-012-the-context-column-law.md)): representing the open web's real life
 > (people, momentum, active communities) is *informing* and belongs; only *self-directed scores,
 > people-rankings, and anxiety furniture* are cut. Read the "Reject" list below as **cut the
 > manipulation, represent the reality** — see the per-item reconciliation and
 > [stage-6-design-direction.md](./stage-6-design-direction.md). The "your world, never your score"
-> context column ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)) supersedes the
+> context column ([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)) supersedes the
 > "calm context or scoreboard" binary this section drew.
 
 **Adopt (emotional qualities to pursue):**
@@ -214,7 +214,7 @@ of Design I extract the feeling and reject the furniture, explicitly:
 - **Per-card self-directed count rows** (`24 · 6 · 7`, `142 · 18 · 23`) as a standing scoreboard on
   every post. **Still cut** as a per-card scoreboard. *But* world-directed reception ("an active
   thread", "shared widely"), framed and softened, may be represented in editorial/context surfaces —
-  it is informing, not a self-score ([ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+  it is informing, not a self-score ([ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md)).
 - **A live "Federation status" *dashboard*** (*"Connected servers 2,418 · Active users 47.3K"* with a
   pulsing map, as persistent furniture). **Cut** as a live ticker, and never expose server/instance
   terminology. *But* a one-time / on-demand **"you're connected to a live open web" reassurance**
@@ -223,7 +223,7 @@ of Design I extract the feeling and reject the furniture, explicitly:
 - **"Trending" as a raw ascending leaderboard** ("12.4K people talking" as the headline, ranked hot
   topics). **Cut** the leaderboard form. *But* **represented momentum** — *what your world is reading /
   discussing*, relationship-scoped, led by the thing not the number — is Discover as editorial
-  exploration of the open web and belongs (discover.md; [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+  exploration of the open web and belongs (discover.md; [ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md)).
 - **Story rings as a streak / urgency halo** ("watch me before it disappears"). **Cut** the FOMO
   mechanic. *But* "people you care about, and their genuine recent moments" can exist without a
   disappearing-timer — revisit in a dedicated spec.

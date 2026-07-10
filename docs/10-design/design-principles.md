@@ -68,7 +68,7 @@ best compliment is that the person remembers the conversation, not the chrome. *
 The wide-canvas right column is a **living contextual space**: people close to you, what your world
 is reading, active conversations, communities that moved, a calm onward door. It may be genuinely
 rich. It never becomes a dashboard, a leaderboard, a personal-analytics panel, or anxiety furniture.
-The gate is the informing/manipulating test (L11), not emptiness. *([ADR-012](../06-decisions/ADR-012-the-context-column-law.md),
+The gate is the informing/manipulating test (L11), not emptiness. *([ADR-012](../11-decisions/ADR-012-the-context-column-law.md),
 [responsive.md §3](./responsive.md).)*
 
 ### L8 — Both themes are designed, not inverted

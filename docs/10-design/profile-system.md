@@ -16,7 +16,7 @@ vanity-number scoreboard.
 ## 1. Why: a person is a home, not a profile
 
 Everything in Tacet is built around **Home** — the permanent place a person's digital life lives
-([publishing-philosophy.md](../09-product/publishing-philosophy.md)). A profile is what a home
+([publishing-philosophy.md](../01-product/publishing-philosophy.md)). A profile is what a home
 looks like from the doorway. So the design brief is emotional before it is structural: opening a
 profile should feel like *arriving at where someone lives*, and opening your own should feel like
 *walking into your own home, not opening settings*.

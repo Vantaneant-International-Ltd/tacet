@@ -62,7 +62,7 @@ package.json         # one package, root scripts
 - **No `packages/domain`.** Domain logic currently lives *inside* route handlers (e.g. `src/routes/posts.ts` shapes posts and folds in acks/reactions/keeps inline). The domain model of [domain-model.md](domain-model.md) is implicit, not extracted. This is the first refactor to earn its keep.
 - **Read adapters are built; write federation is not.** The **read** side ships in `src/openweb/`
   (the generic ActivityPub reader) and `src/sources/` (the shared contract + four adapters —
-  ActivityPub, RSS/Atom/JSON Feed, AT Protocol, Nostr — behind [ADR-017](../06-decisions/ADR-017-source-adapters.md)),
+  ActivityPub, RSS/Atom/JSON Feed, AT Protocol, Nostr — behind [ADR-017](../11-decisions/ADR-017-source-adapters.md)),
   merged into Today. What's still unbuilt is **write** federation: no inbox, no outbox, no `Activity`
   types. That target lives in [ActivityPub adapter](activitypub-adapter.md); a future `packages/federation`
   would house it.

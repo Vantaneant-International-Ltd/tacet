@@ -6,8 +6,8 @@
 # STATE
 
 > **Re-founded 2026-07-07 around `/docs/`.** Product authority is now
-> [`/docs/`](docs/), [`/FOUNDING_PRINCIPLES.md`](FOUNDING_PRINCIPLES.md), and
-> [`/PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md). Tacet is **your home on the open
+> [`/docs/`](../../docs/), [`/FOUNDING_PRINCIPLES.md`](../../FOUNDING_PRINCIPLES.md), and
+> [`/PRODUCT_DIRECTION.md`](../../PRODUCT_DIRECTION.md). Tacet is **your home on the open
 > social web** (People before posts · Relationships before engagement · Identity
 > before platforms · Calm before addiction · Open before closed). `BUILD-LOCKFILE.md`
 > and `DESIGN.md` are stamped historical. This file now tracks **build state only**,
@@ -18,7 +18,7 @@
 ## Done since re-founding (2026-07-07)
 
 - **Running-costs transparency doc (2026-07-10) — docs only.** New
-  [`docs/01-product/running-costs.md`](docs/01-product/running-costs.md): a public,
+  [`docs/01-product/running-costs.md`](../../docs/01-product/running-costs.md): a public,
   dated (July 2026) estimate of what the hosted service costs to run — a monthly-USD table
   across Beta / 1k / 10k / 100k daily users (Workers, traffic, DB with a planned D1→Postgres
   migration ~10k, R2, jobs, domain+email; totals ~$6/~$10/~$65/~$350). Framed by "you are not
@@ -42,7 +42,7 @@
 - **Open-web source adapters — FULL READ COVERAGE, LIVE (2026-07-10).** Deploy version
   **`184cc804-96d4-44f2-88b5-924aba3ec7d8`** (rollback anchor: prior live
   `53c71bec-ea7d-4d7d-b3ce-da4e45164406` → `npx wrangler rollback --config wrangler.local.jsonc`).
-  ADR-017 (`docs/06-decisions/ADR-017-source-adapters.md`; numbered 017 because 013 was taken).
+  ADR-017 (`docs/11-decisions/ADR-017-source-adapters.md`; numbered 017 because 013 was taken).
   Today now renders content from **every major open network** through one normalization
   contract (`src/sources/`): **ActivityPub** (live, untouched reader mapped onto the contract),
   **RSS/Atom/JSON Feed** (`src/sources/feeds/`), **AT Protocol / Bluesky** (`src/sources/atproto/`),
@@ -81,8 +81,8 @@
     `source_items` retention prune keeps 30 days. Follow-up: user-chosen sources (product direction).
 
 - **Business model documented (2026-07-10) — docs only, no billing code.** New
-  [`docs/01-product/business-model.md`](docs/01-product/business-model.md) (canonical
-  01-product product area; 09-product holds only the publishing-philosophy doc) is the
+  [`docs/01-product/business-model.md`](../../docs/01-product/business-model.md) (canonical
+  01-product product area; 01-product holds only the publishing-philosophy doc) is the
   public statement of sustainability: the open-source / decentralised / hosted-service
   distinction; free-forever commitments (full self-hostable source with no upsell-only
   feature gates + a genuinely usable free tacet.social account); the governing principle
@@ -232,7 +232,7 @@
   - workers.dev URL remained enabled and 200 throughout (no wrangler deploy this session).
   - DNS backup NOT created (token lacked DNS-read scope; nothing was deleted, so no rollback artifact needed).
 
-- **Publishing philosophy** (`docs/09-product/publishing-philosophy.md`) — foundational
+- **Publishing philosophy** (`docs/01-product/publishing-philosophy.md`) — foundational
   design doc; refined pass added a "What is Home?" section, owned-vs-kept distinction,
   clarified Entry is an internal abstraction (UI stays human), and reframed protocol
   mapping as faithful representation.
@@ -315,7 +315,7 @@
   SQL. Local identity is a signed `tacet_me` device cookie (not remote auth). Saving stores
   a full snapshot so a saved post survives remote deletion. Save works from Today; posts you
   open are recorded to Recently viewed. Read-only toward the open web (no follows/posts/
-  writes). 58 tests pass (6 new Me tests). See [`src/me/README.md`](src/me/README.md).
+  writes). 58 tests pass (6 new Me tests). See [`src/me/README.md`](../../src/me/README.md).
 
 - **Public-release preparation.** Repository made safe for open-source release: full
   canonical AGPL-3.0 `LICENSE`; governance files (`CONTRIBUTING.md`,
@@ -372,7 +372,7 @@
 **Phase:** 2 — the address (in progress). Phase 1 complete + Amendments 1 & 2.
 **Main runnable:** yes, locally: `npm install` → `npm run migrate` → `npm run dev`.
 **Deploy:** see `DEPLOY.md`. Blocked only on R2 being enabled on the account.
-**Canonical-record goal:** the VNTA-internal "canonical record / syndication" strategy is a **separate, private workstream** — deliberately out of scope for this open-source product (see [PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md) §9).
+**Canonical-record goal:** the VNTA-internal "canonical record / syndication" strategy is a **separate, private workstream** — deliberately out of scope for this open-source product (see [PRODUCT_DIRECTION.md](../../PRODUCT_DIRECTION.md) §9).
 **Locked thesis (Amendment 3):** a gateway back to the good internet, rebuilt for 2026 — one home, owned by you, chronological, quiet — **keep the action, cut the scoreboard** — powered by AI, open to all (human + AI). Following + AI residents are first-class; no counts/algorithm/ads. Open item: dislikes (held cut, Ren's final call). Next build tracks: (1) follow + personal feed + profiles; (2) rebuild the UI to the dossier/mockup (`design/web-mockup.html`).
 
 ## Done since last entry
@@ -388,7 +388,7 @@
 - **Deployed to an interim Cloudflare `*.workers.dev` address** (private, invite-gated)
   for early testing. Deploy details (account id, database id, secrets) live in the
   deployer's own Cloudflare account and `.dev.vars`, never in the repo — see
-  [`DEPLOY.md`](DEPLOY.md).
+  [`DEPLOY.md`](../../DEPLOY.md).
   - ✅ D1 created + migrated; R2 bucket created; session secret set out-of-band.
   - ✅ Live smoke test: health ok, SPA serves, auth guard 401s, `/api/config` returns
     null Turnstile.

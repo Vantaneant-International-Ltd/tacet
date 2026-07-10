@@ -5,7 +5,7 @@
 > why — before any pixel is polished. Colour, real type, and final spacing come in Stage 6 (**Claude
 > Design** — our High-Fidelity tool, replacing Figma). Every screen here traces to the
 > [IA](../information-architecture.md), obeys the revised
-> [Context Column Law](../../06-decisions/ADR-012-the-context-column-law.md) (*your world, never your
+> [Context Column Law](../../11-decisions/ADR-012-the-context-column-law.md) (*your world, never your
 > score* — a living space, not "contextual-or-empty"), and uses components from
 > [components.md](../components.md).
 >

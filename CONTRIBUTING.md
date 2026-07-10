@@ -65,9 +65,8 @@ Guidelines:
 - **No protocol jargon in the UI.** Product language only.
 - **Never commit secrets.** Local secrets live in a git-ignored `.dev.vars` (see
   [`.dev.vars.example`](.dev.vars.example)).
-- **Don't resurrect legacy.** Code under [`client/src/legacy/`](client/src/legacy/)
-  is the old "rooms" product, quarantined on purpose. Rebuild inside a pillar
-  instead of importing from it.
+- **Don't resurrect the old "rooms" product.** It was removed from the client
+  (it lives only in git history now). Build inside a pillar instead of porting it back.
 - **Write like the surrounding code.** Match its style, naming, and comment density.
 
 ## Commit and PR style

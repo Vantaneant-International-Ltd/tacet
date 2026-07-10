@@ -269,7 +269,7 @@ Formalises the decision to make desktop a designed tier, not scaled mobile. See
 - **768–899px (tablet):** single wide column, tab bar; reading measure widens.
 - **900–1199px (desktop):** rail + centred feed. No context column yet.
 - **≥ 1200px (wide):** rail · feed · **context column**. **The context column is a *living*
-  contextual space — "your world, never your score"** ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)).
+  contextual space — "your world, never your score"** ([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)).
   It helps the person *understand and move through their world* and adapts per screen: on Today,
   *continue where you left off* + people close to you + represented momentum (framed, not tallied);
   on a Profile, *about this person + people you both know*; in a Conversation, *the participants and
@@ -278,7 +278,7 @@ Formalises the decision to make desktop a designed tier, not scaled mobile. See
   relationship-derived content is welcome; **self-directed scoreboards, people-rankings, personal
   analytics, and a live federation dashboard are not.** When a view genuinely has nothing to add it
   rests quietly (a composed quiet, not celebrated blankness). This is a design law — see
-  [responsive.md §3](./responsive.md) and [ADR-012](../06-decisions/ADR-012-the-context-column-law.md).
+  [responsive.md §3](./responsive.md) and [ADR-012](../11-decisions/ADR-012-the-context-column-law.md).
 - **≥ 1600px (ultra-wide):** content capped at `--canvas-max`; extra space becomes quiet margin.
 
 ---
@@ -318,7 +318,7 @@ variables (Stage 6) share one vocabulary.
 
 ## 14. The timeless system vs the swappable style layer
 
-From the [timelessness audit](./timelessness-audit.md) and [ADR-016](../06-decisions/ADR-016-timeless-system-swappable-style.md):
+From the [timelessness audit](./timelessness-audit.md) and [ADR-016](../11-decisions/ADR-016-timeless-system-swappable-style.md):
 a few token *values* are more tied to the taste of this decade than to Tacet itself. They are **not
 removed** — they are Tacet's current identity — but they are explicitly marked as the **style layer**:
 a value can change without the system changing, precisely because the token *names* (the roles) are

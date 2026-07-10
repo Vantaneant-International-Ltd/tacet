@@ -58,7 +58,7 @@ to retract every copy first, but the two acts stay separate in the user's mind.
 
 ## References
 
-- [09-product/publishing-philosophy.md](../09-product/publishing-philosophy.md) — creation ≠
+- [01-product/publishing-philosophy.md](../01-product/publishing-philosophy.md) — creation ≠
   distribution, the death of the draft, distribution state, retract vs delete.
 - [ADR-002: Home is the source of truth](./ADR-002-home-is-the-source-of-truth.md) — the home
   this publishing model distributes *from*.

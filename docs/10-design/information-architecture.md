@@ -60,7 +60,7 @@ Every screen Tacet has, and where it hangs. Nothing floats; nothing duplicates.
 The [Context Column Law](./responsive.md#3-the-context-column-is-a-law-your-world-never-your-score):
 the right column is a **living contextual space** that helps you **understand and move through your
 world** — governed by the **informing vs. manipulating** test, not by emptiness
-([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)). Here is what each pillar may put in
+([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)). Here is what each pillar may put in
 each column at the wide tier (≥1200px). Below that tier, the content folds into the main flow or
 disappears — nothing *lives* only there.
 

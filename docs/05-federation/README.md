@@ -13,7 +13,7 @@
 
 > **Status (2026-07): the replaceable-adapter law is now realized, and generalized.**
 > ActivityPub is no longer Tacet's *only* adapter — it is **one of four** behind a single
-> normalization contract ([ADR-017](../06-decisions/ADR-017-source-adapters.md)): ActivityPub,
+> normalization contract ([ADR-017](../11-decisions/ADR-017-source-adapters.md)): ActivityPub,
 > RSS/Atom/JSON Feed, AT Protocol (Bluesky), and Nostr all read live into Today, each emitting
 > the same domain shape. This section is still the right place for the *meaning* of federation;
 > just read "ActivityPub adapter" as "the first and richest of several adapters." The doctrine is

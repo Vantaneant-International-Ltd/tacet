@@ -56,7 +56,7 @@ the machine in engineering and put only the human act on screen.
 ## References
 - [Design principles (Human Interface Guidelines)](../02-human-interface-guidelines/design-principles.md)
   — Legible over clever; the anti-clone stance on Mastodon's protocol UI.
-- [Publishing philosophy](../09-product/publishing-philosophy.md) — "Entry" is an
+- [Publishing philosophy](../01-product/publishing-philosophy.md) — "Entry" is an
   internal domain word, never a user-facing one.
 - [Design principles — Visual System V2, Law L9](../10-design/design-principles.md)
   — "Human words only," the enforceable visual commitment.

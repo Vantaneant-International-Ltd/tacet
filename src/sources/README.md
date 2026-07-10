@@ -1,7 +1,7 @@
 # src/sources — open-web source adapters
 
 Every open network Tacet reads is a leaf module here, behind one contract. See
-[ADR-017](../../docs/06-decisions/ADR-017-source-adapters.md) for the decision and the rules.
+[ADR-017](../../docs/11-decisions/ADR-017-source-adapters.md) for the decision and the rules.
 
 ```
 contract.ts            The SourceAdapter interface + NormalizedPost schema + dedup helpers.

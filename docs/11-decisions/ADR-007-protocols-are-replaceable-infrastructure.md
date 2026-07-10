@@ -60,7 +60,7 @@ things go out and come in is allowed to change.
 - [ActivityPub as infrastructure](../05-federation/activitypub-as-infrastructure.md)
 - [Architecture principles](../06-engineering/architecture-principles.md)
 - [Product vision](../01-product/product-vision.md)
-- [Publishing philosophy](../09-product/publishing-philosophy.md) — the mirror
+- [Publishing philosophy](../01-product/publishing-philosophy.md) — the mirror
   "complete product / replaceable adapter" law on the write side.
 - ADR-003 (identity before platforms), ADR-005, ADR-008 (human language over
   protocol language — the UI-facing expression of this decision).

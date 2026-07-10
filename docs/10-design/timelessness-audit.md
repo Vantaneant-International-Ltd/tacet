@@ -4,7 +4,7 @@
 > Tacet is a defining product of the open social web a decade from now. What still feels inevitable —
 > and what reveals the year it was made? The rule: **remove or refine anything that exists only because
 > it is fashionable today rather than fundamental to Tacet.** Do not chase trends; optimise for
-> timelessness. Codified as [ADR-016](../06-decisions/ADR-016-timeless-system-swappable-style.md).
+> timelessness. Codified as [ADR-016](../11-decisions/ADR-016-timeless-system-swappable-style.md).
 
 ---
 
@@ -24,22 +24,22 @@ values are of-this-decade and should be *labelled* as swappable rather than trea
 
 These would be defensible on a stage in 2035 as easily as today:
 
-- **The five pillars and people-before-posts** ([ADR-009](../06-decisions/ADR-009-people-before-posts-five-pillars.md)).
+- **The five pillars and people-before-posts** ([ADR-009](../11-decisions/ADR-009-people-before-posts-five-pillars.md)).
   Organising around people and a bounded day, not an infinite feed, is a stance about human
   attention, not a UI trend.
-- **Calm over engagement; metrics as context, not rewards** ([ADR-010](../06-decisions/ADR-010-calm-over-engagement.md),
-  [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)). The attention economy will
+- **Calm over engagement; metrics as context, not rewards** ([ADR-010](../11-decisions/ADR-010-calm-over-engagement.md),
+  [ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md)). The attention economy will
   look *more* dated in ten years, not less; refusing it ages well.
 - **Home as source of truth; identity before platform; publishing is distribution**
-  ([ADR-002](../06-decisions/ADR-002-home-is-the-source-of-truth.md),
-  [ADR-001](../06-decisions/ADR-001-identity-before-platform.md),
-  [ADR-004](../06-decisions/ADR-004-publishing-is-distribution.md)). Ownership and portability are
+  ([ADR-002](../11-decisions/ADR-002-home-is-the-source-of-truth.md),
+  [ADR-001](../11-decisions/ADR-001-identity-before-platform.md),
+  [ADR-004](../11-decisions/ADR-004-publishing-is-distribution.md)). Ownership and portability are
   structural, not stylistic.
 - **Typography carries hierarchy; a fixed reading measure (66–72 chars); generous whitespace; an 8px
   rhythm.** These are typographic fundamentals with centuries behind them.
 - **WCAG AA as a floor; warmth over austerity; two real themes; a semantic token architecture.**
   Accessibility and warmth only compound in value; semantic tokens are *how* the rest stays swappable.
-- **The Context Column Law** ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)) — a rule
+- **The Context Column Law** ([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)) — a rule
   about serving the current task, not a visual motif. It outlives any layout.
 
 ## 2. Which ideas feel fashionable / tied to today's trends?
@@ -66,9 +66,9 @@ Named honestly, strongest signal first:
 
 ## 4. Which terminology is unnecessarily contemporary?
 
-Very little, because [ADR-008](../06-decisions/ADR-008-human-language-over-protocol-language.md)
+Very little, because [ADR-008](../11-decisions/ADR-008-human-language-over-protocol-language.md)
 already banned the jargon that dates fastest (protocol terms) and
-[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) banned growth-speak. The pillar
+[ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md) banned growth-speak. The pillar
 names (Today, People, Discover, Conversations, Me) are plain, ancient words. No "vibe/drop/stories/
 reels" slang appears. The one mild borrow is **"Workspace"** (a Notion-era framing) — but it is a
 generic, durable word for a genuine concept, so it stays. Terminology is clean.
@@ -76,8 +76,8 @@ generic, durable word for a genuine concept, so it stays. Terminology is clean.
 ## 5. Which parts survive if ActivityPub disappears?
 
 **Everything a person sees.** This is the whole point of
-[ADR-007](../06-decisions/ADR-007-protocols-are-replaceable-infrastructure.md) and
-[ADR-008](../06-decisions/ADR-008-human-language-over-protocol-language.md): the protocol is a
+[ADR-007](../11-decisions/ADR-007-protocols-are-replaceable-infrastructure.md) and
+[ADR-008](../11-decisions/ADR-008-human-language-over-protocol-language.md): the protocol is a
 replaceable adapter at the edge, and its vocabulary never reaches the UI. If ActivityPub vanished,
 the domain model, the five pillars, the publishing model, and every human word would stand unchanged;
 only the adapter would be rewritten. Tacet is *already* built for the day its protocol dies.
@@ -85,12 +85,12 @@ only the adapter would be rewritten. Tacet is *already* built for the day its pr
 ## 6. Which parts survive if new protocols replace today's ones?
 
 The same parts — and by design. The **Entry** content model
-([ADR-003](../06-decisions/ADR-003-entry-is-the-canonical-content-model.md)) is a *superset* of what
+([ADR-003](../11-decisions/ADR-003-entry-is-the-canonical-content-model.md)) is a *superset* of what
 any protocol supports, not a mirror of ActivityPub's post type, and
-[ADR-005](../06-decisions/ADR-005-representation-not-degradation.md) says content is *represented*
+[ADR-005](../11-decisions/ADR-005-representation-not-degradation.md) says content is *represented*
 into each destination's capabilities. So a new protocol (AT Protocol, or something not yet named) is
 another adapter mapping *out* — the product does not move. Tacet's federation citizenship
-([ADR-015](../06-decisions/ADR-015-federation-citizenship.md)) is likewise stated in human actions
+([ADR-015](../11-decisions/ADR-015-federation-citizenship.md)) is likewise stated in human actions
 (Share, Reply), not protocol verbs, so it too survives the swap.
 
 ---
@@ -106,7 +106,7 @@ another adapter mapping *out* — the product does not move. Tacet's federation 
 - **Labelled, not removed: the style layer.** The accent hue, the two typefaces, and the largest radii
   are marked as the **swappable style layer** — Tacet's current identity, but tunable in one place
   without structural churn, precisely because components bind to token *names*. 📄
-  [tokens.md §14](./tokens.md), [ADR-016](../06-decisions/ADR-016-timeless-system-swappable-style.md).
+  [tokens.md §14](./tokens.md), [ADR-016](../11-decisions/ADR-016-timeless-system-swappable-style.md).
 
 What was **kept unchanged**: everything in §1. Nothing timeless was touched. The purple, Jost, and the
 radius scale remain Tacet's face today — the audit only insists they are known to be *a* face, not

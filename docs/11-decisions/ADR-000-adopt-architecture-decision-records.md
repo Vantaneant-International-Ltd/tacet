@@ -11,7 +11,7 @@ decisions — identity ownership, the source-of-truth model, the protocol stance
 engagement doctrine, the design-system-first process. Each was made deliberately and for good reasons.
 
 Those reasons currently live only inside large constitutional documents — the
-[manifesto](../00-manifesto/), the [publishing philosophy](../09-product/publishing-philosophy.md),
+[manifesto](../00-manifesto/), the [publishing philosophy](../01-product/publishing-philosophy.md),
 the [product](../01-product/) and [design](../10-design/) corpora. Those documents are excellent, but
 they are long, and a decision's *rationale* is often woven through prose rather than stated as a
 discrete, citable fact. As the project grows and contributors change, the risk is that the **why**
@@ -21,7 +21,7 @@ the argument — the most expensive kind of mistake, because it undoes deliberat
 ## Decision
 
 Adopt lightweight **Architecture Decision Records** as the permanent index of Tacet's foundational
-decisions, in [`docs/06-decisions/`](./README.md).
+decisions, in [`docs/11-decisions/`](./README.md).
 
 - Each ADR is **one page** and records a **single** decision in a fixed format (Status · Context ·
   Decision · Consequences · References).
@@ -51,8 +51,8 @@ practice by using it.
 
 ## References
 
-- Index and format: [docs/06-decisions/README.md](./README.md)
+- Index and format: [docs/11-decisions/README.md](./README.md)
 - Constitutional documents this practice indexes: [00-manifesto](../00-manifesto/),
-  [09-product/publishing-philosophy.md](../09-product/publishing-philosophy.md),
+  [01-product/publishing-philosophy.md](../01-product/publishing-philosophy.md),
   [01-product](../01-product/), [10-design](../10-design/), [05-federation](../05-federation/).
 - Prior art: Michael Nygard, *Documenting Architecture Decisions* (the ADR pattern).

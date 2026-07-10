@@ -11,7 +11,7 @@ Read [`FOUNDING_PRINCIPLES.md`](../../FOUNDING_PRINCIPLES.md) and the
 networks made you the product — ["you stopped being the user and became the
 product"](../00-manifesto/why-tacet-exists.md). This document is how we make sure that
 never happens here. The publishing side of the paid tiers is grounded in the
-[publishing philosophy](../09-product/publishing-philosophy.md).
+[publishing philosophy](publishing-philosophy.md).
 
 ---
 
@@ -114,6 +114,6 @@ each still answerable to the governing principle above.
 ---
 
 *Tacet is a VNTA Group venture. Related: [publishing
-philosophy](../09-product/publishing-philosophy.md) ·
+philosophy](publishing-philosophy.md) ·
 [FOUNDING_PRINCIPLES.md](../../FOUNDING_PRINCIPLES.md) ·
 [manifesto](../00-manifesto/).*

@@ -3,7 +3,7 @@
 //   • collectors     — cron-refreshed into the shared D1 item store (feeds, AT Protocol,
 //                      Nostr), because polling many HTTP feeds / relays per request is slow.
 // Both roles emit the SAME NormalizedPost, so Today merges them without caring which is
-// which. See docs/06-decisions/ADR-017-source-adapters.md.
+// which. See docs/11-decisions/ADR-017-source-adapters.md.
 
 import type { SourceAdapter } from "./contract";
 import { ActivityPubAdapter } from "./activitypub/adapter";

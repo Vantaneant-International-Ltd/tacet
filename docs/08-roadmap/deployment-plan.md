@@ -2,7 +2,7 @@
 
 > **Status: EXECUTED — kept as a historical record (2026-07).** This plan was carried out.
 > Tacet is live on `tacet.social` (see [STATE.md](../../STATE.md) and
-> [ADR-017](../06-decisions/ADR-017-source-adapters.md)), on the existing Cloudflare account
+> [ADR-017](../11-decisions/ADR-017-source-adapters.md)), on the existing Cloudflare account
 > (Option A — reuse), with D1 migrations 0001–0014 applied and a 15-min refresh cron. The
 > "do not execute / decision needed / confirmation gate" language below is left intact for
 > the record but is no longer pending — read it in past tense.

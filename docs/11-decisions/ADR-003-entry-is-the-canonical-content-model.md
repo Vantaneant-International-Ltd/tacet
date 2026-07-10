@@ -22,6 +22,6 @@ The Entry is a **superset, not an intersection**: the content model holds the fu
 **Extensibility is disciplined, not a free-for-all.** A new kind earns its place only if it is a genuinely distinct human act of expression, not a platform feature in disguise. Five, chosen well, extensible with care.
 
 ## References
-- Product (publishing): [publishing-philosophy.md](../09-product/publishing-philosophy.md) — Entry as internal abstraction, Law 5 "content is a superset, not an intersection," and the Entry kinds
+- Product (publishing): [publishing-philosophy.md](../01-product/publishing-philosophy.md) — Entry as internal abstraction, Law 5 "content is a superset, not an intersection," and the Entry kinds
 - Engineering: [domain-model.md](../06-engineering/domain-model.md) — the protocol-agnostic domain and adapter-at-the-edge rule
 - Related: ADR-004, ADR-005, ADR-008 (the human words users actually see)

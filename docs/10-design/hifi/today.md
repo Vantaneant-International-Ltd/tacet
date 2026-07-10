@@ -3,8 +3,8 @@
 > **Milestone:** Visual System V2 · **Stage:** 6 (High Fidelity + Prototype, built in Claude Design)
 > · **Status:** Direction — the concrete plan the Claude Design build follows. Governed by
 > [stage-6-design-direction.md](../stage-6-design-direction.md), the revised
-> [Context Column Law (ADR-012)](../../06-decisions/ADR-012-the-context-column-law.md), and the
-> [metrics doctrine (ADR-011)](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md).
+> [Context Column Law (ADR-012)](../../11-decisions/ADR-012-the-context-column-law.md), and the
+> [metrics doctrine (ADR-011)](../../11-decisions/ADR-011-metrics-are-context-not-rewards.md).
 
 This is Today rebuilt to the corrected doctrine: **Today is a calm editorial homepage** — it respects
 chronology, is never an opaque algorithm, still *ends* (bounded, finishable), but it feels **alive**.
@@ -197,7 +197,7 @@ home not a magazine · no refusal broken.**
 ---
 
 *Cross-links:* [stage-6-design-direction.md](../stage-6-design-direction.md) ·
-[ADR-012](../../06-decisions/ADR-012-the-context-column-law.md) ·
-[ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md) ·
+[ADR-012](../../11-decisions/ADR-012-the-context-column-law.md) ·
+[ADR-011](../../11-decisions/ADR-011-metrics-are-context-not-rewards.md) ·
 [design-principles.md](../design-principles.md) (L11) ·
 [wireframes/02-today.md](../wireframes/02-today.md) · [01-product/today.md](../../01-product/today.md).

@@ -163,7 +163,7 @@ a hazard sign.
 
 - **Faithful inbound mapping.** A content warning from the open web (Mastodon and kin) maps directly
   to a content note; the poster's words are preserved verbatim as the note's summary
-  ([ADR-005](../30-architecture/) representation). We never drop it, and we never restyle its meaning.
+  ([ADR-005](../11-decisions/ADR-005-representation-not-degradation.md) representation). We never drop it, and we never restyle its meaning.
 - **Collapsed by default.** A moment carrying a note renders folded: a single quiet summary line —
   *"Content note: <summary>"* set in `--color-text-secondary` at `--text-meta` — above a soft
   **"Show"** control. The body text and any media stay hidden until the reader reveals them. There is
@@ -201,7 +201,7 @@ the image (Law L5 — media is editorial), surfaced quietly for everyone rather 
   content are hidden from assistive tech entirely (empty alt / `aria-hidden`) so they don't clutter the
   reading.
 - **Preserve the open web's descriptions.** Alt text federated from the source is kept intact and shown
-  as-is ([ADR-005](../30-architecture/)); we never silently strip a description a poster took care to
+  as-is ([ADR-005](../11-decisions/ADR-005-representation-not-degradation.md)); we never silently strip a description a poster took care to
   write.
 - **Editorial, unobtrusive styling.** The marker uses `--text-micro` in `--on-media` over `--scrim-media`
   when it sits on an image — legible on any photograph, in either theme, without a second colour system.

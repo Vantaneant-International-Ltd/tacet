@@ -29,8 +29,8 @@ Full rationale: [stage-6-design-direction.md](./stage-6-design-direction.md).
 
 | Document | Change |
 |---|---|
-| [ADR-012](../06-decisions/ADR-012-the-context-column-law.md) | Rewritten: "your world, never your score"; allowed/not-allowed lists; informing/manipulating gate. |
-| [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) | Revised: self-directed (banned) vs world-directed (allowed) vs private self-context (allowed); framing discipline. |
+| [ADR-012](../11-decisions/ADR-012-the-context-column-law.md) | Rewritten: "your world, never your score"; allowed/not-allowed lists; informing/manipulating gate. |
+| [ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md) | Revised: self-directed (banned) vs world-directed (allowed) vs private self-context (allowed); framing discipline. |
 | [design-principles.md](./design-principles.md) | Principle 1 → "Calm is clarity, not subtraction"; principle 2 & 4 reworded; L2, L6→L7 reworded; **new L11 Informing, not manipulating**; final-review questions updated. |
 | [responsive.md](./responsive.md) | §3 rewritten to the living-space law; §8 verify item updated. |
 | [information-architecture.md](./information-architecture.md) (10-design) | §3 per-pillar context-column table rewritten to world-directed content. |
@@ -67,10 +67,10 @@ Change these to **Claude Design**:
 | [visual-system-v2.md](./visual-system-v2.md):72 | Stage map — "High-fidelity in Figma" |
 | [design-audit.md](./design-audit.md):267 | Stage map — "Stage 6 — High-fidelity in Figma" |
 | [stage-5-design-decisions.md](./stage-5-design-decisions.md):6–8 | "Figma is now the visual source of truth" header |
-| [ADR-014](../06-decisions/ADR-014-design-system-before-screens.md):24 | "only then taken to high fidelity in Figma" |
+| [ADR-014](../11-decisions/ADR-014-design-system-before-screens.md):24 | "only then taken to high fidelity in Figma" |
 | [wireframes/00-overview.md](./wireframes/00-overview.md):5,65 | "come in Stage 6 (Figma)" / "renders the survivors in Figma" |
 | [tokens.md](./tokens.md):311 | "code and Figma variables share one vocabulary" → Claude Design variables |
-| [ADR-016](../06-decisions/ADR-016-timeless-system-swappable-style.md):34 | "a Figma variable" example → Claude Design variable |
+| [ADR-016](../11-decisions/ADR-016-timeless-system-swappable-style.md):34 | "a Figma variable" example → Claude Design variable |
 | [STATE.md](../../STATE.md):158 | build-state note referencing Figma/Claude Design workspace |
 
 ### C. Figma → LEAVE AS HISTORICAL RECORD (do **not** rename)
@@ -81,7 +81,7 @@ optionally add a one-line banner that the tool going forward is Claude Design.
 
 - `pre-figma-resolutions.md`, `pre-figma-design-review.md` (filenames + all their internal
   "before-Figma / pre-Figma review" references).
-- [ADR-015](../06-decisions/ADR-015-federation-citizenship.md):5,71 — "Emerged from the pre-Figma
+- [ADR-015](../11-decisions/ADR-015-federation-citizenship.md):5,71 — "Emerged from the pre-Figma
   design review" (a true historical origin).
 - `profile-system.md`:235, `components.md`:326, `tokens.md`:141,152 — "the pre-Figma review found…"
   (historical attributions of where a finding came from).

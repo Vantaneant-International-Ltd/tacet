@@ -1,11 +1,11 @@
 # Publishing UI — Visual System V2
 
-> **Milestone:** Visual System V2 · **Stage:** 2 · References [tokens.md](./tokens.md) and [publishing-philosophy](../09-product/publishing-philosophy.md).
+> **Milestone:** Visual System V2 · **Stage:** 2 · References [tokens.md](./tokens.md) and [publishing-philosophy](../01-product/publishing-philosophy.md).
 
 **Purpose:** define the visual and interaction language of *making* and *sharing* in Tacet, so
 the composer, the distribution controls, and the Home surface all express one truth: you make
 something, it is yours, and sharing is a separate, deliberate act. This doc translates the
-[Publishing Philosophy](../09-product/publishing-philosophy.md) into surfaces; it invents no new
+[Publishing Philosophy](../01-product/publishing-philosophy.md) into surfaces; it invents no new
 tokens and no new doctrine. Where the philosophy takes a position, the UI obeys it visibly.
 
 ---
@@ -76,7 +76,7 @@ intent. This is the philosophy's "same object, shaped for a different human inte
 - **Header:** a close `IconButton` (`aria-label` "Close composer"), the kind name as the title at
   `--text-heading`, and the primary action at the trailing edge (see §3 — it is **Keep** or
   **Share**, never "Post").
-- **Author row:** the [workspace](../09-product/publishing-philosophy.md) avatar + name — *who is
+- **Author row:** the [workspace](../01-product/publishing-philosophy.md) avatar + name — *who is
   making this* (see §3). Always present, because the workspace *is* the author.
 - **Body region:** kind-specific, below.
 - **Distribution footer:** the calm visibility control (see §3).
@@ -342,7 +342,7 @@ time, nothing more. It is the same deliberate act as **Share**, only aimed at a 
   always complete on its own.
 
 Scheduling changes *nothing* about creation. The piece was finished the moment you made it
-([ADR-004](../06-decisions/ADR-004-publishing-is-distribution.md)); scheduling only queues the
+([ADR-004](../11-decisions/ADR-004-publishing-is-distribution.md)); scheduling only queues the
 **distribution** for later. Creation is still complete-in-itself; the calendar touches only where
 and when a copy goes out.
 
@@ -352,8 +352,8 @@ and when a copy goes out.
 
 The honest door out lives in **Settings**, reached calmly and never buried: **Export — take your
 world with you.** Because your identity, your content, and your connections are *yours*, leaving is
-a right, not a negotiation ([ADR-001](../06-decisions/ADR-001-identity-before-platform.md),
-[ADR-002](../06-decisions/ADR-002-home-is-the-source-of-truth.md)).
+a right, not a negotiation ([ADR-001](../11-decisions/ADR-001-identity-before-platform.md),
+[ADR-002](../11-decisions/ADR-002-home-is-the-source-of-truth.md)).
 
 - **What it packages, said plainly:** *"Your identity, everything you've made, and everyone you're
   connected to — packaged so you can take it anywhere."* Identity + owned content (every Thought,
@@ -398,7 +398,7 @@ The compose primary action names exactly what it does, and it *changes with the 
 
 - When the piece is **Private**, the primary verb is **Keep** — *"Keep to your home."* Keeping is
   finishing something and holding it safe with you; it is complete work, not a draft, not a
-  staging step ([ADR-004](../06-decisions/ADR-004-publishing-is-distribution.md)).
+  staging step ([ADR-004](../11-decisions/ADR-004-publishing-is-distribution.md)).
 - When the piece is **Shared**, the primary verb is **Share** — sharing *your own* content
   publishes it to the open web. (Re-sharing *someone else's* moment is a different act, handled
   elsewhere; it never appears here as the compose verb.)
@@ -459,6 +459,6 @@ speaks it, the person never does.
 
 ---
 
-*See also: [publishing-philosophy](../09-product/publishing-philosophy.md) (the constitution),
+*See also: [publishing-philosophy](../01-product/publishing-philosophy.md) (the constitution),
 [tokens.md](./tokens.md) (canonical), [motion.md](./motion.md), [design-principles.md](./design-principles.md),
 [accessibility.md](./accessibility.md), and [compose.md](../01-product/compose.md).*

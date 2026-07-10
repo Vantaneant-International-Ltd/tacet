@@ -51,7 +51,7 @@ it.
 
 ## 3. The context column is a law: your world, never your score
 
-> **Context Column Law ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)).** The
+> **Context Column Law ([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)).** The
 > right-hand column is a **living contextual space** whose job is to help a person **understand and
 > move through their world** — people close to them, what their world is reading, active
 > conversations, communities that moved, a calm onward door. It may be genuinely rich. It is **never**

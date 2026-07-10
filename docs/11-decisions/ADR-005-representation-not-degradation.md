@@ -53,7 +53,7 @@ within limits,"* never as failures of the content.
 
 ## References
 
-- [09-product/publishing-philosophy.md](../09-product/publishing-philosophy.md) — Law 5
+- [01-product/publishing-philosophy.md](../01-product/publishing-philosophy.md) — Law 5
   (superset, not intersection); represent faithfully within each destination's capabilities.
 - [05-federation/compatibility.md](../05-federation/compatibility.md) — the per-implementation
   capabilities each adapter represents against; "absent, not fabricated" precedent.

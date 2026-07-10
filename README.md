@@ -45,7 +45,7 @@ the open social web — an implementation detail at the edge, never the product 
 ## What Tacet reads today
 
 Tacet reads the open social web **live**, through source adapters behind one normalization
-contract ([ADR-017](docs/06-decisions/ADR-017-source-adapters.md) — the work was scoped
+contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md) — the work was scoped
 informally as "ADR-013," but that number was already taken). Every source is normalized to
 the same shape, so Today interleaves them calmly and the product never exposes a protocol.
 
@@ -62,7 +62,7 @@ orientation (naming the fragmentation problem), never as something we read.
 
 **Reading is live; publishing is next.** Everything above is read-only today. Writing back to
 the open web — composing and publishing from your home — is the next track, not yet shipped
-(see the [publishing philosophy](docs/09-product/publishing-philosophy.md)).
+(see the [publishing philosophy](docs/01-product/publishing-philosophy.md)).
 
 **Where the first content comes from.** Initial content is drawn from small, editorially
 chosen seed lists (`src/sources/*/seeds.json`) — deliberately calm, quality-first, and
@@ -141,9 +141,9 @@ DEPLOY.md                Self-hosting guide (optional; deploy to your own accoun
 - **[docs/03-design-system/](docs/03-design-system/)** — the visual source of truth.
 - **[docs/05-federation/](docs/05-federation/)** — federation as an implementation
   detail (the product would still make sense if the protocol were replaced).
-- **[docs/06-decisions/](docs/06-decisions/)** — the architecture decision records (ADRs).
+- **[docs/11-decisions/](docs/11-decisions/)** — the architecture decision records (ADRs).
 - **[docs/06-engineering/](docs/06-engineering/)** — architecture, domain model, adapters, and the [2026-07 audit](docs/06-engineering/AUDIT-2026-07.md).
-- **[docs/09-product/publishing-philosophy.md](docs/09-product/publishing-philosophy.md)** — the write-side "publishing is distribution" doctrine.
+- **[docs/01-product/publishing-philosophy.md](docs/01-product/publishing-philosophy.md)** — the write-side "publishing is distribution" doctrine.
 - **[FOUNDING_PRINCIPLES.md](FOUNDING_PRINCIPLES.md)** / **[PRODUCT_DIRECTION.md](PRODUCT_DIRECTION.md)** — the one-page canon.
 
 ## Development setup
@@ -181,7 +181,7 @@ Tacet is **early and pre-production.**
   page, sign-in, and a light/dark design system — built and running.
 - ✅ **Reading the open web is live.** Today renders real public content from four source
   families — ActivityPub, RSS/Atom/JSON Feed, AT Protocol (Bluesky), and Nostr — merged
-  through one contract ([ADR-017](docs/06-decisions/ADR-017-source-adapters.md)). See
+  through one contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md)). See
   [What Tacet reads today](#what-tacet-reads-today).
 - 🧪 Some secondary surfaces still render **mock data** while they are wired to the live
   reader; Today is live.

@@ -5,7 +5,7 @@ High-fidelity Stage 6 designs for **Tacet — your home on the open social web**
 
 > **Repo:** https://github.com/Vantaneant-International-Ltd/tacet
 > Read `docs/10-design/tokens.md`, `docs/10-design/design-principles.md` (esp. L11),
-> `docs/06-decisions/ADR-011` + `ADR-012`, and `docs/10-design/information-architecture.md`
+> `docs/11-decisions/ADR-011` + `ADR-012`, and `docs/10-design/information-architecture.md`
 > before implementing. Where this handoff and those docs disagree, the docs win —
 > except for the deliberate Stage-6 additions listed in `stage-6-delta-log.md`
 > (included here), which are proposed token/spec additions to land back in the repo.

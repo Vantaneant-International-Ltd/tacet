@@ -110,7 +110,7 @@ the reader can take*, never *a self-directed score*.
 **World-directed reception is a separate, allowed thing (reconciled 2026-07-09).** Representing that a
 post *resonated in the world* — as calm, framed, world-directed context ("an active thread", "shared
 widely"), not a raw ascending tally on the card — is **informing**, not chrome, and is governed by
-[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) and
+[ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md) and
 [design-principles L11](./design-principles.md). It lives in editorial/context surfaces (the context
 column, a curator moment), softened toward qualitative language; it is never a per-card leaderboard
 and never a ranking of people. The enemy is the *self-directed score*, not the world's reality.

@@ -34,8 +34,8 @@ envisioned rather than a reaction against what we reject.
 
 These two ideas now govern every design decision. See
 [design-principles.md](./design-principles.md) L11 and principles 1–2, and
-[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) /
-[ADR-012](../06-decisions/ADR-012-the-context-column-law.md).
+[ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md) /
+[ADR-012](../11-decisions/ADR-012-the-context-column-law.md).
 
 ---
 
@@ -73,7 +73,7 @@ These are the design intents Stage 6 works toward. Product IA and the five pilla
 frozen; what changes is how alive each surface is allowed to feel.
 
 - **Today → a calm editorial homepage.** It still respects chronology and is never an opaque
-  algorithm, and it still *ends* (bounded, finishable — [ADR-010](../06-decisions/ADR-010-calm-over-engagement.md)
+  algorithm, and it still *ends* (bounded, finishable — [ADR-010](../11-decisions/ADR-010-calm-over-engagement.md)
   stands). But it should feel **alive**: curated with a visible human hand, media-first, with a warm
   greeting and a sense that the world is present. Not a bare chronological dump. See
   [hifi/today.md](./hifi/today.md).
@@ -83,10 +83,10 @@ frozen; what changes is how alive each surface is allowed to feel.
 - **The context column → your world, never your score.** A living space: people close to you,
   continue-where-you-left-off, active conversations, communities active today, worth-exploring, calm
   system reassurance, context about the room you're in. Never rankings, leaderboards, analytics,
-  engagement pressure, or anxiety furniture ([ADR-012](../06-decisions/ADR-012-the-context-column-law.md)).
+  engagement pressure, or anxiety furniture ([ADR-012](../11-decisions/ADR-012-the-context-column-law.md)).
 - **Metrics → world-directed context is allowed; self-directed scores are not.** A count on your own
   post is banned; representing what resonated in the world (framed, softened where a raw tally reads
-  as a scoreboard) is allowed ([ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)).
+  as a scoreboard) is allowed ([ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md)).
 - **Momentum / trending → represented, relationship-scoped, editorial.** "What your world is reading
   / discussing," led by the thing not the number. Never "12.4K people talking" as the hook, never a
   race-to-the-top ranking.
@@ -101,9 +101,9 @@ frozen; what changes is how alive each surface is allowed to feel.
 The correction widens what *informing* content is allowed; it does not weaken a single refusal.
 
 - No infinite scroll; Today still ends. No autoplay. No compulsion loops. No manufactured urgency.
-  No red-badge notifications. No streaks or gamification. ([ADR-010](../06-decisions/ADR-010-calm-over-engagement.md).)
+  No red-badge notifications. No streaks or gamification. ([ADR-010](../11-decisions/ADR-010-calm-over-engagement.md).)
 - No **self-directed** vanity metrics — no scoreboard of your likes/followers/views, no personal
-  analytics, no ranking of people. ([ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md).)
+  analytics, no ranking of people. ([ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md).)
 - No dark patterns, no lock-in, no dishonest integration claims, protocol stays invisible.
   ([anti-patterns](../00-manifesto/anti-patterns.md).)
 - The five pillars, the IA spine, and all founding principles are frozen.
@@ -161,7 +161,7 @@ If any answer is no — keep refining. Calm, rich confidence is the bar.
 ---
 
 *Cross-links:* [design-principles.md](./design-principles.md) ·
-[ADR-012](../06-decisions/ADR-012-the-context-column-law.md) ·
-[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md) ·
+[ADR-012](../11-decisions/ADR-012-the-context-column-law.md) ·
+[ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md) ·
 [doctrine-revision-2026-07.md](./doctrine-revision-2026-07.md) ·
 [hifi/today.md](./hifi/today.md) · [visual-system-v2.md](./visual-system-v2.md).

@@ -41,7 +41,7 @@ reaction rails, a ranking of people. We strip that. But we distinguish it from
 *world-directed context* — representing what your world is reading, which
 conversations are alive, which communities moved — which **informs** and is welcome
 (the line is [informing vs. manipulating](../10-design/design-principles.md), L11;
-[ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md)). Content
+[ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md)). Content
 carries the relationship; the design serves the relationship first. This flows from
 *People before posts* and *Relationships before engagement*.
 

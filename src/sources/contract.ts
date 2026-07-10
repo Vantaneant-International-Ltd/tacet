@@ -1,6 +1,6 @@
 // The source-adapter contract. One normalization schema that every open-web source emits,
 // and one interface every adapter implements — so ActivityPub, feeds, AT Protocol, and
-// Nostr all reach Today the same way. See docs/06-decisions/ADR-017-source-adapters.md.
+// Nostr all reach Today the same way. See docs/11-decisions/ADR-017-source-adapters.md.
 //
 // Two hard laws hold at this boundary:
 //   1. Protocol language never crosses it. The domain objects below carry human labels

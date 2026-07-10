@@ -19,7 +19,7 @@ publishing (writing back to the open web) is the next track, not yet built.
   fallback). Current version `8fedc604-449f-49ae-b1df-baf5daf9f04f`. Rollback anchor
   `184cc804` → `npx wrangler rollback --config wrangler.local.jsonc`.
 - **Today reads the open web live** through four source adapters behind one normalization
-  contract ([ADR-017](docs/06-decisions/ADR-017-source-adapters.md), `src/sources/`):
+  contract ([ADR-017](docs/11-decisions/ADR-017-source-adapters.md), `src/sources/`):
   - **ActivityPub** — read live per request through the untouched `src/openweb/` reader.
   - **RSS/Atom/JSON Feed**, **AT Protocol (Bluesky)**, **Nostr** — cron-collected (15 min) +
     lazy-on-read into a D1 store, merged with AP and interleaved calmly (recency + source
@@ -53,23 +53,27 @@ Local-first: a device-cookie profile owns a workspace (saved / collections / not
 later / pinned / recently-viewed). A local handle is a bare username — sanitized server-side
 so it can't impersonate a federated address. Not remote auth; nothing federates or publishes.
 
-## Open decisions (from the 2026-07 audit)
+## The 2026-07 audit (resolved)
 
-See [`docs/06-engineering/AUDIT-2026-07.md`](docs/06-engineering/AUDIT-2026-07.md) for full
-findings. Awaiting an operator call (recommendations in the audit):
+The [full-repo audit](docs/06-engineering/AUDIT-2026-07.md) ran and every finding was fixed,
+deferred, or decided. The four operator decisions were signed off and implemented this
+session:
 
-1. **Type system (S1/S2).** The app ships two fonts: landing renders in Hanken Grotesk +
-   Spline Sans Mono (the vendored brand kit), while tokens.md + the app tokens still name
-   Jost/Space Mono — and the app loads *neither* `@font-face`, so it renders in system-ui.
-   Recommend: adopt Hanken/Spline app-wide, update tokens, load it, retire Jost.
-2. **Delete `client/src/legacy/`** (unrouted, tree-shaken; ~26 files + `styles.css` +
-   `bits.tsx`). Recommend: delete (git preserves it).
-3. **Docs folder tidy** — merge `09-product` → `01-product`; renumber `06-decisions` off the
-   `06` collision. Recommend: do it (mechanical `git mv` + link rewrite).
+1. **Type system** — adopted **Hanken Grotesk + Spline Sans Mono** app-wide (one type
+   system); the app now loads its typeface (was rendering in system-ui); Jost/Space Mono
+   retired.
+2. **Legacy** — deleted `client/src/legacy/` (+ `styles.css`, `bits.tsx`).
+3. **Docs tidy** — merged `09-product` → `01-product`; renumbered `06-decisions` →
+   `11-decisions`.
+4. **Handle** — a local handle is sanitized so it can't impersonate a federated address.
+
+Deferred (documented in the audit): a deterministic `/api/openweb/today` route test and a
+client `route()` test (need source injection / a jsdom test project); making the inert
+Spark/Follow/Reply controls honestly "coming soon"; retiring the server-side `rooms`/`acks`
+product.
 
 ## Awaiting operator
 
-- The three decisions above.
 - Turnstile keys + a rotated `SESSION_SECRET` remain deploy-time concerns (fallbacks used).
 
 ---

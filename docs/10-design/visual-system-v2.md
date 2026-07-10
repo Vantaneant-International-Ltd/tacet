@@ -60,14 +60,14 @@ Recorded so future contributors understand **why**, not just what.
   contextual space — people close to you, what your world is reading, active conversations,
   communities that moved, a calm onward door. Rich when genuine, quiet when not. Never a dashboard, a
   leaderboard, or anxiety furniture; gated by informing-vs-manipulating, not by emptiness.
-  *(Revised 2026-07-09 — [ADR-012](../06-decisions/ADR-012-the-context-column-law.md),
+  *(Revised 2026-07-09 — [ADR-012](../11-decisions/ADR-012-the-context-column-law.md),
   [stage-6-design-direction.md](./stage-6-design-direction.md).)*
 - **D8 — Extract the references' craft, reject their casino — but represent the world.** Depth,
   media-first, desktop canvas, and the open web's *real life* (people, momentum, communities) in;
   self-directed vanity counts, people-rankings, story-ring streaks, and the live federation-status
   ticker out. The line is informing vs manipulating, not rich vs empty. *(Revised 2026-07-09;
   supersedes the earlier "reject trending/federation entirely" reading — see
-  [ADR-011](../06-decisions/ADR-011-metrics-are-context-not-rewards.md).)*
+  [ADR-011](../11-decisions/ADR-011-metrics-are-context-not-rewards.md).)*
 - **D9 — Both themes designed.** Light gets its own loving pass, not an inversion.
 - **D10 — Landing stays a distinct "keynote surface."** It keeps its own dark visual language; the
   boundary is documented rather than merged.

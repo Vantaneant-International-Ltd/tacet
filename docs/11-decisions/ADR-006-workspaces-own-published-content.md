@@ -57,7 +57,7 @@ new publishing machinery.
 
 ## References
 
-- [09-product/publishing-philosophy.md](../09-product/publishing-philosophy.md) — workspaces &
+- [01-product/publishing-philosophy.md](../01-product/publishing-philosophy.md) — workspaces &
   publishing; the workspace is the author; publishing as "Renato" vs "VNTA."
 - [ADR-001: Identity before platform](./ADR-001-identity-before-platform.md) — the portable,
   workspace-scoped identity content is authored as.

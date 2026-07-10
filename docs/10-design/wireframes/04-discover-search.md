@@ -19,7 +19,7 @@
   life — people, communities active today, conversations worth joining, things worth exploring — with
   a **human editorial hand**, relationship-scoped. What it rejects is the *manipulative* form: a raw
   ascending leaderboard, "12.4K talking" as a headline, a ranking of people, engagement pressure.
-  Represent the open web's life; never manufacture a race ([ADR-011](../../06-decisions/ADR-011-metrics-are-context-not-rewards.md),
+  Represent the open web's life; never manufacture a race ([ADR-011](../../11-decisions/ADR-011-metrics-are-context-not-rewards.md),
   [design-principles L11](../design-principles.md)).
 - **No "Federation status" / server / instance *dashboard*.** Federation is invisible plumbing like
   email. Open-web platforms appear as **human places you can be**, never as protocol, software, or a

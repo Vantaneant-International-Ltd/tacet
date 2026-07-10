@@ -24,6 +24,6 @@ Home is the permanent place where a person's digital social life lives — their
 **Home must be a good place to keep private things.** If Home only held content on its way out, it would be a staging area, not a home. Private, never-published work is a first-class, permanent, dignified state.
 
 ## References
-- Product (publishing): [publishing-philosophy.md](../09-product/publishing-philosophy.md) — "What is Home?", the six publishing laws, and "the source of truth never moves"
+- Product (publishing): [publishing-philosophy.md](../01-product/publishing-philosophy.md) — "What is Home?", the six publishing laws, and "the source of truth never moves"
 - Product: [identity.md](../01-product/identity.md) — identity as the owned core of Home
 - Related: ADR-001 (Identity before platform), ADR-003 (Entry is the canonical content model), ADR-004

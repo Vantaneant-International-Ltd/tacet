@@ -3,7 +3,7 @@
 This folder is the **permanent index of Tacet's foundational decisions** — the *why* behind the
 product, preserved so future contributors never have to rediscover it.
 
-The [manifesto](../00-manifesto/), [product](../01-product/), [publishing philosophy](../09-product/publishing-philosophy.md),
+The [manifesto](../00-manifesto/), [product](../01-product/), [publishing philosophy](../01-product/publishing-philosophy.md),
 [federation](../05-federation/), and [design](../10-design/) docs remain the **constitutional
 documents** — the full reasoning, in depth. An ADR does **not** duplicate them; it records a single
 decision in one page and *points* at the constitutional docs for the detail. ADRs answer **why**,

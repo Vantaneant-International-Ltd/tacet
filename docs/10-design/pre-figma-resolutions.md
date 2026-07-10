@@ -31,8 +31,8 @@ Legend: ✅ resolved · 📄 where the detail now lives.
 
 - ✅ **Export / leave flow** — a calm Settings door out ("Take your world with you" → package identity
   + content + connections → warm success), no confirm-shaming. 📄 [publishing-ui.md](./publishing-ui.md).
-  Embodies [ADR-001](../06-decisions/ADR-001-identity-before-platform.md),
-  [ADR-002](../06-decisions/ADR-002-home-is-the-source-of-truth.md).
+  Embodies [ADR-001](../11-decisions/ADR-001-identity-before-platform.md),
+  [ADR-002](../11-decisions/ADR-002-home-is-the-source-of-truth.md).
 - ✅ **Scheduled publishing** — a calm when-picker; a quiet "Scheduled for <date>" state in Home,
   editable/cancellable, never a countdown-urgency widget. 📄 [publishing-ui.md](./publishing-ui.md).
 - ✅ **Save vs Keep terminology** — **Keep** = commit your *own* work to Home (private, complete, never
@@ -43,10 +43,10 @@ Legend: ✅ resolved · 📄 where the detail now lives.
 - ✅ **Share semantics & Boost compatibility** — Sharing your own content publishes it (`Create`);
   Sharing someone else's moment re-broadcasts it (`Announce` = **Boost**, in human words). **No public
   Like/fav is sent or displayed.** Tacet gives back to the network through **Boost + Reply**, never a
-  tally. Recorded as [ADR-015](../06-decisions/ADR-015-federation-citizenship.md).
+  tally. Recorded as [ADR-015](../11-decisions/ADR-015-federation-citizenship.md).
 - ✅ **Read-only vs interactive honesty gate** — Follow/Reply/Share are the target state; until
   write-federation ships they render in a truthful "coming" state, never dead buttons that fail
-  silently. 📄 [publishing-ui.md](./publishing-ui.md); [ADR-015](../06-decisions/ADR-015-federation-citizenship.md).
+  silently. 📄 [publishing-ui.md](./publishing-ui.md); [ADR-015](../11-decisions/ADR-015-federation-citizenship.md).
   *(Backend write-federation scope is an engineering-roadmap item flagged to the product owner.)*
 - ✅ **Engagement-mechanic removals** — onboarding "Bringing N so far" → *faces of who's coming*
   ("Ada and Jae are coming with you"), no count; Today context "N unread" → a quiet dot + qualitative
