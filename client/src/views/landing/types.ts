@@ -20,17 +20,3 @@ export const PLATFORMS: Platform[] = [
   { id: "peertube", name: "PeerTube", category: "open", description: "Open video. On the social web." },
   { id: "other", name: "Other", category: "other", description: "Somewhere else entirely." },
 ];
-
-// A short, human glyph per platform. We deliberately do not reproduce any brand's
-// real logo — these are neutral marks that stand in for "a place you live online".
-export const GLYPH: Record<string, string> = {
-  instagram: "◎",
-  tiktok: "♪",
-  reddit: "◍",
-  x: "✕",
-  linkedin: "▧",
-  mastodon: "⬗",
-  pixelfed: "◈",
-  peertube: "▷",
-  other: "…",
-};
