@@ -3,10 +3,28 @@
    elevation, motion). Components speak semantic tokens only; themes map them.
    Light and dark are peers. This replaces the old hardcoded dark :root. */
 
+/* Brand webfonts (docs/10-design/tacet-brand) — the ONE type system, app + landing.
+   Served same-origin from /fonts, satisfying the Worker CSP `font-src 'self'`. */
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/HankenGrotesk-wght-.woff2") format("woff2");
+  font-weight: 300 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/HankenGrotesk-Italic-wght-.woff2") format("woff2");
+  font-weight: 300 800; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("/fonts/SplineSansMono-wght-.woff2") format("woff2");
+  font-weight: 400 600; font-style: normal; font-display: swap;
+}
+
 :root {
-  /* ---- Fonts ---- */
-  --font-sans: "Jost", system-ui, -apple-system, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
+  /* ---- Fonts (the vendored brand kit — Hanken Grotesk + Spline Sans Mono) ---- */
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* ---- Type scale (docs/03-design-system/typography-scale.md) ---- */
   --text-display: 2.25rem;

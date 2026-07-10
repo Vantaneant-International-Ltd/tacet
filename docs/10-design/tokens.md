@@ -30,8 +30,8 @@ Legend: **[V1]** ships today, unchanged · **[V2+]** new in V2 · **[V2Δ]** val
 
 ### 2.1 Font families **[V1]**
 ```css
---font-sans: "Jost", system-ui, -apple-system, sans-serif;   /* humanist, warm, legible */
---font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace; /* meta only, never shouted */
+--font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif; /* humanist, warm, legible */
+--font-mono: "Spline Sans Mono", ui-monospace, SFMono-Regular, monospace; /* meta only, never shouted */
 ```
 Sans weights in use: **400** (body), **500** (headings/labels), **600** (rare emphasis).
 **300** is reserved for `--text-display` only. Mono is used *only* for handles/timestamps/counts —
@@ -327,8 +327,8 @@ what components depend on.
 | Token(s) | Role (timeless — never changes) | Value (style layer — may be re-tuned) |
 |---|---|---|
 | `--color-accent*` | one restrained accent; signal, not decoration | the specific **lavender** hue (a 2020s-coded choice) |
-| `--font-sans` | a humanist sans for reading | the specific face **Jost** |
-| `--font-mono` | a restrained mono for meta only | the specific face **Space Mono** *(the most fashion-bound token — most likely to be swapped first)* |
+| `--font-sans` | a humanist sans for reading | the specific face **Hanken Grotesk** (the vendored brand kit) |
+| `--font-mono` | a restrained mono for meta only | the specific face **Spline Sans Mono** *(the most fashion-bound token — and indeed the face was swapped from Space Mono to Spline Sans Mono in 2026-07, exactly as this row predicted)* |
 | `--radius-lg` / `--radius-xl` | cards/sheets are gently rounded, not sharp | the *amount* (20/28px lean to this decade's soft-UI; moderate is timeless, extreme ages) |
 
 **Rule:** components bind to the **name**, never the value. Re-tuning the accent hue, swapping a

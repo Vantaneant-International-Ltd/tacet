@@ -3,23 +3,7 @@
    Direction: dark, calm, elegant; strong whitespace; subtle lavender accent;
    a network that breathes rather than shouts. */
 
-/* Brand webfonts (docs/10-design/tacet-brand) — served same-origin from /fonts,
-   so they satisfy the Worker CSP `font-src 'self'`. */
-@font-face {
-  font-family: "Hanken Grotesk";
-  src: url("/fonts/HankenGrotesk-wght-.woff2") format("woff2");
-  font-weight: 300 800; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "Hanken Grotesk";
-  src: url("/fonts/HankenGrotesk-Italic-wght-.woff2") format("woff2");
-  font-weight: 300 800; font-style: italic; font-display: swap;
-}
-@font-face {
-  font-family: "Spline Sans Mono";
-  src: url("/fonts/SplineSansMono-wght-.woff2") format("woff2");
-  font-weight: 400 600; font-style: normal; font-display: swap;
-}
+/* Brand webfonts are declared once in the app's theme.css (the one type system). */
 
 .lp {
   --lp-bg: #0a0a0d;

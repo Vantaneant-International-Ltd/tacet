@@ -6,22 +6,22 @@ cramped, nothing shouts.
 
 ## Fonts
 
-The historical system paired **Jost** (voice) with **Space Mono** (system labels).
-That pairing is a starting point, not a mandate — the system-mono-uppercase treatment
-was part of the austere posture we've retired. As the warm direction matures, fonts may
-evolve. What must hold regardless of the family chosen:
+The system pairs **Hanken Grotesk** (voice) with **Spline Sans Mono** (system labels) —
+the vendored brand kit (`docs/10-design/tacet-brand/`). It earlier used Jost + Space Mono;
+that swap was always anticipated (fonts are a value change, not a rebuild). What must hold
+regardless of the family chosen:
 
-- **Sans, reading grade** for content and UI (currently Jost). Humanist, warm, legible
-  at body sizes. Weights 400/500/600; 300 reserved for large display only.
-- **Mono, restrained** for handles, timestamps, and code (currently Space Mono). Used
+- **Sans, reading grade** for content and UI (currently Hanken Grotesk). Humanist, warm,
+  legible at body sizes. Weights 400/500/600; 300 reserved for large display only.
+- **Mono, restrained** for handles, timestamps, and code (currently Spline Sans Mono). Used
   sparingly and *not* uppercased-letterspaced across the interface anymore — that was
   chrome we removed.
 
 Set tokens so a font swap is a value change:
 
 ```css
---font-sans: "Jost", system-ui, sans-serif;
---font-mono: "Space Mono", ui-monospace, monospace;
+--font-sans: "Hanken Grotesk", system-ui, sans-serif;
+--font-mono: "Spline Sans Mono", ui-monospace, monospace;
 ```
 
 ## The scale

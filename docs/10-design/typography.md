@@ -12,15 +12,15 @@ Nine steps, each an unmistakable role — a ladder, not a spectrum. Every row pa
 
 | Role | Size token | Font | Weight | Line-height | Tracking |
 |---|---|---|---|---|---|
-| Display | `--text-display` | Jost | 300–400 | `--leading-tight` | `--tracking-tight` |
-| Title | `--text-title` | Jost | 500 | `--leading-tight` | `--tracking-tight` |
-| Heading | `--text-heading` | Jost | 500 | `--leading-snug` | `--tracking-normal` |
-| Subheading | `--text-subheading` | Jost | 500 | `--leading-snug` | `--tracking-normal` |
-| Body | `--text-body` | Jost | 400 | `--leading-relaxed` | `--tracking-normal` |
-| Body-sm | `--text-body-sm` | Jost | 400 | `--leading-relaxed` | `--tracking-normal` |
-| Label | `--text-label` | Jost | 500 | `--leading-normal` | `--tracking-normal` |
-| Meta | `--text-meta` | Space Mono | 400 | `--leading-normal` | `--tracking-normal` |
-| Micro | `--text-micro` | Jost | 500 | `--leading-normal` | `--tracking-wide` |
+| Display | `--text-display` | Hanken Grotesk | 300–400 | `--leading-tight` | `--tracking-tight` |
+| Title | `--text-title` | Hanken Grotesk | 500 | `--leading-tight` | `--tracking-tight` |
+| Heading | `--text-heading` | Hanken Grotesk | 500 | `--leading-snug` | `--tracking-normal` |
+| Subheading | `--text-subheading` | Hanken Grotesk | 500 | `--leading-snug` | `--tracking-normal` |
+| Body | `--text-body` | Hanken Grotesk | 400 | `--leading-relaxed` | `--tracking-normal` |
+| Body-sm | `--text-body-sm` | Hanken Grotesk | 400 | `--leading-relaxed` | `--tracking-normal` |
+| Label | `--text-label` | Hanken Grotesk | 500 | `--leading-normal` | `--tracking-normal` |
+| Meta | `--text-meta` | Spline Sans Mono | 400 | `--leading-normal` | `--tracking-normal` |
+| Micro | `--text-micro` | Hanken Grotesk | 500 | `--leading-normal` | `--tracking-wide` |
 
 **Body is sacred.** `--text-body` at 17px on `--leading-relaxed` (1.60) is the voice of the product — a note from someone you care about. It is not tuned for density, ever. If body feels cramped, the layout is wrong, not the type.
 
@@ -48,7 +48,7 @@ A **card heading and its supporting line** — the pattern that replaces the bor
 
 The 20px/500/primary heading against the 15px/400/secondary line reads as two clearly ranked tiers with no rule between them. The gap between them is [spacing](./spacing.md), not a divider.
 
-A **person row**: name is `--text-subheading` / 500 / primary; handle is `--text-meta` / Space Mono / `--color-text-tertiary`; your standing with them (a supporting phrase) is `--text-body-sm` / 400 / secondary. Three tiers, one border avoided.
+A **person row**: name is `--text-subheading` / 500 / primary; handle is `--text-meta` / Spline Sans Mono / `--color-text-tertiary`; your standing with them (a supporting phrase) is `--text-body-sm` / 400 / secondary. Three tiers, one border avoided.
 
 A **screen title over its count-free subtitle**: title is `--text-title` / 500 / `--tracking-tight` / primary; the subtitle beneath is `--text-body-sm` / 400 / secondary. The tightened tracking on the title is what makes it feel like a masthead rather than just larger body.
 
@@ -56,8 +56,8 @@ A **screen title over its count-free subtitle**: title is `--text-title` / 500 /
 
 Two families, held to strict jobs — a restrained palette reads as calm and intentional (see [tokens.md §2.1](./tokens.md)).
 
-- **Jost** (`--font-sans`) — humanist, warm, legible. It carries everything a person reads: display through micro, all body and reading copy, all controls. Warm, not brutalist; a well-set letter, not a terminal readout.
-- **Space Mono** (`--font-mono`) — meta **only**: handles, timestamps, counts. It is a quiet fingerprint of texture, never reading copy. **Never** set uppercase-and-letterspaced — that shouted chrome was retired in V2. Mono says "this is data about the moment," not "look at me."
+- **Hanken Grotesk** (`--font-sans`) — humanist, warm, legible. It carries everything a person reads: display through micro, all body and reading copy, all controls. Warm, not brutalist; a well-set letter, not a terminal readout.
+- **Spline Sans Mono** (`--font-mono`) — meta **only**: handles, timestamps, counts. It is a quiet fingerprint of texture, never reading copy. **Never** set uppercase-and-letterspaced — that shouted chrome was retired in V2. Mono says "this is data about the moment," not "look at me."
 
 **Weight 300 is reserved for `--text-display` only** — the hero and onboarding, where large type can afford to be light and airy. Nowhere else. Body is 400; leading is 500; 600 is rare emphasis.
 
@@ -79,7 +79,7 @@ For articles and long-form:
 | Build rank with weight + whitespace first, colour last | Lean on `--color-accent` to create hierarchy — it is [one action per view](./design-principles.md) (L3) |
 | Use `--color-text-secondary` for supporting lines | Shrink type below `--text-micro` to fit more |
 | Keep body at 17px / 1.60 always | Tune body tighter for density |
-| Reserve 300 for display; Space Mono for meta | Set Space Mono as reading copy or uppercase-letterspaced |
+| Reserve 300 for display; Spline Sans Mono for meta | Set Spline Sans Mono as reading copy or uppercase-letterspaced |
 | Cap reading text at `--measure-reading` | Let notes run full-width |
 | Apply `--tracking-tight` to display and titles | Track out body or headings |
 

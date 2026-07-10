@@ -28,7 +28,7 @@ All canonical values are in `docs/10-design/tokens.md` and are reproduced verbat
 - Whisper hairline on cards: `color-mix(in srgb, var(--color-hairline) 60%, transparent)` **plus** `--elevation-1` + `--edge-highlight`
 - Missing size tokens used raw (propose adding): avatar 96/72/64/44/36/28/24, thumb 56, play-disc 56
 
-**Fonts:** Jost (400/500; 300 reserved for display, 600 rare emphasis) + Space Mono (meta only: handles, timestamps, qualitative reception lines — never reading copy, never uppercase-letterspaced). Loaded from Google Fonts; the standalone files have them inlined.
+**Fonts:** Hanken Grotesk (400/500; 300 reserved for display, 600 rare emphasis) + Spline Sans Mono (meta only: handles, timestamps, qualitative reception lines — never reading copy, never uppercase-letterspaced). Served same-origin from `/fonts`. *(The standalone HTML mockups predate the type switch and still inline Jost/Space Mono — the repo is canonical: Hanken/Spline.)*
 
 ## Screens / Views
 Every desktop screen shares: **architectural left rail** (250px, sticky full-height, surface→canvas gradient, hairline right edge, accent lamp glow behind the `tacet` wordmark, ⌘K search trigger, five pillars — active = accent-subtle gradient pill with accent text, presence dot on Conversations, gradient "New" compose button with `--glow-accent`, identity foot with theme toggle) · **centred feed** at `minmax(0, 42rem)` · **context column** (320px, hairline-left, per-pillar content) · gutter 32px · ambient glow on the canvas.
@@ -72,7 +72,7 @@ No infinite scroll · no autoplay · no red badges or numeric unread counts · n
 - **Every media surface is a gradient placeholder** standing in for real federated imagery (photos, posters, avatars, banners). Do NOT ship the gradients as final art; wire them to real content. The gradient stops are listed inline in each file.
 - **Brand:** the `tacet` wordmark is set live in Jost 500 with `--tracking-tight` — there is currently **no logo asset in the repo or this workspace**; do not draw one. `assets/hero.png` exists in the repo for marketing surfaces only.
 - **Icons:** inline SVG, 24px grid, 1.75 stroke, round caps, `currentColor` — matches `client/src/design/icons.tsx`; extend that file rather than importing an icon library.
-- **Fonts:** Jost + Space Mono (Google Fonts); already referenced in the repo sketch.
+- **Fonts:** Hanken Grotesk + Spline Sans Mono (the vendored brand kit, served from `/fonts`).
 
 ## Files
 - `*.html` (this folder) — the 19 self-contained design references (16 app screens + Landing Desktop/Mobile + Onboarding; open directly in a browser; dark/light toggle in the rail on desktop app screens).

@@ -14,7 +14,8 @@ decisions (a specific accent hue, a typeface, an amount of corner-rounding, a su
 inevitably coloured by the taste of the year they were made.
 
 Reviewed through a ten-year lens, Tacet's structure is unusually timeless, but a handful of *values*
-are of-this-decade: a lavender accent (2020s tech colour), the typefaces Jost and Space Mono, the
+are of-this-decade: a lavender accent (2020s tech colour), the typefaces Hanken Grotesk and Spline
+Sans Mono (swapped from Jost + Space Mono in 2026-07 — a value change, exactly as this ADR intends), the
 larger corner radii, and a frosted-glass blur. Left unexamined, two failure modes loom: treating those
 values as **sacred** (so the product ages with the decade and can't be refreshed without a rebuild),
 or **chasing trends** (so it churns with every season and never feels settled). Both are avoidable —
