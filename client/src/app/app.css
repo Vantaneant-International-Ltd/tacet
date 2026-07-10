@@ -259,6 +259,38 @@
 .t-post__open:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 4px; }
 .t-post--focus { border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-hairline)); box-shadow: var(--elevation-2); }
 
+/* ---- Today feed: magazine card framing + editorial variants (Today-scoped) ---- */
+.t-feed .t-post {
+  background: var(--surface-gradient);
+  box-shadow: var(--elevation-1), var(--edge-highlight);
+  border-color: color-mix(in srgb, var(--color-hairline) 60%, transparent);
+}
+/* hero — media-first, elevated */
+.t-post--hero { padding: 0; overflow: hidden; }
+.t-feed .t-post--hero { box-shadow: var(--elevation-2), var(--edge-highlight); }
+.t-post__hero { position: relative; aspect-ratio: var(--ratio-photo); cursor: pointer; }
+.t-post__hero:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.t-post__hero-img { width: 100%; height: 100%; object-fit: cover; display: block; box-shadow: var(--media-vignette); }
+.t-post__hero-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: var(--space-6) var(--space-5) var(--space-4);
+  background: var(--scrim-caption); color: var(--on-media); text-shadow: var(--media-shadow);
+  font-size: var(--text-micro);
+}
+.t-post--hero .t-post__head { padding: var(--space-5) var(--space-5) 0; }
+.t-post--hero .t-post__open { padding: 0 var(--space-5); }
+.t-post--hero .t-post__actions { padding: var(--space-4) var(--space-5) var(--space-5); }
+/* article — title link + dek, no media band */
+.t-post__title {
+  font-size: var(--text-title); font-weight: 500; letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug); margin: var(--space-4) 0 0; color: var(--color-text-primary);
+}
+.t-post--article .t-post__open:hover .t-post__title { color: var(--color-accent-hover); }
+.t-post__dek { font-size: var(--text-body-sm); color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin: var(--space-2) 0 0; }
+.t-post__dek { overflow-wrap: anywhere; word-break: break-word; }
+/* quiet — unboxed, type carries it (no frame) */
+.t-feed .t-post--quiet { background: transparent; border: 0; box-shadow: none; padding: var(--space-2) var(--space-5); }
+
 .t-participants { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); }
 .t-participants__stack { display: flex; }
 .t-participants__av { margin-left: -8px; border-radius: var(--radius-full); box-shadow: 0 0 0 2px var(--color-canvas); }

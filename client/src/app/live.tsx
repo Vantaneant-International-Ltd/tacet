@@ -105,9 +105,33 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
   );
 }
 
-export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean }) {
+// Which editorial card variant a REAL moment renders as, derived from its own data — never
+// fabricated. hero = the lead moment with a photo (media-first, magazine-framed); video =
+// carries playable video; article = long-form with a title and no image (title link + dek);
+// quiet = a short thought with no media (unboxed, type carries it); default = framed card.
+type Variant = "hero" | "video" | "article" | "quiet" | "default";
+function variantOf(m: Moment, lead: boolean): Variant {
+  const hasVideo = m.media.some((x) => x.kind === "video");
+  const hasImage = m.media.some((x) => x.kind === "image");
+  if (hasVideo) return "video";
+  if (lead && hasImage) return "hero";
+  if (m.title && !hasImage) return "article";
+  if (!hasImage && !m.title && m.text.length > 0 && m.text.length < 220) return "quiet";
+  return "default";
+}
+// The dek for an article variant: the body with its leading title line removed (feeds/AP
+// join "Title\n\nBody" into text — don't repeat the title once it's a heading).
+function dekOf(m: Moment): string {
+  if (!m.title) return m.text;
+  const t = m.text.trimStart();
+  return t.startsWith(m.title) ? t.slice(m.title.length).trimStart() : m.text;
+}
+
+export function LiveMoment({ moment, focus, lead = false, feed = false }: { moment: Moment; focus?: boolean; lead?: boolean; feed?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
   const saved = isSaved(moment.id);
+  const variant = focus ? "default" : variantOf(moment, lead);
+  const heroImage = variant === "hero" ? moment.media.find((x) => x.kind === "image") : undefined;
 
   // Opening a post is reading its conversation — the calm in-Tacet reader, not a jump out.
   function openConversation() {
@@ -123,39 +147,48 @@ export function LiveMoment({ moment, focus }: { moment: Moment; focus?: boolean 
         onClick: openConversation,
         onKeyDown: (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } },
       };
+  const cls = ["t-post", "t-card", `t-post--${variant}`, focus ? "t-post--focus" : ""].filter(Boolean).join(" ");
 
   return (
-    <article className={"t-post t-card" + (focus ? " t-post--focus" : "")}>
+    <article className={cls}>
+      {heroImage && (
+        <div className="t-post__hero" role="button" tabIndex={0} onClick={openConversation}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } }}>
+          <img className="t-post__hero-img" src={heroImage.url} alt={heroImage.alt} loading="lazy" />
+          {heroImage.alt && <span className="t-post__hero-cap t-mono">{heroImage.alt}</span>}
+        </div>
+      )}
+
       <div className="t-post__head">
         <Link to={profilePath(moment.author.id)} className="t-post__author">
           <Avatar name={moment.author.name} src={moment.author.avatarUrl} size={44} />
           <Identity person={moment.author} time={relativeTime(moment.createdAt)} source={moment.source} />
         </Link>
-        <a
-          className="t-iconbtn t-post__more"
-          href={moment.url}
-          target="_blank"
-          rel="noreferrer noopener"
-          aria-label="Open at source"
-          title="Open at source"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Icon name="share" size={18} />
-        </a>
       </div>
 
       <div className={focus ? undefined : "t-post__open"} {...bodyProps}>
-        {moment.text && <p className="t-post__body">{moment.text}</p>}
-        <PostMedia media={moment.media} onOpen={focus ? undefined : openConversation} />
+        {variant === "article" && moment.title ? (
+          <>
+            <h3 className="t-post__title">{moment.title}</h3>
+            {dekOf(moment) && <p className="t-post__dek">{dekOf(moment)}</p>}
+          </>
+        ) : (
+          moment.text && <p className="t-post__body">{moment.text}</p>
+        )}
+        {!heroImage && <PostMedia media={moment.media} onOpen={focus ? undefined : openConversation} />}
       </div>
 
-      <PostCounts counts={moment.counts} />
+      {!feed && <PostCounts counts={moment.counts} />}
 
       <div className="t-post__actions">
-        {/* Spark isn't wired yet — honestly disabled rather than a button that pretends. */}
-        <button className="t-action is-soon" type="button" disabled title="Coming soon" aria-label="Spark — coming soon">
-          <Icon name="spark" size={18} /> <span>Spark</span>
+        {/* Reply isn't wired yet — honestly disabled, never a button that pretends. */}
+        <button className="t-action is-soon" type="button" disabled title="Coming soon" aria-label="Reply — coming soon">
+          <Icon name="reply" size={18} /> <span>Reply</span>
         </button>
+        <a className="t-action" href={moment.url} target="_blank" rel="noreferrer noopener"
+          title="Open at source" aria-label="Open at source" onClick={(e) => e.stopPropagation()}>
+          <Icon name="share" size={18} /> <span>Share</span>
+        </a>
         <button
           className={"t-action" + (saved ? " is-on" : "")}
           type="button"

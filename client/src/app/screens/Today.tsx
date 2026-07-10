@@ -107,8 +107,8 @@ export function Today() {
           ) : (
             <>
               <div className="t-feed">
-                {state.result.data.map((m) => (
-                  <LiveMoment key={m.id} moment={m} />
+                {state.result.data.map((m, i) => (
+                  <LiveMoment key={m.id} moment={m} feed lead={i === 0} />
                 ))}
               </div>
               <div className="t-caughtup">
