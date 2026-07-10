@@ -12,6 +12,21 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Business model documented (2026-07-10) — docs only, no billing code.** New
+  [`docs/01-product/business-model.md`](docs/01-product/business-model.md) (canonical
+  01-product product area; 09-product holds only the publishing-philosophy doc) is the
+  public statement of sustainability: the open-source / decentralised / hosted-service
+  distinction; free-forever commitments (full self-hostable source with no upsell-only
+  feature gates + a genuinely usable free tacet.social account); the governing principle
+  *"We price the service, never the software…"* with the verbatim never-list (ads, data,
+  engagement mechanics); and the **planned pricing** (Free €0 · Plus €6/mo·€60/yr ·
+  Identity €24/yr, bundle €96/yr · Founding €99 once/first-500 or €29/yr patron · Managed
+  Homes €29/€99/from-€299/mo · later: B2B, curation, white-label) — publishing intent
+  only, nothing charged. README gained an "Open source, sustainable" section; reconciled
+  the manifesto (`anti-patterns.md`) and `07-brand/launch-positioning.md` by **linking**
+  to the doc (never weakening). Gate green (typecheck + build + 75 tests); no app code,
+  no Stripe, no pricing UI; tracked `wrangler.jsonc` untouched.
+
 - **Landing fidelity pass to mocks 1–3, LIVE (2026-07-09).** Deploy **`bdcad653`** (rollback
   anchor `451dadb6`). Spec: `docs/10-design/hifi/fidelity-specs.md`. Verified on
   `https://tacet.social`: `/`, `/welcome/world`, `/welcome/home`, `/today` all 200; `/api/health`

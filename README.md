@@ -67,6 +67,17 @@ Friendica). It does **not** claim to connect to closed networks (Instagram, X,
 TikTok, LinkedIn, YouTube); those stay walled until they open a door, and we say so
 plainly.
 
+## Open source, sustainable
+
+Tacet's code is free and always will be — full source, self-hostable, with no feature
+gates that exist only to upsell a paid service. The hosted service at
+[tacet.social](https://tacet.social) is what sustains the project: a genuinely usable
+free account stays free forever, and paid plans cover the servers and the labour behind
+them. **We price the service, never the software** — and we will never sell ads, never
+sell data, and never build engagement mechanics. See the [business
+model](docs/01-product/business-model.md) for the free-forever commitments and the
+planned pricing.
+
 ## Repository structure
 
 ```txt

@@ -52,6 +52,10 @@ Fediverse-unaware should feel just as at home, because we hide the plumbing.
 We lead with what Tacet **is**. The things we refuse — ads, engagement
 algorithms, manipulation — are real and they matter, but they are the fine print,
 not the pitch. A home is described by who lives there, not by what you kept out.
+(Those refusals are permanent commitments, not marketing — see the
+[business model](../01-product/business-model.md), which states plainly how Tacet is
+paid for and why we never sell ads, never sell data, and never build engagement
+mechanics.)
 
 - **Lead:** your people, your identity, your calm home on the open web.
 - **Support (quietly):** in the order things happened; no ads; nothing engineered to keep you scrolling.

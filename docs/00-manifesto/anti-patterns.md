@@ -64,7 +64,10 @@ fragmentation problem, never as a promised feature. (See
 
 **Pitching by negation.** "No ads. No algorithm. No tracking." is true, but it is
 not the pitch — it's the fine print. The pitch is the positive thing: your people,
-your identity, your calm home on the open web. Lead with what Tacet *is*.
+your identity, your calm home on the open web. Lead with what Tacet *is*. (This note
+is about how we *talk*, not a softening of the promise: the commitment itself — that
+we never sell ads, never sell data, and never build engagement mechanics — is stated
+plainly in the [business model](../01-product/business-model.md).)
 
 **Protocol as product.** Never make the user learn ActivityPub, "instances," or
 "federation" to use Tacet. The protocol should disappear, like SMTP disappears
