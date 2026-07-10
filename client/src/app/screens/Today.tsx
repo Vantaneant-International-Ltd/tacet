@@ -118,12 +118,20 @@ function TodayFeed({ moments }: { moments: Moment[] }) {
   const recent = moments.filter((m) => isToday(m.createdAt));
   const earlier = moments.filter((m) => !isToday(m.createdAt));
   const leadId = moments[0]?.id;
+  // Up to two visually rich REAL posts (media present), not the lead — media-first by recency,
+  // never by engagement. Given the honest "From your world" highlight treatment.
+  const highlightIds = new Set(
+    moments.filter((m) => m.id !== leadId && m.media.some((x) => x.kind === "image" || x.kind === "video")).slice(0, 2).map((m) => m.id),
+  );
+  const card = (m: Moment) => (
+    <LiveMoment key={m.id} moment={m} feed lead={m.id === leadId} highlight={highlightIds.has(m.id)} />
+  );
   return (
     <div className="t-feed">
       {recent.length > 0 && <FeedDivider label={`This ${partOfDay(now.getHours())}`} />}
-      {recent.map((m) => <LiveMoment key={m.id} moment={m} feed lead={m.id === leadId} />)}
+      {recent.map(card)}
       {earlier.length > 0 && <FeedDivider label="Earlier" />}
-      {earlier.map((m) => <LiveMoment key={m.id} moment={m} feed lead={m.id === leadId} />)}
+      {earlier.map(card)}
     </div>
   );
 }

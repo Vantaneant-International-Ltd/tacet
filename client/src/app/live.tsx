@@ -127,7 +127,7 @@ function dekOf(m: Moment): string {
   return t.startsWith(m.title) ? t.slice(m.title.length).trimStart() : m.text;
 }
 
-export function LiveMoment({ moment, focus, lead = false, feed = false }: { moment: Moment; focus?: boolean; lead?: boolean; feed?: boolean }) {
+export function LiveMoment({ moment, focus, lead = false, feed = false, highlight = false }: { moment: Moment; focus?: boolean; lead?: boolean; feed?: boolean; highlight?: boolean }) {
   useMeVersion(); // re-render when saved-state changes
   const saved = isSaved(moment.id);
   const variant = focus ? "default" : variantOf(moment, lead);
@@ -147,10 +147,13 @@ export function LiveMoment({ moment, focus, lead = false, feed = false }: { mome
         onClick: openConversation,
         onKeyDown: (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } },
       };
-  const cls = ["t-post", "t-card", `t-post--${variant}`, focus ? "t-post--focus" : ""].filter(Boolean).join(" ");
+  const cls = ["t-post", "t-card", `t-post--${variant}`, highlight ? "t-post--highlight" : "", focus ? "t-post--focus" : ""].filter(Boolean).join(" ");
 
   return (
     <article className={cls}>
+      {highlight && !heroImage && (
+        <p className="t-post__hl t-mono"><Icon name="spark" size={14} /> From your world</p>
+      )}
       {heroImage && (
         <div className="t-post__hero" role="button" tabIndex={0} onClick={openConversation}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversation(); } }}>

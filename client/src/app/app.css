@@ -345,6 +345,13 @@
 .t-post__dek { overflow-wrap: anywhere; word-break: break-word; }
 /* quiet — unboxed, type carries it (no frame) */
 .t-feed .t-post--quiet { background: transparent; border: 0; box-shadow: none; padding: var(--space-2) var(--space-5); }
+/* highlight — "From your world": accent-tinted, honestly labelled (no invented curator) */
+.t-feed .t-post--highlight {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-accent-subtle) 55%, var(--color-surface)) 0%, var(--color-surface) 100%);
+  border-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-hairline));
+}
+.t-post__hl { display: inline-flex; align-items: center; gap: var(--space-1); margin: 0 0 var(--space-2); font-size: var(--text-micro); font-weight: 500; color: var(--color-accent); }
+.t-post__hl svg { color: var(--color-accent); }
 
 .t-participants { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); }
 .t-participants__stack { display: flex; }
