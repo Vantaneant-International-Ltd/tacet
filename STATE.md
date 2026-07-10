@@ -12,6 +12,16 @@
 
 ## Done since re-founding (2026-07-07)
 
+- **Running-costs transparency doc (2026-07-10) — docs only.** New
+  [`docs/01-product/running-costs.md`](docs/01-product/running-costs.md): a public,
+  dated (July 2026) estimate of what the hosted service costs to run — a monthly-USD table
+  across Beta / 1k / 10k / 100k daily users (Workers, traffic, DB with a planned D1→Postgres
+  migration ~10k, R2, jobs, domain+email; totals ~$6/~$10/~$65/~$350). Framed by "you are not
+  the product," cheap-by-design (edge, zero egress), and cross-linked both ways with
+  `business-model.md` (no conflicting numbers — those are product prices, these are infra
+  costs). README's "Open source, sustainable" section links to it; no update cadence promised.
+  Gate green (typecheck + build + 109 tests).
+
 - **Adapter documentation pass (2026-07-10) — docs only.** README gained a "What Tacet reads
   today" section (Source | Covers | Status table for the four live families + closed-platforms-
   out + reading-live/publishing-next + seeds transparency). Reconciled every place that still

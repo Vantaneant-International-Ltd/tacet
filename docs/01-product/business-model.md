@@ -75,6 +75,9 @@ weigh — it is already answered. (See the manifesto's
 [launch positioning](../07-brand/launch-positioning.md), which reject the same things from
 the product and marketing side.)
 
+Because the money comes from the service and not from you, we can show you the service's bill:
+we publish [what Tacet costs to run](running-costs.md).
+
 ## Planned pricing
 
 These are our intended prices as of the developer preview. Nothing is charged yet;

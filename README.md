@@ -103,7 +103,7 @@ free account stays free forever, and paid plans cover the servers and the labour
 them. **We price the service, never the software** — and we will never sell ads, never
 sell data, and never build engagement mechanics. See the [business
 model](docs/01-product/business-model.md) for the free-forever commitments and the
-planned pricing.
+planned pricing. We also publish [what Tacet costs to run](docs/01-product/running-costs.md).
 
 ## Repository structure
 
