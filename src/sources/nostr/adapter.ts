@@ -73,6 +73,13 @@ function parseProfile(content: string): Omit<ProfileMeta, "at"> {
   }
 }
 
+// Protocol tokens never reach rendered text: nostr: URIs and bare bech32 references fold
+// away (the permalink already carries the reference). Media URLs are extracted separately.
+const PROTOCOL_TOKEN_RE = /(?:\bnostr:[a-z0-9]+\b|\b(?:npub|note|nevent|naddr|nprofile)1[02-9ac-hj-np-z]{8,}\b)/gi;
+export function stripProtocolTokens(text: string): string {
+  return text.replace(PROTOCOL_TOKEN_RE, "").replace(/[ \t]{2,}/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+}
+
 const MEDIA_RE = /(https?:\/\/[^\s]+?\.(?:jpg|jpeg|png|gif|webp|mp4|webm|mov|mp3|m4a|ogg))(?:\?[^\s]*)?/gi;
 function extractMedia(text: string): NormalizedPost["media"] {
   const out: NormalizedPost["media"] = [];
@@ -176,17 +183,24 @@ export class NostrAdapter implements SourceAdapter<NostrRaw> {
 
   normalize(raw: NostrRaw): NormalizedPost | null {
     const e = raw.event;
-    const text = (e.content ?? "").trim();
-    if (!text) return null;
+    const rawText = (e.content ?? "").trim();
+    if (!rawText) return null;
+    // Media extraction sees the original text; the rendered body is cleaned of protocol
+    // tokens (nostr: URIs, bare bech32 strings) — the permalink carries the reference.
+    const media = extractMedia(rawText);
+    const text = stripProtocolTokens(rawText);
+    if (!text && media.length === 0) return null;
     const npub = safeNpub(e.pubkey);
     const note = safeNote(e.id);
     const url = note ? `https://njump.me/${note}` : `https://njump.me/${e.id}`;
     const profileUrl = npub ? `https://njump.me/${npub}` : SOURCE_BASE.url;
     const p = raw.profile;
+    // NIP-05 "_@domain" is the domain-identity convention — display as "@domain".
+    const nip05 = p?.nip05?.replace(/^_@/, "");
     const author: Person = {
       id: profileUrl,
       name: p?.name || (npub ? npub.slice(0, 12) + "…" : "Someone on Nostr"),
-      handle: p?.nip05 ? `@${p.nip05}` : npub ? npub.slice(0, 12) + "…" : "nostr",
+      handle: nip05 ? `@${nip05}` : npub ? npub.slice(0, 12) + "…" : "nostr",
       avatarUrl: p?.picture ?? null,
       bio: p?.about ?? "",
       url: profileUrl,
@@ -199,7 +213,7 @@ export class NostrAdapter implements SourceAdapter<NostrRaw> {
       text,
       createdAt: new Date(e.created_at * 1000).toISOString(),
       url,
-      media: extractMedia(text),
+      media,
       source: { ...SOURCE_BASE },
     };
   }

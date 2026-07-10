@@ -50,6 +50,18 @@ function useResource<T>(path: string): LoadState<T> {
 export const useToday = () => useResource<Moment[]>("/api/openweb/today");
 export const usePeople = () => useResource<Person[]>("/api/openweb/people");
 
+// ── Render sanitation ───────────────────────────────────────────────────────────
+// Protocol tokens never reach rendered UI (W5). Items collected before the adapters learned
+// to strip them can still carry nostr: URIs / bech32 strings or a NIP-05 "_@domain" handle —
+// clean at render so the rule holds for stored data too.
+const PROTOCOL_TOKEN_RE = /(?:\bnostr:[a-z0-9]+\b|\b(?:npub|note|nevent|naddr|nprofile)1[02-9ac-hj-np-z]{8,}\b)/gi;
+export function presentText(text: string): string {
+  return text.replace(PROTOCOL_TOKEN_RE, "").replace(/[ \t]{2,}/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+}
+export function presentHandle(handle: string): string {
+  return handle.replace(/^@_@/, "@");
+}
+
 // ── Connectivity ("Your home is connected") ─────────────────────────────────────
 export interface ConnectivityFamily { adapter: string; label: string; watching: number; collected: number }
 export interface Connectivity {

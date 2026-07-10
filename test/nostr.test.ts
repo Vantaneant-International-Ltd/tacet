@@ -60,7 +60,7 @@ describe("nostr adapter — normalize", () => {
     expect(m.source).toMatchObject({ name: "Nostr", software: "Nostr", adapter: "nostr" });
     expect(m.url.startsWith("https://njump.me/note1")).toBe(true);
     expect(m.author.name).toBe("Fiatjaf");
-    expect(m.author.handle).toBe("@_@fiatjaf.com");
+    expect(m.author.handle).toBe("@fiatjaf.com"); // NIP-05 "_@domain" displays as "@domain"
     expect(m.media).toEqual([{ url: "https://cdn.example/pic.jpg", kind: "image", alt: "" }]);
     expect(m.createdAt).toBe(new Date(1_780_000_000 * 1000).toISOString());
     // no protocol words leaked
@@ -69,6 +69,20 @@ describe("nostr adapter — normalize", () => {
 
   it("drops an empty note", () => {
     const raw: NostrRaw = { event: { id: HEX32, pubkey: HEX32, created_at: 1, kind: 1, tags: [], content: "   ", sig: "x" } };
+    expect(adapter.normalize(raw)).toBeNull();
+  });
+
+  it("strips nostr: URIs and bare bech32 tokens from rendered text (v2.2 3a)", () => {
+    const raw: NostrRaw = {
+      event: { id: HEX32, pubkey: HEX32, created_at: 1_780_000_000, kind: 1, tags: [], content: "replying to nostr:nevent1qqsw0aajphl9h9qelqhqcqu2tmp5c0dl4z543f0u8z4c3lhvhq8ke0spz3mhxue69uhhyetvv9uj this npub1sg6plzptd64u62a878hep2kev88swjh3tw00gjsfl8f237lmu63q0uf63m is right", sig: "x" },
+    };
+    const m = adapter.normalize(raw)!;
+    expect(m.text).toBe("replying to this is right");
+    expect(m.text).not.toMatch(/nostr:|npub1|nevent1/);
+  });
+
+  it("drops a note that is ONLY protocol tokens (nothing renderable)", () => {
+    const raw: NostrRaw = { event: { id: HEX32, pubkey: HEX32, created_at: 1, kind: 1, tags: [], content: "nostr:note1qfl4dvuhucff5adhalw4z65m6ss56sm9hmx9x0qqqqqqqqqqqqqqqq", sig: "x" } };
     expect(adapter.normalize(raw)).toBeNull();
   });
 

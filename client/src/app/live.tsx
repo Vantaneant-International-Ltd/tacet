@@ -1,7 +1,7 @@
 import { Avatar, Button } from "../design/primitives";
 import { Icon } from "../design/icons";
 import type { Person, Moment, DataMode, Source, MomentCounts, MomentMedia } from "./openweb";
-import { relativeTime, profilePath, conversationPath } from "./openweb";
+import { relativeTime, profilePath, conversationPath, presentText, presentHandle } from "./openweb";
 import { Link, navigate } from "../router";
 import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 
@@ -97,7 +97,7 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
     <div className="t-identity">
       <span className="t-identity__name">{person.name}</span>
       <span className="t-identity__meta t-mono">
-        {person.handle}
+        {presentHandle(person.handle)}
         {time && <span aria-hidden="true"> · {time}</span>}
       </span>
       {source && <SourceBadge source={source} />}
@@ -173,10 +173,10 @@ export function LiveMoment({ moment, focus, lead = false, feed = false, highligh
         {variant === "article" && moment.title ? (
           <>
             <h3 className="t-post__title">{moment.title}</h3>
-            {dekOf(moment) && <p className="t-post__dek">{dekOf(moment)}</p>}
+            {dekOf(moment) && <p className="t-post__dek">{presentText(dekOf(moment))}</p>}
           </>
         ) : (
-          moment.text && <p className="t-post__body">{moment.text}</p>
+          moment.text && <p className="t-post__body">{presentText(moment.text)}</p>
         )}
         {!heroImage && <PostMedia media={moment.media} onOpen={focus ? undefined : openConversation} />}
       </div>
