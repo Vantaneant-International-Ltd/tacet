@@ -224,6 +224,24 @@
 
 .t-feed { display: flex; flex-direction: column; gap: var(--space-6); }
 
+/* Mobile lens row — segmented control (For You · Following · Local · Trending) */
+.t-lens {
+  display: flex; gap: var(--space-1); padding: var(--space-1);
+  margin: 0 0 var(--space-5); background: var(--color-surface-sunken);
+  border: var(--border-hairline) solid var(--color-hairline); border-radius: var(--radius-full);
+}
+.t-lens__opt {
+  flex: 1; padding: var(--space-2) var(--space-3);
+  border: 0; background: transparent; border-radius: var(--radius-full);
+  font-size: var(--text-label); font-weight: 500; color: var(--color-text-secondary); cursor: pointer;
+}
+.t-lens__opt.is-active {
+  background: var(--surface-gradient); box-shadow: var(--elevation-1), var(--edge-highlight);
+  color: var(--color-text-primary);
+}
+.t-lens__opt:disabled { opacity: var(--alpha-disabled); cursor: default; }
+@media (min-width: 900px) { .t-lens { display: none; } }
+
 /* Editorial section divider ("This evening" / "Earlier") */
 .t-divider { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-2) 0; }
 .t-divider__label { font-size: var(--text-micro); font-weight: 500; letter-spacing: var(--tracking-wide); color: var(--color-text-tertiary); }

@@ -74,6 +74,29 @@ function TodayNudges() {
   return null;
 }
 
+// The mobile lens row. Only "For You" is backed by data today, so the other three are
+// honestly inert ("coming soon") — never a filter that silently shows the same feed (W1).
+const LENSES = ["For You", "Following", "Local", "Trending"];
+function TodayLens() {
+  return (
+    <div className="t-lens" role="radiogroup" aria-label="View of Today">
+      {LENSES.map((l, i) => (
+        <button
+          key={l}
+          type="button"
+          role="radio"
+          aria-checked={i === 0}
+          disabled={i !== 0}
+          title={i !== 0 ? "Coming soon" : undefined}
+          className={"t-lens__opt" + (i === 0 ? " is-active" : "")}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // A labelled hairline divider between editorial groups.
 function FeedDivider({ label }: { label: string }) {
   return (
@@ -117,6 +140,7 @@ export function Today() {
     <Surface context={<ConnectivityPanel />}>
     <div className="t-screen t-screen--reading">
       <TodayMasthead moments={moments} />
+      <TodayLens />
 
       {state.status === "loading" && <Loading label="Gathering today" />}
 
