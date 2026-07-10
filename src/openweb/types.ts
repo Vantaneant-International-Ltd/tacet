@@ -7,12 +7,19 @@
 // "source" / "home", never "instance" or "server".
 export interface Source {
   id: string; // canonical host, e.g. "mastodon.social"
-  name: string; // human label for the home
+  name: string; // human label for the home (or publication name, for a feed)
   url: string; // https://<host>
-  // The software this home runs, as a friendly product label ("Mastodon", "Pixelfed",
-  // "PeerTube"…), when known. Powers subtle source attribution in the UI. Never a
-  // protocol name — it says where content lives, not how it travels.
+  // The software or network this home runs on, as a friendly product label ("Mastodon",
+  // "Pixelfed", "PeerTube", "Bluesky", "Nostr", "Podcast"…), when known. Powers subtle
+  // source attribution in the UI. Never a protocol name — it says where content lives,
+  // not how it travels. ("Bluesky", not "AT Protocol"; "Mastodon", not "ActivityPub".)
   software?: string;
+  // Which internal adapter produced this source (e.g. "activitypub", "feeds", "atproto",
+  // "nostr"). Provenance for dedup/diagnostics only — NEVER shown in the UI.
+  adapter?: string;
+  // A favicon / site icon for the home or publication, when discoverable. A small visual
+  // cue on each card; purely decorative, always optional.
+  iconUrl?: string | null;
 }
 
 // A labelled profile field (Mastodon-style metadata: "Website", "Pronouns", …). `href`
