@@ -2,6 +2,9 @@
    the wide breakpoint. See docs/03-design-system and 02-human-interface-guidelines. */
 
 .t-app { min-height: 100vh; background-image: var(--glow-ambient); background-repeat: no-repeat; background-attachment: fixed; }
+/* Links inside the app are quiet by default (no default underline); emphasis is by colour or
+   an explicit hover underline. Scoped to .t-app so landing / welcome are untouched. */
+.t-app a { color: inherit; text-decoration: none; }
 
 /* ---------- Desktop side rail (hidden on mobile) ---------- */
 .t-rail { display: none; }
@@ -337,7 +340,7 @@
   font-size: var(--text-title); font-weight: 500; letter-spacing: var(--tracking-tight);
   line-height: var(--leading-snug); margin: var(--space-4) 0 0; color: var(--color-text-primary);
 }
-.t-post--article .t-post__open:hover .t-post__title { color: var(--color-accent-hover); }
+.t-post--article .t-post__open:hover .t-post__title { color: var(--color-accent-hover); text-decoration: underline; }
 .t-post__dek { font-size: var(--text-body-sm); color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin: var(--space-2) 0 0; }
 .t-post__dek { overflow-wrap: anywhere; word-break: break-word; }
 /* quiet — unboxed, type carries it (no frame) */
@@ -526,7 +529,9 @@
   overflow: hidden;
 }
 .t-media-grid--1 { grid-template-columns: 1fr; }
-.t-media-grid--2, .t-media-grid--3, .t-media-grid--4 { grid-template-columns: 1fr 1fr; }
+.t-media-grid--2, .t-media-grid--4 { grid-template-columns: 1fr 1fr; }
+/* Photo-essay triptych: one tall lead + two stacked squares (template) */
+.t-media-grid--3 { grid-template-columns: 1.6fr 1fr; }
 .t-media-item {
   display: block;
   width: 100%;

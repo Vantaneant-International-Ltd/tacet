@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode, HTMLAttributes } from "react";
+import { useState } from "react";
 import { Icon } from "./icons";
 import type { IconName } from "./icons";
 
@@ -114,8 +115,11 @@ export function Avatar({
   size?: number;
   ring?: boolean;
 }) {
+  const [broken, setBroken] = useState(false);
   const initial = name.trim().charAt(0).toUpperCase() || "?";
   const hue = [...name].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
+  // A broken image URL falls back to the calm monogram disc — never a broken-image icon.
+  const showImg = src && !broken;
   return (
     <span
       className={"t-avatar" + (ring ? " t-avatar--ring" : "")}
@@ -124,12 +128,12 @@ export function Avatar({
         height: size,
         fontSize: size * 0.42,
         // Derived tint stays inside the calm palette (low saturation, token-anchored).
-        background: src ? undefined : `hsl(${hue} 42% 88%)`,
-        color: src ? undefined : `hsl(${hue} 45% 32%)`,
+        background: showImg ? undefined : `hsl(${hue} 42% 88%)`,
+        color: showImg ? undefined : `hsl(${hue} 45% 32%)`,
       }}
       aria-hidden="true"
     >
-      {src ? <img src={src} alt="" width={size} height={size} /> : initial}
+      {showImg ? <img src={src} alt="" width={size} height={size} onError={() => setBroken(true)} /> : initial}
     </span>
   );
 }
