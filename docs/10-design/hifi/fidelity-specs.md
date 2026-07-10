@@ -61,10 +61,17 @@ modules the app did not yet have. That canvas is now shipped as an opt-in `Surfa
 (`client/src/app/Surface.tsx`): centre + right context column on desktop, stacking calmly on
 mobile; surfaces that pass no context render unchanged (zero regression).
 
-**Conformed this session:** Today's **context column** (surface 1, partial) now hosts the
-connectivity panel — its world-directed home. The full per-surface conformance (masthead
-eyebrows, editorial section groups, per-surface context modules, the "no score" footers,
-Moments feed, workspace switcher, etc.) is specced and ready to implement surface-by-surface.
+**Conformed:** **Today is CONFORMED to its template** (2026-07-10) — the editorial masthead
+(real date-line / time-of-day greeting / source cluster from live authors+homes), card
+variants derived from real data (hero / article / video / quiet / default), section dividers
+by recency, the bounded end, the desktop rail (Search entry + `@renato` handle), the mobile
+top bar + 5-slot tab bar (FAB-in-bar, "Chats", solid — no glass) + inert lens row, plus the
+full token set (theme.css + tokens.md §8.1). **Remaining inside Today:** the context-column
+editorial modules beyond the connectivity panel (People close to you / Continue / Across your
+world / Communities) — these are fabricated sample data in the template, so honest real-data
+versions are the follow-up; the two curator moments and the inline composer row are likewise
+deferred (fabricated momentum / compose-trigger plumbing). The other 7 in-scope surfaces
+remain specced-not-implemented.
 
 **Whitelist honored throughout:** W1 honest wording kept over template over-claims
 (composer preview, "sample suggestions" on Discover, local-not-federated Me handle, no
