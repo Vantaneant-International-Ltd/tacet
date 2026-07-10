@@ -22,7 +22,7 @@ export interface SavedPost {
   counts?: SavedCounts;
 }
 export interface CollectionSummary { id: string; name: string; count: number; createdAt: string }
-export interface RecentView { id: string; remoteId: string; authorName: string; authorHandle: string; text: string; url: string; sourceId: string; sourceSoftware?: string; viewedAt: string }
+export interface RecentView { id: string; remoteId: string; authorName: string; authorHandle: string; text: string; url: string; sourceId: string; sourceSoftware?: string; title?: string; viewedAt: string }
 
 // A post snapshot the way the server wants it, built from a live Moment.
 export interface SaveInput {

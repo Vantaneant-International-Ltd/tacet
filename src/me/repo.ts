@@ -352,11 +352,11 @@ export async function recordView(db: D1Database, profileId: string, snap: PostSn
   const now = new Date().toISOString();
   await db
     .prepare(
-      `INSERT INTO me_recently_viewed (id, profile_id, remote_id, author_name, author_handle, text, url, source_id, source_software, viewed_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-       ON CONFLICT(profile_id, remote_id) DO UPDATE SET viewed_at = excluded.viewed_at`,
+      `INSERT INTO me_recently_viewed (id, profile_id, remote_id, author_name, author_handle, text, url, source_id, source_software, title, viewed_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(profile_id, remote_id) DO UPDATE SET viewed_at = excluded.viewed_at, title = excluded.title`,
     )
-    .bind(ulid(), profileId, snap.remoteId, snap.authorName ?? "", snap.authorHandle ?? "", snap.text ?? "", snap.url ?? "", snap.sourceId ?? "", snap.sourceSoftware ?? null, now)
+    .bind(ulid(), profileId, snap.remoteId, snap.authorName ?? "", snap.authorHandle ?? "", snap.text ?? "", snap.url ?? "", snap.sourceId ?? "", snap.sourceSoftware ?? null, snap.title ?? null, now)
     .run();
   // Keep history bounded (most recent 100).
   await db
@@ -367,9 +367,9 @@ export async function recordView(db: D1Database, profileId: string, snap: PostSn
 
 export async function listRecent(db: D1Database, profileId: string, limit = 40): Promise<RecentView[]> {
   const { results } = await db
-    .prepare("SELECT id, remote_id, author_name, author_handle, text, url, source_id, source_software, viewed_at FROM me_recently_viewed WHERE profile_id = ? ORDER BY viewed_at DESC LIMIT ?")
+    .prepare("SELECT id, remote_id, author_name, author_handle, text, url, source_id, source_software, title, viewed_at FROM me_recently_viewed WHERE profile_id = ? ORDER BY viewed_at DESC LIMIT ?")
     .bind(profileId, limit)
-    .all<{ id: string; remote_id: string; author_name: string; author_handle: string; text: string; url: string; source_id: string; source_software: string | null; viewed_at: string }>();
+    .all<{ id: string; remote_id: string; author_name: string; author_handle: string; text: string; url: string; source_id: string; source_software: string | null; title: string | null; viewed_at: string }>();
   return (results ?? []).map((r) => ({
     id: r.id,
     remoteId: r.remote_id,
@@ -379,6 +379,7 @@ export async function listRecent(db: D1Database, profileId: string, limit = 40):
     url: r.url,
     sourceId: r.source_id,
     sourceSoftware: r.source_software ?? undefined,
+    title: r.title ?? undefined,
     viewedAt: r.viewed_at,
   }));
 }

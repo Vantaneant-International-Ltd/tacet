@@ -42,8 +42,12 @@ function TodayMasthead({ moments }: { moments: Moment[] }) {
   const dateLine = `Today · ${now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}`;
   const greeting = `Good ${part}${me.name ? `, ${me.name}` : ""}.`;
   const authors = uniqueBy(moments.map((m) => m.author), (a) => a.id).slice(0, 5);
-  // Home DOMAINS contributing today (source.id = the host), never adapter/product names.
-  const homes = uniqueBy(moments.map((m) => m.source), (s) => s.id).map((s) => s.id).filter(Boolean).slice(0, 5);
+  // Home DOMAINS contributing today (source.id = the host). Domains ONLY — a source with no
+  // domain (e.g. the Nostr network id) never appears here; bare network names don't belong.
+  const homes = uniqueBy(moments.map((m) => m.source), (s) => s.id)
+    .map((s) => s.id)
+    .filter((id) => id.includes("."))
+    .slice(0, 5);
   // Sub-line follows the spec pattern with the REAL digest count.
   const n = moments.length;
   const subline =

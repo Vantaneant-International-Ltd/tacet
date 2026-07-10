@@ -86,6 +86,7 @@ export interface RecentView {
   url: string;
   sourceId: string;
   sourceSoftware?: string;
+  title?: string; // the item's real title, when it has one (articles/long-form)
   viewedAt: string;
 }
 
