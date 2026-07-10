@@ -50,6 +50,30 @@ function useResource<T>(path: string): LoadState<T> {
 export const useToday = () => useResource<Moment[]>("/api/openweb/today");
 export const usePeople = () => useResource<Person[]>("/api/openweb/people");
 
+// ── Connectivity ("Your home is connected") ─────────────────────────────────────
+export interface ConnectivityFamily { adapter: string; label: string; watching: number; collected: number }
+export interface Connectivity {
+  families: ConnectivityFamily[];
+  placesWatched: number; serversSeen: number; postsGathered: number; lastRefreshed: string | null;
+}
+export type ConnectivityState =
+  | { status: "loading" }
+  | { status: "ready"; data: Connectivity }
+  | { status: "error" };
+
+export function useConnectivity(): ConnectivityState {
+  const [state, setState] = useState<ConnectivityState>({ status: "loading" });
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/openweb/connectivity", { credentials: "same-origin", headers: { accept: "application/json" } })
+      .then((r) => (r.ok ? (r.json() as Promise<Connectivity>) : Promise.reject(new Error("unavailable"))))
+      .then((data) => { if (alive) setState({ status: "ready", data }); })
+      .catch(() => { if (alive) setState({ status: "error" }); });
+    return () => { alive = false; };
+  }, []);
+  return state;
+}
+
 // ── Remote profiles ────────────────────────────────────────────────────────────
 export interface ProfileData { profile: Person | null; posts: Moment[]; source: Source | null; error?: AdapterError }
 export type ProfileState =

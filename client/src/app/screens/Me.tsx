@@ -9,6 +9,7 @@ import { navigate } from "../../router";
 import { api, useResource, useMeVersion, useSavedCount } from "../me";
 import type { Profile, Workspace, CollectionSummary, ProfileField } from "../me";
 import { SavedCard } from "../SavedCard";
+import { ConnectivityPanel } from "../ConnectivityPanel";
 import { relativeTime } from "../openweb";
 import { useHint } from "../onboarding/hints";
 import { Hint } from "../onboarding/Hint";
@@ -32,6 +33,7 @@ export function Me() {
   return (
     <div className="t-screen t-screen--reading">
       <ProfileCard />
+      <ConnectivityPanel />
       <AppearanceControl />
 
       <div className="t-tabs t-tabs--scroll" role="tablist" aria-label="Your home">

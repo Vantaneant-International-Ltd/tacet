@@ -6,6 +6,7 @@ import { makeSignerFromEnv } from "../openweb/activitypub/signing";
 import { readRecent } from "../sources/store";
 import { refreshAllSources } from "../sources/refresh";
 import { mergeTodayResult } from "../sources/today";
+import { getConnectivity } from "../sources/connectivity";
 
 // Read-only open social web endpoints. Public (no session needed). They fan out to the
 // configured discovery sources, normalize everything into Tacet domain objects, and
@@ -46,6 +47,12 @@ openwebRoutes.get("/today", async (c) => {
 
 openwebRoutes.get("/people", async (c) => {
   return c.json(await getPeople(sourcesFor(c.env), 24, Date.now()));
+});
+
+// "Your home is connected" — live, world-directed connectivity to the open web. Real
+// adapter state (source registry + collected cache); never hardcoded. Always 200.
+openwebRoutes.get("/connectivity", async (c) => {
+  return c.json(await getConnectivity(c.env.DB));
 });
 
 // A single person's profile — read-only, any implementation. `actor` is an actor URL or
