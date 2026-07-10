@@ -116,8 +116,9 @@ export interface Collection<T> {
 
 export interface MomentMedia {
   url: string;
-  kind: "image" | "video" | "other";
+  kind: "image" | "video" | "audio" | "other";
   alt: string;
+  poster?: string; // a still image for video/audio (e.g. a podcast cover, a video thumbnail)
 }
 
 // Honest provenance of what the UI is showing.

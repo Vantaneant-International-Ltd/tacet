@@ -9,6 +9,7 @@ import { publicRoutes } from "./routes/public";
 import { collectionRoutes } from "./routes/collections";
 import { openwebRoutes } from "./routes/openweb";
 import { meRoutes } from "./routes/me";
+import { refreshAllSources } from "./sources/refresh";
 
 // The Worker owns /api/*. Static files (JS, CSS, fonts) are served directly by the
 // assets binding before the Worker runs. Any remaining path is a client-side route,
@@ -105,4 +106,12 @@ app.get("*", (c) => {
   return c.env.ASSETS.fetch(new URL("/index.html", url.origin));
 });
 
-export default app;
+// The Worker exports both a fetch handler (the Hono app) and a scheduled handler. The cron
+// trigger refreshes the collector sources (feeds, AT Protocol, Nostr) into D1 so Today has
+// fresh content without polling them on every request. Read-only, public sources only.
+export default {
+  fetch: (request: Request, env: Env, ctx: ExecutionContext) => app.fetch(request, env, ctx),
+  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(refreshAllSources({ db: env.DB }, Date.now(), { force: true }));
+  },
+};

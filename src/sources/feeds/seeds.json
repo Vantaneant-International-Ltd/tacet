@@ -1,0 +1,12 @@
+[
+  { "url": "https://craigmod.com/index.xml", "title": "Craig Mod", "kind": "blog", "site": "https://craigmod.com" },
+  { "url": "https://www.themarginalian.org/feed/", "title": "The Marginalian", "kind": "blog", "site": "https://www.themarginalian.org" },
+  { "url": "https://simonwillison.net/atom/everything/", "title": "Simon Willison", "kind": "blog", "site": "https://simonwillison.net" },
+  { "url": "https://pluralistic.net/feed/", "title": "Pluralistic", "kind": "blog", "site": "https://pluralistic.net" },
+  { "url": "https://kottke.org/main/index.xml", "title": "kottke.org", "kind": "blog", "site": "https://kottke.org" },
+  { "url": "https://feeds.99percentinvisible.org/99percentinvisible", "title": "99% Invisible", "kind": "podcast", "site": "https://99percentinvisible.org" },
+  { "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q", "title": "Kurzgesagt", "kind": "video", "site": "https://www.youtube.com/@kurzgesagt" },
+  { "url": "https://www.reddit.com/r/philosophy/.rss", "title": "r/philosophy", "kind": "forum", "site": "https://www.reddit.com/r/philosophy" },
+  { "url": "https://github.com/denoland/deno/releases.atom", "title": "Deno releases", "kind": "forum", "site": "https://github.com/denoland/deno" },
+  { "url": "https://meta.discourse.org/latest.rss", "title": "Discourse Meta", "kind": "forum", "site": "https://meta.discourse.org" }
+]
