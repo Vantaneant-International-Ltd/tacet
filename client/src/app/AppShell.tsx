@@ -51,6 +51,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="t-rail__mark">tacet</span>
         </Link>
 
+        {/* Search isn't built yet — present but honestly disabled (no fake modal). */}
+        <div className="t-rail__search" role="button" aria-disabled="true" title="Search — coming soon">
+          <Icon name="search" size={18} />
+          <span className="t-rail__search-label">Search</span>
+          <span className="t-rail__kbd t-mono" aria-hidden="true">⌘K</span>
+        </div>
+
         <nav className="t-rail__nav">
           {NAV.map((item) => (
             <Link
@@ -73,7 +80,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="t-rail__foot">
           <Link to="/me" className="t-rail__me">
             <Avatar name={me.name} size={34} />
-            <span className="t-rail__me-name">{me.name}</span>
+            <span className="t-rail__me-id">
+              <span className="t-rail__me-name">{me.name}</span>
+              <span className="t-rail__me-handle t-mono">@{me.user}</span>
+            </span>
           </Link>
           <ThemeToggle />
         </div>
