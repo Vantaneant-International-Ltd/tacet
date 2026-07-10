@@ -37,7 +37,7 @@ export interface Profile {
 
 export interface SavedMedia {
   url: string;
-  kind: "image" | "video" | "other";
+  kind: "image" | "video" | "audio" | "other";
   alt: string;
 }
 

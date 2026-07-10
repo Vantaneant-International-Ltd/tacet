@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { canonicalUrl, dedupeKey, dedupePosts, type NormalizedPost } from "../src/sources/contract";
+import { canonicalUrl, dedupeKey, dedupePosts, calmInterleave, type NormalizedPost } from "../src/sources/contract";
 import { ActivityPubAdapter } from "../src/sources/activitypub/adapter";
-import type { Person } from "../src/openweb/types";
+import { mergeTodayResult } from "../src/sources/today";
+import type { AdapterResult, Moment, Person } from "../src/openweb/types";
 
 // Pure contract tests — no network. The adapters' live fetches are exercised against real
 // homes at deploy time (Stage 5), not in unit tests.
@@ -71,5 +72,67 @@ describe("ActivityPub adapter — contract conformance", () => {
     const p = post("https://mastodon.social/@a/2");
     p.text = "";
     expect(ap.normalize(p)).toBeNull();
+  });
+});
+
+// ── Today merge: recency + source variety, calm degradation ──────────────────
+describe("Today merge + calm interleave", () => {
+  const at = (iso: string, adapter: string, n: number): NormalizedPost => {
+    const p = post(`https://${adapter}.example/${n}`, `${adapter}.example`);
+    p.createdAt = iso;
+    p.source.adapter = adapter;
+    return p;
+  };
+
+  it("interleaves by source variety while staying recency-forward", () => {
+    // Three feeds items are the most recent, then one bluesky — variety must break the run.
+    const posts = [
+      at("2026-07-09T10:00:00Z", "feeds", 1),
+      at("2026-07-09T09:59:00Z", "feeds", 2),
+      at("2026-07-09T09:58:00Z", "feeds", 3),
+      at("2026-07-09T09:50:00Z", "atproto", 1),
+      at("2026-07-09T09:40:00Z", "nostr", 1),
+    ];
+    const out = calmInterleave(posts, 5);
+    // most recent first, but no three feeds in a row up top
+    expect(out[0].source.adapter).toBe("feeds");
+    expect(out[1].source.adapter).not.toBe("feeds"); // variety kicked in
+    expect(out).toHaveLength(5);
+  });
+
+  it("ENDS at the limit — never returns more than asked", () => {
+    const posts = Array.from({ length: 40 }, (_, i) => at("2026-07-09T10:00:00Z", "feeds", i));
+    expect(calmInterleave(posts, 20)).toHaveLength(20);
+  });
+
+  const apResult = (mode: AdapterResult<Moment[]>["mode"], data: Moment[]): AdapterResult<Moment[]> => ({
+    data,
+    mode,
+    source: null,
+    fetchedAt: "2026-07-09T10:00:00Z",
+  });
+
+  it("blends live ActivityPub with collected items and stamps AP provenance", () => {
+    const apMoment = post("https://mastodon.social/@a/1");
+    apMoment.createdAt = "2026-07-09T10:01:00Z";
+    const collected = [at("2026-07-09T10:00:30Z", "atproto", 1)];
+    const merged = mergeTodayResult(apResult("live", [apMoment]), collected, 20);
+    expect(merged.mode).toBe("live");
+    expect(merged.data).toHaveLength(2);
+    const ap = merged.data.find((m) => m.url.includes("mastodon.social"))!;
+    expect(ap.source.adapter).toBe("activitypub"); // stamped by the merge
+  });
+
+  it("promotes collected items to live even when ActivityPub is only mock", () => {
+    const collected = [at("2026-07-09T10:00:00Z", "nostr", 1)];
+    const merged = mergeTodayResult(apResult("mock", [post("https://sample/x")]), collected, 20);
+    expect(merged.mode).toBe("live");
+    expect(merged.data.every((m) => m.source.adapter === "nostr")).toBe(true); // the mock sample was dropped
+  });
+
+  it("keeps the honest mock result when AP is mock and nothing was collected", () => {
+    const mock = apResult("mock", [post("https://sample/x")]);
+    const merged = mergeTodayResult(mock, [], 20);
+    expect(merged).toBe(mock); // untouched
   });
 });

@@ -32,7 +32,7 @@ function snapshotFrom(body: Record<string, unknown>): PostSnapshot {
   const media = Array.isArray(body.media)
     ? (body.media as unknown[]).filter((m): m is SavedMedia => !!m && typeof (m as any).url === "string").map((m) => ({
         url: (m as any).url as string,
-        kind: ((m as any).kind === "image" || (m as any).kind === "video" ? (m as any).kind : "other") as SavedMedia["kind"],
+        kind: (["image", "video", "audio"].includes((m as any).kind) ? (m as any).kind : "other") as SavedMedia["kind"],
         alt: str((m as any).alt) ?? "",
       }))
     : [];

@@ -10,54 +10,72 @@ import { isSaved, toggleSave, momentToInput, useMeVersion, api } from "./me";
 // system's classes (.t-post, .t-personrow, .t-identity) so live and sample content
 // look identical. Everyone is "a person"; every post is "a post" — no protocol words.
 
-// Where a person or post LIVES — their home (e.g. "twit.social"), which is part of their
-// identity. The software the home runs (e.g. "Mastodon") is infrastructure and shown only
-// as a quiet secondary note. Home leads; software follows. Absent when neither is known.
+// Where a person or post LIVES — their home or publication (e.g. "mastodon.social",
+// "Craig Mod", "Bluesky"), which is part of their identity, plus a quiet secondary note for
+// the network/medium (e.g. "Mastodon", "Podcast"). A favicon leads when we have one. Home
+// leads; software follows; identical labels collapse. Shown on every card.
 export function SourceBadge({ source }: { source?: Source }) {
   if (!source) return null;
   const home = source.name || source.id;
-  if (!home && !source.software) return null;
+  const sw = source.software;
+  const showSw = sw && sw !== home; // avoid "Bluesky · Bluesky"
+  if (!home && !sw) return null;
+  const title = showSw ? `${home} · ${sw}` : home || sw;
   return (
-    <span className="t-srcbadge" title={source.software && home ? `${home} · ${source.software}` : home || source.software}>
-      <span className="t-srcbadge__dot" aria-hidden="true" />
-      {home ? <span className="t-srcbadge__home">{home}</span> : source.software}
-      {home && source.software && <span className="t-srcbadge__sw"> · {source.software}</span>}
+    <span className="t-srcbadge" title={title}>
+      {source.iconUrl ? (
+        <img className="t-srcbadge__icon" src={source.iconUrl} alt="" width={14} height={14} loading="lazy" aria-hidden="true" />
+      ) : (
+        <span className="t-srcbadge__dot" aria-hidden="true" />
+      )}
+      {home ? <span className="t-srcbadge__home">{home}</span> : <span className="t-srcbadge__home">{sw}</span>}
+      {showSw && <span className="t-srcbadge__sw"> · {sw}</span>}
     </span>
   );
 }
 
-// Renders EVERY public attachment of a post — one image or four, images and video — as a
-// calm editorial gallery. Never drops attachments; degrades to nothing when there are none.
+// Renders EVERY public attachment of a post — images and video as a calm editorial gallery,
+// podcasts/audio as a full-width player below. Nothing autoplays (preload="none", no
+// autoplay); a video carries its poster/thumbnail. Degrades to nothing when there's none.
 export function PostMedia({ media, onOpen }: { media: MomentMedia[]; onOpen?: () => void }) {
-  const items = media.filter((m) => m.url && (m.kind === "image" || m.kind === "video"));
-  if (items.length === 0) return null;
-  const shown = items.slice(0, 4);
-  const extra = items.length - shown.length;
+  const visual = media.filter((m) => m.url && (m.kind === "image" || m.kind === "video"));
+  const audio = media.filter((m) => m.url && m.kind === "audio");
+  if (visual.length === 0 && audio.length === 0) return null;
+  const shown = visual.slice(0, 4);
+  const extra = visual.length - shown.length;
   return (
-    <div className={`t-media-grid t-media-grid--${shown.length}`}>
-      {shown.map((m, i) =>
-        m.kind === "video" ? (
-          <video
-            key={i}
-            className="t-media-item"
-            src={m.url}
-            controls
-            preload="none"
-            onClick={(e) => e.stopPropagation()}
-          />
-        ) : (
-          <img
-            key={i}
-            className="t-media-item"
-            src={m.url}
-            alt={m.alt}
-            loading="lazy"
-            onClick={onOpen}
-          />
-        ),
+    <>
+      {shown.length > 0 && (
+        <div className={`t-media-grid t-media-grid--${shown.length}`}>
+          {shown.map((m, i) =>
+            m.kind === "video" ? (
+              <video
+                key={i}
+                className="t-media-item"
+                src={m.url}
+                poster={m.poster}
+                controls
+                preload="none"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <img key={i} className="t-media-item" src={m.url} alt={m.alt} loading="lazy" onClick={onOpen} />
+            ),
+          )}
+          {extra > 0 && <span className="t-media-more" aria-hidden="true">+{extra}</span>}
+        </div>
       )}
-      {extra > 0 && <span className="t-media-more" aria-hidden="true">+{extra}</span>}
-    </div>
+      {audio.map((m, i) => (
+        <audio
+          key={i}
+          className="t-media-audio"
+          src={m.url}
+          controls
+          preload="none"
+          onClick={(e) => e.stopPropagation()}
+        />
+      ))}
+    </>
   );
 }
 
@@ -83,7 +101,7 @@ function Identity({ person, time, source }: { person: Person; time?: string; sou
         {person.handle}
         {time && <span aria-hidden="true"> · {time}</span>}
       </span>
-      {source?.software && <SourceBadge source={source} />}
+      {source && <SourceBadge source={source} />}
     </div>
   );
 }

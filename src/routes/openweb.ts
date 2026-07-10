@@ -1,7 +1,11 @@
 import { Hono } from "hono";
 import type { Env, Variables } from "../types";
+import type { Moment } from "../openweb/types";
 import { buildSources, getToday, getPeople, getProfile, getConversation } from "../openweb";
 import { makeSignerFromEnv } from "../openweb/activitypub/signing";
+import { readRecent } from "../sources/store";
+import { refreshAllSources } from "../sources/refresh";
+import { mergeTodayResult } from "../sources/today";
 
 // Read-only open social web endpoints. Public (no session needed). They fan out to the
 // configured discovery sources, normalize everything into Tacet domain objects, and
@@ -15,8 +19,29 @@ function sourcesFor(env: Env) {
   return buildSources({ instance: env.OPENWEB_INSTANCE, seed, signer: makeSignerFromEnv(env) });
 }
 
+// Today merges EVERY source through the normalization contract: the live ActivityPub reader
+// (untouched) plus the cron-collected items (feeds, Bluesky, Nostr) read back from D1. They
+// are one shape, so they dedupe by canonical URL and interleave calmly — recency + source
+// variety, never engagement (ADR-011/012). Today still ENDS; there is no infinite scroll.
+const TODAY_LIMIT = 20;
+
 openwebRoutes.get("/today", async (c) => {
-  return c.json(await getToday(sourcesFor(c.env), 20, Date.now()));
+  const now = Date.now();
+  const db = c.env.DB;
+
+  // Keep the collectors warm without blocking the response: a lock-guarded background
+  // refresh so fresh content materializes shortly after the first read (and every cron tick).
+  if (db) c.executionCtx.waitUntil(refreshAllSources({ db }, now).catch(() => {}));
+
+  // Live ActivityPub, exactly as before (this path is never disturbed).
+  const apResult = await getToday(sourcesFor(c.env), TODAY_LIMIT, now);
+
+  // Collected items from the other adapters, then one calm merged result.
+  let collected: Moment[] = [];
+  if (db) {
+    try { collected = await readRecent(db, { limit: 60 }); } catch { collected = []; }
+  }
+  return c.json(mergeTodayResult(apResult, collected, TODAY_LIMIT));
 });
 
 openwebRoutes.get("/people", async (c) => {

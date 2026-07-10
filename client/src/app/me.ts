@@ -13,7 +13,7 @@ export interface Profile {
   fields: ProfileField[]; createdAt: string;
 }
 export type ProfileEdit = Partial<Pick<Profile, "displayName" | "handle" | "bio" | "avatarUrl" | "bannerUrl" | "website" | "location" | "fields">>;
-export interface SavedMedia { url: string; kind: "image" | "video" | "other"; alt: string }
+export interface SavedMedia { url: string; kind: "image" | "video" | "audio" | "other"; alt: string; poster?: string }
 export interface SavedCounts { reactions?: number; replies?: number; shares?: number }
 export interface SavedPost {
   id: string; remoteId: string; authorName: string; authorHandle: string; authorAvatarUrl: string | null;

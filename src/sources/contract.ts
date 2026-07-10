@@ -103,3 +103,23 @@ export function dedupePosts(posts: NormalizedPost[]): NormalizedPost[] {
 export function nowIso(now: number): string {
   return new Date(now).toISOString();
 }
+
+// Calm interleave for Today: recency-forward, but never a long run from one source. The only
+// ranking signal is time — there is NO engagement weighting (ADR-011/012). Variety is a
+// tiebreak that breaks up clusters, so a burst from one home doesn't crowd out the rest.
+// Deterministic and finite: Today ENDS at `limit`, never an infinite feed.
+export function calmInterleave(posts: NormalizedPost[], limit: number): NormalizedPost[] {
+  const pool = [...posts].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+  const bucket = (p: NormalizedPost) => p.source?.adapter || p.source?.id || "";
+  const out: NormalizedPost[] = [];
+  let last = "";
+  while (out.length < limit && pool.length > 0) {
+    // Prefer the most-recent remaining item from a different source than the last one.
+    let idx = pool.findIndex((p) => bucket(p) !== last);
+    if (idx === -1) idx = 0; // only one source left — take it in order
+    const [picked] = pool.splice(idx, 1);
+    out.push(picked);
+    last = bucket(picked);
+  }
+  return out;
+}
