@@ -55,5 +55,6 @@ We are honest about reach. Tacet is the best home for the **open** social web �
 - [Identity](identity.md) — the owned, portable "Me."
 - [Compose](compose.md) — creating things that publish to the open web.
 - [Settings](settings.md) — account, privacy, portability, calm.
+- [Business model](business-model.md) — how Tacet is free, how the hosted service is paid for, and what we will never sell.
 
 For the deeper "why," start with the [manifesto](../00-manifesto/why-tacet-exists.md).

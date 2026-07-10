@@ -10,6 +10,10 @@ Read [`FOUNDING_PRINCIPLES.md`](../../FOUNDING_PRINCIPLES.md) and
 [`docs/05-federation/`](../05-federation/) first. This document assumes the pillars, the
 "complete product / replaceable adapter" law, and home-as-source-of-truth.
 
+For how the publishing features described here are paid for — cross-posting sits in Tacet
+Plus, and the free tier stays genuinely usable forever — see the
+[business model](../01-product/business-model.md).
+
 ---
 
 ## The thesis, in one line
