@@ -9,7 +9,7 @@ import { useHint } from "../onboarding/hints";
 import { Hint } from "../onboarding/Hint";
 import { navigate } from "../../router";
 import { Surface } from "../Surface";
-import { ConnectivityPanel } from "../ConnectivityPanel";
+import { TodayContext } from "../TodayContext";
 
 // A real, human day-line + time-of-day greeting (never a hardcoded time, never a nag).
 function partOfDay(h: number): string {
@@ -137,7 +137,7 @@ export function Today() {
   const moments = state.status === "ready" ? state.result.data : [];
 
   return (
-    <Surface context={<ConnectivityPanel />}>
+    <Surface context={<TodayContext moments={moments} />}>
     <div className="t-screen t-screen--reading">
       <TodayMasthead moments={moments} />
       <TodayLens />
