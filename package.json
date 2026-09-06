@@ -18,12 +18,12 @@
     "@noble/curves": "^1.9.7",
     "@noble/hashes": "^1.5.0",
     "fast-xml-parser": "^4.5.7",
-    "hono": "^4.12.34",
+    "hono": "^4.13.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.9.14",
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
     "@cloudflare/workers-types": "^4.20250109.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
@@ -31,6 +31,6 @@
     "typescript": "^5.7.3",
     "vite": "^6.0.7",
     "vitest": "^3.2.4",
-    "wrangler": "^4.107.0"
+    "wrangler": "^4.128.0"
   }
 }
