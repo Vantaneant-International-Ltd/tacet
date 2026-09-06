@@ -1,0 +1,23 @@
+# Dependabot: monthly and grouped, so updates arrive as one small PR per
+# ecosystem instead of a stream. Minor and patch bumps share one PR; a major
+# bump gets its own so it can be judged alone. Security updates are separate
+# and arrive as soon as GitHub publishes an advisory. Nothing merges on its
+# own; CI has to be green and a person has to approve.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    groups:
+      npm-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
